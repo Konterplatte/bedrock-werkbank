@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="de" class="app">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Minecraft-Baupläne Bedrock</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  /* Layout: ein Zeichenblatt. Schriftfeld oben, Grundriss der Ebene, Schnitt in gleicher Spaltenbreite darunter, dann Stückliste und Hinweise. */
+  --paper: #E8EDF3;
+  --sheet: #FBFCFE;
+  --ink: #13263F;
+  --ink-soft: #51647D;
+  --line: #C3CEDB;
+  --accent: #0B5CAD;
+  --on-accent: #FFFFFF;
+  --mark: #C2410C;
+  --f-display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --cell-line: #D5DEE8;
+  --b-stone: #8D96A3;
+  --b-leaf: #3C8F45;
+  --b-source: #1D62C4;
+  --b-flow: #8FC1F2;
+  --b-lava: #E5591A;
+  --b-sign: #DDBA78;
+  --b-hopper: #454C57;
+  --b-chest: #9A5B1B;
+  --b-bed: #BF3434;
+  --b-bedfoot: #EBA39E;
+  --b-compost: #6F5320;
+  --b-work: #7E4E9E;
+  --b-door: #5E3A1A;
+  --b-torch: #F2C12E;
+  --b-air: #DCE8F5;
+  --b-open: #FFE6D6;
+  --b-hole: #13263F;
+  --b-sand: #E6D69A;
+  --b-cactus: #2A7A48;
+  --b-fence: #B0793A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0A1626; --sheet: #10223A; --ink: #E4EDF8; --ink-soft: #9DB2CC; --line: #2A4466;
+    --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --cell-line: #1F3854;
+    --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
+    --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
+    --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
+    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0A1626; --sheet: #10223A; --ink: #E4EDF8; --ink-soft: #9DB2CC; --line: #2A4466;
+  --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --cell-line: #1F3854;
+  --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
+  --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
+  --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
+  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 22px 16px 56px; display: flex; flex-direction: column; gap: 18px; }
+h1, h2, h3, .eyebrow, .tabs a, .lname, .steps button, th { font-family: var(--f-display); }
+h1 { font-size: 2.1rem; line-height: 1.05; font-weight: 600; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+h2 { font-size: 1.35rem; font-weight: 600; margin: 0 0 8px; text-wrap: balance; letter-spacing: .01em; }
+p { margin: 0; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+.eyebrow { font-size: .95rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); margin: 0 0 4px; }
+.lead { color: var(--ink-soft); margin-top: 8px; max-width: 62ch; }
+
+.tabs { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--sheet); }
+.tabs a { flex: 1 1 0; min-width: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 12px 4px; font-weight: 600; font-size: clamp(.85rem, 3.5vw, 1.15rem); line-height: 1.15; letter-spacing: 0; overflow-wrap: anywhere; color: var(--ink-soft); text-decoration: none; }
+.tabs a + a { border-left: 1px solid var(--line); }
+.tabs a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+
+.specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin: 0; }
+.specs div { background: var(--sheet); padding: 8px 12px; }
+.specs dt { font-family: var(--f-display); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.specs dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+@media (min-width: 620px) { .specs { grid-template-columns: repeat(4, 1fr); } }
+
+.sheet { background: var(--sheet); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+.layerbar { display: grid; grid-template-columns: 46px 1fr 46px; gap: 10px; align-items: center; }
+.layerbar button { height: 46px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.layerbar button:disabled { opacity: .35; cursor: default; }
+.lcount { font-size: .85rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.lname { font-size: 1.45rem; font-weight: 600; line-height: 1.1; }
+.steps { display: flex; gap: 6px; overflow-x: auto; padding: 2px 2px 6px; margin: 0; list-style: none; }
+.steps button { min-width: 40px; height: 40px; padding: 0 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--sheet); color: var(--ink-soft); font-size: 1.1rem; font-weight: 600; cursor: pointer; font-variant-numeric: tabular-nums; }
+.steps button[aria-current="step"] { background: var(--mark); border-color: var(--mark); color: #fff; }
+svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+svg text { font-family: var(--f-display); font-weight: 600; }
+.plan svg, .side svg { cursor: pointer; }
+.probe { font-size: .9rem; color: var(--ink-soft); min-height: 1.4em; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.chips li { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px 3px 6px; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.chips .dot { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.chips .plain { padding-left: 10px; color: var(--ink-soft); }
+.instruction { max-width: 65ch; }
+.sub { font-family: var(--f-display); font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; font-weight: 500; }
+.caption { font-size: .85rem; color: var(--ink-soft); margin-top: 6px; }
+.side { border-top: 1px dashed var(--line); padding-top: 12px; }
+
+.legend { display: grid; grid-template-columns: 1fr; gap: 6px 16px; margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; align-items: center; gap: 10px; font-size: .95rem; }
+.legend svg { width: 24px; height: 24px; flex: none; }
+@media (min-width: 560px) { .legend { grid-template-columns: 1fr 1fr; } }
+
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; table-layout: fixed; }
+th:nth-child(1) { width: 34%; }
+th:nth-child(2) { width: 24%; }
+th { text-align: left; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--ink-soft); }
+td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; hyphens: auto; }
+td.num { font-variant-numeric: tabular-nums; font-weight: 600; }
+.stk { display: block; font-weight: 400; font-size: .85rem; color: var(--ink-soft); }
+td.hint { color: var(--ink-soft); }
+
+.notes { display: flex; flex-direction: column; gap: 18px; }
+.notes ul, .notes ol { margin: 0; padding-left: 1.25em; max-width: 65ch; display: flex; flex-direction: column; gap: 6px; }
+.foot { font-size: .85rem; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 12px; max-width: 65ch; }
+[hidden] { display: none !important; }
+</style>
+<style id="app-style">
+/* Programm-Ansicht: Kopfband wie im Lexikon, breites Fenster zweispaltig (Grundriss links, Schnitt und Anleitung rechts). */
+:root {
+  --paper: #EDF1F6; --sheet: #FFFFFF; --line: #CCD6E2; --ink-soft: #55677F;
+  --tint: #E6EEF8; --band: #13263F; --band-ink: #F4F8FD; --band-soft: #A9BDD6; --band-line: rgba(255, 255, 255, .07);
+  --shadow: 0 1px 2px rgba(19, 38, 63, .06), 0 8px 24px rgba(19, 38, 63, .07); --r: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #09131F; --sheet: #101F33; --line: #25405F; --ink-soft: #9DB2CC;
+    --tint: #17304F; --band: #0D1C30; --band-soft: #9DB2CC; --band-line: rgba(255, 255, 255, .05);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #09131F; --sheet: #101F33; --line: #25405F; --ink-soft: #9DB2CC;
+  --tint: #17304F; --band: #0D1C30; --band-soft: #9DB2CC; --band-line: rgba(255, 255, 255, .05);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+}
+html.app { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+html.app body { overflow-x: clip; }
+html.app .wrap { max-width: 1360px; padding: 0 18px 56px; }
+html.app .wrap > header { margin: 0 calc(50% - 50vw) 2px; padding: 24px calc(50vw - 50%) 26px; background-color: var(--band); background-image: linear-gradient(var(--band-line) 1px, transparent 1px), linear-gradient(90deg, var(--band-line) 1px, transparent 1px); background-size: 28px 28px; color: var(--band-ink); }
+html.app .eyebrow { color: #8CC2FF; font-weight: 600; letter-spacing: .12em; margin-bottom: 6px; }
+html.app h1 { font-size: 2.7rem; line-height: 1; font-weight: 700; }
+html.app .lead { color: var(--band-soft); margin-top: 10px; }
+html.app .tabs { display: none; }
+html.app .wrap > header { position: relative; }
+html.app .hpic { display: none; }
+@media (min-width: 900px) {
+  html.app .wrap > header { display: grid; grid-template-columns: minmax(0, 1fr) 260px; column-gap: 28px; align-items: center; }
+  html.app .wrap > header > * { grid-column: 1; }
+  html.app .wrap > header > .hpic { display: block; grid-column: 2; grid-row: 1 / span 3; height: 150px; }
+  html.app .hpic svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .35)); }
+}
+/* Schmal (iPhone): eigene Plan-Auswahl, Platz für die schwebende Tab-Leiste */
+@media (max-width: 720px) {
+  html.app .tabs { display: flex; margin: 14px 0 0; border-radius: 14px; border: 1px solid var(--line); background: var(--sheet); box-shadow: var(--shadow); padding: 4px; gap: 4px; }
+  html.app .tabs a { border-radius: 10px; min-height: 44px; }
+  html.app .tabs a + a { border-left: 0; }
+  html.app body::after { content: ""; display: block; height: calc(104px + env(safe-area-inset-bottom, 0px)); }
+}
+html.app .specs { border-radius: var(--r); box-shadow: var(--shadow); }
+html.app .specs div { padding: 10px 14px; }
+html.app .sheet { border-radius: var(--r); box-shadow: var(--shadow); padding: 16px; }
+html.app .layerbar button { border-radius: 12px; }
+html.app .layerbar button:not(:disabled):hover, html.app .steps button:not([aria-current]):hover { background: var(--tint); }
+html.app .steps button { border-radius: 9px; cursor: pointer; }
+html.app .card { background: var(--sheet); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 16px 18px; }
+html.app .below { display: flex; flex-direction: column; gap: 18px; }
+html.app .below > div { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+html.app .notes ul, html.app .notes ol { max-width: none; }
+html.app .foot { max-width: none; }
+@media (min-width: 1100px) {
+  html.app .sheet { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr); grid-template-rows: auto auto auto auto auto 1fr auto; column-gap: 26px; row-gap: 12px; align-items: start; padding: 18px 20px; }
+  html.app .sheet > .layerbar, html.app .sheet > .steps { grid-column: 1 / -1; }
+  html.app .sheet > .plan { grid-column: 1; grid-row: 3 / span 4; }
+  html.app .sheet > .probe { grid-column: 1; grid-row: 7; }
+  html.app .sheet > .setbox { grid-column: 2; grid-row: 3; }
+  html.app .sheet > .instruction { grid-column: 2; grid-row: 4; max-width: none; }
+  html.app .sheet > .side { grid-column: 2; grid-row: 5; }
+  html.app .below { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; align-items: start; }
+}
+@media print {
+  html.app .wrap > header { background: none; color: #000; margin: 0; padding: 0 0 8px; }
+  html.app .eyebrow, html.app .lead { color: #333; }
+  html.app .card, html.app .sheet, html.app .specs { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Minecraft Bedrock Edition</p>
+  <h1>Baupläne für Eisenfarm, Handel und Kaktus</h1>
+  <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
+</header>
+
+<nav class="tabs" id="tabs" aria-label="Bauplan wählen"></nav>
+
+<dl class="specs" id="specs"></dl>
+
+<section class="sheet" aria-label="Ebenenansicht">
+  <div class="layerbar">
+    <button type="button" id="prev" aria-label="Eine Ebene tiefer">‹</button>
+    <div>
+      <div class="lcount" id="lcount"></div>
+      <div class="lname" id="lname"></div>
+    </div>
+    <button type="button" id="next" aria-label="Eine Ebene höher">›</button>
+  </div>
+  <ol class="steps" id="steps" aria-label="Ebenen"></ol>
+  <div class="plan" id="plan"></div>
+  <p class="probe" id="probe" aria-live="polite"></p>
+  <div>
+    <p class="sub">In dieser Ebene setzen</p>
+    <ul class="chips" id="chips"></ul>
+  </div>
+  <p class="instruction" id="instruction"></p>
+  <div class="side">
+    <p class="sub">Schnitt von der Seite</p>
+    <div id="side"></div>
+    <p class="caption" id="sidecap"></p>
+  </div>
+</section>
+
+<section>
+  <h2>Legende</h2>
+  <ul class="legend" id="legend"></ul>
+</section>
+
+<section>
+  <h2>Stückliste</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Material</th><th>Menge</th><th>Hinweis</th></tr></thead>
+      <tbody id="materials"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="notes" id="notes-eisenfarm">
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Das Dorf:</strong> 10 Dorfbewohner, 20 Betten, 10 Komposter. Hat jeder ein Bett und haben mindestens 8 von 10 am Vortag gearbeitet, versucht das Spiel etwa alle 35 Sekunden, einen Golem zu erzeugen.</li>
+      <li><strong>Der Spawnbereich:</strong> 8 Blöcke seitlich und 6 Blöcke nach oben und unten um das Dorfzentrum. Das Zentrum ist ein Bett oder ein Komposter in der Kammer.</li>
+      <li><strong>Die Höhe:</strong> Der Plattformboden liegt 6 Blöcke unter den Betten und damit gerade noch im Spawnbereich. Alles darunter liegt außerhalb.</li>
+      <li><strong>Die Obergrenze:</strong> Je 10 Dorfbewohner lebt nur ein Golem gleichzeitig. Deshalb spült ihn das Wasser sofort in die Lava.</li>
+      <li><strong>Laub als Schutz:</strong> Kammer und Rand sind aus Laub, weil darauf kein Golem entsteht. Auf Stufen, Teppichen und Glas können Golems in der Bedrock Edition trotzdem erscheinen.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Suche flaches Gelände, mindestens 100 Blöcke von jedem Dorf, Bett und Dorfbewohner entfernt, besser 150. Im Umkreis von 13 Blöcken um die Mitte darf das Gelände höchstens 4 Blöcke höher liegen als der Bauplatz. Fälle dort auch die Bäume.</li>
+      <li>Baue die Ebenen 1 bis 8. Das Wasser füllst du zuletzt ein.</li>
+      <li>Baue die Dorfkammer, Ebenen 10 bis 13, und lass die Öffnung frei.</li>
+      <li>Bringe 2 Dorfbewohner mit Lore und Schienenrampe in die Kammer und baue die Rampe ab. Verschließe das untere Feld der Öffnung, das obere bleibt zum Füttern offen.</li>
+      <li>Wirf Brot, Karotten oder Kartoffeln hinein, bis 10 Dorfbewohner in der Kammer sind. Schließe dann auch das obere Feld mit Laub.</li>
+      <li>Warte einen Spieltag und bleib in der Nähe. Die Farm arbeitet nur innerhalb deiner Simulationsdistanz.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Kein Golem erscheint:</strong> Zähle nach. 20 Betten, 10 Dorfbewohner, jeder mit Bett. Höchstens 2 dürfen ohne Arbeit sein. Dorfbewohner in grüner Robe arbeiten nie, tausche sie aus.</li>
+      <li><strong>Ein Golem steht außerhalb:</strong> Im Spawnbereich liegt ein fester Block mit freier Fläche darüber. Entferne ihn oder ersetze ihn durch Laub.</li>
+      <li><strong>Golems bleiben auf der Plattform stehen:</strong> Am Rand fehlt eine Wasserquelle.</li>
+      <li><strong>Die Lava wird zu Obsidian:</strong> Wasser läuft ins Loch. Der Boden muss innen genau 18 × 18 messen.</li>
+      <li><strong>Fäden in der Kiste:</strong> In Dörfern können auch Katzen spawnen. Sie landen ebenfalls im Schacht.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Ausbau</h2>
+    <p class="instruction">Mit 20 Dorfbewohnern und 20 Kompostern dürfen 2 Golems gleichzeitig leben. Laut Minecraft Wiki bringt das rund ein Drittel mehr Eisen. Die zusätzlichen Komposter setzt du in die Laubwand der Kammer.</p>
+  </div>
+</section>
+
+<section class="notes" id="notes-handelsstation" hidden>
+  <div>
+    <h2>So arbeitet die Halle</h2>
+    <ul>
+      <li><strong>Eine Box pro Händler:</strong> Jeder Dorfbewohner steht auf seinem Bett. Er erreicht nur dieses Bett und seinen Arbeitsblock.</li>
+      <li><strong>Das Bett ist Pflicht:</strong> In der Bedrock Edition füllt ein Dorfbewohner seine Angebote nur auf, wenn er mit einem Arbeitsblock und einem Bett verknüpft ist.</li>
+      <li><strong>Der Beruf:</strong> Der Arbeitsblock vor der Box bestimmt ihn.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Arbeitsblock und Beruf</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Arbeitsblock</th><th>Beruf</th><th>Lohnt sich für</th></tr></thead>
+        <tbody>
+          <tr><td>Lesepult</td><td>Bibliothekar</td><td class="hint">Verzauberte Bücher</td></tr>
+          <tr><td>Schmiedetisch</td><td>Werkzeugschmied</td><td class="hint">Diamantwerkzeug</td></tr>
+          <tr><td>Schleifstein</td><td>Waffenschmied</td><td class="hint">Diamantschwert und Diamantaxt</td></tr>
+          <tr><td>Schmelzofen</td><td>Rüstungsschmied</td><td class="hint">Diamantrüstung</td></tr>
+          <tr><td>Braustand</td><td>Geistlicher</td><td class="hint">Enderperlen, Erfahrungsfläschchen</td></tr>
+          <tr><td>Komposter</td><td>Bauer</td><td class="hint">Smaragde für Ernte</td></tr>
+          <tr><td>Bognertisch</td><td>Pfeilmacher</td><td class="hint">Smaragde für Stöcke</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Wähle einen Platz mindestens 100 Blöcke von der Eisenfarm und von jedem Dorf entfernt, besser 150. Sonst verschmelzen die Dörfer und die Farm fällt aus.</li>
+      <li>Baue Boden, Wände, Dach und Fackeln. Betten, Arbeitsblöcke und Sturz lässt du noch weg. Alle Boxen sind vorn offen.</li>
+      <li>Fülle immer nur eine Box. Lege das Bett, fahre den Dorfbewohner mit der Lore bis vor die Box, zerstöre die Lore und schiebe ihn auf das Bett.</li>
+      <li>Setze sofort einen Hilfsblock auf mittlerer Höhe in die Öffnung. Jetzt kommt er nicht mehr heraus.</li>
+      <li>Setze den Arbeitsblock unten und den Sturz oben. Entferne den Hilfsblock. Grüne Partikel zeigen, dass er Bett und Arbeitsblock übernommen hat.</li>
+      <li>Erst dann ist die nächste Box dran.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Angebote füllen sich nicht auf:</strong> Der Dorfbewohner hat Bett oder Arbeitsblock einer anderen Box übernommen. Baue seinen Arbeitsblock ab und setze ihn neu.</li>
+      <li><strong>Falscher Beruf oder schwaches Angebot:</strong> Solange du noch nicht mit ihm gehandelt hast, kannst du den Arbeitsblock abbauen und neu setzen. Dann wählt er neue Angebote.</li>
+      <li><strong>Eisengolems an der Halle:</strong> Ab 20 Betten und 10 Dorfbewohnern erzeugt jedes Dorf Golems. Bleib bei dieser Halle unter 20 Betten.</li>
+      <li><strong>Monster im Gang:</strong> Halte die Tür geschlossen und setze alle Fackeln.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="notes" id="notes-kaktusfarm" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Die Regel:</strong> Ein Kaktus wächst nur auf Sand und bricht ab, sobald neben ihm ein Block steht.</li>
+      <li><strong>Der Trick:</strong> Jeder Kaktus bleibt 1 Block hoch. Wächst er ins Feld darüber, hängt dort ein Zaun daneben. Das neue Stück bricht sofort ab und fällt als Gegenstand herunter.</li>
+      <li><strong>Die Sammlung:</strong> Fällt es in eine der 5 Wasserbahnen, spült das Wasser es in die Sammelrinne und von dort in den Trichter.</li>
+      <li><strong>Der Verlust:</strong> Was auf einem Kaktus oder auf dem Sand landet, ist verloren. Das gehört zu jeder Kaktusfarm ohne Redstone.</li>
+      <li><strong>Kaktusblüten:</strong> Seit Version 1.21.70 können Kakteen Blüten treiben und wachsen dann nicht weiter. Neben einem Block entsteht keine Blüte. Deshalb hat hier jedes Wuchsfeld einen Zaun als Nachbarn.</li>
+      <li><strong>Das Tempo:</strong> Ein Kaktus wächst im Schnitt alle 18 Minuten. 32 Kakteen wachsen zusammen rund 100-mal pro Stunde.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Baue die Ebenen 1 bis 3. Die Mauer beginnst du am Rand des Bodens und führst sie um die Sammelrinne herum. Prüfe die Rinne: Das Wasser endet ein Feld vor dem Trichter.</li>
+      <li>Setze Sand und Wasserbahnen, Ebene 4. Pflanze dann die 16 Kakteen, Ebene 5. Stell dich dazu in eine Wasserbahn.</li>
+      <li>Zieh die Mauer hoch und lege die Träger, Ebene 7. Hänge danach die Zäune von unten an, Ebene 6.</li>
+      <li>Baue die zweite Etage genauso: Sand, Kakteen, Träger, Zäune.</li>
+      <li>Leuchte den Raum unter dem Boden mit Fackeln aus, damit dort keine Monster spawnen.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Ausbau und Nutzen</h2>
+    <ul>
+      <li><strong>Mehr Etagen:</strong> Die Ebenen 8 bis 11 kannst du beliebig oft wiederholen. Jede Etage bringt 16 Kakteen und kostet 32 Sand, 16 Zäune, 32 Träger und 4 Mauerlagen.</li>
+      <li><strong>Grüner Farbstoff:</strong> Kaktus im Ofen schmelzen. In der Bedrock Edition gibt das nur wenig Erfahrung.</li>
+      <li><strong>Knochenmehl:</strong> Im Komposter füllt im Schnitt jeder zweite Kaktus eine Stufe.</li>
+      <li><strong>Standort:</strong> Die Farm braucht kein Licht und keinen Abstand zu Dörfern. Sie arbeitet nur, solange du in der Nähe bist.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Ein Kaktus lässt sich nicht pflanzen:</strong> Direkt neben dem Feld steht ein Block. Kakteen dürfen nur über Eck benachbart sein.</li>
+      <li><strong>Ein Kaktus wächst 2 hoch und bleibt stehen:</strong> Neben dem Wuchsfeld fehlt der Zaun.</li>
+      <li><strong>Eine Blüte sitzt auf dem Kaktus:</strong> Baue sie ab und prüfe, ob neben dem Wuchsfeld ein Zaun hängt.</li>
+      <li><strong>Gegenstände bleiben im Wasser liegen:</strong> Am Nordende der Bahn fehlt die Quelle, oder die Bahn ist länger als 8 Felder.</li>
+      <li><strong>Die Kiste bleibt leer:</strong> Der Trichter muss nach unten in die Kiste zeigen.</li>
+    </ul>
+  </div>
+</section>
+
+<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a> und <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a>), Stand November 2026. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht.</p>
+
+</div>
+<script>
+/* Bauplan-Daten: reine Daten, kein DOM. Raster: grid[z][x], Norden ist oben (z = 0). */
+var BLOCKS = {
+  S: { name: 'Fester Block (Stein, Bruchstein)', mat: 'stone', fill: 'var(--b-stone)' },
+  Z: { name: 'Sturz (fester Block über der Öffnung)', mat: 'stone', fill: 'var(--b-stone)', glyph: '=', dark: true },
+  L: { name: 'Laub', mat: 'leaf', fill: 'var(--b-leaf)' },
+  Q: { name: 'Wasserquelle', mat: 'source', fill: 'var(--b-source)', glyph: 'Q', dark: true },
+  f: { name: 'Fließendes Wasser (entsteht von selbst)', fill: 'var(--b-flow)' },
+  V: { name: 'Lava', mat: 'lava', fill: 'var(--b-lava)', glyph: 'La', dark: true },
+  X: { name: 'Schild an der Schachtwand', mat: 'sign', fill: 'var(--b-sign)', glyph: 'S' },
+  t: { name: 'Trichter, zeigt nach unten in die Kiste', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↓', dark: true },
+  n: { name: 'Trichter, zeigt nach Norden in den Nachbartrichter', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↑', dark: true },
+  K: { name: 'Kiste (Hälfte der Doppelkiste)', mat: 'chest', fill: 'var(--b-chest)', glyph: 'K', dark: true },
+  B: { name: 'Bett, Kopfteil', mat: 'bed', fill: 'var(--b-bed)', glyph: '●', dark: true },
+  b: { name: 'Bett, Fußteil', fill: 'var(--b-bedfoot)' },
+  C: { name: 'Komposter', mat: 'composter', fill: 'var(--b-compost)', glyph: 'Ko', dark: true },
+  A: { name: 'Arbeitsblock', mat: 'work', fill: 'var(--b-work)', glyph: 'A', dark: true },
+  D: { name: 'Tür, untere Hälfte', mat: 'door', fill: 'var(--b-door)', glyph: 'Tü', dark: true },
+  d: { name: 'Tür, obere Hälfte', fill: 'var(--b-door)', glyph: 'Tü', dark: true },
+  F: { name: 'Fackel an der Trennwand', mat: 'torch', fill: 'var(--b-torch)', glyph: 'F' },
+  o: { name: 'Luft, frei lassen', fill: 'var(--b-air)' },
+  O: { name: 'Handelsöffnung, frei lassen', fill: 'var(--b-open)', glyph: '↔', open: true },
+  h: { name: 'Loch im Boden, offen lassen', fill: 'var(--b-hole)' },
+  N: { name: 'Sand', mat: 'sand', fill: 'var(--b-sand)' },
+  c: { name: 'Kaktus', mat: 'cactus', fill: 'var(--b-cactus)', glyph: 'ψ', dark: true },
+  z: { name: 'Zaun, hängt unter dem Träger', mat: 'fence', fill: 'var(--b-fence)', glyph: '+', dark: true },
+  w: { name: 'Wuchsfeld, frei lassen: hier bricht der Kaktus ab', fill: 'var(--b-air)', glyph: '↑', ink: true },
+  U: { name: 'Träger (fester Block)', mat: 'stone', fill: 'var(--b-stone)', glyph: '=', dark: true }
+};
+
+var MATERIALS = {
+  stone: 'Fester Block',
+  leaf: 'Laub',
+  source: 'Wasserquelle',
+  lava: 'Lava (Eimer)',
+  sign: 'Schild',
+  hopper: 'Trichter',
+  chest: 'Kiste',
+  bed: 'Bett',
+  composter: 'Komposter',
+  work: 'Arbeitsblock',
+  door: 'Tür',
+  torch: 'Fackel',
+  sand: 'Sand',
+  cactus: 'Kaktus',
+  fence: 'Zaun'
+};
+
+var PLANS = (function () {
+  function mk(w, d) { return Array.from({ length: d }, function () { return Array(w).fill('.'); }); }
+  function rect(g, x0, z0, x1, z1, c) { for (var z = z0; z <= z1; z++) for (var x = x0; x <= x1; x++) g[z][x] = c; }
+  function ring(g, x0, z0, x1, z1, c) {
+    for (var z = z0; z <= z1; z++) for (var x = x0; x <= x1; x++)
+      if (x === x0 || x === x1 || z === z0 || z === z1) g[z][x] = c;
+  }
+  function rows(g) { return g.map(function (r) { return r.join(''); }); }
+
+  /* ---------- Eisenfarm: 20 x 20, Y1 bis Y15 ---------- */
+  function farm() {
+    var W = 20, L = [], g;
+    function shaft(g, inner) { ring(g, 8, 8, 11, 11, 'S'); rect(g, 9, 9, 10, 10, inner); }
+
+    g = mk(W, W); g[9][9] = 'K'; g[9][10] = 'K';
+    L.push({ y: [1, 1], name: 'Sammelkiste', grid: rows(g), pairs: [[9, 9, 10, 9]],
+      text: 'Stelle eine Doppelkiste auf den Boden. Sie liegt genau unter den beiden nördlichen Trichtern der nächsten Ebene. Leuchte den Bereich unter der Farm später mit Fackeln aus, damit dort keine Monster spawnen.' });
+
+    g = mk(W, W); shaft(g, 't'); g[10][9] = 'n'; g[10][10] = 'n';
+    L.push({ y: [2, 2], name: 'Trichter', grid: rows(g),
+      text: 'Setze 2 Trichter direkt auf die Kiste. Schleiche beim Platzieren, sonst öffnet sich die Kiste. Die 2 südlichen Trichter klickst du seitlich an die ersten beiden, damit sie hineinleiten. Rundherum ein Ring aus 12 festen Blöcken.' });
+
+    g = mk(W, W); shaft(g, 'o');
+    L.push({ y: [3, 3], name: 'Schacht, Fußraum', grid: rows(g),
+      text: 'Ring aus 12 Blöcken weiterbauen. Die 4 Felder in der Mitte bleiben leer. Hier steht später der Golem, seine Beute fällt in die Trichter.' });
+
+    g = mk(W, W); shaft(g, 'X');
+    L.push({ y: [4, 4], name: 'Schilder', grid: rows(g),
+      text: 'Ring weiterbauen. Hänge in jedes der 4 inneren Felder ein Schild an die Schachtwand. Die Schilder tragen die Lava der nächsten Ebene.' });
+
+    g = mk(W, W); shaft(g, 'V');
+    L.push({ y: [5, 5], name: 'Lava', grid: rows(g),
+      text: 'Ring weiterbauen. Gieße in jedes der 4 inneren Felder einen Eimer Lava. Sie trifft nur den Kopf des Golems. Eisen und Mohn fallen darunter in die Trichter und verbrennen nicht.' });
+
+    g = mk(W, W); ring(g, 0, 0, 19, 19, 'L'); rect(g, 1, 1, 18, 18, 'S'); rect(g, 9, 9, 10, 10, 'h');
+    L.push({ y: [6, 6], name: 'Boden der Spawnplattform', grid: rows(g),
+      text: 'Lege 18 × 18 feste Blöcke mit einem Loch von 2 × 2 genau über der Lava. Außen herum kommt ein Ring aus Laub. Nur auf diesem Boden sollen Golems entstehen. Nimm Stein oder Bruchstein, kein Holz.' });
+
+    g = mk(W, W); ring(g, 0, 0, 19, 19, 'L'); rect(g, 1, 1, 18, 18, 'f'); ring(g, 1, 1, 18, 18, 'Q'); rect(g, 9, 9, 10, 10, 'h');
+    L.push({ y: [7, 7], name: 'Wasser', grid: rows(g), flow: true,
+      text: 'Laubring eine Lage höher ziehen. Setze in jedes Feld direkt am Rand eine Wasserquelle, insgesamt 68. Das Wasser fließt 7 Felder weit und endet genau am Loch, ohne hineinzulaufen. Es spült jeden Golem in den Schacht.' });
+
+    g = mk(W, W); ring(g, 0, 0, 19, 19, 'L');
+    L.push({ y: [8, 8], name: 'Rand, zweite Lage', grid: rows(g),
+      text: 'Laubring noch eine Lage höher ziehen. So kommt kein Golem über den Rand.' });
+
+    g = mk(W, W);
+    L.push({ y: [9, 10], name: 'Frei lassen', grid: rows(g),
+      text: 'Hier baust du nichts. Über dem Plattformboden müssen 4 Blöcke frei bleiben, sonst kann unter der Dorfkammer kein Golem spawnen.' });
+
+    g = mk(W, W); rect(g, 6, 5, 12, 14, 'L');
+    L.push({ y: [11, 11], name: 'Boden der Dorfkammer', grid: rows(g),
+      text: 'Lege 7 × 10 Laubblöcke schwebend über die Mitte. Baue dafür eine Hilfssäule vom Plattformboden hoch und reiße sie danach wieder ab.' });
+
+    g = mk(W, W); ring(g, 6, 5, 12, 14, 'L');
+    var beds = [], x, z;
+    for (x = 7; x <= 11; x++) {
+      [[6, 7], [8, 9], [11, 10], [13, 12]].forEach(function (p) {
+        g[p[0]][x] = 'b'; g[p[1]][x] = 'B';
+        beds.push([x, Math.min(p[0], p[1]), x, Math.max(p[0], p[1])]);
+      });
+    }
+    for (z = 7; z <= 11; z++) g[z][6] = 'C';
+    for (z = 8; z <= 12; z++) g[z][12] = 'C';
+    L.push({ y: [12, 12], name: 'Betten und Komposter', grid: rows(g), pairs: beds,
+      text: 'Lege 20 Betten als Fußboden: 5 Spalten mit je 4 Betten, die Kopfteile zeigen zur Mitte. Die Wand ist aus Laub, darin sitzen 10 Komposter. Die Dorfbewohner laufen auf den Betten und erreichen so Bett und Arbeitsblock.' });
+
+    g = mk(W, W); ring(g, 6, 5, 12, 14, 'L'); rect(g, 7, 6, 11, 13, 'o');
+    L.push({ y: [13, 14], name: 'Wände der Kammer', grid: rows(g),
+      text: 'Zwei Lagen Laubwand. Lass an einer Stelle eine Öffnung, 1 breit und 2 hoch, bis die Dorfbewohner drin sind. Danach mit Laub schließen.' });
+
+    g = mk(W, W); rect(g, 6, 5, 12, 14, 'L');
+    L.push({ y: [15, 15], name: 'Dach', grid: rows(g),
+      text: 'Lege 7 × 10 Laubblöcke als Dach. Kein fester Block darf oben offen liegen.' });
+
+    return {
+      id: 'eisenfarm', title: 'Eisenfarm', w: W, d: W, yMin: 1, yMax: 15, sliceZ: 9, ground: true,
+      guides: [[1, 1, 18, 18], [9, 9, 10, 10]],
+            specs: [['Grundfläche', '20 × 20 Blöcke'], ['Höhe', '15 Blöcke ab Boden'], ['Dorfbewohner', '10, ausbaubar auf 20'], ['Betten', '20']],
+      extras: [['Dorfbewohner', '10', '2 reichen für den Start, den Rest züchtest du in der Kammer'],
+               ['Schere', '1', 'zum Ernten des Laubs'],
+               ['Wassereimer', '2', 'immer wieder an einem Wasserloch auffüllen'],
+               ['Schienen und Lore', 'nach Bedarf', 'für den Transport der Dorfbewohner']],
+      hints: { stone: 'nicht brennbar, also kein Holz', leaf: 'jede Baumart, mit der Schere abgebaut', source: 'aus den 2 Eimern', lava: '4 Eimer voll', chest: 'ergibt eine Doppelkiste', composter: 'je 7 Holzstufen' },
+      layers: L
+    };
+  }
+
+  /* ---------- Handelsstation: 11 x 11, Y0 bis Y4 ---------- */
+  function hall() {
+    var W = 11, L = [], g, z, lanes = [1, 3, 5, 7, 9], walls = [2, 4, 6, 8];
+    function shell(g) {
+      ring(g, 0, 0, 10, 10, 'S');
+      walls.forEach(function (z) { rect(g, 1, z, 3, z, 'S'); rect(g, 7, z, 9, z, 'S'); });
+      rect(g, 4, 1, 6, 9, 'o');
+    }
+
+    g = mk(W, W); rect(g, 0, 0, 10, 10, 'S');
+    L.push({ y: [0, 0], name: 'Boden', grid: rows(g),
+      text: 'Lege 11 × 11 feste Blöcke als Boden.' });
+
+    g = mk(W, W); shell(g); g[0][5] = 'D';
+    var beds = [];
+    lanes.forEach(function (z) {
+      g[z][1] = 'B'; g[z][2] = 'b'; g[z][3] = 'A';
+      g[z][7] = 'A'; g[z][8] = 'b'; g[z][9] = 'B';
+      beds.push([1, z, 2, z]); beds.push([8, z, 9, z]);
+    });
+    L.push({ y: [1, 1], name: 'Betten und Arbeitsblöcke', grid: rows(g), pairs: beds,
+      text: 'Außenwand mit Tür an der Nordseite. Zehn Boxen, je 1 breit und 2 tief, getrennt durch Wände. In jeder Box liegt ein Bett als Boden, das Kopfteil an der Außenwand. Vor jeder Box steht der Arbeitsblock. Der Gang in der Mitte ist 3 breit.' });
+
+    g = mk(W, W); shell(g); g[0][5] = 'd';
+    lanes.forEach(function (z) { g[z][1] = 'o'; g[z][2] = 'o'; g[z][3] = 'O'; g[z][7] = 'O'; g[z][8] = 'o'; g[z][9] = 'o'; });
+    L.push({ y: [2, 2], name: 'Handelsöffnung', grid: rows(g),
+      text: 'Wände weiterbauen. Über jedem Arbeitsblock bleibt ein Feld offen. Durch diese Öffnung handelst du mit dem Dorfbewohner, der auf seinem Bett steht.' });
+
+    g = mk(W, W); shell(g);
+    lanes.forEach(function (z) { g[z][1] = 'o'; g[z][2] = 'o'; g[z][3] = 'Z'; g[z][7] = 'Z'; g[z][8] = 'o'; g[z][9] = 'o'; });
+    walls.forEach(function (z) { g[z][4] = 'F'; g[z][6] = 'F'; });
+    L.push({ y: [3, 3], name: 'Sturz und Licht', grid: rows(g),
+      text: 'Wände weiterbauen. Über jeder Öffnung sitzt ein fester Block, damit der Dorfbewohner nicht auf den Arbeitsblock klettert und entkommt. Setze 8 Fackeln an die Trennwände im Gang.' });
+
+    g = mk(W, W); rect(g, 0, 0, 10, 10, 'S');
+    L.push({ y: [4, 4], name: 'Dach', grid: rows(g),
+      text: 'Lege 11 × 11 feste Blöcke als Dach.' });
+
+    return {
+      id: 'handelsstation', title: 'Handelsstation', w: W, d: W, yMin: 0, yMax: 4, sliceZ: 1, ground: false,
+      guides: [],
+      specs: [['Grundfläche', '11 × 11 Blöcke'], ['Höhe', '5 Lagen, innen 3 hoch'], ['Plätze', '10 Dorfbewohner'], ['Betten', '10']],
+      extras: [['Dorfbewohner', '10', 'einzeln hineinbringen'],
+               ['Hilfsblock', '1', 'sperrt die Öffnung, während du Arbeitsblock und Sturz setzt'],
+               ['Schienen und Lore', 'nach Bedarf', 'für den Transport der Dorfbewohner']],
+      hints: { stone: 'Material frei wählbar', work: 'bestimmt den Beruf, siehe unten', bed: 'Farbe egal', door: 'Eisentür mit Knopf hält Zombies sicher draußen' },
+      layers: L
+    };
+  }
+
+  /* ---------- Kaktusfarm: 11 x 11, Y1 bis Y11, zwei Etagen ---------- */
+  function cactus() {
+    var W = 11, L = [], g, ev = [2, 4, 6, 8], od = [1, 3, 5, 7, 9];
+    function wall(g) { ring(g, 0, 0, 10, 10, 'S'); }
+    function cols(g, c) { ev.forEach(function (x) { rect(g, x, 1, x, 8, c); }); }
+    function plants(g) { ev.forEach(function (x) { ev.forEach(function (z) { g[z][x] = 'c'; }); }); }
+    function fences(g) {
+      ev.forEach(function (x) {
+        [1, 3, 5, 7].forEach(function (z) { g[z][x] = 'z'; });
+        ev.forEach(function (z) { g[z][x] = 'w'; });
+      });
+    }
+
+    g = mk(W, W); g[9][0] = 'K'; g[9][1] = 'K';
+    L.push({ y: [1, 1], name: 'Sammelkiste', grid: rows(g), pairs: [[0, 9, 1, 9]],
+      text: 'Stelle eine Doppelkiste auf den Boden. Die östliche Hälfte liegt unter dem Trichter der nächsten Ebene.' });
+
+    g = mk(W, W); g[9][1] = 't'; rect(g, 2, 9, 9, 9, 'S');
+    L.push({ y: [2, 2], name: 'Trichter und Rinnenboden', grid: rows(g),
+      text: 'Setze den Trichter auf die östliche Kistenhälfte und schleiche dabei. Nach Osten schließt der Boden der Sammelrinne an, 8 feste Blöcke. Über der westlichen Kistenhälfte bleibt das Feld frei, sonst geht die Kiste nicht auf.' });
+
+    g = mk(W, W); wall(g); rect(g, 1, 1, 9, 8, 'S'); rect(g, 2, 9, 8, 9, 'f'); g[9][9] = 'Q'; g[9][1] = 'o';
+    L.push({ y: [3, 3], name: 'Boden und Sammelrinne', grid: rows(g),
+      text: 'Lege 9 × 8 feste Blöcke als Boden und ziehe die Mauer ringsum, auch um die Rinne. Die Wasserquelle der Rinne sitzt ganz im Osten. Das Wasser fließt 7 Felder nach Westen und endet ein Feld vor dem Trichter.' });
+
+    g = mk(W, W); wall(g); cols(g, 'N'); od.forEach(function (x) { g[1][x] = 'Q'; rect(g, x, 2, x, 8, 'f'); });
+    L.push({ y: [4, 4], name: 'Sand und Wasserbahnen', grid: rows(g),
+      text: 'Mauer weiterbauen. Lege 4 Sandreihen, je 8 lang, mit einer Bahn Abstand. In jede der 5 Bahnen kommt eine Wasserquelle am Nordende. Das Wasser fließt nach Süden und lässt die Ernte in die Rinne fallen.' });
+
+    g = mk(W, W); wall(g); plants(g);
+    L.push({ y: [5, 5], name: 'Kakteen, Etage 1', grid: rows(g),
+      text: 'Mauer weiterbauen. Pflanze 16 Kakteen auf den Sand, immer mit einem Feld Abstand. Neben einem Kaktus darf auf dieser Höhe kein Block stehen.' });
+
+    g = mk(W, W); wall(g); fences(g);
+    L.push({ y: [6, 6], name: 'Zäune, Etage 1', grid: rows(g),
+      text: 'Mauer weiterbauen. Über jedem freien Sandfeld hängt ein Zaun. Lege zuerst die Träger der nächsten Ebene und klicke die Zäune dann von unten an. Die Felder über den Kakteen bleiben frei. Dort wächst der Kaktus hinein und bricht am Zaun ab.' });
+
+    g = mk(W, W); wall(g); cols(g, 'U');
+    L.push({ y: [7, 7], name: 'Träger', grid: rows(g),
+      text: 'Mauer weiterbauen. Lege über jede Sandreihe eine Reihe aus 8 festen Blöcken, von der Nordwand aus. Sie hält die Zäune darunter und trägt den Sand der zweiten Etage.' });
+
+    g = mk(W, W); wall(g); cols(g, 'N');
+    L.push({ y: [8, 8], name: 'Sand, Etage 2', grid: rows(g),
+      text: 'Mauer weiterbauen. Lege 4 Sandreihen auf die Träger.' });
+
+    g = mk(W, W); wall(g); plants(g);
+    L.push({ y: [9, 9], name: 'Kakteen, Etage 2', grid: rows(g),
+      text: 'Mauer weiterbauen. Pflanze wieder 16 Kakteen, genau über denen der ersten Etage.' });
+
+    g = mk(W, W); wall(g); fences(g);
+    L.push({ y: [10, 10], name: 'Zäune, Etage 2', grid: rows(g),
+      text: 'Mauer weiterbauen. Wieder hängt über jedem freien Sandfeld ein Zaun, die Felder über den Kakteen bleiben frei.' });
+
+    g = mk(W, W); wall(g); cols(g, 'U');
+    L.push({ y: [11, 11], name: 'Abschluss', grid: rows(g),
+      text: 'Letzte Mauerlage und 4 Trägerreihen als Deckel. Daran hängen die Zäune der zweiten Etage. Für eine dritte Etage baust du hier mit Sand weiter.' });
+
+    return {
+      id: 'kaktusfarm', title: 'Kaktusfarm', w: W, d: W, yMin: 1, yMax: 11, sliceX: 2, ground: true,
+      guides: [],
+      specs: [['Grundfläche', '11 × 11 Blöcke'], ['Höhe', '11 Blöcke ab Boden'], ['Kakteen', '32 in 2 Etagen'], ['Redstone', 'keins']],
+      extras: [['Wassereimer', '1', 'für die 6 Quellen immer wieder auffüllen'],
+               ['Fackeln', 'nach Bedarf', 'für den Raum unter dem Boden']],
+      hints: { stone: 'Mauer auch aus Glas, dann siehst du hinein', sand: 'roter Sand geht auch', cactus: 'wenige reichen, den Rest liefert die Farm',
+               fence: 'aus 4 Brettern und 2 Stöcken werden 3', source: 'aus dem Eimer', chest: 'ergibt eine Doppelkiste' },
+      layers: L
+    };
+  }
+
+  return [farm(), hall(), cactus()];
+})();
+
+if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
+
+</script>
+<script>
+(function () {
+  var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null };
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function geom(p) {
+    var big = p.w > 14, U = 10, M = big ? 9 : 6;
+    return { U: U, M: M, W: M + p.w * U + 1, fsLab: big ? 5.2 : 3.4, fsGly: big ? 5.6 : 4.2 };
+  }
+  function yText(l) { return l.y[0] === l.y[1] ? 'Y' + l.y[0] : 'Y' + l.y[0] + ' bis Y' + l.y[1]; }
+
+  function cell(ch, px, py, G, opacity) {
+    var b = BLOCKS[ch], U = G.U, s = '';
+    if (!b) return s;
+    if (b.open) {
+      s += '<rect x="' + (px + .6) + '" y="' + (py + .6) + '" width="' + (U - 1.2) + '" height="' + (U - 1.2) + '" fill="' + b.fill + '" stroke="var(--mark)" stroke-width=".6" stroke-dasharray="1.6 1.2"/>';
+    } else {
+      s += '<rect x="' + px + '" y="' + py + '" width="' + U + '" height="' + U + '" fill="' + b.fill + '"' + (opacity != null ? ' fill-opacity="' + opacity.toFixed(2) + '"' : '') + ' stroke="var(--sheet)" stroke-width=".35"/>';
+    }
+    if (b.glyph) {
+      var fs = b.glyph.length > 1 ? G.fsGly * .8 : G.fsGly;
+      var col = b.open ? 'var(--mark)' : (b.dark ? '#fff' : (b.ink ? 'var(--accent)' : '#13263F'));
+      s += '<text x="' + (px + U / 2) + '" y="' + (py + U / 2) + '" dy=".36em" text-anchor="middle" font-size="' + fs + '" fill="' + col + '">' + b.glyph + '</text>';
+    }
+    return s;
+  }
+  function frame(G, cols, rowsN) {
+    var s = '', i, x0 = G.M, y0 = G.M, w = cols * G.U, h = rowsN * G.U;
+    s += '<rect x="' + x0 + '" y="' + y0 + '" width="' + w + '" height="' + h + '" fill="var(--sheet)"/>';
+    for (i = 1; i < cols; i++) s += '<line x1="' + (x0 + i * G.U) + '" y1="' + y0 + '" x2="' + (x0 + i * G.U) + '" y2="' + (y0 + h) + '" stroke="var(--cell-line)" stroke-width=".3"/>';
+    for (i = 1; i < rowsN; i++) s += '<line x1="' + x0 + '" y1="' + (y0 + i * G.U) + '" x2="' + (x0 + w) + '" y2="' + (y0 + i * G.U) + '" stroke="var(--cell-line)" stroke-width=".3"/>';
+    return s;
+  }
+  function border(G, cols, rowsN) {
+    return '<rect x="' + G.M + '" y="' + G.M + '" width="' + cols * G.U + '" height="' + rowsN * G.U + '" fill="none" stroke="var(--ink-soft)" stroke-width=".5"/>';
+  }
+  function colLabels(G, cols) {
+    var s = '';
+    for (var x = 0; x < cols; x++) s += '<text x="' + (G.M + x * G.U + G.U / 2) + '" y="' + (G.M - 1.8) + '" text-anchor="middle" font-size="' + G.fsLab + '" fill="var(--ink-soft)">' + (x + 1) + '</text>';
+    return s;
+  }
+
+  function flowDist(l) {
+    if (l._fd) return l._fd;
+    var g = l.grid, d = g.map(function (r) { return r.split('').map(function (ch) { return ch === 'Q' ? 0 : Infinity; }); }), q = [];
+    g.forEach(function (r, z) { for (var x = 0; x < r.length; x++) if (r.charAt(x) === 'Q') q.push([x, z]); });
+    while (q.length) {
+      var c = q.shift();
+      [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (o) {
+        var nx = c[0] + o[0], nz = c[1] + o[1];
+        if (g[nz] && g[nz].charAt(nx) === 'f' && d[nz][nx] > d[c[1]][c[0]] + 1) { d[nz][nx] = d[c[1]][c[0]] + 1; q.push([nx, nz]); }
+      });
+    }
+    return (l._fd = d);
+  }
+
+  function drawPlan(p, l) {
+    var G = geom(p), U = G.U, M = G.M, H = M + p.d * U + 1, s, x, z;
+    s = '<svg viewBox="0 0 ' + G.W + ' ' + H + '" role="img" aria-label="Grundriss ' + esc(p.title) + ', ' + esc(l.name) + ', ' + yText(l) + '">';
+    s += frame(G, p.w, p.d) + colLabels(G, p.w);
+    for (z = 0; z < p.d; z++) s += '<text x="' + (M - 1.6) + '" y="' + (M + z * U + U / 2) + '" dy=".36em" text-anchor="end" font-size="' + G.fsLab + '" fill="var(--ink-soft)">' + (z + 1) + '</text>';
+    for (z = 0; z < p.d; z++) for (x = 0; x < p.w; x++) {
+      var ch = l.grid[z].charAt(x), op = null;
+      if (ch === '.') continue;
+      if (ch === 'f') {
+        var d = flowDist(l)[z][x];
+        op = d === Infinity ? .5 : 1 - (d - 1) * .105;
+      }
+      s += cell(ch, M + x * U, M + z * U, G, op);
+    }
+    (l.pairs || []).forEach(function (r) {
+      s += '<rect x="' + (M + r[0] * U + .7) + '" y="' + (M + r[1] * U + .7) + '" width="' + ((r[2] - r[0] + 1) * U - 1.4) + '" height="' + ((r[3] - r[1] + 1) * U - 1.4) + '" rx="1.4" fill="none" stroke="var(--ink)" stroke-width=".7"/>';
+    });
+    (p.guides || []).forEach(function (r) {
+      s += '<rect x="' + (M + r[0] * U) + '" y="' + (M + r[1] * U) + '" width="' + ((r[2] - r[0] + 1) * U) + '" height="' + ((r[3] - r[1] + 1) * U) + '" fill="none" stroke="var(--accent)" stroke-width=".55" stroke-dasharray="2.4 1.8"/>';
+    });
+    s += border(G, p.w, p.d);
+    if (st.sel) s += '<rect x="' + (M + st.sel[0] * U) + '" y="' + (M + st.sel[1] * U) + '" width="' + U + '" height="' + U + '" fill="none" stroke="var(--mark)" stroke-width="1.2"/>';
+    return s + '</svg>';
+  }
+
+  function drawSide(p, cur) {
+    var G = geom(p), U = G.U, M = G.M, n = p.yMax - p.yMin + 1, gh = p.ground ? 3 : 0, H = M + n * U + gh + 1, s, x;
+    var byCol = p.sliceX != null, cols = byCol ? p.d : p.w;
+    s = '<svg viewBox="0 0 ' + G.W + ' ' + H + '" role="img" aria-label="Seitenschnitt ' + esc(p.title) + '">';
+    s += frame(G, cols, n) + colLabels(G, cols);
+    p.layers.forEach(function (l) {
+      for (var y = l.y[0]; y <= l.y[1]; y++) {
+        var py = M + (p.yMax - y) * U, row = byCol ? l.grid.map(function (r) { return r.charAt(p.sliceX); }).join('') : l.grid[p.sliceZ];
+        s += '<text x="' + (M - 1.6) + '" y="' + (py + U / 2) + '" dy=".36em" text-anchor="end" font-size="' + G.fsLab + '" fill="var(--ink-soft)">' + y + '</text>';
+        for (x = 0; x < cols; x++) { var ch = row.charAt(x); if (ch !== '.') s += cell(ch, M + x * U, py, G, ch === 'f' ? .75 : null); }
+      }
+    });
+    if (p.ground) s += '<rect x="' + M + '" y="' + (M + n * U) + '" width="' + cols * U + '" height="' + gh + '" fill="var(--ink-soft)" fill-opacity=".45"/>';
+    s += border(G, cols, n);
+    var top = M + (p.yMax - cur.y[1]) * U, hh = (cur.y[1] - cur.y[0] + 1) * U;
+    s += '<rect x="' + (M - .6) + '" y="' + (top - .6) + '" width="' + (cols * U + 1.2) + '" height="' + (hh + 1.2) + '" fill="var(--mark)" fill-opacity=".14" stroke="var(--mark)" stroke-width="1.1"/>';
+    return s + '</svg>';
+  }
+
+  function counts(l) {
+    var c = {}, order = [];
+    l.grid.forEach(function (r) {
+      for (var i = 0; i < r.length; i++) {
+        var b = BLOCKS[r.charAt(i)];
+        if (b && b.mat) { if (!c[b.mat]) { c[b.mat] = { n: 0, fill: b.fill }; order.push(b.mat); } c[b.mat].n++; }
+      }
+    });
+    return order.map(function (m) { return { mat: m, n: c[m].n, fill: c[m].fill }; });
+  }
+  function stacks(m, n) {
+    if ((m !== 'stone' && m !== 'leaf' && m !== 'sand') || n < 64) return '';
+    var f = Math.floor(n / 64), r = n % 64;
+    return '<span class="stk">' + f + (f === 1 ? ' Stack' : ' Stacks') + (r ? ' + ' + r : '') + '</span>';
+  }
+
+  function renderPlanStatic() {
+    var p = PLANS[st.plan];
+    $('tabs').innerHTML = PLANS.map(function (q, i) {
+      return '<a href="#' + q.id + '"' + (i === st.plan ? ' aria-current="page"' : '') + '>' + esc(q.title) + '</a>';
+    }).join('');
+    PLANS.forEach(function (q, i) { $('notes-' + q.id).hidden = i !== st.plan; });
+    $('specs').innerHTML = p.specs.map(function (s) { return '<div><dt>' + esc(s[0]) + '</dt><dd>' + esc(s[1]) + '</dd></div>'; }).join('');
+    $('steps').innerHTML = p.layers.map(function (l, i) {
+      return '<li><button type="button" data-i="' + i + '" aria-label="Ebene ' + (i + 1) + ', ' + esc(l.name) + '">' + (i + 1) + '</button></li>';
+    }).join('');
+
+    var seen = {}, keys = [];
+    p.layers.forEach(function (l) { l.grid.forEach(function (r) { for (var i = 0; i < r.length; i++) { var ch = r.charAt(i); if (ch !== '.' && !seen[ch]) { seen[ch] = 1; keys.push(ch); } } }); });
+    var LG = { U: 10, fsGly: 5.6 };
+    $('legend').innerHTML = keys.map(function (ch) {
+      return '<li><svg viewBox="-1 -1 12 12" aria-hidden="true"><rect x="-.5" y="-.5" width="11" height="11" fill="var(--sheet)" stroke="var(--line)" stroke-width=".6"/>' + cell(ch, 0, 0, LG, null) + '</svg><span>' + esc(BLOCKS[ch].name) + '</span></li>';
+    }).join('') + (p.guides.length ? '<li><svg viewBox="-1 -1 12 12" aria-hidden="true"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="var(--accent)" stroke-width=".9" stroke-dasharray="2.4 1.8"/></svg><span>Hilfslinie: Innenkante der Plattform und Loch</span></li>' : '');
+
+    var tot = {}, order = [];
+    p.layers.forEach(function (l) {
+      var rep = l.y[1] - l.y[0] + 1;
+      counts(l).forEach(function (c) { if (tot[c.mat] == null) { tot[c.mat] = 0; order.push(c.mat); } tot[c.mat] += c.n * rep; });
+    });
+    order.sort(function (a, b) { return tot[b] - tot[a]; });
+    $('materials').innerHTML = order.map(function (m) {
+      return '<tr><td>' + esc(MATERIALS[m]) + '</td><td class="num">' + tot[m] + stacks(m, tot[m]) + '</td><td class="hint">' + esc(p.hints[m] || '') + '</td></tr>';
+    }).join('') + p.extras.map(function (e) {
+      return '<tr><td>' + esc(e[0]) + '</td><td class="num">' + esc(e[1]) + '</td><td class="hint">' + esc(e[2]) + '</td></tr>';
+    }).join('');
+    $('sidecap').textContent = (p.sliceX != null ? 'Blick nach Osten durch Spalte ' + (p.sliceX + 1) + ', links ist Norden. Die Zahlen oben sind hier die Reihen, die Zahlen links sind' : 'Blick nach Norden durch Reihe ' + (p.sliceZ + 1) + '. Die Zahlen links sind') + ' die Höhe Y' + (p.ground ? ', Y1 ist die erste Lage auf dem Erdboden' : ', Y0 ist der Hallenboden') + '. Markiert ist die Ebene von oben. Tippe eine Lage an, um dorthin zu springen.';
+  }
+
+  function renderLayer() {
+    var p = PLANS[st.plan], i = st.layer[st.plan], l = p.layers[i], rep = l.y[1] - l.y[0] + 1;
+    $('lcount').textContent = 'Ebene ' + (i + 1) + ' von ' + p.layers.length + ' · Höhe ' + yText(l);
+    $('lname').textContent = l.name;
+    $('prev').disabled = i === 0; $('next').disabled = i === p.layers.length - 1;
+    [].forEach.call($('steps').querySelectorAll('button'), function (b) {
+      if (+b.getAttribute('data-i') === i) { b.setAttribute('aria-current', 'step'); if (b.scrollIntoView) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+      else b.removeAttribute('aria-current');
+    });
+    $('plan').innerHTML = drawPlan(p, l);
+    $('side').innerHTML = drawSide(p, l);
+    var c = counts(l);
+    $('chips').innerHTML = c.length
+      ? c.map(function (k) { return '<li><span class="dot" style="background:' + k.fill + '"></span>' + k.n + ' × ' + esc(MATERIALS[k.mat]) + '</li>'; }).join('') + (rep > 1 ? '<li class="plain">je Lage, ' + rep + ' Lagen</li>' : '')
+      : '<li class="plain">Nichts setzen</li>';
+    $('instruction').textContent = l.text;
+    probe();
+  }
+  function probe() {
+    var p = PLANS[st.plan], l = p.layers[st.layer[st.plan]];
+    if (!st.sel) { $('probe').textContent = 'Tippe ein Kästchen an, um den Block zu sehen.'; return; }
+    var ch = l.grid[st.sel[1]].charAt(st.sel[0]);
+    $('probe').textContent = 'Spalte ' + (st.sel[0] + 1) + ', Reihe ' + (st.sel[1] + 1) + ': ' + (ch === '.' ? 'leer' : BLOCKS[ch].name);
+  }
+  function go(i) {
+    var p = PLANS[st.plan];
+    st.layer[st.plan] = Math.max(0, Math.min(p.layers.length - 1, i));
+    renderLayer();
+  }
+  function route() {
+    var want = 0;
+    PLANS.forEach(function (q, i) { if (location.hash === '#' + q.id) want = i; });
+    st.plan = want; st.sel = null;
+    renderPlanStatic(); renderLayer();
+  }
+  function hit(e, el, p, rowsN, extra, colsN) {
+    var svg = el.querySelector('svg'); if (!svg) return null;
+    var r = svg.getBoundingClientRect(), G = geom(p), H = G.M + rowsN * G.U + extra + 1;
+    var ux = (e.clientX - r.left) / r.width * G.W, uy = (e.clientY - r.top) / r.height * H;
+    var x = Math.floor((ux - G.M) / G.U), y = Math.floor((uy - G.M) / G.U);
+    return (x < 0 || y < 0 || x >= (colsN || p.w) || y >= rowsN) ? null : [x, y];
+  }
+
+  $('prev').addEventListener('click', function () { go(st.layer[st.plan] - 1); });
+  $('next').addEventListener('click', function () { go(st.layer[st.plan] + 1); });
+  $('steps').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) go(+b.getAttribute('data-i')); });
+  $('plan').addEventListener('click', function (e) {
+    var p = PLANS[st.plan], c = hit(e, this, p, p.d, 0);
+    st.sel = c; $('plan').innerHTML = drawPlan(p, p.layers[st.layer[st.plan]]); probe();
+  });
+  $('side').addEventListener('click', function (e) {
+    var p = PLANS[st.plan], n = p.yMax - p.yMin + 1, c = hit(e, this, p, n, p.ground ? 3 : 0, p.sliceX != null ? p.d : p.w);
+    if (!c) return;
+    var y = p.yMax - c[1];
+    for (var i = 0; i < p.layers.length; i++) if (y >= p.layers[i].y[0] && y <= p.layers[i].y[1]) { go(i); break; }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if (e.key === 'ArrowLeft') go(st.layer[st.plan] - 1);
+    if (e.key === 'ArrowRight') go(st.layer[st.plan] + 1);
+  });
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  // Programm-Ansicht: Abschnitte unter dem Zeichenblatt in zwei Spalten ordnen, Überschrift folgt dem gewählten Plan.
+  var wrap = document.querySelector('.wrap'), sheet = wrap && wrap.querySelector('.sheet');
+  if (!wrap || !sheet) return;
+  var setbox = sheet.querySelector(':scope > div:not([class])');
+  if (setbox) setbox.className = 'setbox';
+  var below = document.createElement('div'), left = document.createElement('div'), right = document.createElement('div');
+  below.className = 'below'; below.appendChild(left); below.appendChild(right);
+  var secs = Array.prototype.slice.call(wrap.querySelectorAll(':scope > section:not(.sheet)'));
+  sheet.after(below);
+  secs.forEach(function (s) {
+    if (s.classList.contains('notes')) {
+      right.appendChild(s);
+      Array.prototype.forEach.call(s.children, function (c) { c.classList.add('card'); });
+    } else { left.appendChild(s); s.classList.add('card'); }
+  });
+  var h1 = document.querySelector('.wrap > header h1'), eb = document.querySelector('.wrap > header .eyebrow');
+  if (eb) eb.textContent = 'Bauplan · Minecraft Bedrock Edition';
+  function sync() {
+    var a = document.querySelector('#tabs a[aria-current="page"]');
+    if (a && h1) { h1.textContent = a.textContent; document.title = 'Bauplan ' + a.textContent; }
+  }
+  // Eigene isometrische Zeichnung je Bauplan im Kopfband (keine Spielgrafik)
+  var C = 0.8660254;
+  function mix(hex, t) {
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255, to = t > 0 ? 255 : 0, k = Math.abs(t);
+    function c(v) { return Math.round(v + (to - v) * k); }
+    return 'rgb(' + c(r) + ',' + c(g) + ',' + c(b) + ')';
+  }
+  function iso(cubes) {
+    var polys = [], a = [1e9, 1e9, -1e9, -1e9];
+    function P(x, y, z) { var p = [(x - y) * C * 20, (x + y) * 10 - z * 20]; a[0] = Math.min(a[0], p[0]); a[2] = Math.max(a[2], p[0]); a[1] = Math.min(a[1], p[1]); a[3] = Math.max(a[3], p[1]); return p; }
+    cubes.slice().sort(function (p, q) { return (p[0] + p[1]) - (q[0] + q[1]) || p[2] - q[2] || p[0] - q[0]; }).forEach(function (c) {
+      var x = c[0], y = c[1], z = c[2], h = c[4] || 1, cs = [mix(c[3], .22), mix(c[3], -.08), mix(c[3], -.28)];
+      polys.push([[P(x, y + 1, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[1]]);
+      polys.push([[P(x + 1, y, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x + 1, y, z + h)], cs[2]]);
+      polys.push([[P(x, y, z + h), P(x + 1, y, z + h), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[0]]);
+    });
+    var s = '<svg viewBox="' + (a[0] - 4).toFixed(1) + ' ' + (a[1] - 4).toFixed(1) + ' ' + (a[2] - a[0] + 8).toFixed(1) + ' ' + (a[3] - a[1] + 8).toFixed(1) + '" aria-hidden="true">';
+    polys.forEach(function (p) { s += '<polygon points="' + p[0].map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ') + '" fill="' + p[1] + '" stroke="rgba(10,20,35,.22)" stroke-width=".6" stroke-linejoin="round"/>'; });
+    return s + '</svg>';
+  }
+  var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
+            glass: '#BCE0F2', dark: '#3A4350', hay: '#E2B93B', copper: '#D9824A' };
+  function box(x0, y0, z, w, d, col, h) { var r = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) r.push([x, y, z, col, h]); return r; }
+  var SCENES = {
+    eisenfarm: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .5), [[1, 1, 1.5, K.lava, .7], [3, 2, 0, K.iron], [3, 1, 0, K.dark, .7]]),
+    handelsstation: [].concat(box(0, 0, 0, 4, 1, K.glass), box(0, 0, 1, 4, 1, K.glass), [[0, 1, 0, K.wood], [1, 1, 0, K.stone], [2, 1, 0, K.hay], [3, 1, 0, K.copper], [3, 2, 0, K.emerald, .55]]),
+    kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
+      [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]])
+  };
+  var hdr = document.querySelector('.wrap > header'), pic = document.createElement('div');
+  pic.className = 'hpic'; pic.setAttribute('aria-hidden', 'true');
+  if (hdr) hdr.appendChild(pic);
+  function drawPic() { var id = (location.hash || '#eisenfarm').slice(1); pic.innerHTML = iso(SCENES[id] || SCENES.eisenfarm); }
+  window.addEventListener('hashchange', function () { sync(); drawPic(); });
+  sync(); drawPic();
+})();
+</script>
+</body>
+</html>

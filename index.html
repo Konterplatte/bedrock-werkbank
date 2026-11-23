@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de" data-platform="web">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Bedrock-Werkbank</title>
+<link rel="icon" href="favicon.ico">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#13263F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Werkbank">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+/* VOICE: Werkstatt-Handbuch, ruhig und genau. IDEA: eine Werkbank mit Bauplänen, Blaupausen-Raster als Grund.
+   PICTURE: eigene isometrische Blockszenen (keine Spielgrafik) für Start, Lexikon und jeden Bauplan.
+   COLOUR: Blaupausen-Marine als Band, Papierweiß, Signal-Blau als Akzent, Orange als Markierung.
+   TYPE: Barlow Condensed für Titel, IBM Plex Sans für Text. LAYOUT: Windows mit Seitenleiste, iPhone mit schwebender Tab-Leiste. */
+:root {
+  --paper: #EDF1F6; --sheet: #FFFFFF; --ink: #13263F; --ink-soft: #55677F; --line: #CCD6E2;
+  --accent: #0B5CAD; --on-accent: #FFFFFF; --mark: #C2410C; --tint: #E6EEF8;
+  --band: #13263F; --band-ink: #F4F8FD; --band-soft: #A9BDD6; --band-line: rgba(255, 255, 255, .07); --band-edge: rgba(255, 255, 255, .10);
+  --band-mark: #FF9B61; --pic: linear-gradient(160deg, #F3F7FC, #DFE8F3);
+  --glass: rgba(19, 38, 63, .86); --glass-edge: rgba(255, 255, 255, .16);
+  --shadow: 0 1px 2px rgba(19, 38, 63, .06), 0 8px 24px rgba(19, 38, 63, .07);
+  --lift: 0 2px 4px rgba(19, 38, 63, .08), 0 16px 36px rgba(19, 38, 63, .14);
+  --r: 16px;
+  --f-display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --f-body: 'IBM Plex Sans', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #09131F; --sheet: #101F33; --ink: #E6EEF8; --ink-soft: #9DB2CC; --line: #25405F;
+    --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --tint: #17304F;
+    --band: #0D1C30; --band-soft: #9DB2CC; --band-line: rgba(255, 255, 255, .05); --band-edge: rgba(255, 255, 255, .08);
+    --pic: linear-gradient(160deg, #14283F, #0E1D30); --glass: rgba(8, 18, 31, .84); --glass-edge: rgba(255, 255, 255, .12);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25); --lift: 0 2px 4px rgba(0, 0, 0, .35), 0 16px 36px rgba(0, 0, 0, .4);
+  }
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body { margin: 0; height: 100vh; height: 100dvh; display: grid; grid-template-columns: 100px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr);
+  background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; overflow: hidden; }
+button, input { font: inherit; color: inherit; }
+button { touch-action: manipulation; }
+:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+[hidden] { display: none !important; }
+html[data-platform="exe"] .web-only, html[data-platform="web"] .exe-only { display: none !important; }
+h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(--f-display); }
+
+/* Navigation: Seitenleiste */
+.rail { background-color: var(--band); background-image: linear-gradient(var(--band-line) 1px, transparent 1px), linear-gradient(90deg, var(--band-line) 1px, transparent 1px);
+  background-size: 28px 28px; color: var(--band-soft); border-right: 1px solid var(--band-edge); display: flex; flex-direction: column; gap: 4px;
+  padding: 16px 9px 12px; overflow-y: auto; scrollbar-width: none; -webkit-user-select: none; user-select: none; z-index: 30; }
+.logo { display: flex; justify-content: center; padding: 0 0 12px; }
+.logo svg { width: 48px; height: 48px; display: block; }
+.cap { font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; text-align: center; opacity: .8; margin: 14px 0 2px; }
+.navbtn { appearance: none; border: 0; background: transparent; border-radius: 14px; padding: 10px 2px 8px; display: flex; flex-direction: column; align-items: center;
+  gap: 5px; cursor: pointer; position: relative; font-weight: 600; font-size: 1rem; letter-spacing: .03em; line-height: 1.05; text-align: center; color: var(--band-soft); }
+.navbtn svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.navbtn:hover { background: rgba(255, 255, 255, .07); color: var(--band-ink); }
+.navbtn:active { background: rgba(255, 255, 255, .14); }
+.navbtn[aria-current="page"] { background: rgba(255, 255, 255, .13); color: #FFFFFF; }
+.navbtn[aria-current="page"]::before { content: ""; position: absolute; left: -9px; top: 14px; bottom: 14px; width: 4px; border-radius: 0 4px 4px 0; background: var(--band-mark); }
+.m-only { display: none; }
+.spacer { flex: 1; }
+
+/* Arbeitsfläche */
+.stage { position: relative; min-width: 0; min-height: 0; background: var(--band); }
+.stage > iframe, .stage > .startview { position: absolute; left: 0; right: 0; bottom: 0; top: env(safe-area-inset-top, 0px); width: 100%; height: calc(100% - env(safe-area-inset-top, 0px)); border: 0; background: var(--paper); }
+.stage > .off { visibility: hidden; pointer-events: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .stage > .on { animation: fade .22s ease both; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .navbtn, .pcard, .lexcard, .qchip { transition: background-color .15s ease, color .15s ease, box-shadow .2s ease, transform .2s ease, border-color .15s ease; }
+}
+
+/* Startseite */
+.startview { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.hero { background-color: var(--band); background-image: linear-gradient(var(--band-line) 1px, transparent 1px), linear-gradient(90deg, var(--band-line) 1px, transparent 1px);
+  background-size: 28px 28px; color: var(--band-ink); }
+.hero-in { max-width: 1240px; margin: 0 auto; padding: clamp(24px, 4vw, 52px) clamp(16px, 4vw, 44px) clamp(28px, 4vw, 48px); display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 40px); align-items: center; }
+.eyebrow { margin: 0 0 8px; color: #8CC2FF; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: .95rem; }
+.hero h1 { margin: 0; font-size: clamp(2.6rem, 6vw, 4.2rem); line-height: .98; font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
+.lead { margin: 14px 0 22px; color: var(--band-soft); font-size: 1.08rem; max-width: 46ch; }
+.hsearch { display: flex; align-items: center; gap: 10px; height: 60px; padding: 0 8px 0 18px; border-radius: 18px; background: var(--sheet); color: var(--ink);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .25); max-width: 560px; }
+.hsearch svg { width: 22px; height: 22px; flex: none; fill: none; stroke: var(--ink-soft); stroke-width: 2; stroke-linecap: round; }
+.hsearch input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: none; font-size: 1.06rem; }
+.hsearch input::placeholder { color: var(--ink-soft); }
+.hsearch input::-webkit-search-cancel-button { display: none; }
+.btn { appearance: none; height: 44px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--sheet); font-weight: 600; font-size: 1.05rem;
+  letter-spacing: .02em; cursor: pointer; }
+.btn:hover { background: var(--tint); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.08); background: var(--accent); }
+.hero-pic { min-height: 240px; }
+.hero-pic svg { display: block; width: 100%; height: 100%; max-height: 330px; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, .35)); }
+.sv { max-width: 1240px; margin: 0 auto; padding: 24px clamp(16px, 4vw, 44px) 40px; display: flex; flex-direction: column; gap: 30px; }
+.sv h2 { margin: 0 0 14px; font-size: 1.9rem; line-height: 1.05; }
+.sv h3 { margin: 18px 0 10px; font-size: 1.15rem; letter-spacing: .04em; color: var(--ink-soft); font-weight: 600; }
+.install { margin: 0; display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: var(--r); background: var(--tint); border: 1px solid var(--line); }
+.install p { margin: 0; flex: 1; }
+.install button { flex: none; }
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.pcard, .lexcard { appearance: none; text-align: left; display: flex; flex-direction: column; padding: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--sheet);
+  box-shadow: var(--shadow); overflow: hidden; cursor: pointer; color: inherit; text-decoration: none; }
+.pcard:hover, .lexcard:hover { box-shadow: var(--lift); transform: translateY(-2px); border-color: var(--accent); }
+.ppic { height: 170px; background: var(--pic); display: flex; align-items: center; justify-content: center; padding: 14px; border-bottom: 1px solid var(--line); }
+.ppic svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 10px 12px rgba(19, 38, 63, .18)); }
+.pbody { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+.ptitle { font-size: 1.65rem; font-weight: 700; line-height: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ptitle span { font-family: var(--f-body); font-size: .85rem; font-weight: 500; color: var(--ink-soft); white-space: nowrap; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; margin: 0; }
+.fact { min-width: 0; }
+.fact small { display: block; font-size: .78rem; color: var(--ink-soft); letter-spacing: .02em; }
+.fact b { display: block; font-size: 1.08rem; font-weight: 600; line-height: 1.15; overflow-wrap: anywhere; }
+.lexcard { flex-direction: row; align-items: stretch; }
+.lexcard .ppic { width: 42%; height: auto; min-height: 190px; border-bottom: 0; border-right: 1px solid var(--line); }
+.lexcard .pbody { justify-content: center; flex: 1; }
+.lexcard p { margin: 0; color: var(--ink-soft); max-width: 52ch; }
+.chain { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 600; }
+.chain i { font-style: normal; color: var(--mark); }
+.qchips { display: flex; flex-wrap: wrap; gap: 8px; }
+.qchip { appearance: none; display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 6px 14px 6px 8px; border-radius: 12px; border: 1.5px solid var(--line);
+  background: var(--sheet); cursor: pointer; font-size: .98rem; text-align: left; }
+.qchip:hover { border-color: var(--accent); }
+.qchip svg { width: 26px; height: 26px; flex: none; }
+.fine { margin: 6px 0 0; font-size: .84rem; color: var(--ink-soft); max-width: 80ch; }
+
+/* Info-Fenster */
+dialog { border: 1px solid var(--line); border-radius: 20px; padding: 0; background: var(--sheet); color: var(--ink); width: min(690px, calc(100vw - 28px)); max-height: calc(100dvh - 28px);
+  box-shadow: 0 24px 80px rgba(6, 18, 31, .35); overflow: hidden; }
+dialog[open] { display: flex; flex-direction: column; }
+dialog::backdrop { background: rgba(9, 19, 31, .55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+.dhead { display: flex; align-items: center; gap: 14px; padding: 18px 20px 14px; border-bottom: 1px solid var(--line); }
+.dhead svg { width: 50px; height: 50px; flex: none; border-radius: 13px; background: var(--band); padding: 4px; }
+.dhead h2 { font-size: 1.9rem; line-height: 1; font-weight: 700; margin: 0; }
+.dhead p { margin: 4px 0 0; color: var(--ink-soft); font-size: .92rem; }
+.dbody { padding: 16px 20px 6px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+.dbody p { margin: 0; }
+.dbody h3 { font-family: var(--f-display); font-size: .9rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; align-items: baseline; }
+.keys dt { white-space: nowrap; }
+.keys dd { margin: 0; color: var(--ink-soft); }
+kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 1px 6px; background: var(--paper); }
+.small { font-size: .88rem; color: var(--ink-soft); }
+.lic { margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); font: .72rem/1.45 ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; overflow-y: auto; }
+.dfoot { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px)); }
+
+/* Mittelbreit */
+@media (max-width: 1100px) {
+  .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plans .pcard:last-child { grid-column: 1 / -1; flex-direction: row; }
+  .plans .pcard:last-child .ppic { width: 42%; height: auto; border-bottom: 0; border-right: 1px solid var(--line); }
+  .plans .pcard:last-child .pbody { flex: 1; justify-content: center; }
+}
+/* iPhone und schmale Fenster: schwebende Tab-Leiste aus Glas */
+@media (max-width: 720px) {
+  body { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: fixed; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); flex-direction: row; align-items: stretch; gap: 2px;
+    padding: 6px; border-radius: 28px; border: 1px solid var(--glass-edge); background: var(--glass); background-image: none; overflow: visible;
+    -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); box-shadow: 0 12px 34px rgba(4, 12, 22, .35); }
+  .logo, .cap, .spacer, .d-only { display: none; }
+  .m-only { display: flex; }
+  .navbtn { flex: 1 1 0; min-width: 0; font-size: .9rem; padding: 8px 2px 7px; gap: 3px; border-radius: 22px; }
+  .navbtn svg { width: 24px; height: 24px; }
+  .navbtn[aria-current="page"] { background: rgba(255, 255, 255, .18); }
+  .navbtn[aria-current="page"]::before { display: none; }
+  .hero-in { grid-template-columns: minmax(0, 1fr); }
+  .hero-pic { min-height: 0; height: 190px; order: -1; margin: -6px 0 -4px; }
+  .lead { margin-bottom: 18px; }
+  .hsearch { height: 56px; }
+  .hsearch .btn { display: none; }
+  .sv { padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)); gap: 26px; }
+  .plans { grid-template-columns: minmax(0, 1fr); }
+  .plans .pcard:last-child { flex-direction: column; }
+  .plans .pcard:last-child .ppic { width: auto; border-right: 0; border-bottom: 1px solid var(--line); height: 150px; }
+  .ppic { height: 150px; }
+  .lexcard { flex-direction: column; }
+  .lexcard .ppic { width: auto; min-height: 150px; height: 150px; border-right: 0; border-bottom: 1px solid var(--line); }
+}
+</style>
+</head>
+<body>
+
+<nav class="rail" aria-label="Bereiche">
+  <div class="logo" title="Bedrock-Werkbank">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10l13 7.5L24 25l-13-7.5z" fill="#FF8A4C"/><path d="M11 17.5L24 25v15l-13-7.5z" fill="#F4F8FD"/><path d="M24 25l13-7.5v15L24 40z" fill="#74B4FF"/></svg>
+  </div>
+  <button type="button" class="navbtn" data-view="start" title="Start (Strg+0)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 10.5L12 4.5l7.5 6"/><path d="M6.5 9v10h11V9"/><path d="M10 19v-5h4v5"/></svg>
+    <span>Start</span>
+  </button>
+  <button type="button" class="navbtn" data-view="lexikon" title="Ressourcen-Lexikon (Strg+1)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.6C10 5.1 7.5 4.6 4 4.6v12.8c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V4.6c-3.5 0-6 .5-8 2z"/><path d="M12 6.6v12.8"/></svg>
+    <span>Lexikon</span>
+  </button>
+  <p class="cap" aria-hidden="true">Baupläne</p>
+  <button type="button" class="navbtn d-only" data-view="eisenfarm" title="Bauplan Eisenfarm (Strg+2)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 18.5l2.2-7.5h10.6l2.2 7.5z"/><path d="M6.7 11l2.2-4.5h6.2l2.2 4.5"/></svg>
+    <span>Eisenfarm</span>
+  </button>
+  <button type="button" class="navbtn d-only" data-view="handelsstation" title="Bauplan Handelsstation (Strg+3)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l6.8 4.4v8.8L12 20.8l-6.8-4.4V7.6z"/><path d="M12 8.2l3 1.9v3.8l-3 1.9-3-1.9v-3.8z"/></svg>
+    <span>Handel</span>
+  </button>
+  <button type="button" class="navbtn d-only" data-view="kaktusfarm" title="Bauplan Kaktusfarm (Strg+4)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20.5V5a2 2 0 0 1 4 0v15.5"/><path d="M10 14H8.2a2 2 0 0 1-2-2V9.4"/><path d="M14 16.4h1.8a2 2 0 0 0 2-2v-3"/><path d="M5 20.5h14"/></svg>
+    <span>Kaktus</span>
+  </button>
+  <button type="button" class="navbtn m-only" data-view="bau" title="Baupläne">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5L12 3.5l8 4-8 4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16.5l8 4 8-4"/></svg>
+    <span>Baupläne</span>
+  </button>
+  <div class="spacer"></div>
+  <button type="button" class="navbtn" id="infobtn" title="Über die App (F1)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 11.2v5.4"/><path d="M12 7.6v.3"/></svg>
+    <span>Info</span>
+  </button>
+</nav>
+
+<main class="stage">
+  <section class="startview on" id="v-start" aria-label="Start" tabindex="-1">
+    <div class="hero">
+      <div class="hero-in">
+        <div>
+          <p class="eyebrow">Minecraft Bedrock Edition 1.26.60</p>
+          <h1>Bedrock-Werkbank</h1>
+          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu Baupläne Block für Block. Funktioniert komplett ohne Internet.</p>
+          <form class="hsearch" id="hsearch" role="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l4.5 4.5"/></svg>
+            <input type="search" id="hq" enterkeyhint="search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Ressource suchen, z. B. Reparatur" aria-label="Ressource suchen">
+            <button type="submit" class="btn primary">Suchen</button>
+          </form>
+        </div>
+        <div class="hero-pic" id="heropic" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="sv">
+      <div class="install web-only" id="install" hidden>
+        <p><b>So wird daraus eine App:</b> In Safari unten auf <b>Teilen</b> tippen, dann <b>Zum Home-Bildschirm</b>. Danach startet sie im Vollbild und läuft ohne Internet.</p>
+        <button type="button" class="btn" id="installok">Okay</button>
+      </div>
+      <section aria-labelledby="h-plans">
+        <h2 id="h-plans">Baupläne</h2>
+        <div class="plans" id="plans"></div>
+      </section>
+      <section aria-labelledby="h-lex">
+        <h2 id="h-lex">Ressourcen-Lexikon</h2>
+        <button type="button" class="lexcard" data-go="lexikon">
+          <div class="ppic" id="lexpic" aria-hidden="true"></div>
+          <div class="pbody">
+            <div class="ptitle">Alles über 1.880 Ressourcen</div>
+            <p>Tippe eine Ressource an und du siehst, woraus sie entsteht, wo du sie findest und wofür du sie brauchst. Mit allen 42 Zauberbüchern, Tränken und Pfeilen.</p>
+            <div class="chain" aria-label="Beispiel: Sand, Kaktus, Grüner Farbstoff">Sand <i>→</i> Kaktus <i>→</i> Grüner Farbstoff</div>
+          </div>
+        </button>
+        <h3>Oft gesucht</h3>
+        <div class="qchips" id="popular"></div>
+        <div id="recentbox" hidden>
+          <h3>Zuletzt angesehen</h3>
+          <div class="qchips" id="recent"></div>
+        </div>
+      </section>
+      <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Bilder sind eigene Zeichnungen, keine Grafiken aus dem Spiel.</p>
+    </div>
+  </section>
+  <iframe id="f-lex" title="Ressourcen-Lexikon" class="off"></iframe>
+  <iframe id="f-bau" title="Baupläne" class="off"></iframe>
+</main>
+
+<dialog id="info" aria-labelledby="info-h">
+  <div class="dhead">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10l13 7.5L24 25l-13-7.5z" fill="#FF8A4C"/><path d="M11 17.5L24 25v15l-13-7.5z" fill="#F4F8FD"/><path d="M24 25l13-7.5v15L24 40z" fill="#74B4FF"/></svg>
+    <div>
+      <h2 id="info-h">Bedrock-Werkbank</h2>
+      <p>Version 1.1 · Datenstand Bedrock Edition 1.26.60</p>
+    </div>
+  </div>
+  <div class="dbody">
+    <p>Ressourcen-Lexikon und die Baupläne für Eisenfarm, Handelsstation und Kaktusfarm in einer App. Alles läuft ohne Internet. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <div class="exe-only">
+      <h3>Tastatur</h3>
+      <dl class="keys">
+        <dt><kbd>Strg</kbd> + <kbd>0</kbd></dt><dd>Startseite</dd>
+        <dt><kbd>Strg</kbd> + <kbd>1</kbd> bis <kbd>4</kbd></dt><dd>Lexikon und die drei Baupläne</dd>
+        <dt><kbd>Strg</kbd> + <kbd>K</kbd></dt><dd>Suchen</dd>
+        <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Ebene im Bauplan wechseln</dd>
+        <dt><kbd>Strg</kbd> + <kbd>P</kbd></dt><dd>Aktuelle Ansicht drucken</dd>
+        <dt><kbd>Strg</kbd> + <kbd>+</kbd> / <kbd>−</kbd></dt><dd>Größer und kleiner</dd>
+        <dt><kbd>F1</kbd></dt><dd>Dieses Fenster</dd>
+      </dl>
+    </div>
+    <p class="small web-only">Als Web-App auf dem Home-Bildschirm lädt sie Neuerungen automatisch, sobald du online bist. Gespeichert wird nur, welchen Bereich du zuletzt offen hattest.</p>
+    <p class="small">Inoffizielles Hilfsprogramm. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Die App enthält keine Grafiken aus dem Spiel.</p>
+    <p class="small exe-only">Das Programm legt nur einen Ordner an: <span style="white-space:nowrap">%LocalAppData%\BedrockWerkbank</span> (Zwischenspeicher der Anzeige). Zum Entfernen die EXE und diesen Ordner löschen.</p>
+    <pre class="lic" id="lic" tabindex="0" hidden></pre>
+  </div>
+  <div class="dfoot">
+    <button type="button" class="btn" id="licbtn">Lizenzen anzeigen</button>
+    <button type="button" class="btn primary" id="closebtn">Schließen</button>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11}];
+  var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
+  var APP = 'Bedrock-Werkbank';
+  var PLATFORM = document.documentElement.getAttribute('data-platform');
+  var VIEWS = [
+    { id: 'start', frame: null, title: 'Start' },
+    { id: 'lexikon', frame: 'lex', title: 'Ressourcen-Lexikon' },
+    { id: 'eisenfarm', frame: 'bau', title: 'Bauplan Eisenfarm' },
+    { id: 'handelsstation', frame: 'bau', title: 'Bauplan Handelsstation' },
+    { id: 'kaktusfarm', frame: 'bau', title: 'Bauplan Kaktusfarm' }
+  ];
+  var PATHS = { lex: 'lexikon/', bau: 'bauplaene/' };
+  var $ = function (id) { return document.getElementById(id); };
+  var frames = { lex: $('f-lex'), bau: $('f-bau') };
+  var ready = { lex: false, bau: false };
+  var startEl = $('v-start');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.navbtn[data-view]'));
+  var info = $('info');
+  var byId = {}, cur = null, lastPlan = 'eisenfarm';
+  VIEWS.forEach(function (v) { byId[v.id] = v; });
+
+  function save(k, v) { try { localStorage.setItem('bw.' + k, v); } catch (e) {} }
+  function load(k) { try { return localStorage.getItem('bw.' + k); } catch (e) { return null; } }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  /* ---------- Isometrische Blöcke (eigene Zeichnung) ---------- */
+  function mix(hex, t) {
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255, to = t > 0 ? 255 : 0, k = Math.abs(t);
+    function c(v) { return Math.round(v + (to - v) * k); }
+    return 'rgb(' + c(r) + ',' + c(g) + ',' + c(b) + ')';
+  }
+  function iso(cubes) {
+    var C = 0.8660254, polys = [], minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+    function P(x, y, z) { var p = [(x - y) * C * 20, (x + y) * 10 - z * 20]; minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]); return p; }
+    cubes.slice().sort(function (a, b) { return (a[0] + a[1]) - (b[0] + b[1]) || a[2] - b[2] || a[0] - b[0]; }).forEach(function (c) {
+      var x = c[0], y = c[1], z = c[2], col = c[3], h = c[4] || 1, cs = typeof col === 'string' ? [mix(col, .22), mix(col, -.08), mix(col, -.28)] : col;
+      polys.push([[P(x, y + 1, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[1]]);
+      polys.push([[P(x + 1, y, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x + 1, y, z + h)], cs[2]]);
+      polys.push([[P(x, y, z + h), P(x + 1, y, z + h), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[0]]);
+    });
+    var pad = 4, s = '<svg viewBox="' + (minX - pad).toFixed(1) + ' ' + (minY - pad).toFixed(1) + ' ' + (maxX - minX + 2 * pad).toFixed(1) + ' ' + (maxY - minY + 2 * pad).toFixed(1) +
+      '" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
+    polys.forEach(function (p) { s += '<polygon points="' + p[0].map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ') + '" fill="' + p[1] + '" stroke="rgba(10,20,35,.22)" stroke-width=".6" stroke-linejoin="round"/>'; });
+    return s + '</svg>';
+  }
+  var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
+            glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B',
+            grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
+  function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
+  var SCENES = {
+    eisenfarm: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .5), [[1, 1, 1.5, K.lava, .7], [3, 2, 0, K.iron], [3, 1, 0, K.dark, .7]]),
+    handelsstation: [].concat(box(0, 0, 0, 4, 1, K.glass), box(0, 0, 1, 4, 1, K.glass), [[0, 1, 0, K.wood], [1, 1, 0, K.stone], [2, 1, 0, K.hay], [3, 1, 0, K.copper], [3, 2, 0, K.emerald, .55]]),
+    kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
+      [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]]),
+    lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
+    hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
+      [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],
+      [[0, 4, 1, K.wood], [1, 4, 1, K.hay], [2, 4, 1, K.stone], [3, 3, 1, K.emerald, .6], [4, 3, 1, K.purple, .6], [5, 4, 1, K.copper, .5]])
+  };
+
+  /* ---------- Startseite ---------- */
+  $('heropic').innerHTML = iso(SCENES.hero);
+  $('lexpic').innerHTML = iso(SCENES.lexikon);
+  $('plans').innerHTML = PLANS.map(function (p) {
+    return '<button type="button" class="pcard" data-go="' + esc(p.id) + '"><div class="ppic">' + iso(SCENES[p.id] || SCENES.eisenfarm) + '</div><div class="pbody">' +
+      '<div class="ptitle">' + esc(p.title) + '<span>' + p.layers + ' Ebenen</span></div><div class="facts">' +
+      p.specs.map(function (f) { return '<div class="fact"><small>' + esc(f[0]) + '</small><b>' + esc(f[1]) + '</b></div>'; }).join('') + '</div></div></button>';
+  }).join('');
+  function chipIcon(col) { return iso([[0, 0, 0, col]]); }
+  function chipsFor(list) {
+    return list.map(function (e) { return '<button type="button" class="qchip" data-item="' + esc(e[0]) + '">' + chipIcon(e[2] || '#0B5CAD') + '<span>' + esc(e[1]) + '</span></button>'; }).join('');
+  }
+  $('popular').innerHTML = chipsFor(POPULAR);
+
+  // Zuletzt angesehen: Einträge aus dem Lexikon (Namen stehen in dessen Daten)
+  var names = null;
+  function lexNames() {
+    if (names) return names;
+    try {
+      var D = JSON.parse(frames.lex.contentDocument.getElementById('data').textContent);
+      names = {};
+      Object.keys(D.items).forEach(function (id) { var it = D.items[id]; names[slug(id)] = [it[0] + (it[3] ? ' (' + it[3] + ')' : ''), D.cats[it[2]]]; });
+    } catch (e) { names = null; }
+    return names;
+  }
+  function slug(id) { return id.replace(/:/g, '--').replace(/_/g, '-'); }
+  function recents() { try { var a = JSON.parse(load('recent') || '[]'); return Array.isArray(a) ? a.filter(function (s) { return /^[a-z0-9-]+$/.test(s); }) : []; } catch (e) { return []; } }
+  function renderRecent() {
+    var n = lexNames(), a = recents().filter(function (s) { return n && n[s]; }).slice(0, 8);
+    $('recentbox').hidden = !a.length;
+    $('recent').innerHTML = a.map(function (s) { return '<button type="button" class="qchip" data-slug="' + s + '">' + chipIcon(s.indexOf('enchanted-book') === 0 ? '#7B4BC2' : '#8D96A3') + '<span>' + esc(n[s][0]) + '</span></button>'; }).join('');
+  }
+  function remember(s) {
+    if (!/^[a-z0-9-]+$/.test(s) || s === 'liste') return;
+    var a = recents().filter(function (x) { return x !== s; }); a.unshift(s); save('recent', JSON.stringify(a.slice(0, 12)));
+  }
+
+  /* ---------- Bereiche ---------- */
+  function setTitle(t) {
+    document.title = t === 'Start' ? APP : t + ' – ' + APP;
+    if (typeof window.appSetTitle === 'function') { try { window.appSetTitle(document.title); } catch (e) {} }
+  }
+  function focusView() {
+    if (!cur || info.open) return;
+    if (!cur.frame) { try { startEl.focus({ preventScroll: true }); } catch (e) {} return; }
+    try { frames[cur.frame].contentWindow.focus(); } catch (e) {}
+  }
+  function show(id, fromFrame) {
+    if (id === 'bau') id = lastPlan;
+    var v = byId[id]; if (!v) return;
+    cur = v;
+    [startEl, frames.lex, frames.bau].forEach(function (el) {
+      var on = (el === startEl && !v.frame) || el === frames[v.frame];
+      el.classList.toggle('off', !on); el.classList.toggle('on', on);
+    });
+    buttons.forEach(function (b) {
+      var bv = b.getAttribute('data-view'), on = bv === id || (bv === 'bau' && v.frame === 'bau');
+      if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+    if (v.frame === 'bau') {
+      lastPlan = id; save('plan', id);
+      if (!fromFrame && ready.bau) { try { var w = frames.bau.contentWindow; if (w.location.hash !== '#' + id) w.location.hash = id; } catch (e) {} }
+    }
+    if (!v.frame) renderRecent();
+    setTitle(v.title);
+    focusView();
+  }
+  function onFrameHash(key, hash) {
+    if (key === 'lex') { var s = hash.slice(1); if (/^[a-z0-9-]+$/.test(s)) { save('lex', hash); remember(s); } return; }
+    var id = hash.slice(1);
+    if (!byId[id] || byId[id].frame !== 'bau') return;
+    lastPlan = id; save('plan', id);
+    if (cur && cur.frame === 'bau' && cur.id !== id) show(id, true);
+  }
+  function openItem(s) {
+    show('lexikon');
+    try { frames.lex.contentWindow.location.hash = s; } catch (e) {}
+  }
+  function openSearch(q) {
+    show('lexikon');
+    try {
+      var w = frames.lex.contentWindow, d = frames.lex.contentDocument, box = d.getElementById('q');
+      if (w.location.hash && w.location.hash !== '#') w.location.hash = '';
+      box.value = q; box.dispatchEvent(new Event('input', { bubbles: true }));
+      if (window.matchMedia('(min-width: 721px)').matches) box.focus();
+    } catch (e) {}
+  }
+
+  /* ---------- Links nach außen ---------- */
+  function openExternal(url) {
+    if (typeof window.appOpenExternal === 'function') { try { window.appOpenExternal(url); } catch (e) {} }
+    else window.open(url, '_blank', 'noopener');
+  }
+  function extClick(e) {
+    if (e.type === 'auxclick' && e.button !== 1) return;
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null; if (!a) return;
+    var href = typeof a.href === 'string' ? a.href : a.getAttribute('href'), u;
+    try { u = new URL(href, location.href); } catch (err) { return; }
+    if (u.origin === location.origin) return;
+    e.preventDefault();
+    if (u.protocol === 'https:') openExternal(u.href);
+  }
+
+  /* ---------- Tastatur ---------- */
+  function onKey(e) {
+    if (e.key === 'F1') { e.preventDefault(); openInfo(); return; }
+    if (info.open) return;
+    var mod = (e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey;
+    if (mod && e.key >= '0' && e.key <= '4') { e.preventDefault(); show(VIEWS[+e.key].id); return; }
+    if (mod && (e.key === 'k' || e.key === 'K') && cur && !cur.frame) { e.preventDefault(); $('hq').focus(); }
+  }
+
+  function wire(key) {
+    var f = frames[key];
+    f.addEventListener('load', function () {
+      var w, d;
+      try { w = f.contentWindow; d = f.contentDocument; } catch (e) { return; }
+      if (!d || !/\/(lexikon|bauplaene)\/(index\.html)?$/.test(w.location.pathname)) return;
+      ready[key] = true;
+      d.addEventListener('click', extClick, true);
+      d.addEventListener('auxclick', extClick, true);
+      d.addEventListener('keydown', onKey, true);
+      w.addEventListener('hashchange', function () { onFrameHash(key, w.location.hash); });
+      if (key === 'bau' && w.location.hash !== '#' + lastPlan) w.location.hash = lastPlan;
+      if (key === 'lex' && cur && !cur.frame) renderRecent();
+      if (cur && cur.frame === key) focusView();
+    });
+  }
+
+  function openInfo() { if (!info.open) info.showModal(); }
+  $('infobtn').addEventListener('click', openInfo);
+  $('closebtn').addEventListener('click', function () { info.close(); });
+  info.addEventListener('click', function (e) { if (e.target === info) info.close(); });
+  info.addEventListener('close', focusView);
+  $('licbtn').addEventListener('click', function () {
+    var pre = $('lic'), btn = this;
+    if (!pre.hidden) { pre.hidden = true; btn.textContent = 'Lizenzen anzeigen'; return; }
+    pre.hidden = false; btn.textContent = 'Lizenzen ausblenden';
+    if (pre.textContent) return;
+    pre.textContent = 'Lade …';
+    fetch('lizenzen.txt').then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(function (t) { pre.textContent = t; })
+      .catch(function () { pre.textContent = 'Die Lizenztexte konnten nicht geladen werden.'; });
+  });
+
+  buttons.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-view')); }); });
+  startEl.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-go],[data-item],[data-slug]') : null; if (!t) return;
+    if (t.hasAttribute('data-go')) show(t.getAttribute('data-go'));
+    else if (t.hasAttribute('data-item')) openItem(slug(t.getAttribute('data-item')));
+    else openItem(t.getAttribute('data-slug'));
+  });
+  $('hsearch').addEventListener('submit', function (e) { e.preventDefault(); var q = $('hq').value.trim(); if (q) { openSearch(q); $('hq').value = ''; $('hq').blur(); } });
+  document.addEventListener('keydown', onKey);
+  document.addEventListener('click', extClick, true);
+
+  /* ---------- Web-App: offline speichern, Hinweis zum Installieren ---------- */
+  if (PLATFORM === 'web') {
+    var standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+    var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (ios && !standalone && load('installok') !== '1') $('install').hidden = false;
+    $('installok').addEventListener('click', function () { $('install').hidden = true; save('installok', '1'); });
+    if ('serviceWorker' in navigator && window.isSecureContext) {
+      var had = !!navigator.serviceWorker.controller, reloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function () { if (had && !reloaded) { reloaded = true; location.reload(); } });
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+  }
+
+  // Start: immer die Startseite, Lexikon und Bauplan merken sich ihren Stand
+  lastPlan = byId[load('plan')] && byId[load('plan')].frame === 'bau' ? load('plan') : 'eisenfarm';
+  var lexHash = load('lex'); if (!/^#[a-z0-9-]+$/.test(lexHash || '')) lexHash = '';
+  wire('lex'); wire('bau');
+  show('start', true);
+  frames.lex.src = PATHS.lex + lexHash;
+  frames.bau.src = PATHS.bau + '#' + lastPlan;
+})();
+</script>
+</body>
+</html>
