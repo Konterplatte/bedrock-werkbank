@@ -1,6 +1,6 @@
 // Bedrock-Werkbank als Web-App: speichert alle Dateien beim ersten Besuch, danach läuft sie ohne Internet.
 'use strict';
-const VERSION = "bw-faf82b2f62c2";
+const VERSION = "bw-cf2909421bd5";
 const FILES = [
  "./",
  "lexikon/",
@@ -40,7 +40,7 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin || url.pathname.includes('/download/')) return;   // Downloads nie zwischenspeichern
   event.respondWith(
     caches.open(VERSION).then((cache) =>
       cache.match(req, { ignoreSearch: true }).then((hit) => {

@@ -106,7 +106,8 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .sv h3 { margin: 18px 0 10px; font-size: 1.15rem; letter-spacing: .04em; color: var(--ink-soft); font-weight: 600; }
 .install { margin: 0; display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: var(--r); background: var(--tint); border: 1px solid var(--line); }
 .install p { margin: 0; flex: 1; }
-.install button { flex: none; }
+.install button, .install .dl { flex: none; }
+.dl { display: inline-flex; align-items: center; text-decoration: none; }
 .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .pcard, .lexcard { appearance: none; text-align: left; display: flex; flex-direction: column; padding: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--sheet);
   box-shadow: var(--shadow); overflow: hidden; cursor: pointer; color: inherit; text-decoration: none; }
@@ -269,6 +270,10 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
           <div class="qchips" id="recent"></div>
         </div>
       </section>
+      <div class="install web-only" id="windl" hidden>
+        <p><b>Auch für Windows 10 und 11:</b> dieselbe App als eigenes Programm. ZIP herunterladen, entpacken, <b>Bedrock-Werkbank.exe</b> starten.</p>
+        <a class="btn primary dl" href="download/Bedrock-Werkbank-Windows.zip" download>Herunterladen</a>
+      </div>
       <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Bilder sind eigene Zeichnungen, keine Grafiken aus dem Spiel.</p>
     </div>
   </section>
@@ -533,6 +538,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     var standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
     var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     if (ios && !standalone && load('installok') !== '1') $('install').hidden = false;
+    if (!ios && !/Android/.test(navigator.userAgent)) $('windl').hidden = false;
     $('installok').addEventListener('click', function () { $('install').hidden = true; save('installok', '1'); });
     if ('serviceWorker' in navigator && window.isSecureContext) {
       var had = !!navigator.serviceWorker.controller, reloaded = false;

@@ -12,6 +12,10 @@ Ressourcen-Lexikon und Baupläne (Eisenfarm, Handelsstation, Kaktusfarm) für **
 
 Neue Versionen lädt die App von selbst, sobald sie online geöffnet wird.
 
+## Windows-Programm
+
+Dieselbe App als eigenes Programm für Windows 10 und 11: [Bedrock-Werkbank-Windows.zip](download/Bedrock-Werkbank-Windows.zip) herunterladen, entpacken und `Bedrock-Werkbank.exe` starten. Windows warnt beim ersten Start, weil das Programm nicht signiert ist: „Weitere Informationen“, dann „Trotzdem ausführen“.
+
 ## Inhalt
 
 - `index.html`: Startseite und Navigation
