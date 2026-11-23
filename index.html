@@ -108,7 +108,7 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .install p { margin: 0; flex: 1; }
 .install button, .install .dl { flex: none; }
 .dl { display: inline-flex; align-items: center; text-decoration: none; }
-.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 .pcard, .lexcard { appearance: none; text-align: left; display: flex; flex-direction: column; padding: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--sheet);
   box-shadow: var(--shadow); overflow: hidden; cursor: pointer; color: inherit; text-decoration: none; }
 .pcard:hover, .lexcard:hover { box-shadow: var(--lift); transform: translateY(-2px); border-color: var(--accent); }
@@ -122,7 +122,8 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .fact small { display: block; font-size: .78rem; color: var(--ink-soft); letter-spacing: .02em; }
 .fact b { display: block; font-size: 1.08rem; font-weight: 600; line-height: 1.15; overflow-wrap: anywhere; }
 .lexcard { flex-direction: row; align-items: stretch; }
-.lexcard .ppic { width: 42%; height: auto; min-height: 190px; border-bottom: 0; border-right: 1px solid var(--line); }
+.lexcard .ppic { width: 34%; height: 220px; border-bottom: 0; border-right: 1px solid var(--line); }
+.lexcard .ppic svg { max-height: 170px; }
 .lexcard .pbody { justify-content: center; flex: 1; }
 .lexcard p { margin: 0; color: var(--ink-soft); max-width: 52ch; }
 .chain { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 600; }
@@ -143,6 +144,7 @@ dialog::backdrop { background: rgba(9, 19, 31, .55); -webkit-backdrop-filter: bl
 .dhead svg { width: 50px; height: 50px; flex: none; border-radius: 13px; background: var(--band); padding: 4px; }
 .dhead h2 { font-size: 1.9rem; line-height: 1; font-weight: 700; margin: 0; }
 .dhead p { margin: 4px 0 0; color: var(--ink-soft); font-size: .92rem; }
+.dhead .madeby { margin-top: 6px; color: var(--accent); font-family: var(--f-display); font-weight: 600; font-size: 1.15rem; letter-spacing: .03em; }
 .dbody { padding: 16px 20px 6px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
 .dbody p { margin: 0; }
 .dbody h3 { font-family: var(--f-display); font-size: .9rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; }
@@ -158,9 +160,6 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 /* Mittelbreit */
 @media (max-width: 1100px) {
   .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .plans .pcard:last-child { grid-column: 1 / -1; flex-direction: row; }
-  .plans .pcard:last-child .ppic { width: 42%; height: auto; border-bottom: 0; border-right: 1px solid var(--line); }
-  .plans .pcard:last-child .pbody { flex: 1; justify-content: center; }
 }
 /* iPhone und schmale Fenster: schwebende Tab-Leiste aus Glas */
 @media (max-width: 720px) {
@@ -181,8 +180,6 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   .hsearch .btn { display: none; }
   .sv { padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)); gap: 26px; }
   .plans { grid-template-columns: minmax(0, 1fr); }
-  .plans .pcard:last-child { flex-direction: column; }
-  .plans .pcard:last-child .ppic { width: auto; border-right: 0; border-bottom: 1px solid var(--line); height: 150px; }
   .ppic { height: 150px; }
   .lexcard { flex-direction: column; }
   .lexcard .ppic { width: auto; min-height: 150px; height: 150px; border-right: 0; border-bottom: 1px solid var(--line); }
@@ -216,6 +213,10 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20.5V5a2 2 0 0 1 4 0v15.5"/><path d="M10 14H8.2a2 2 0 0 1-2-2V9.4"/><path d="M14 16.4h1.8a2 2 0 0 0 2-2v-3"/><path d="M5 20.5h14"/></svg>
     <span>Kaktus</span>
   </button>
+  <button type="button" class="navbtn d-only" data-view="xpfarm" title="Bauplan XP-Farm (Strg+5)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 8.2l1.2 2.5 2.6.4-1.9 1.8.5 2.6L12 14.3l-2.4 1.2.5-2.6-1.9-1.8 2.6-.4z"/></svg>
+    <span>XP</span>
+  </button>
   <button type="button" class="navbtn m-only" data-view="bau" title="Baupläne">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5L12 3.5l8 4-8 4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16.5l8 4 8-4"/></svg>
     <span>Baupläne</span>
@@ -234,7 +235,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <div>
           <p class="eyebrow">Minecraft Bedrock Edition 1.26.60</p>
           <h1>Bedrock-Werkbank</h1>
-          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu Baupläne Block für Block. Funktioniert komplett ohne Internet.</p>
+          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu vier Baupläne Block für Block. Funktioniert komplett ohne Internet.</p>
           <form class="hsearch" id="hsearch" role="search">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l4.5 4.5"/></svg>
             <input type="search" id="hq" enterkeyhint="search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Ressource suchen, z. B. Reparatur" aria-label="Ressource suchen">
@@ -286,20 +287,22 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10l13 7.5L24 25l-13-7.5z" fill="#FF8A4C"/><path d="M11 17.5L24 25v15l-13-7.5z" fill="#F4F8FD"/><path d="M24 25l13-7.5v15L24 40z" fill="#74B4FF"/></svg>
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
+      <p class="madeby">Made by Konterplatte</p>
       <p>Version 1.1 · Datenstand Bedrock Edition 1.26.60</p>
     </div>
   </div>
   <div class="dbody">
-    <p>Ressourcen-Lexikon und die Baupläne für Eisenfarm, Handelsstation und Kaktusfarm in einer App. Alles läuft ohne Internet. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <p>Ressourcen-Lexikon und die Baupläne für Eisenfarm, Handelsstation, Kaktusfarm und XP-Farm in einer App. Alles läuft ohne Internet. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
     <div class="exe-only">
       <h3>Tastatur</h3>
       <dl class="keys">
         <dt><kbd>Strg</kbd> + <kbd>0</kbd></dt><dd>Startseite</dd>
-        <dt><kbd>Strg</kbd> + <kbd>1</kbd> bis <kbd>4</kbd></dt><dd>Lexikon und die drei Baupläne</dd>
+        <dt><kbd>Strg</kbd> + <kbd>1</kbd> bis <kbd>5</kbd></dt><dd>Lexikon und die vier Baupläne</dd>
         <dt><kbd>Strg</kbd> + <kbd>K</kbd></dt><dd>Suchen</dd>
         <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Ebene im Bauplan wechseln</dd>
         <dt><kbd>Strg</kbd> + <kbd>P</kbd></dt><dd>Aktuelle Ansicht drucken</dd>
         <dt><kbd>Strg</kbd> + <kbd>+</kbd> / <kbd>−</kbd></dt><dd>Größer und kleiner</dd>
+        <dt>Doppelklick auf einen Bereich</dt><dd>Ganz nach oben, bei Start und Lexikon wird die Suche geleert</dd>
         <dt><kbd>F1</kbd></dt><dd>Dieses Fenster</dd>
       </dl>
     </div>
@@ -317,7 +320,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11}];
+  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
@@ -326,7 +329,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     { id: 'lexikon', frame: 'lex', title: 'Ressourcen-Lexikon' },
     { id: 'eisenfarm', frame: 'bau', title: 'Bauplan Eisenfarm' },
     { id: 'handelsstation', frame: 'bau', title: 'Bauplan Handelsstation' },
-    { id: 'kaktusfarm', frame: 'bau', title: 'Bauplan Kaktusfarm' }
+    { id: 'kaktusfarm', frame: 'bau', title: 'Bauplan Kaktusfarm' },
+    { id: 'xpfarm', frame: 'bau', title: 'Bauplan XP-Farm' }
   ];
   var PATHS = { lex: 'lexikon/', bau: 'bauplaene/' };
   var $ = function (id) { return document.getElementById(id); };
@@ -363,7 +367,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     return s + '</svg>';
   }
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
-            glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B',
+            glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B', end: '#DCD9A6',
             grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
   function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
   var SCENES = {
@@ -371,6 +375,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     handelsstation: [].concat(box(0, 0, 0, 4, 1, K.glass), box(0, 0, 1, 4, 1, K.glass), [[0, 1, 0, K.wood], [1, 1, 0, K.stone], [2, 1, 0, K.hay], [3, 1, 0, K.copper], [3, 2, 0, K.emerald, .55]]),
     kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
       [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]]),
+    xpfarm: [].concat(box(0, 0, 0, 4, 4, K.stone), box(0, 0, 1, 4, 4, K.water, .35), box(1, 1, 1.35, 2, 2, K.stone, 1), box(1, 1, 2.35, 2, 2, K.stone, 1), box(1, 1, 3.35, 2, 2, K.stone, 1), box(0, 0, 4.35, 4, 4, K.end, .5), [[1.5, 1.5, 4.85, K.purple, .45]]),
     lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
     hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
       [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],
@@ -485,7 +490,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     if (e.key === 'F1') { e.preventDefault(); openInfo(); return; }
     if (info.open) return;
     var mod = (e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey;
-    if (mod && e.key >= '0' && e.key <= '4') { e.preventDefault(); show(VIEWS[+e.key].id); return; }
+    if (mod && e.key >= '0' && e.key <= '5') { e.preventDefault(); show(VIEWS[+e.key].id); return; }
     if (mod && (e.key === 'k' || e.key === 'K') && cur && !cur.frame) { e.preventDefault(); $('hq').focus(); }
   }
 
@@ -522,7 +527,29 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       .catch(function () { pre.textContent = 'Die Lizenztexte konnten nicht geladen werden.'; });
   });
 
-  buttons.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-view')); }); });
+  // Doppeltippen (iPhone) oder Doppelklick (Windows) auf einen Bereich: ganz nach oben, bei Start und Lexikon die Suche leeren
+  function toTop(id) {
+    var v = byId[id === 'bau' ? lastPlan : id]; if (!v) return;
+    var smooth = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    if (!v.frame) { $('hq').value = ''; startEl.scrollTo({ top: 0, behavior: smooth }); return; }
+    try {
+      var w = frames[v.frame].contentWindow, d = frames[v.frame].contentDocument;
+      if (v.frame === 'lex') {
+        var box = d.getElementById('q');
+        box.value = ''; box.blur(); box.dispatchEvent(new Event('input', { bubbles: true }));
+        setTimeout(function () { var h = d.getElementById('home'); if (h) h.scrollTop = 0; w.scrollTo({ top: 0, behavior: smooth }); }, 140);
+      } else w.scrollTo({ top: 0, behavior: smooth });
+    } catch (e) {}
+  }
+  var lastTap = { view: null, t: 0 };
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var view = b.getAttribute('data-view'), now = Date.now();
+      if (lastTap.view === view && now - lastTap.t < 450) { lastTap = { view: null, t: 0 }; show(view); toTop(view); return; }
+      lastTap = { view: view, t: now };
+      show(view);
+    });
+  });
   startEl.addEventListener('click', function (e) {
     var t = e.target.closest ? e.target.closest('[data-go],[data-item],[data-slug]') : null; if (!t) return;
     if (t.hasAttribute('data-go')) show(t.getAttribute('data-go'));

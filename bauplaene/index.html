@@ -40,6 +40,9 @@
   --b-sand: #E6D69A;
   --b-cactus: #2A7A48;
   --b-fence: #B0793A;
+  --b-slab: #A7B0BC;
+  --b-trap: #8A6236;
+  --b-mite: #6B3FA0;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -49,7 +52,7 @@
     --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
     --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
     --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48;
+    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0;
   }
 }
 :root[data-theme="dark"] {
@@ -59,7 +62,7 @@
   --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
   --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
   --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48;
+  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0;
 }
 
 * { box-sizing: border-box; }
@@ -204,7 +207,7 @@ html.app .foot { max-width: none; }
 
 <header>
   <p class="eyebrow">Minecraft Bedrock Edition</p>
-  <h1>Baupläne für Eisenfarm, Handel und Kaktus</h1>
+  <h1>Baupläne für Eisenfarm, Handel, Kaktus und XP</h1>
   <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
 </header>
 
@@ -380,7 +383,50 @@ html.app .foot { max-width: none; }
   </div>
 </section>
 
-<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a> und <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a>), Stand November 2026. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht.</p>
+<section class="notes" id="notes-xpfarm" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Der Ort:</strong> Im End erscheinen sehr viele Endermen, in Gruppen zu viert. Steht die Farm 128 Blöcke von jeder Insel entfernt über dem Leeren, gibt es für sie nur noch einen Platz: deine Spawnplattform.</li>
+      <li><strong>Der Köder:</strong> Endermen greifen jede Endermilbe an, die sie im Umkreis von 64 Blöcken sehen. Die Milbe sitzt in einer Lore mitten über dem Schacht.</li>
+      <li><strong>Die Falle:</strong> Rund um die Milbe liegen offene Falltüren. Für Endermen sehen sie wie Boden aus. Wer darauf tritt, stürzt 41 Blöcke tief.</li>
+      <li><strong>Der Fall:</strong> Ein Enderman hat 40 Lebenspunkte, der Sturz kostet ihn 38. Unten steht er mit einem Herz auf den Trichtern. Ein Schlag mit einem Schwert durch den Schlitz reicht, das bringt 5 Erfahrungspunkte.</li>
+      <li><strong>Deine Sicherheit:</strong> Im 2 Blöcke hohen Gang passt kein Enderman. Durch den Schlitz siehst du nur Füße, keine Augen, deshalb werden sie nicht wütend.</li>
+      <li><strong>Das Wasser:</strong> Endermen springen in der Bedrock Edition immer wieder zufällig bis zu 16 Blöcke weit. Wasser meiden sie, und in 2 Blöcke hohe Räume passen sie nicht. Deshalb liegt Wasser auf dem Dach und auf dem Tunnel.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Besiege den Enderdrachen. Baue dann vom Rand der Hauptinsel eine Brücke 128 Blöcke weit ins Leere, in eine Richtung ohne äußere Inseln.</li>
+      <li>Baue die Ebenen 1 bis 5. Die letzten 16 Blöcke der Brücke werden ein Tunnel, 2 hoch, mit Dach und Wasser darauf. Setze dort alle 6 Blöcke eine Quelle.</li>
+      <li>Stell eine Gerüstsäule aufs Dach, direkt nördlich am Schacht. Daran kletterst du mit Springen hoch und mit Schleichen hinunter. Zieh den Schacht beim Hochklettern bis Y42 mit hoch.</li>
+      <li>Lege die Plattform, das Geländer und die Säule. Decke die 8 Lochfelder vorübergehend mit Blöcken ab. Setze Schiene und Lore auf die Säule.</li>
+      <li>Wirf Enderperlen auf die Plattform, bis eine Endermilbe erscheint. In der Bedrock Edition entsteht sie dort, wo die Perle landet. Gib ihr sofort das Namensschild, sonst verschwindet sie. Schubs die Lore gegen sie, dann setzt sie sich hinein.</li>
+      <li>Bau die Abdeckung der Lochfelder ab, setze die 8 Falltüren und öffne sie. Kletter am Gerüst hinunter und schlag das unterste Gerüst ab, dann fällt die ganze Säule zusammen. Über das Tunneldach gehst du zur Brücke und durch den Tunnel in den Gang.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Warum diese Farm</h2>
+    <ul>
+      <li><strong>Schnellste Möglichkeit:</strong> Eine Wächterfarm am Ozeanmonument gilt als noch etwas schneller. Dafür musst du aber ein ganzes Monument trockenlegen, das dauert viele Stunden.</li>
+      <li><strong>Bestes Verhältnis:</strong> Die Enderman-Farm braucht nur gewöhnliche Blöcke, ist in einem Abend gebaut und liefert dazu Enderperlen.</li>
+      <li><strong>Nutzen:</strong> Erfahrung für Zaubertisch, Amboss und Reparatur. Die Enderperlen landen in der Kiste.</li>
+      <li><strong>Hinweis:</strong> Die Farm arbeitet nur, solange du im Gang stehst. Bist du weiter weg, spawnen oben keine Endermen.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Oben erscheinen keine Endermen:</strong> Eine Insel ist näher als 128 Blöcke, oder du stehst nicht im Gang. Endermen spawnen erst ab 24 Blöcken Abstand zu dir.</li>
+      <li><strong>Die Endermen laufen nicht zur Mitte:</strong> Die Endermilbe fehlt. Ohne Namensschild verschwindet sie nach kurzer Zeit.</li>
+      <li><strong>Sie sterben schon beim Sturz:</strong> Die Plattform liegt zu hoch. Zwischen Plattform und Trichtern müssen genau 41 Blöcke liegen.</li>
+      <li><strong>Ein Schlag reicht nicht:</strong> Die Plattform liegt zu tief, oder du schlägst mit der Hand. Nimm ein Schwert.</li>
+      <li><strong>Endermen tauchen auf dem Dach auf:</strong> Dort fehlt Wasser. Jedes Dachfeld muss nass sein.</li>
+    </ul>
+  </div>
+</section>
+<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht.</p>
 
 </div>
 <script>
@@ -410,7 +456,14 @@ var BLOCKS = {
   c: { name: 'Kaktus', mat: 'cactus', fill: 'var(--b-cactus)', glyph: 'ψ', dark: true },
   z: { name: 'Zaun, hängt unter dem Träger', mat: 'fence', fill: 'var(--b-fence)', glyph: '+', dark: true },
   w: { name: 'Wuchsfeld, frei lassen: hier bricht der Kaktus ab', fill: 'var(--b-air)', glyph: '↑', ink: true },
-  U: { name: 'Träger (fester Block)', mat: 'stone', fill: 'var(--b-stone)', glyph: '=', dark: true }
+  U: { name: 'Träger (fester Block)', mat: 'stone', fill: 'var(--b-stone)', glyph: '=', dark: true },
+  e: { name: 'Trichter, zeigt nach Osten (→) in den Nachbarn', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '→', dark: true },
+  s: { name: 'Trichter, zeigt nach Süden (↓) in den Nachbarn', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↓', dark: true },
+  T: { name: 'Obere Stufe: unten bleibt ein halber Block Luft', mat: 'slab', fill: 'var(--b-slab)', glyph: '▀', dark: true },
+  E: { name: 'Eingang, frei lassen', fill: 'var(--b-open)', glyph: '↕', open: true },
+  R: { name: 'Falltür im Loch, offen', mat: 'trapdoor', fill: 'var(--b-trap)', glyph: 'Fa', dark: true },
+  g: { name: 'Zaun als Geländer', mat: 'fence', fill: 'var(--b-fence)', glyph: '+', dark: true },
+  M: { name: 'Schiene mit Lore, darin die Endermilbe mit Namensschild', mat: 'rail', fill: 'var(--b-mite)', glyph: 'Mi', dark: true }
 };
 
 var MATERIALS = {
@@ -428,7 +481,10 @@ var MATERIALS = {
   torch: 'Fackel',
   sand: 'Sand',
   cactus: 'Kaktus',
-  fence: 'Zaun'
+  fence: 'Zaun',
+  slab: 'Stufe',
+  trapdoor: 'Falltür',
+  rail: 'Schiene'
 };
 
 var PLANS = (function () {
@@ -638,7 +694,70 @@ var PLANS = (function () {
     };
   }
 
-  return [farm(), hall(), cactus()];
+  /* ---------- XP-Farm (Endermen im End): 17 x 17, Y1 bis Y45 ---------- */
+  function xp() {
+    var W = 17, L = [], g;
+    function bridge(g, c) { rect(g, 8, 14, 8, 16, c); }
+    function tunnel(g) { rect(g, 7, 14, 7, 16, 'S'); rect(g, 9, 14, 9, 16, 'S'); }
+
+    g = mk(W, W); rect(g, 3, 3, 13, 13, 'S'); bridge(g, 'S');
+    L.push({ y: [1, 1], name: 'Boden', grid: rows(g),
+      text: 'Lege 11 × 11 feste Blöcke als Boden, mindestens 128 Blöcke von jeder Insel entfernt. Von Süden kommt die Brücke an, ein Block breit. Auf diesem Boden stehst du später.' });
+
+    g = mk(W, W); ring(g, 3, 3, 13, 13, 'S'); g[13][8] = 'E'; ring(g, 6, 6, 10, 10, 'S');
+    [7, 8, 9].forEach(function (z) { g[z][7] = 'e'; g[z][8] = 'e'; });
+    g[7][9] = 's'; g[9][9] = 'n'; g[8][9] = 'e'; g[8][10] = 'e'; g[8][11] = 'K'; g[9][11] = 'K'; tunnel(g);
+    L.push({ y: [2, 2], name: 'Trichterboden, Kiste, Gang', grid: rows(g), pairs: [[11, 8, 11, 9]],
+      text: 'Hier landen die Endermen: 9 Trichter in der Mitte, einen Block höher als dein Boden. Alle zeigen über den Trichter in der Mauer in die Doppelkiste im Gang. Ringsum Mauer, im Süden bleibt der Eingang frei. Der Gang ist nur 2 Blöcke hoch, dort passt kein Enderman hinein.' });
+
+    g = mk(W, W); ring(g, 3, 3, 13, 13, 'S'); g[13][8] = 'E'; ring(g, 6, 6, 10, 10, 'T'); [[6, 6], [10, 6], [6, 10], [10, 10]].forEach(function (c) { g[c[1]][c[0]] = 'S'; }); tunnel(g);
+    L.push({ y: [3, 3], name: 'Schlitz zum Zuschlagen', grid: rows(g),
+      text: 'Setze rund um die Landefläche 12 obere Stufen, an den Ecken feste Blöcke. Unter den Stufen bleibt ein halber Block Luft. Durch diesen Schlitz triffst du die Füße der Endermen, ihre Augen siehst du nicht. So werden sie nicht wütend.' });
+
+    g = mk(W, W); rect(g, 3, 3, 13, 13, 'S'); rect(g, 7, 7, 9, 9, '.'); rect(g, 7, 14, 9, 16, 'S');
+    L.push({ y: [4, 4], name: 'Decke', grid: rows(g),
+      text: 'Decke über alles, nur die 3 × 3 Felder über der Landefläche bleiben offen. Das ist der Boden des Fallschachts. Auch der Brückentunnel bekommt ein Dach.' });
+
+    g = mk(W, W); rect(g, 3, 3, 13, 13, 'f'); ring(g, 6, 6, 10, 10, 'S'); rect(g, 7, 7, 9, 9, '.');
+    [[3, 3], [13, 3], [3, 13], [13, 13]].forEach(function (c) { g[c[1]][c[0]] = 'Q'; });
+    rect(g, 7, 14, 9, 16, 'f'); g[16][8] = 'Q';
+    L.push({ y: [5, 5], name: 'Wasser auf dem Dach', grid: rows(g), flow: true,
+      text: 'Ring aus 16 Blöcken als Beginn des Schachts. Setze 4 Wasserquellen in die Ecken des Dachs und eine auf das Tunneldach. Das Wasser bedeckt alles und läuft am Rand ins Leere. Endermen meiden Wasser, es schadet ihnen. Ohne Wasser könnten sie von der Landefläche aufs Dach springen.' });
+
+    g = mk(W, W); ring(g, 6, 6, 10, 10, 'S');
+    L.push({ y: [6, 42], name: 'Fallschacht', grid: rows(g),
+      text: 'Ring aus 16 Blöcken, 37 Lagen hoch bis Y42. Innen bleiben 3 × 3 Felder frei. Durch diesen Schacht fallen die Endermen 41 Blöcke tief. Zum Hochbauen stellst du eine Gerüstsäule aufs Dach, direkt nördlich am Schacht.' });
+
+    g = mk(W, W); rect(g, 0, 0, 16, 16, 'S'); rect(g, 7, 7, 9, 9, 'R'); g[8][8] = 'S';
+    L.push({ y: [43, 43], name: 'Spawnplattform', grid: rows(g),
+      text: 'Plattform aus 17 × 17 Blöcken. Nur hier können Endermen erscheinen. Über dem Schacht sitzen 8 offene Falltüren rund um einen Block in der Mitte. Für Endermen sehen offene Falltüren wie Boden aus: Sie laufen darauf und stürzen in den Schacht.' });
+
+    g = mk(W, W); ring(g, 0, 0, 16, 16, 'g'); g[8][8] = 'S';
+    L.push({ y: [44, 44], name: 'Geländer und Säule', grid: rows(g),
+      text: 'Zäune rundum als Geländer, damit kein Enderman über den Rand ins Leere läuft. In der Mitte ein zweiter Block auf der Säule.' });
+
+    g = mk(W, W); g[8][8] = 'M';
+    L.push({ y: [45, 45], name: 'Köder: Endermilbe', grid: rows(g),
+      text: 'Eine Schiene mit Lore auf der Säule, darin eine Endermilbe mit Namensschild. Endermen greifen jede Endermilbe an, die sie im Umkreis von 64 Blöcken sehen. Auf dem Weg zu ihr treten sie auf die Falltüren.' });
+
+    return {
+      id: 'xpfarm', title: 'XP-Farm', w: W, d: W, yMin: 1, yMax: 45, sliceZ: 8, ground: false,
+      guides: [[3, 3, 13, 13], [7, 7, 9, 9]],
+      specs: [['Ort', 'Das End, 128 Blöcke Abstand'], ['Grundfläche', '17 × 17 Blöcke'], ['Fallhöhe', '41 Blöcke'], ['Erfahrung', '5 pro Enderman']],
+      extras: [['Brücke zur Hauptinsel', 'etwa 128 Blöcke', 'die ersten 16 Blöcke ab der Farm als Tunnel mit Wasserdach'],
+               ['Lore und Namensschild', 'je 1', 'für die Endermilbe'],
+               ['Enderperlen', 'einige', 'jede geworfene Perle ruft mit 5 % Wahrscheinlichkeit eine Endermilbe'],
+               ['Wassereimer', '1', 'für die 5 Quellen immer wieder auffüllen'],
+               ['Gerüst', 'etwa 40', 'zum Hochklettern, aus Bambus und Faden; danach wieder abbauen'],
+               ['Schwert', '1', 'am besten mit Plünderung für mehr Enderperlen']],
+      hints: { stone: 'z. B. Endstein oder Bruchstein; die Plattform nicht aus Glas', hopper: 'alle zeigen zur Kiste', chest: 'ergibt eine Doppelkiste',
+               slab: 'beim Setzen in die obere Blockhälfte klicken', trapdoor: 'nach dem Setzen öffnen', fence: 'hält die Endermen auf der Plattform',
+               rail: 'dazu 1 Lore', source: 'aus dem Eimer' },
+      layers: L
+    };
+  }
+
+  return [farm(), hall(), cactus(), xp()];
 })();
 
 if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
@@ -902,13 +1021,14 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     return s + '</svg>';
   }
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
-            glass: '#BCE0F2', dark: '#3A4350', hay: '#E2B93B', copper: '#D9824A' };
+            glass: '#BCE0F2', dark: '#3A4350', hay: '#E2B93B', copper: '#D9824A', end: '#DCD9A6', purple: '#7B4BC2' };
   function box(x0, y0, z, w, d, col, h) { var r = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) r.push([x, y, z, col, h]); return r; }
   var SCENES = {
     eisenfarm: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .5), [[1, 1, 1.5, K.lava, .7], [3, 2, 0, K.iron], [3, 1, 0, K.dark, .7]]),
     handelsstation: [].concat(box(0, 0, 0, 4, 1, K.glass), box(0, 0, 1, 4, 1, K.glass), [[0, 1, 0, K.wood], [1, 1, 0, K.stone], [2, 1, 0, K.hay], [3, 1, 0, K.copper], [3, 2, 0, K.emerald, .55]]),
     kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
-      [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]])
+      [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]]),
+    xpfarm: [].concat(box(0, 0, 0, 4, 4, K.stone), box(0, 0, 1, 4, 4, K.water, .35), box(1, 1, 1.35, 2, 2, K.stone, 1), box(1, 1, 2.35, 2, 2, K.stone, 1), box(1, 1, 3.35, 2, 2, K.stone, 1), box(0, 0, 4.35, 4, 4, K.end, .5), [[1.5, 1.5, 4.85, K.purple, .45]])
   };
   var hdr = document.querySelector('.wrap > header'), pic = document.createElement('div');
   pic.className = 'hpic'; pic.setAttribute('aria-hidden', 'true');
