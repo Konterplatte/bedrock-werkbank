@@ -1,8 +1,8 @@
 ============================================================
-Bedrock-Werkbank 1.2
+Bedrock-Werkbank 1.3
 ============================================================
 
-Inoffizielles Hilfsprogramm für Minecraft Bedrock Edition. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Namen und Rezeptdaten des Lexikons stammen aus Mojangs öffentlichem Repository bedrock-samples (Version 1.26.60). Die App enthält keine Grafiken aus dem Spiel.
+Inoffizielles Hilfsprogramm für Minecraft Bedrock Edition. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Namen und Rezeptdaten des Lexikons stammen aus Mojangs öffentlichem Repository bedrock-samples (Version 26.60). Die App enthält keine Grafiken aus dem Spiel.
 
 Es folgen die Lizenzen der mitgelieferten Schriften und Programmbibliotheken.
 

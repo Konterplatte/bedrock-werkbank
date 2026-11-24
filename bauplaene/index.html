@@ -44,6 +44,12 @@
   --b-slab: #A7B0BC;
   --b-trap: #8A6236;
   --b-mite: #6B3FA0;
+  --b-mud: #5B4A3F;
+  --b-cane: #7FB85A;
+  --b-glass: #9FD1E3;
+  --b-piston: #A88B5C;
+  --b-observer: #4E5560;
+  --b-dust: #C21F1F;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -53,7 +59,7 @@
     --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
     --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
     --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0;
+    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C;
   }
 }
 :root[data-theme="dark"] {
@@ -63,7 +69,7 @@
   --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
   --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
   --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0;
+  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C;
 }
 
 * { box-sizing: border-box; }
@@ -80,8 +86,9 @@ a { color: var(--accent); }
 .eyebrow { font-size: .95rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); margin: 0 0 4px; }
 .lead { color: var(--ink-soft); margin-top: 8px; max-width: 62ch; }
 
-.tabs { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--sheet); }
-.tabs a { flex: 1 1 0; min-width: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 12px 4px; font-weight: 600; font-size: clamp(.85rem, 3.5vw, 1.15rem); line-height: 1.15; letter-spacing: 0; overflow-wrap: anywhere; color: var(--ink-soft); text-decoration: none; }
+.tabs { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; overflow-y: hidden; background: var(--sheet); scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a { flex: 1 0 auto; display: flex; align-items: center; justify-content: center; text-align: center; padding: 12px 14px; font-weight: 600; font-size: 1.1rem; line-height: 1.15; letter-spacing: 0; white-space: nowrap; color: var(--ink-soft); text-decoration: none; }
 .tabs a + a { border-left: 1px solid var(--line); }
 .tabs a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
 
@@ -113,6 +120,7 @@ a { color: var(--accent); }
 .donebtn { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 8px; border: 1.5px solid var(--ok);
   background: var(--sheet); color: var(--ok); font: 600 1.05rem var(--f-display); cursor: pointer; }
 .donebtn[aria-pressed="true"] { background: var(--ok); color: var(--sheet); }
+.tolist { margin: 14px 0 0; }
 .donebtn:focus-visible, .progress button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .progress .pbar i { transition: none; } }
 svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
@@ -174,7 +182,9 @@ html.app .wrap > header { margin: 0 calc(50% - 50vw) 2px; padding: 24px calc(50v
 html.app .eyebrow { color: #8CC2FF; font-weight: 600; letter-spacing: .12em; margin-bottom: 6px; }
 html.app h1 { font-size: 2.7rem; line-height: 1; font-weight: 700; }
 html.app .lead { color: var(--band-soft); margin-top: 10px; }
-html.app .tabs { display: none; }
+html.app .tabs { display: flex; margin: 14px 0 0; border-radius: 14px; border: 1px solid var(--line); background: var(--sheet); box-shadow: var(--shadow); padding: 4px; gap: 4px; }
+html.app .tabs a { border-radius: 10px; min-height: 44px; }
+html.app .tabs a + a { border-left: 0; }
 html.app .wrap > header { position: relative; }
 html.app .hpic { display: none; }
 @media (min-width: 900px) {
@@ -185,9 +195,7 @@ html.app .hpic { display: none; }
 }
 /* Schmal (iPhone): eigene Plan-Auswahl, Platz für die schwebende Tab-Leiste */
 @media (max-width: 720px) {
-  html.app .tabs { display: flex; margin: 14px 0 0; border-radius: 14px; border: 1px solid var(--line); background: var(--sheet); box-shadow: var(--shadow); padding: 4px; gap: 4px; }
-  html.app .tabs a { border-radius: 10px; min-height: 44px; }
-  html.app .tabs a + a { border-left: 0; }
+  html.app .tabs { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); }
   html.app body::after { content: ""; display: block; height: calc(104px + env(safe-area-inset-bottom, 0px)); }
 }
 html.app .specs { border-radius: var(--r); box-shadow: var(--shadow); }
@@ -223,7 +231,7 @@ html.app .foot { max-width: none; }
 
 <header>
   <p class="eyebrow">Minecraft Bedrock Edition</p>
-  <h1>Baupläne für Eisenfarm, Handel, Kaktus und XP</h1>
+  <h1>Baupläne für Eisenfarm, Handel, Kaktus, XP und Zuckerrohr</h1>
   <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
 </header>
 
@@ -270,6 +278,7 @@ html.app .foot { max-width: none; }
       <tbody id="materials"></tbody>
     </table>
   </div>
+  <p class="tolist" id="tolist" hidden><button type="button" class="donebtn" id="tolistbtn">Material auf die Sammelliste</button></p>
 </section>
 
 <section class="notes" id="notes-eisenfarm">
@@ -280,7 +289,7 @@ html.app .foot { max-width: none; }
       <li><strong>Der Spawnbereich:</strong> 8 Blöcke seitlich und 6 Blöcke nach oben und unten um das Dorfzentrum. Das Zentrum ist ein Bett oder ein Komposter in der Kammer.</li>
       <li><strong>Die Höhe:</strong> Der Plattformboden liegt 6 Blöcke unter den Betten und damit gerade noch im Spawnbereich. Alles darunter liegt außerhalb.</li>
       <li><strong>Die Obergrenze:</strong> Je 10 Dorfbewohner lebt nur ein Golem gleichzeitig. Deshalb spült ihn das Wasser sofort in die Lava.</li>
-      <li><strong>Laub als Schutz:</strong> Kammer und Rand sind aus Laub, weil darauf kein Golem entsteht. Auf Stufen, Teppichen und Glas können Golems in der Bedrock Edition trotzdem erscheinen.</li>
+      <li><strong>Laub als Schutz:</strong> Kammer und Rand sind aus Laub, weil auf Laub kein Golem entsteht. Nimm dafür keine Stufen, Teppiche oder Glas: Darauf sind in der Bedrock Edition schon Golems erschienen.</li>
     </ul>
   </div>
   <div>
@@ -367,7 +376,7 @@ html.app .foot { max-width: none; }
       <li><strong>Die Sammlung:</strong> Fällt es in eine der 5 Wasserbahnen, spült das Wasser es in die Sammelrinne und von dort in den Trichter.</li>
       <li><strong>Der Verlust:</strong> Was auf einem Kaktus oder auf dem Sand landet, ist verloren. Das gehört zu jeder Kaktusfarm ohne Redstone.</li>
       <li><strong>Kaktusblüten:</strong> Seit Version 1.21.70 können Kakteen Blüten treiben und wachsen dann nicht weiter. Neben einem Block entsteht keine Blüte. Deshalb hat hier jedes Wuchsfeld einen Zaun als Nachbarn.</li>
-      <li><strong>Das Tempo:</strong> Ein Kaktus wächst im Schnitt alle 18 Minuten. 32 Kakteen wachsen zusammen rund 100-mal pro Stunde.</li>
+      <li><strong>Das Tempo:</strong> Ein Kaktus wächst im Schnitt etwa alle 18 Minuten, im Einzelfall auch viel früher oder später. 32 Kakteen wachsen zusammen rund 100-mal pro Stunde.</li>
     </ul>
   </div>
   <div>
@@ -431,6 +440,7 @@ html.app .foot { max-width: none; }
       <li><strong>Bestes Verhältnis:</strong> Die Enderman-Farm braucht nur gewöhnliche Blöcke, ist in einem Abend gebaut und liefert dazu Enderperlen.</li>
       <li><strong>Nutzen:</strong> Erfahrung für Zaubertisch, Amboss und Reparatur. Die Enderperlen landen in der Kiste.</li>
       <li><strong>Hinweis:</strong> Die Farm arbeitet nur, solange du im Gang stehst. Bist du weiter weg, spawnen oben keine Endermen.</li>
+      <li><strong>Simulationsdistanz:</strong> Die Plattform liegt gut 40 Blöcke über dir. Bei Simulationsdistanz 4 ist das knapp am Rand des Bereichs, in dem Mobs erscheinen, und viele verschwinden wieder. Stell sie in den Welteinstellungen auf 6 oder mehr, wenn dein Gerät das schafft.</li>
     </ul>
   </div>
   <div>
@@ -444,7 +454,44 @@ html.app .foot { max-width: none; }
     </ul>
   </div>
 </section>
-<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht.</p>
+<section class="notes" id="notes-zuckerrohr" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Das Wachstum:</strong> Zuckerrohr wächst bis 3 Blöcke hoch, wenn direkt neben seinem Boden Wasser liegt. Die Rinne in der Mitte versorgt beide Reihen.</li>
+      <li><strong>Die Ernte:</strong> Erreicht ein Rohr den 3. Block, sieht das der Beobachter darüber. Er schickt ein Signal über den Redstone-Staub in den Block unter dem Staub, und alle Kolben der Reihe fahren aus. Sie schlagen den 2. Block ab, der 3. fällt mit. Der unterste bleibt stehen und wächst nach.</li>
+      <li><strong>Die Sammlung:</strong> Die Ernte fällt auf den Schlamm. Der Trichter darunter zieht sie durch den Schlamm hindurch ein, das geht nur mit Schlamm, nicht mit Erde oder Sand. Die Trichter reichen alles in die Kiste weiter.</li>
+      <li><strong>Das Tempo:</strong> Ein Rohr wächst im Schnitt etwa alle 18 Minuten um einen Block. 16 Pflanzen bringen zusammen rund 50 Zuckerrohr pro Stunde. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Stelle die Kiste auf und lege die Trichter, Ebene 1. Schleiche beim Setzen, sonst öffnet sich die Kiste oder der Trichter, statt dass gebaut wird.</li>
+      <li>Leere 16 Wasserflaschen auf Erde, so entsteht Schlamm. Lege ihn auf die Trichter und fülle die Rinne mit Wasser, Ebene 2.</li>
+      <li>Pflanze das Zuckerrohr und setze das Glas, Ebene 3.</li>
+      <li>Setze die Kolben, dann die Beobachter und zuletzt den Redstone-Staub, Ebenen 4 und 5. Beim Setzen der Beobachter fahren die Kolben einmal aus, das ist normal.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Ausbau</h2>
+    <ul>
+      <li><strong>Länger:</strong> Jede weitere Spalte bringt 2 Pflanzen und kostet 2 Trichter, 2 Schlamm, 2 Kolben, 2 Beobachter, 2 Redstone, 1 Glas und 5 feste Blöcke. Ab 16 Spalten pro Reihe reicht ein Trichterstrang nicht mehr, dann kommt eine zweite Kiste in die Mitte.</li>
+      <li><strong>Nutzen:</strong> 3 Zuckerrohr ergeben 3 Papier. Ein Bibliothekar kauft Papier für Smaragde, und aus Papier und Leder werden Bücher für den Zaubertisch.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Ein Rohr wird 3 hoch und bleibt stehen:</strong> Der Beobachter darüber schaut in die falsche Richtung. Das Gesicht muss zum Rohr zeigen, der rote Punkt zum Redstone.</li>
+      <li><strong>Die Kolben schlagen den untersten Block ab:</strong> Sie sitzen eine Ebene zu tief. Kolben gehören auf Höhe des 2. Rohrblocks.</li>
+      <li><strong>Zuckerrohr bleibt auf dem Boden liegen:</strong> Unter diesem Schlamm fehlt ein Trichter, oder dort liegt Erde statt Schlamm.</li>
+      <li><strong>Die Kiste bleibt leer:</strong> Ein Trichter zeigt in die falsche Richtung. Jeder muss in den nächsten zeigen, der letzte in die Kiste.</li>
+      <li><strong>Ein Rohr lässt sich nicht pflanzen:</strong> Neben dem Schlamm fehlt Wasser. Prüfe die Rinne an den Enden.</li>
+    </ul>
+  </div>
+</section>
+<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht.</p>
 
 </div>
 <script>
@@ -481,7 +528,16 @@ var BLOCKS = {
   E: { name: 'Eingang, frei lassen', fill: 'var(--b-open)', glyph: '↕', open: true },
   R: { name: 'Falltür im Loch, offen', mat: 'trapdoor', fill: 'var(--b-trap)', glyph: 'Fa', dark: true },
   g: { name: 'Zaun als Geländer', mat: 'fence', fill: 'var(--b-fence)', glyph: '+', dark: true },
-  M: { name: 'Schiene mit Lore, darin die Endermilbe mit Namensschild', mat: 'rail', fill: 'var(--b-mite)', glyph: 'Mi', dark: true }
+  M: { name: 'Schiene mit Lore, darin die Endermilbe mit Namensschild', mat: 'rail', fill: 'var(--b-mite)', glyph: 'Mi', dark: true },
+  m: { name: 'Schlamm, liegt direkt auf dem Trichter', mat: 'mud', fill: 'var(--b-mud)', glyph: 'Sc', dark: true },
+  r: { name: 'Zuckerrohr, unterster Block (bleibt stehen)', mat: 'cane', fill: 'var(--b-cane)', glyph: 'Z', dark: true },
+  u: { name: 'Wuchsfeld, frei lassen: hier wächst das Zuckerrohr nach', fill: 'var(--b-air)', glyph: '↑', ink: true },
+  G: { name: 'Glas', mat: 'glass', fill: 'var(--b-glass)', glyph: 'Gl' },
+  P: { name: 'Kolben, Kopf zeigt nach Süden (↓) zum Zuckerrohr', mat: 'piston', fill: 'var(--b-piston)', glyph: 'K↓', dark: true },
+  p: { name: 'Kolben, Kopf zeigt nach Norden (↑) zum Zuckerrohr', mat: 'piston', fill: 'var(--b-piston)', glyph: 'K↑', dark: true },
+  Y: { name: 'Beobachter, Gesicht nach Süden (↓) zum Zuckerrohr, roter Punkt nach Norden', mat: 'observer', fill: 'var(--b-observer)', glyph: 'B↓', dark: true },
+  y: { name: 'Beobachter, Gesicht nach Norden (↑) zum Zuckerrohr, roter Punkt nach Süden', mat: 'observer', fill: 'var(--b-observer)', glyph: 'B↑', dark: true },
+  i: { name: 'Redstone-Staub', mat: 'dust', fill: 'var(--b-dust)', glyph: '•', dark: true }
 };
 
 var MATERIALS = {
@@ -502,7 +558,13 @@ var MATERIALS = {
   fence: 'Zaun',
   slab: 'Stufe',
   trapdoor: 'Falltür',
-  rail: 'Schiene'
+  rail: 'Schiene',
+  mud: 'Schlamm',
+  cane: 'Zuckerrohr',
+  glass: 'Glas',
+  piston: 'Kolben',
+  observer: 'Beobachter',
+  dust: 'Redstone-Staub'
 };
 
 var PLANS = (function () {
@@ -763,7 +825,7 @@ var PLANS = (function () {
       guides: [[3, 3, 13, 13], [7, 7, 9, 9]],
       specs: [['Ort', 'Das End, 128 Blöcke Abstand'], ['Grundfläche', '17 × 17 Blöcke'], ['Fallhöhe', '41 Blöcke'], ['Erfahrung', '5 pro Enderman']],
       extras: [['Brücke zur Hauptinsel', 'etwa 128 Blöcke', 'die ersten 16 Blöcke ab der Farm als Tunnel mit Wasserdach'],
-               ['Lore und Namensschild', 'je 1', 'für die Endermilbe'],
+               ['Lore und Namensschild', 'je 1', 'für die Endermilbe; das Namensschild stellst du aus Papier und einem Metallklumpen her'],
                ['Enderperlen', 'einige', 'jede geworfene Perle ruft mit 5 % Wahrscheinlichkeit eine Endermilbe'],
                ['Wassereimer', '1', 'für die 5 Quellen immer wieder auffüllen'],
                ['Gerüst', 'etwa 40', 'zum Hochklettern, aus Bambus und Faden; danach wieder abbauen'],
@@ -775,7 +837,51 @@ var PLANS = (function () {
     };
   }
 
-  return [farm(), hall(), cactus(), xp()];
+  /* ---------- Zuckerrohrfarm: 11 x 7, Y1 bis Y5 ----------
+     Reihen von Norden: z0 Block mit Redstone, z1 Kolben und Beobachter, z2 Zuckerrohr A, z3 Wasser unter Glas,
+     z4 Zuckerrohr B, z5 Kolben und Beobachter, z6 Block mit Redstone. Spalten 1 bis 8 tragen je 2 Pflanzen. */
+  function cane() {
+    var W = 11, D = 7, L = [], g, X0 = 1, X1 = 8;
+    function row(g, z, c) { rect(g, X0, z, X1, z, c); }
+    function caps(g) { [2, 3, 4].forEach(function (z) { g[z][0] = 'G'; g[z][9] = 'G'; }); }
+
+    g = mk(W, D); row(g, 1, 'S'); row(g, 2, 'e'); row(g, 3, 'S'); row(g, 4, 'e'); row(g, 5, 'S');
+    g[2][9] = 's'; g[3][9] = 'e'; g[4][9] = 'n'; g[3][10] = 'K'; g[4][10] = 'K';
+    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[10, 3, 10, 4]],
+      text: 'Stelle die Doppelkiste ganz im Osten auf. Lege dann zwei Reihen aus je 8 Trichtern, die nach Osten zeigen: Klicke beim Bauen immer die Seite des vorigen Trichters an. Am Ende führen zwei Trichter nach Süden und Norden in den mittleren, der zeigt nach Osten in die Kiste. Dazwischen und außen liegen feste Blöcke als Boden.' });
+
+    g = mk(W, D); row(g, 1, 'S'); row(g, 2, 'm'); row(g, 4, 'm'); row(g, 5, 'S');
+    [1, 3, 5, 7].forEach(function (x) { g[3][x] = 'Q'; }); [2, 4, 6, 8].forEach(function (x) { g[3][x] = 'f'; });
+    [2, 3, 4].forEach(function (z) { g[z][0] = 'S'; g[z][9] = 'S'; });
+    L.push({ y: [2, 2], name: 'Schlamm und Wasser', grid: rows(g),
+      text: 'Lege auf jeden Trichter der beiden Reihen einen Schlammblock. Den bekommst du, wenn du eine Wasserflasche auf Erde leerst. Zwischen den Reihen entsteht die Wasserrinne: Gieße Wasser in das 1., 3., 5. und 7. Feld, die Lücken füllen sich von selbst. An beiden Enden hält ein fester Block das Wasser.' });
+
+    g = mk(W, D); row(g, 1, 'S'); row(g, 2, 'r'); row(g, 3, 'G'); row(g, 4, 'r'); row(g, 5, 'S'); caps(g);
+    L.push({ y: [3, 3], name: 'Zuckerrohr pflanzen', grid: rows(g),
+      text: 'Pflanze auf jeden Schlammblock ein Zuckerrohr, 16 Stück. Decke die Wasserrinne mit Glas ab und setze Glas an beide Enden. So fällt die Ernte nicht ins Wasser. Außen kommt eine Reihe fester Blöcke als Unterbau für die Kolben.' });
+
+    g = mk(W, D); row(g, 0, 'S'); row(g, 1, 'P'); row(g, 2, 'u'); row(g, 3, 'G'); row(g, 4, 'u'); row(g, 5, 'p'); row(g, 6, 'S'); caps(g);
+    L.push({ y: [4, 4], name: 'Kolben', grid: rows(g),
+      text: 'Setze 16 normale Kolben, keine klebrigen. Ihr Kopf zeigt zum Zuckerrohr, damit sie den zweiten Block abschlagen. Ein Kolben zeigt beim Setzen mit dem Kopf zu dir: Stell dich auf das Glas über der Rinne und schau waagerecht nach außen. Zeigt einer falsch, bau ihn ab und setz ihn neu. Ganz außen kommt je eine Reihe fester Blöcke. Die Felder über dem Zuckerrohr bleiben frei.' });
+
+    g = mk(W, D); row(g, 0, 'i'); row(g, 1, 'Y'); row(g, 2, 'u'); row(g, 3, 'G'); row(g, 4, 'u'); row(g, 5, 'y'); row(g, 6, 'i'); caps(g);
+    L.push({ y: [5, 5], name: 'Beobachter und Redstone', grid: rows(g),
+      text: 'Setze auf jeden Kolben einen Beobachter. Sein Gesicht schaut zum Zuckerrohr, der rote Punkt nach außen. Ein Beobachter schaut beim Setzen in deine Blickrichtung: Stell dich außen so hin, dass deine Füße auf Höhe der Kolben stehen, und schau waagerecht zum Zuckerrohr. Zeigt einer nach oben oder unten, bau ihn ab und setz ihn neu. Streue auf die äußeren Blöcke je eine Linie Redstone-Staub. Wächst ein Zuckerrohr auf 3 Blöcke, meldet es der Beobachter, und alle Kolben der Reihe schlagen zu.' });
+
+    return {
+      id: 'zuckerrohr', title: 'Zuckerrohrfarm', w: W, d: D, yMin: 1, yMax: 5, sliceX: 4, ground: true,
+      guides: [],
+      specs: [['Grundfläche', '11 × 7 Blöcke'], ['Höhe', '5 Blöcke'], ['Zuckerrohr', '16 Pflanzen'], ['Ertrag', 'rund 50 pro Stunde']],
+      extras: [['Wasserflaschen', '16', 'zum Herstellen des Schlamms: Flasche auf Erde leeren'],
+               ['Wassereimer', '1', 'für die 4 Quellen immer wieder auffüllen']],
+      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', mud: 'Wasserflasche auf Erde', cane: 'nur 16 zum Pflanzen, den Rest liefert die Farm',
+               piston: 'normale Kolben, keine klebrigen', observer: 'Quarz aus dem Nether nötig', dust: 'eine Linie je Seite', chest: 'ergibt eine Doppelkiste',
+               glass: 'Sand im Ofen schmelzen', source: 'aus dem Eimer' },
+      layers: L
+    };
+  }
+
+  return [farm(), hall(), cactus(), xp(), cane()];
 })();
 
 if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
@@ -912,6 +1018,8 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
       return '<a href="#' + q.id + '"' + (i === st.plan ? ' aria-current="page"' : '') + '>' + esc(q.title) + '</a>';
     }).join('');
     PLANS.forEach(function (q, i) { $('notes-' + q.id).hidden = i !== st.plan; });
+    var act = $('tabs').querySelector('[aria-current="page"]'), tb = $('tabs');
+    if (act && tb.scrollWidth > tb.clientWidth) tb.scrollLeft = act.offsetLeft - (tb.clientWidth - act.offsetWidth) / 2;
     $('specs').innerHTML = p.specs.map(function (s) { return '<div><dt>' + esc(s[0]) + '</dt><dd>' + esc(s[1]) + '</dd></div>'; }).join('');
     $('steps').innerHTML = p.layers.map(function (l, i) {
       return '<li><button type="button" data-i="' + i + '" aria-label="Ebene ' + (i + 1) + ', ' + esc(l.name) + '">' + (i + 1) + '</button></li>';
@@ -930,6 +1038,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
       counts(l).forEach(function (c) { if (tot[c.mat] == null) { tot[c.mat] = 0; order.push(c.mat); } tot[c.mat] += c.n * rep; });
     });
     order.sort(function (a, b) { return tot[b] - tot[a]; });
+    st.mats = { order: order, tot: tot };
     $('materials').innerHTML = order.map(function (m) {
       return '<tr><td>' + esc(MATERIALS[m]) + '</td><td class="num">' + tot[m] + stacks(m, tot[m]) + '</td><td class="hint">' + esc(p.hints[m] || '') + '</td></tr>';
     }).join('') + p.extras.map(function (e) {
@@ -993,6 +1102,15 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     return (x < 0 || y < 0 || x >= (colsN || p.w) || y >= rowsN) ? null : [x, y];
   }
 
+  // In der App: Material an die Sammelliste der Werkbank schicken
+  function appList() { try { return window.parent !== window && window.parent.bwList && typeof window.parent.bwList.add === 'function' ? window.parent.bwList : null; } catch (e) { return null; } }
+  $('tolist').hidden = !appList();
+  $('tolistbtn').addEventListener('click', function () {
+    var p = PLANS[st.plan], L = appList(); if (!L || !st.mats) return;
+    var entries = st.mats.order.filter(function (m) { return m !== 'source'; }).map(function (m) { return { k: 'mat:' + m, t: MATERIALS[m], n: st.mats.tot[m] }; });
+    p.extras.forEach(function (e) { if (/^\d+$/.test(e[1])) entries.push({ k: 'mat:x:' + e[0].toLowerCase(), t: e[0], n: +e[1] }); });
+    L.add(entries, 'Bauplan ' + p.title);
+  });
   $('done').addEventListener('click', function () {
     var p = PLANS[st.plan], i = st.layer[st.plan], D = st.done[p.id];
     if (D[i]) { delete D[i]; storeDone(p); renderLayer(); return; }
@@ -1075,13 +1193,15 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     return s + '</svg>';
   }
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
-            glass: '#BCE0F2', dark: '#3A4350', hay: '#E2B93B', copper: '#D9824A', end: '#DCD9A6', purple: '#7B4BC2' };
+            glass: '#BCE0F2', dark: '#3A4350', hay: '#E2B93B', copper: '#D9824A', end: '#DCD9A6', purple: '#7B4BC2', mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C' };
   function box(x0, y0, z, w, d, col, h) { var r = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) r.push([x, y, z, col, h]); return r; }
   var SCENES = {
     eisenfarm: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .5), [[1, 1, 1.5, K.lava, .7], [3, 2, 0, K.iron], [3, 1, 0, K.dark, .7]]),
     handelsstation: [].concat(box(0, 0, 0, 4, 1, K.glass), box(0, 0, 1, 4, 1, K.glass), [[0, 1, 0, K.wood], [1, 1, 0, K.stone], [2, 1, 0, K.hay], [3, 1, 0, K.copper], [3, 2, 0, K.emerald, .55]]),
     kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
       [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]]),
+    zuckerrohr: [].concat(box(0, 0, 0, 4, 1, K.mud), box(0, 1, 0, 4, 1, K.water, .7), box(0, 2, 0, 4, 1, K.mud),
+      box(0, 0, 1, 4, 1, K.cane), box(0, 0, 2, 4, 1, K.cane), box(0, 2, 1, 4, 1, K.cane), box(0, 3, 1, 4, 1, K.stone), box(0, 3, 2, 4, 1, K.piston), box(0, 3, 3, 4, 1, K.dark, .9)),
     xpfarm: [].concat(box(0, 0, 0, 4, 4, K.stone), box(0, 0, 1, 4, 4, K.water, .35), box(1, 1, 1.35, 2, 2, K.stone, 1), box(1, 1, 2.35, 2, 2, K.stone, 1), box(1, 1, 3.35, 2, 2, K.stone, 1), box(0, 0, 4.35, 4, 4, K.end, .5), [[1.5, 1.5, 4.85, K.purple, .45]])
   };
   var hdr = document.querySelector('.wrap > header'), pic = document.createElement('div');

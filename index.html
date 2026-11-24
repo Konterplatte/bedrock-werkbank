@@ -27,6 +27,7 @@
   --glass: rgba(19, 38, 63, .86); --glass-edge: rgba(255, 255, 255, .16);
   --shadow: 0 1px 2px rgba(19, 38, 63, .06), 0 8px 24px rgba(19, 38, 63, .07);
   --lift: 0 2px 4px rgba(19, 38, 63, .08), 0 16px 36px rgba(19, 38, 63, .14);
+  --ok: #1E7A3C; --ok-soft: #E3F3E7;
   --r: 16px;
   --f-display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
   --f-body: 'IBM Plex Sans', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -39,13 +40,14 @@
     --band: #0D1C30; --band-soft: #9DB2CC; --band-line: rgba(255, 255, 255, .05); --band-edge: rgba(255, 255, 255, .08);
     --pic: linear-gradient(160deg, #14283F, #0E1D30); --glass: rgba(8, 18, 31, .84); --glass-edge: rgba(255, 255, 255, .12);
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25); --lift: 0 2px 4px rgba(0, 0, 0, .35), 0 16px 36px rgba(0, 0, 0, .4);
+    --ok: #5FD38A; --ok-soft: #12362A;
   }
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
 body { margin: 0; height: 100vh; height: 100dvh; display: grid; grid-template-columns: 100px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr);
   background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; overflow: hidden; }
-button, input { font: inherit; color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
 button { touch-action: manipulation; }
 :focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
 [hidden] { display: none !important; }
@@ -166,6 +168,92 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .tlink b { display: block; font-size: 1.08rem; }
 .tlink small { display: block; color: var(--ink-soft); font-size: .9rem; }
 
+/* Werkzeuge: Kacheln auf der Startseite */
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ttile { appearance: none; display: flex; align-items: center; gap: 12px; min-height: 76px; padding: 10px 14px 10px 10px; border-radius: 14px; border: 1px solid var(--line);
+  background: var(--sheet); box-shadow: var(--shadow); cursor: pointer; text-align: left; color: inherit; min-width: 0; }
+.ttile:hover { border-color: var(--accent); }
+.ttile .ticon { width: 52px; height: 52px; border-radius: 12px; padding: 5px; }
+.ttile b { display: block; font: 700 1.25rem/1.1 var(--f-display); }
+.ttile small { display: block; color: var(--ink-soft); font-size: .88rem; overflow-wrap: anywhere; }
+/* Werkzeuge: eigener Bereich */
+.thero .hero-in { grid-template-columns: minmax(0, 1fr); padding-bottom: clamp(20px, 3vw, 30px); }
+.thero h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); }
+.thero .lead { margin-bottom: 0; }
+.tabsbar { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.tabsbar::-webkit-scrollbar { display: none; }
+.tabsbar button { appearance: none; flex: 1 0 auto; min-height: 44px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft);
+  font: 600 1.05rem var(--f-display); letter-spacing: .02em; padding: 4px 14px; cursor: pointer; white-space: nowrap; }
+.tabsbar button[aria-selected="true"] { background: var(--sheet); color: var(--ink); box-shadow: 0 1px 4px rgba(19, 38, 63, .16); }
+.tpanel { display: flex; flex-direction: column; gap: 18px; }
+.twocol { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.thead2 { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.tcount { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.inp { width: 100%; min-width: 0; height: 48px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--sheet); color: var(--ink); padding: 0 12px;
+  font-size: 1.05rem; -moz-appearance: textfield; }
+.inp::-webkit-outer-spin-button, .inp::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+select.inp { padding-right: 8px; }
+textarea.inp { height: auto; padding: 10px 12px; font: .85rem/1.4 ui-monospace, Consolas, monospace; resize: vertical; }
+.inp:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.fl { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: .9rem; color: var(--ink-soft); min-width: 0; }
+.frow { display: grid; grid-template-columns: minmax(0, 1fr) 96px auto; gap: 8px; }
+.tacts { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn[data-armed] { border-color: var(--mark); color: var(--mark); }
+.list { list-style: none; margin: 0; padding: 0; }
+.li { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); min-height: 58px; }
+.li:last-child { border-bottom: 0; }
+.chk { appearance: none; width: 34px; height: 34px; flex: none; border-radius: 10px; border: 2px solid var(--line); background: var(--sheet); cursor: pointer;
+  display: grid; place-items: center; color: transparent; font-weight: 700; padding: 0; }
+.chk::after { content: '✓'; }
+.li.done .chk { background: var(--ok); border-color: var(--ok); color: #fff; }
+.lbody { flex: 1; min-width: 0; }
+.lbody b { font-variant-numeric: tabular-nums; margin-right: 4px; }
+.lbody .lname { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-align: left; font-weight: 500; }
+.lbody .lname:hover { text-decoration: underline; }
+.lbody small { display: block; color: var(--ink-soft); font-size: .85rem; overflow-wrap: anywhere; }
+.li.done .lbody { color: var(--ink-soft); }
+.li.done .lbody b, .li.done .lbody .lname, .li.done .lbody .ltext { text-decoration: line-through; }
+.xbtn { appearance: none; width: 40px; height: 40px; flex: none; border: 0; border-radius: 10px; background: none; color: var(--ink-soft); cursor: pointer; font-size: 1.4rem; line-height: 1; }
+.xbtn:hover { background: var(--tint); color: var(--ink); }
+.seg.three { grid-template-columns: repeat(3, 1fr); }
+.olist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.oitem { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; background: var(--sheet); }
+.oitem .otop { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.oitem .otop b { font: 700 1.25rem/1.1 var(--f-display); }
+.dim { font-size: .8rem; font-weight: 600; border-radius: 999px; padding: 2px 9px; background: var(--tint); color: var(--ink-soft); }
+.dim.nether { background: #F6DCD3; color: #8A2A12; } .dim.end { background: #ECE7C9; color: #5D5520; }
+@media (prefers-color-scheme: dark) { .dim.nether { background: #4A2117; color: #FFB79E; } .dim.end { background: #3C3A22; color: #E6E0A6; } }
+.oxyz { font-variant-numeric: tabular-nums; font-weight: 600; }
+.oconv, .onote { color: var(--ink-soft); font-size: .9rem; }
+.oitem .tacts .btn { height: 38px; padding: 0 12px; font-size: .95rem; }
+.erows { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.erow { display: flex; align-items: center; gap: 6px; border: 1.5px solid var(--line); border-radius: 12px; padding: 4px 4px 4px 6px; background: var(--sheet); min-width: 0; }
+.erow.on { border-color: var(--accent); background: var(--tint); }
+.erow.off { opacity: .45; }
+.etog { appearance: none; flex: 1; min-width: 0; min-height: 40px; border: 0; background: none; text-align: left; cursor: pointer; font-weight: 600; padding: 0 4px; display: flex; align-items: center; gap: 8px; }
+.etog::before { content: ''; width: 18px; height: 18px; flex: none; border-radius: 5px; border: 2px solid var(--line); background: var(--sheet); }
+.erow.on .etog::before { background: var(--accent); border-color: var(--accent); box-shadow: inset 0 0 0 3px var(--sheet); }
+.etog small { display: block; font-weight: 400; color: var(--ink-soft); font-size: .78rem; }
+.erow select { height: 38px; border-radius: 9px; border: 1px solid var(--line); background: var(--sheet); padding: 0 4px; }
+.aout { display: flex; flex-direction: column; gap: 10px; }
+.asum { border-radius: 14px; background: var(--band); color: var(--band-ink); padding: 12px 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.asum span { display: block; font-size: .8rem; color: var(--band-soft); letter-spacing: .04em; }
+.asum b { display: block; font: 700 1.7rem/1.1 var(--f-display); font-variant-numeric: tabular-nums; }
+.asteps { list-style: none; margin: 0; padding: 0; counter-reset: st; display: flex; flex-direction: column; gap: 8px; }
+.asteps li { counter-increment: st; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; }
+.asteps li::before { content: counter(st); width: 30px; height: 30px; border-radius: 9px; background: var(--tint); display: grid; place-items: center; font-weight: 700; }
+.asteps li.item::before { background: var(--accent); color: var(--on-accent); }
+.asteps .acost { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.asteps small { display: block; color: var(--ink-soft); }
+.warn { border-radius: 12px; padding: 10px 12px; background: #FDE7DC; color: #7A2A0C; }
+@media (prefers-color-scheme: dark) { .warn { background: #4A2117; color: #FFCDB8; } }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 40; display: flex; align-items: center; gap: 12px;
+  max-width: calc(100vw - 24px); padding: 10px 10px 10px 16px; border-radius: 14px; background: var(--band); color: var(--band-ink); box-shadow: var(--lift); transition: opacity .2s, transform .2s; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast .btn { height: 38px; flex: none; }
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+.newslist { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+
 /* Info-Fenster */
 dialog { border: 1px solid var(--line); border-radius: 20px; padding: 0; background: var(--sheet); color: var(--ink); width: min(690px, calc(100vw - 28px)); max-height: calc(100dvh - 28px);
   box-shadow: 0 24px 80px rgba(6, 18, 31, .35); overflow: hidden; }
@@ -193,7 +281,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
-  .tools { grid-template-columns: minmax(0, 1fr); }
+  .tools, .twocol { grid-template-columns: minmax(0, 1fr); }
 }
 /* iPhone und schmale Fenster: schwebende Tab-Leiste aus Glas */
 @media (max-width: 720px) {
@@ -216,6 +304,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   .plans { grid-template-columns: minmax(0, 1fr); }
   .tools { grid-template-columns: minmax(0, 1fr); }
   .pres .xyz b { font-size: 1.45rem; }
+  .tiles { grid-template-columns: minmax(0, 1fr); }
+  .frow { grid-template-columns: minmax(0, 1fr) 84px; }
+  .frow .btn { grid-column: 1 / -1; }
+  .asum b { font-size: 1.4rem; }
+  .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
   .ppic { height: 150px; }
   .lexcard { flex-direction: column; }
   .lexcard .ppic { width: auto; min-height: 150px; height: 150px; border-right: 0; border-bottom: 1px solid var(--line); }
@@ -236,26 +329,13 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.6C10 5.1 7.5 4.6 4 4.6v12.8c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V4.6c-3.5 0-6 .5-8 2z"/><path d="M12 6.6v12.8"/></svg>
     <span>Lexikon</span>
   </button>
-  <p class="cap" aria-hidden="true">Baupläne</p>
-  <button type="button" class="navbtn d-only" data-view="eisenfarm" title="Bauplan Eisenfarm (Strg+2)">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 18.5l2.2-7.5h10.6l2.2 7.5z"/><path d="M6.7 11l2.2-4.5h6.2l2.2 4.5"/></svg>
-    <span>Eisenfarm</span>
-  </button>
-  <button type="button" class="navbtn d-only" data-view="handelsstation" title="Bauplan Handelsstation (Strg+3)">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l6.8 4.4v8.8L12 20.8l-6.8-4.4V7.6z"/><path d="M12 8.2l3 1.9v3.8l-3 1.9-3-1.9v-3.8z"/></svg>
-    <span>Handel</span>
-  </button>
-  <button type="button" class="navbtn d-only" data-view="kaktusfarm" title="Bauplan Kaktusfarm (Strg+4)">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20.5V5a2 2 0 0 1 4 0v15.5"/><path d="M10 14H8.2a2 2 0 0 1-2-2V9.4"/><path d="M14 16.4h1.8a2 2 0 0 0 2-2v-3"/><path d="M5 20.5h14"/></svg>
-    <span>Kaktus</span>
-  </button>
-  <button type="button" class="navbtn d-only" data-view="xpfarm" title="Bauplan XP-Farm (Strg+5)">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 8.2l1.2 2.5 2.6.4-1.9 1.8.5 2.6L12 14.3l-2.4 1.2.5-2.6-1.9-1.8 2.6-.4z"/></svg>
-    <span>XP</span>
-  </button>
-  <button type="button" class="navbtn m-only" data-view="bau" title="Baupläne">
+  <button type="button" class="navbtn" data-view="bau" title="Baupläne (Strg+2)">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5L12 3.5l8 4-8 4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16.5l8 4 8-4"/></svg>
     <span>Baupläne</span>
+  </button>
+  <button type="button" class="navbtn" data-view="werkzeuge" title="Werkzeuge (Strg+3)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5a4 4 0 0 0 4.9 4.9l-8.6 8.6a2 2 0 0 1-2.8-2.8l8.6-8.6"/><path d="M14.5 5.5l2-2 4 4-2 2"/><path d="M4 4l4.5 4.5"/><path d="M3.5 7.5l4-4"/></svg>
+    <span>Werkzeuge</span>
   </button>
   <div class="spacer"></div>
   <button type="button" class="navbtn" id="infobtn" title="Über die App (F1)">
@@ -269,9 +349,9 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div class="hero">
       <div class="hero-in">
         <div>
-          <p class="eyebrow">Minecraft Bedrock Edition 1.26.60</p>
+          <p class="eyebrow">Minecraft Bedrock Edition 26.60</p>
           <h1>Bedrock-Werkbank</h1>
-          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu vier Baupläne Block für Block. Funktioniert komplett ohne Internet.</p>
+          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu fünf Baupläne Block für Block und praktische Werkzeuge. Funktioniert komplett ohne Internet.</p>
           <form class="hsearch" id="hsearch" role="search">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l4.5 4.5"/></svg>
             <input type="search" id="hq" enterkeyhint="search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Ressource suchen, z. B. Reparatur" aria-label="Ressource suchen">
@@ -310,7 +390,114 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       <section aria-labelledby="h-tools">
         <h2 id="h-tools">Werkzeuge</h2>
         <div class="tools">
-          <div class="tcard" id="portal">
+          <div class="tiles" id="tiles">
+            <button type="button" class="ttile" data-tool="liste"><span class="ticon" id="ti-liste" aria-hidden="true"></span><span><b>Sammelliste</b><small id="ts-liste"></small></span></button>
+            <button type="button" class="ttile" data-tool="orte"><span class="ticon" id="ti-orte" aria-hidden="true"></span><span><b>Koordinaten</b><small id="ts-orte"></small></span></button>
+            <button type="button" class="ttile" data-tool="amboss"><span class="ticon" id="ti-amboss" aria-hidden="true"></span><span><b>Amboss-Planer</b><small>Günstigste Reihenfolge für Zauberbücher</small></span></button>
+            <button type="button" class="ttile" data-tool="portal"><span class="ticon" id="ti-portal" aria-hidden="true"></span><span><b>Nether-Portal</b><small>Gegenportal berechnen</small></span></button>
+          </div>
+          <div class="tcard">
+            <div class="ptitle">Übersichten im Lexikon</div>
+            <div class="tlinks">
+              <button type="button" class="tlink" data-slug="orte"><span id="icon-orte"></span><span><b>Fundorte</b><small>Was in welcher Truhe liegt und welcher Mob was fallen lässt</small></span></button>
+              <button type="button" class="tlink" data-slug="berufe"><span id="icon-berufe"></span><span><b>Dorfbewohner</b><small>Alle Berufe mit ihren Angeboten, Stufe für Stufe</small></span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="install web-only" id="windl" hidden>
+        <p><b>Auch für Windows 10 und 11:</b> dieselbe App als eigenes Programm. ZIP herunterladen, entpacken, <b>Bedrock-Werkbank.exe</b> starten.</p>
+        <a class="btn primary dl" href="download/Bedrock-Werkbank-Windows.zip" download>Herunterladen</a>
+      </div>
+      <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Bilder sind eigene Zeichnungen, keine Grafiken aus dem Spiel. NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+    </div>
+  </section>
+  <section class="startview off" id="v-tools" aria-label="Werkzeuge" tabindex="-1">
+    <div class="hero thero">
+      <div class="hero-in">
+        <div>
+          <p class="eyebrow">Bedrock-Werkbank</p>
+          <h1>Werkzeuge</h1>
+          <p class="lead">Sammelliste, Koordinaten, Amboss-Planer und Portal-Rechner. Gespeichert wird alles nur auf diesem Gerät.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sv">
+      <div class="tabsbar" role="tablist" aria-label="Werkzeug wählen">
+        <button type="button" role="tab" id="tab-liste" aria-controls="tp-liste" data-tool="liste">Sammelliste</button>
+        <button type="button" role="tab" id="tab-orte" aria-controls="tp-orte" data-tool="orte">Koordinaten</button>
+        <button type="button" role="tab" id="tab-amboss" aria-controls="tp-amboss" data-tool="amboss">Amboss</button>
+        <button type="button" role="tab" id="tab-portal" aria-controls="tp-portal" data-tool="portal">Portal</button>
+      </div>
+
+      <div class="tpanel" id="tp-liste" role="tabpanel" aria-labelledby="tab-liste">
+        <div class="tcard">
+          <div class="thead2"><div class="ptitle">Sammelliste</div><span class="tcount" id="l-count"></span></div>
+          <p class="fine" id="l-empty">Noch leer. Im Lexikon schickst du das Ergebnis des Rohstoffrechners hierher, im Bauplan die Materialliste. Oder du trägst selbst etwas ein.</p>
+          <ul class="list" id="l-list"></ul>
+          <form class="frow" id="l-form" autocomplete="off">
+            <input class="inp" id="l-name" maxlength="60" placeholder="Eigener Eintrag, z. B. Fackeln" aria-label="Eintrag">
+            <input class="inp" id="l-n" type="number" min="1" max="99999" value="1" inputmode="numeric" aria-label="Anzahl">
+            <button type="submit" class="btn primary">Hinzufügen</button>
+          </form>
+          <div class="tacts">
+            <button type="button" class="btn" id="l-clean">Erledigte entfernen</button>
+            <button type="button" class="btn" id="l-copy">Als Text kopieren</button>
+            <button type="button" class="btn" id="l-clear">Alles löschen</button>
+          </div>
+          <p class="fine" id="l-msg" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="tpanel" id="tp-orte" role="tabpanel" aria-labelledby="tab-orte" hidden>
+        <div class="twocol">
+          <form class="tcard" id="o-form" autocomplete="off">
+            <div class="ptitle" id="o-title">Ort speichern</div>
+            <label class="fl">Name <input class="inp" id="o-name" maxlength="40" placeholder="z. B. Basis, Dorf, Netherfestung" required></label>
+            <div class="seg three" role="radiogroup" aria-label="Dimension" id="o-dim">
+              <button type="button" role="radio" aria-checked="true" data-dim="ober">Oberwelt</button>
+              <button type="button" role="radio" aria-checked="false" data-dim="nether">Nether</button>
+              <button type="button" role="radio" aria-checked="false" data-dim="end">End</button>
+            </div>
+            <div class="coords">
+              <label>X <input class="inp" type="number" id="o-x" step="1" placeholder="0" required></label>
+              <label>Y <input class="inp" type="number" id="o-y" step="1" placeholder="64"></label>
+              <label>Z <input class="inp" type="number" id="o-z" step="1" placeholder="0" required></label>
+            </div>
+            <label class="fl">Notiz <input class="inp" id="o-note" maxlength="80" placeholder="freiwillig"></label>
+            <div class="tacts"><button type="submit" class="btn primary" id="o-save">Speichern</button><button type="button" class="btn" id="o-cancel" hidden>Abbrechen</button></div>
+          </form>
+          <div class="tcard">
+            <div class="thead2"><div class="ptitle">Gespeicherte Orte</div><span class="tcount" id="o-count"></span></div>
+            <p class="fine" id="o-empty">Noch keine Orte. Speichere Basis, Dörfer oder Portale, dann siehst du hier auch gleich die Nether-Koordinaten dazu.</p>
+            <ul class="olist" id="o-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tpanel" id="tp-amboss" role="tabpanel" aria-labelledby="tab-amboss" hidden>
+        <div class="tcard">
+          <div class="thead">
+            <div class="ticon" id="anvilpic" aria-hidden="true"></div>
+            <div>
+              <div class="ptitle">Amboss-Planer</div>
+              <p>Die günstigste Reihenfolge, um Zauberbücher auf einen Gegenstand zu bringen, nach den Regeln der Bedrock Edition.</p>
+            </div>
+          </div>
+          <div class="twocol">
+            <label class="fl">Gegenstand <select class="inp" id="a-item"></select></label>
+            <label class="fl">Gegenstand war schon am Amboss <select class="inp" id="a-used">
+              <option value="0">noch nie</option><option value="1">1-mal</option><option value="2">2-mal</option><option value="3">3-mal</option><option value="4">4-mal</option><option value="5">5-mal</option>
+            </select></label>
+          </div>
+          <div><p class="fl" style="margin:0 0 6px">Verzauberungen (je ein Buch)</p><div class="erows" id="a-ench"></div></div>
+          <div class="aout" id="a-out" aria-live="polite"></div>
+          <p class="fine">Gerechnet wird mit Büchern, die je eine Verzauberung tragen, und einem Gegenstand ohne Verzauberungen. Jeder Schritt am Amboss kostet die Level der übertragenen Verzauberungen mal ihren Faktor, dazu einen Zuschlag für jedes frühere Mal am Amboss (1, 3, 7, 15 …). Ab 40 Level heißt es „Zu teuer!“, solche Schritte schlägt der Planer nie vor.</p>
+        </div>
+      </div>
+
+      <div class="tpanel" id="tp-portal" role="tabpanel" aria-labelledby="tab-portal" hidden>
+        <div class="tcard" id="portal">
             <div class="thead">
               <div class="ticon" id="portalpic" aria-hidden="true"></div>
               <div>
@@ -332,27 +519,36 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
               <small id="pto"></small>
               <div class="xyz"><div><span>X</span><b id="rx">0</b></div><div><span>Y</span><b id="ry">64</b></div><div><span>Z</span><b id="rz">0</b></div></div>
             </div>
+            <div class="tacts"><button type="button" class="btn" id="psave">Als Ort speichern</button></div>
             <p class="fine">Im Nether zählt jeder Block wie acht Blöcke in der Oberwelt. X und Z werden deshalb durch 8 geteilt und abgerundet, auf dem Rückweg mal 8 genommen. Die Höhe Y bleibt gleich. Steht in der Nähe schon ein anderes Portal, verbindet das Spiel womöglich mit diesem, also das zweite Portal genau an diese Stelle bauen. Deine Koordinaten zeigt das Spiel, wenn du in den Welteinstellungen <b>Koordinaten anzeigen</b> einschaltest.</p>
           </div>
-          <div class="tcard">
-            <div class="ptitle">Übersichten im Lexikon</div>
-            <div class="tlinks">
-              <button type="button" class="tlink" data-slug="orte"><span id="icon-orte"></span><span><b>Fundorte</b><small>Was in welcher Truhe liegt und welcher Mob was fallen lässt</small></span></button>
-              <button type="button" class="tlink" data-slug="berufe"><span id="icon-berufe"></span><span><b>Dorfbewohner</b><small>Alle Berufe mit ihren Angeboten, Stufe für Stufe</small></span></button>
-            </div>
-          </div>
-        </div>
-      </section>
-      <div class="install web-only" id="windl" hidden>
-        <p><b>Auch für Windows 10 und 11:</b> dieselbe App als eigenes Programm. ZIP herunterladen, entpacken, <b>Bedrock-Werkbank.exe</b> starten.</p>
-        <a class="btn primary dl" href="download/Bedrock-Werkbank-Windows.zip" download>Herunterladen</a>
       </div>
-      <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Bilder sind eigene Zeichnungen, keine Grafiken aus dem Spiel.</p>
+
+      <div class="tcard" id="sync">
+        <div class="ptitle">Daten übertragen</div>
+        <p class="fine" style="margin:0">Sammelliste, Orte und Baufortschritt vom iPhone auf den PC mitnehmen oder umgekehrt: hier kopieren, auf dem anderen Gerät einfügen, zum Beispiel über eine Nachricht an dich selbst.</p>
+        <div class="tacts"><button type="button" class="btn" id="s-export">Daten kopieren</button><button type="button" class="btn" id="s-import">Daten einfügen</button></div>
+        <textarea class="inp" id="s-text" rows="4" spellcheck="false" aria-label="Daten" hidden></textarea>
+        <div class="tacts" id="s-row" hidden><button type="button" class="btn primary" id="s-apply">Übernehmen</button></div>
+        <p class="fine" id="s-msg" aria-live="polite" style="margin:0"></p>
+      </div>
     </div>
   </section>
   <iframe id="f-lex" title="Ressourcen-Lexikon" class="off"></iframe>
   <iframe id="f-bau" title="Baupläne" class="off"></iframe>
 </main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-t"></span><button type="button" class="btn primary" id="toast-b">Ansehen</button></div>
+
+<dialog id="news" aria-labelledby="news-h">
+  <div class="dhead">
+    <div><h2 id="news-h">Neu in Version 1.3</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+  </div>
+  <div class="dbody">
+    <ul class="newslist" id="newslist"></ul>
+  </div>
+  <div class="dfoot"><button type="button" class="btn primary" id="news-ok">Los geht's</button></div>
+</dialog>
 
 <dialog id="info" aria-labelledby="info-h">
   <div class="dhead">
@@ -360,16 +556,16 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.2 · Datenstand Bedrock Edition 1.26.60</p>
+      <p>Version 1.3 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
-    <p>Ressourcen-Lexikon und die Baupläne für Eisenfarm, Handelsstation, Kaktusfarm und XP-Farm in einer App. Alles läuft ohne Internet. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <p>Ressourcen-Lexikon, die Baupläne für Eisenfarm, Handelsstation, Kaktusfarm, XP-Farm und Zuckerrohrfarm und die Werkzeuge in einer App. Alles läuft ohne Internet. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
     <div class="exe-only">
       <h3>Tastatur</h3>
       <dl class="keys">
         <dt><kbd>Strg</kbd> + <kbd>0</kbd></dt><dd>Startseite</dd>
-        <dt><kbd>Strg</kbd> + <kbd>1</kbd> bis <kbd>5</kbd></dt><dd>Lexikon und die vier Baupläne</dd>
+        <dt><kbd>Strg</kbd> + <kbd>1</kbd> / <kbd>2</kbd> / <kbd>3</kbd></dt><dd>Lexikon, Baupläne, Werkzeuge</dd>
         <dt><kbd>Strg</kbd> + <kbd>K</kbd></dt><dd>Suchen</dd>
         <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Ebene im Bauplan wechseln</dd>
         <dt><kbd>Strg</kbd> + <kbd>P</kbd></dt><dd>Aktuelle Ansicht drucken</dd>
@@ -378,9 +574,9 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <dt><kbd>F1</kbd></dt><dd>Dieses Fenster</dd>
       </dl>
     </div>
-    <p class="small web-only">Als Web-App auf dem Home-Bildschirm lädt sie Neuerungen automatisch, sobald du online bist. Gespeichert wird nur, welchen Bereich du zuletzt offen hattest.</p>
-    <p class="small">Inoffizielles Hilfsprogramm. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Die App enthält keine Grafiken aus dem Spiel.</p>
-    <p class="small exe-only">Das Programm legt nur einen Ordner an: <span style="white-space:nowrap">%LocalAppData%\BedrockWerkbank</span> (Zwischenspeicher der Anzeige). Zum Entfernen die EXE und diesen Ordner löschen.</p>
+    <p class="small web-only">Als Web-App auf dem Home-Bildschirm lädt sie Neuerungen automatisch, sobald du online bist. Gespeichert wird nur auf diesem Gerät: was du zuletzt offen hattest, Sammelliste, Orte und Baufortschritt.</p>
+    <p class="small">Inoffizielles Hilfsprogramm. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Die App enthält keine Grafiken aus dem Spiel.<br>NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+    <p class="small exe-only">Das Programm legt nur einen Ordner an: <span style="white-space:nowrap">%LocalAppData%\BedrockWerkbank</span> (Zwischenspeicher der Anzeige und deine gespeicherten Listen). Zum Entfernen die EXE und diesen Ordner löschen.</p>
     <pre class="lic" id="lic" tabindex="0" hidden></pre>
   </div>
   <div class="dfoot">
@@ -392,23 +588,21 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9}];
+  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
+  var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
+  var APPVER = '1.3';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
-  var VIEWS = [
-    { id: 'start', frame: null, title: 'Start' },
-    { id: 'lexikon', frame: 'lex', title: 'Ressourcen-Lexikon' },
-    { id: 'eisenfarm', frame: 'bau', title: 'Bauplan Eisenfarm' },
-    { id: 'handelsstation', frame: 'bau', title: 'Bauplan Handelsstation' },
-    { id: 'kaktusfarm', frame: 'bau', title: 'Bauplan Kaktusfarm' },
-    { id: 'xpfarm', frame: 'bau', title: 'Bauplan XP-Farm' }
-  ];
+  var VIEWS = [{ id: 'start', frame: null, el: 'v-start', title: 'Start' }, { id: 'lexikon', frame: 'lex', title: 'Ressourcen-Lexikon' }]
+    .concat(PLANS.map(function (p) { return { id: p.id, frame: 'bau', title: 'Bauplan ' + p.title }; }))
+    .concat([{ id: 'werkzeuge', frame: null, el: 'v-tools', title: 'Werkzeuge' }]);
+  var KEYS = ['start', 'lexikon', 'bau', 'werkzeuge'];
   var PATHS = { lex: 'lexikon/', bau: 'bauplaene/' };
   var $ = function (id) { return document.getElementById(id); };
   var frames = { lex: $('f-lex'), bau: $('f-bau') };
   var ready = { lex: false, bau: false };
-  var startEl = $('v-start');
+  var startEl = $('v-start'), toolsEl = $('v-tools'), inline = [startEl, toolsEl];
   var buttons = Array.prototype.slice.call(document.querySelectorAll('.navbtn[data-view]'));
   var info = $('info');
   var byId = {}, cur = null, lastPlan = 'eisenfarm';
@@ -440,6 +634,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   }
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
             glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B', end: '#DCD9A6',
+            mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C', paper: '#EEE6D2', anvil: '#5A616B',
             grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
   function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
   var SCENES = {
@@ -448,6 +643,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
       [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]]),
     xpfarm: [].concat(box(0, 0, 0, 4, 4, K.stone), box(0, 0, 1, 4, 4, K.water, .35), box(1, 1, 1.35, 2, 2, K.stone, 1), box(1, 1, 2.35, 2, 2, K.stone, 1), box(1, 1, 3.35, 2, 2, K.stone, 1), box(0, 0, 4.35, 4, 4, K.end, .5), [[1.5, 1.5, 4.85, K.purple, .45]]),
+    zuckerrohr: [].concat(box(0, 0, 0, 4, 1, K.mud), box(0, 1, 0, 4, 1, K.water, .7), box(0, 2, 0, 4, 1, K.mud),
+      box(0, 0, 1, 4, 1, K.cane), box(0, 0, 2, 4, 1, K.cane), box(0, 2, 1, 4, 1, K.cane), box(0, 3, 1, 4, 1, K.stone), box(0, 3, 2, 4, 1, K.piston), box(0, 3, 3, 4, 1, K.dark, .9)),
     lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
     hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
       [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],
@@ -467,6 +664,9 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     return list.map(function (e) { return '<button type="button" class="qchip" data-item="' + esc(e[0]) + '">' + chipIcon(e[2] || '#0B5CAD') + '<span>' + esc(e[1]) + '</span></button>'; }).join('');
   }
   $('popular').innerHTML = chipsFor(POPULAR);
+  $('ti-liste').innerHTML = iso([[0, 0, 0, K.paper, .25], [0, 0, .25, K.paper, .25], [0.15, 0.1, .5, K.stone, .5]]);
+  $('ti-orte').innerHTML = iso([[0, 0, 0, K.grass], [1, 0, 0, K.grass], [0.5, 0.5, 1, K.copper, .5]]);
+  $('ti-amboss').innerHTML = iso([[0, 0, 0, K.anvil, .4], [0.25, 0, .4, K.anvil, .4], [0, 0, .8, K.anvil, .5]]);
   $('icon-orte').innerHTML = iso([[0, 0, 0, K.wood, .8], [1.2, 0, 0, K.stone], [1.2, 0, 1, K.end, .5]]);
   $('icon-berufe').innerHTML = iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]);
 
@@ -475,7 +675,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   (function () {
     var c = [];
     for (var x = 0; x < 4; x++) for (var z = 0; z < 5; z++) c.push([x, 0, z, (x === 0 || x === 3 || z === 0 || z === 4) ? OBS : PUR]);
-    $('portalpic').innerHTML = iso(c);
+    $('portalpic').innerHTML = $('ti-portal').innerHTML = iso(c);
+    $('anvilpic').innerHTML = iso([[0, 0, 0, K.anvil, .4], [0.25, 0, .4, K.anvil, .4], [0, 0, .8, K.anvil, .5]]);
   })();
   var portal = { dir: 'nether', x: '', y: '', z: '' };
   try { var ps = JSON.parse(load('portal') || 'null'); if (ps && (ps.dir === 'nether' || ps.dir === 'ober')) portal = ps; } catch (e) {}
@@ -506,6 +707,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     e.preventDefault(); var other = this.querySelector('button[aria-checked="false"]'); other.click(); other.focus();
   });
   calcPortal();
+  $('psave').addEventListener('click', function () {
+    resetForm(); setDim(portal.dir === 'nether' ? 'ober' : 'nether');
+    $('o-x').value = portal.x; $('o-y').value = portal.y; $('o-z').value = portal.z;
+    tool = 'orte'; save('tool', tool); renderTools(); $('o-name').focus();
+  });
 
   // Zuletzt angesehen: Einträge aus dem Lexikon (Namen stehen in dessen Daten)
   var names = null;
@@ -537,15 +743,15 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   }
   function focusView() {
     if (!cur || info.open) return;
-    if (!cur.frame) { try { startEl.focus({ preventScroll: true }); } catch (e) {} return; }
+    if (!cur.frame) { try { $(cur.el).focus({ preventScroll: true }); } catch (e) {} return; }
     try { frames[cur.frame].contentWindow.focus(); } catch (e) {}
   }
   function show(id, fromFrame) {
     if (id === 'bau') id = lastPlan;
     var v = byId[id]; if (!v) return;
     cur = v;
-    [startEl, frames.lex, frames.bau].forEach(function (el) {
-      var on = (el === startEl && !v.frame) || el === frames[v.frame];
+    [startEl, toolsEl, frames.lex, frames.bau].forEach(function (el) {
+      var on = v.frame ? el === frames[v.frame] : el.id === v.el;
       el.classList.toggle('off', !on); el.classList.toggle('on', on);
     });
     buttons.forEach(function (b) {
@@ -556,7 +762,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       lastPlan = id; save('plan', id);
       if (!fromFrame && ready.bau) { try { var w = frames.bau.contentWindow; if (w.location.hash !== '#' + id) w.location.hash = id; } catch (e) {} }
     }
-    if (!v.frame) renderRecent();
+    if (id === 'start') { renderRecent(); renderTiles(); }
+    if (id === 'werkzeuge') renderTools();
     setTitle(v.title);
     focusView();
   }
@@ -581,6 +788,305 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     } catch (e) {}
   }
 
+  /* ---------- Werkzeuge ---------- */
+  function loadJSON(k, d) { try { var v = JSON.parse(load(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } }
+  function saveJSON(k, v) { save(k, JSON.stringify(v)); }
+  function fmtN(n) { return Number(n).toLocaleString('de-DE'); }
+  function plural(n, a, b) { return fmtN(n) + ' ' + (n === 1 ? a : b); }
+  var tool = load('tool') || 'liste';
+  if (['liste', 'orte', 'amboss', 'portal'].indexOf(tool) < 0) tool = 'liste';
+  function openTool(t) { tool = t; save('tool', t); show('werkzeuge'); }
+  function renderTools() {
+    [].forEach.call(document.querySelectorAll('.tabsbar [data-tool]'), function (b) {
+      var on = b.getAttribute('data-tool') === tool; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+    });
+    ['liste', 'orte', 'amboss', 'portal'].forEach(function (t) { $('tp-' + t).hidden = t !== tool; });
+    if (tool === 'liste') renderList();
+    if (tool === 'orte') renderPlaces();
+    if (tool === 'amboss') renderAnvil();
+  }
+  toolsEl.querySelector('.tabsbar').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-tool]'); if (!b) return; tool = b.getAttribute('data-tool'); save('tool', tool); renderTools();
+  });
+  toolsEl.querySelector('.tabsbar').addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    var bs = [].slice.call(this.querySelectorAll('[data-tool]')), i = bs.findIndex(function (b) { return b.getAttribute('data-tool') === tool; });
+    i = (i + (e.key === 'ArrowRight' ? 1 : bs.length - 1)) % bs.length; tool = bs[i].getAttribute('data-tool'); save('tool', tool); renderTools(); bs[i].focus();
+  });
+  function arm(btn, label, run) {
+    // Zweimal tippen statt Rückfrage-Fenster (funktioniert überall, auch eingebettet)
+    if (btn.hasAttribute('data-armed')) { clearTimeout(btn._t); btn.removeAttribute('data-armed'); btn.textContent = btn._l; run(); return; }
+    btn._l = btn.textContent; btn.setAttribute('data-armed', ''); btn.textContent = label;
+    btn._t = setTimeout(function () { btn.removeAttribute('data-armed'); btn.textContent = btn._l; }, 4000);
+  }
+  function copyText(t, done) {
+    function fallback() {
+      var ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {} ta.remove(); done(ok);
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(function () { done(true); }, fallback); else fallback();
+  }
+  var toastT = null, toastGo = null;
+  function toast(text, go) {
+    $('toast-t').textContent = text; toastGo = go; $('toast-b').hidden = !go;
+    $('toast').classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function () { $('toast').classList.remove('show'); }, 5000);
+  }
+  $('toast-b').addEventListener('click', function () { $('toast').classList.remove('show'); if (toastGo) toastGo(); });
+
+  /* Sammelliste: [{k, t, n, d, s}] – k ist eine Lexikon-Kennung, 'mat:…' oder 'own:…' */
+  var list = loadJSON('liste', []);
+  if (!Array.isArray(list)) list = [];
+  list = list.filter(function (e) { return e && typeof e.k === 'string' && typeof e.t === 'string' && e.n > 0; });
+  function storeList() { saveJSON('liste', list); }
+  window.bwList = {
+    add: function (entries, source) {
+      var added = 0;
+      (entries || []).forEach(function (e) {
+        var n = Math.max(1, Math.round(+e.n || 0)); if (!e.k || !e.t || !isFinite(n)) return;
+        var old = list.find(function (x) { return x.k === e.k; });
+        if (old) { old.n += n; old.d = false; if (source && (old.s || '').indexOf(source) < 0) old.s = old.s ? old.s + ', ' + source : source; }
+        else list.push({ k: String(e.k), t: String(e.t), n: n, d: false, s: source || '' });
+        added++;
+      });
+      storeList();
+      toast(plural(added, 'Eintrag', 'Einträge') + ' auf der Sammelliste', function () { openTool('liste'); });
+      return added;
+    }
+  };
+  function renderList() {
+    var open = list.filter(function (e) { return !e.d; }).length;
+    $('l-count').textContent = list.length ? open + ' offen · ' + (list.length - open) + ' erledigt' : '';
+    $('l-empty').hidden = !!list.length;
+    var sorted = list.map(function (e, i) { return [e, i]; }).sort(function (a, b) { return (a[0].d - b[0].d) || (a[1] - b[1]); });
+    $('l-list').innerHTML = sorted.map(function (x) {
+      var e = x[0], i = x[1], lex = !/^(mat|own):/.test(e.k);
+      return '<li class="li' + (e.d ? ' done' : '') + '" data-i="' + i + '"><button type="button" class="chk" aria-pressed="' + e.d + '" aria-label="' + esc(e.t) + ' erledigt"></button>' +
+        '<div class="lbody"><b>' + fmtN(e.n) + ' ×</b> ' + (lex ? '<button type="button" class="lname" data-open="' + esc(slug(e.k)) + '">' + esc(e.t) + '</button>' : '<span class="ltext">' + esc(e.t) + '</span>') +
+        (e.s ? '<small>für ' + esc(e.s) + '</small>' : '') + '</div><button type="button" class="xbtn" aria-label="' + esc(e.t) + ' entfernen">×</button></li>';
+    }).join('');
+    $('l-clean').disabled = !list.some(function (e) { return e.d; });
+    $('l-copy').disabled = $('l-clear').disabled = !list.length;
+  }
+  $('l-list').addEventListener('click', function (e) {
+    var li = e.target.closest('.li'); if (!li) return; var i = +li.getAttribute('data-i');
+    if (e.target.closest('.chk')) { list[i].d = !list[i].d; storeList(); renderList(); return; }
+    if (e.target.closest('.xbtn')) { list.splice(i, 1); storeList(); renderList(); return; }
+    var o = e.target.closest('[data-open]'); if (o) openItem(o.getAttribute('data-open'));
+  });
+  $('l-form').addEventListener('submit', function (e) {
+    e.preventDefault(); var t = $('l-name').value.trim(), n = Math.max(1, Math.round(+$('l-n').value || 1)); if (!t) { $('l-name').focus(); return; }
+    var k = 'own:' + t.toLowerCase(), old = list.find(function (x) { return x.k === k; });
+    if (old) { old.n += n; old.d = false; } else list.push({ k: k, t: t, n: n, d: false, s: '' });
+    storeList(); $('l-name').value = ''; $('l-n').value = 1; renderList(); $('l-name').focus();
+  });
+  $('l-clean').addEventListener('click', function () { list = list.filter(function (e) { return !e.d; }); storeList(); renderList(); });
+  $('l-clear').addEventListener('click', function () { arm(this, 'Wirklich alles löschen?', function () { list = []; storeList(); renderList(); }); });
+  $('l-copy').addEventListener('click', function () {
+    var t = 'Sammelliste\n' + list.filter(function (e) { return !e.d; }).map(function (e) { return '- ' + fmtN(e.n) + ' × ' + e.t; }).join('\n');
+    copyText(t, function (ok) { $('l-msg').textContent = ok ? 'Die offenen Einträge sind kopiert.' : 'Kopieren hat nicht geklappt.'; setTimeout(function () { $('l-msg').textContent = ''; }, 4000); });
+  });
+
+  /* Koordinaten: [{id, name, dim, x, y, z, note}] */
+  var DIMS = { ober: 'Oberwelt', nether: 'Nether', end: 'End' };
+  var places = loadJSON('orte', []); if (!Array.isArray(places)) places = [];
+  var edit = null, odim = 'ober';
+  function storePlaces() { saveJSON('orte', places); }
+  function sgn(n) { return (n < 0 ? '−' : '') + fmtN(Math.abs(n)); }
+  function setDim(d) { odim = d; [].forEach.call($('o-dim').querySelectorAll('[data-dim]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-dim') === d)); }); }
+  $('o-dim').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (b) setDim(b.getAttribute('data-dim')); });
+  function resetForm() { edit = null; $('o-form').reset(); setDim('ober'); $('o-title').textContent = 'Ort speichern'; $('o-save').textContent = 'Speichern'; $('o-cancel').hidden = true; }
+  function renderPlaces() {
+    $('o-count').textContent = places.length ? plural(places.length, 'Ort', 'Orte') : '';
+    $('o-empty').hidden = !!places.length;
+    $('o-list').innerHTML = places.map(function (p, i) {
+      var conv = p.dim === 'ober' ? 'Im Nether: X ' + sgn(Math.floor(p.x / 8)) + ' · Z ' + sgn(Math.floor(p.z / 8)) : p.dim === 'nether' ? 'In der Oberwelt: X ' + sgn(p.x * 8) + ' · Z ' + sgn(p.z * 8) : '';
+      return '<li class="oitem" data-i="' + i + '"><div class="otop"><b>' + esc(p.name) + '</b><span class="dim ' + p.dim + '">' + DIMS[p.dim] + '</span></div>' +
+        '<div class="oxyz">X ' + sgn(p.x) + (p.y != null ? ' · Y ' + sgn(p.y) : '') + ' · Z ' + sgn(p.z) + '</div>' + (conv ? '<div class="oconv">' + conv + '</div>' : '') +
+        (p.note ? '<div class="onote">' + esc(p.note) + '</div>' : '') +
+        '<div class="tacts">' + (p.dim !== 'end' ? '<button type="button" class="btn" data-act="portal">Portal-Rechner</button>' : '') +
+        '<button type="button" class="btn" data-act="edit">Ändern</button><button type="button" class="btn" data-act="del">Löschen</button></div></li>';
+    }).join('');
+  }
+  $('o-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('o-name').value.trim(), x = $('o-x').value, z = $('o-z').value, y = $('o-y').value;
+    if (!name || x === '' || z === '' || !isFinite(+x) || !isFinite(+z)) return;
+    var p = { id: edit != null ? places[edit].id : Date.now().toString(36), name: name, dim: odim, x: Math.trunc(+x), y: y === '' || !isFinite(+y) ? null : Math.trunc(+y), z: Math.trunc(+z), note: $('o-note').value.trim() };
+    if (edit != null) places[edit] = p; else places.unshift(p);
+    storePlaces(); resetForm(); renderPlaces();
+  });
+  $('o-cancel').addEventListener('click', function () { resetForm(); });
+  $('o-list').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]'); if (!b) return; var i = +b.closest('.oitem').getAttribute('data-i'), p = places[i], act = b.getAttribute('data-act');
+    if (act === 'del') { arm(b, 'Wirklich löschen?', function () { places.splice(i, 1); storePlaces(); if (edit === i) resetForm(); renderPlaces(); }); return; }
+    if (act === 'edit') {
+      edit = i; $('o-name').value = p.name; $('o-x').value = p.x; $('o-y').value = p.y == null ? '' : p.y; $('o-z').value = p.z; $('o-note').value = p.note || ''; setDim(p.dim);
+      $('o-title').textContent = 'Ort ändern'; $('o-save').textContent = 'Änderung speichern'; $('o-cancel').hidden = false; $('o-name').focus(); return;
+    }
+    if (act === 'portal') {
+      portal.dir = p.dim === 'ober' ? 'nether' : 'ober'; portal.x = String(p.x); portal.y = p.y == null ? '' : String(p.y); portal.z = String(p.z);
+      ['x', 'y', 'z'].forEach(function (k) { $('p' + k).value = portal[k]; }); calcPortal(); tool = 'portal'; save('tool', tool); renderTools();
+    }
+  });
+
+  /* Amboss-Planer (Bedrock): Kosten = Zuschlag beider Seiten + Stufe × Buchfaktor der übertragenen Verzauberungen */
+  var BOOKMULT = { protection: 1, fire_protection: 1, feather_falling: 1, blast_protection: 2, projectile_protection: 1, thorns: 4, respiration: 2, depth_strider: 2,
+    aqua_affinity: 2, sharpness: 1, smite: 1, bane_of_arthropods: 1, knockback: 1, fire_aspect: 2, looting: 2, efficiency: 1, silk_touch: 4, unbreaking: 1, fortune: 2,
+    power: 1, punch: 2, flame: 2, infinity: 4, luck_of_the_sea: 2, lure: 2, frost_walker: 2, mending: 2, impaling: 1, riptide: 2, loyalty: 1, channeling: 4, multishot: 2,
+    piercing: 1, quick_charge: 1, soul_speed: 4, swift_sneak: 4, density: 1, breach: 2, wind_burst: 2, lunge: 1 };
+  var PROT = ['protection', 'fire_protection', 'blast_protection', 'projectile_protection'];
+  var ITEMS = [
+    ['schwert', 'Schwert', ['sharpness', 'smite', 'bane_of_arthropods', 'knockback', 'fire_aspect', 'looting', 'unbreaking', 'mending'], ['sharpness', 'looting', 'fire_aspect', 'unbreaking', 'mending']],
+    ['axt', 'Axt', ['sharpness', 'smite', 'bane_of_arthropods', 'efficiency', 'fortune', 'silk_touch', 'unbreaking', 'mending'], ['sharpness', 'efficiency', 'unbreaking', 'mending']],
+    ['werkzeug', 'Spitzhacke, Schaufel oder Hacke', ['efficiency', 'fortune', 'silk_touch', 'unbreaking', 'mending'], ['efficiency', 'fortune', 'unbreaking', 'mending']],
+    ['speer', 'Speer', ['sharpness', 'smite', 'bane_of_arthropods', 'knockback', 'fire_aspect', 'looting', 'lunge', 'unbreaking', 'mending'], ['sharpness', 'looting', 'lunge', 'unbreaking', 'mending']],
+    ['kolben', 'Streitkolben', ['smite', 'bane_of_arthropods', 'density', 'breach', 'fire_aspect', 'wind_burst', 'unbreaking', 'mending'], ['density', 'wind_burst', 'fire_aspect', 'unbreaking', 'mending']],
+    ['bogen', 'Bogen', ['power', 'punch', 'flame', 'infinity', 'unbreaking', 'mending'], ['power', 'punch', 'flame', 'infinity', 'unbreaking']],
+    ['armbrust', 'Armbrust', ['multishot', 'piercing', 'quick_charge', 'unbreaking', 'mending'], ['multishot', 'quick_charge', 'unbreaking', 'mending']],
+    ['dreizack', 'Dreizack', ['impaling', 'loyalty', 'riptide', 'channeling', 'unbreaking', 'mending'], ['impaling', 'loyalty', 'channeling', 'unbreaking', 'mending']],
+    ['helm', 'Helm', PROT.concat(['respiration', 'aqua_affinity', 'thorns', 'unbreaking', 'mending']), ['protection', 'respiration', 'aqua_affinity', 'unbreaking', 'mending']],
+    ['brust', 'Brustpanzer', PROT.concat(['thorns', 'unbreaking', 'mending']), ['protection', 'unbreaking', 'mending']],
+    ['hose', 'Hose', PROT.concat(['thorns', 'swift_sneak', 'unbreaking', 'mending']), ['protection', 'swift_sneak', 'unbreaking', 'mending']],
+    ['stiefel', 'Stiefel', PROT.concat(['feather_falling', 'depth_strider', 'frost_walker', 'soul_speed', 'thorns', 'unbreaking', 'mending']), ['protection', 'feather_falling', 'depth_strider', 'soul_speed', 'unbreaking', 'mending']],
+    ['angel', 'Angel', ['luck_of_the_sea', 'lure', 'unbreaking', 'mending'], ['luck_of_the_sea', 'lure', 'unbreaking', 'mending']],
+    ['elytren', 'Elytren', ['unbreaking', 'mending'], ['unbreaking', 'mending']],
+    ['schere', 'Schere', ['efficiency', 'unbreaking', 'mending'], ['efficiency', 'unbreaking', 'mending']],
+    ['schild', 'Schild', ['unbreaking', 'mending'], ['unbreaking', 'mending']]
+  ].map(function (r) { return { id: r[0], name: r[1], all: r[2].filter(function (x) { return ANVIL[x]; }), def: r[3].filter(function (x) { return ANVIL[x]; }) }; });
+  var ROMAN = ['', 'I', 'II', 'III', 'IV', 'V'];
+  var aState = loadJSON('amboss', null);
+  if (!aState || !ITEMS.some(function (it) { return it.id === aState.item; })) aState = { item: 'schwert', used: 0, sel: null };
+  function aItem() { return ITEMS.find(function (it) { return it.id === aState.item; }); }
+  function aSel() {
+    var it = aItem();
+    if (!aState.sel) { aState.sel = {}; it.def.forEach(function (e) { aState.sel[e] = ANVIL[e][1]; }); }
+    return aState.sel;
+  }
+  function conflicts(e, sel) { return Object.keys(sel).filter(function (x) { return x !== e && ((ANVIL[e][2] || []).indexOf(x) >= 0 || (ANVIL[x][2] || []).indexOf(e) >= 0); }); }
+  function anvilPlan(books, used) {
+    var n = books.length, N = 1 << n, LIM = 40, val = [], B = [], T = [], S, A;
+    function pwp(w) { return (1 << w) - 1; }
+    for (S = 0; S < N; S++) { var v = 0; for (var i = 0; i < n; i++) if (S & (1 << i)) v += books[i].v; val[S] = v; }
+    function put(tab, S, w, rec) { var m = tab[S] || (tab[S] = {}); if (!m[w] || rec.c < m[w].c) m[w] = rec; }
+    for (var i = 0; i < n; i++) put(B, 1 << i, 0, { c: 0 });
+    for (S = 1; S < N; S++) {
+      if (!(S & (S - 1))) continue;
+      for (A = (S - 1) & S; A > 0; A = (A - 1) & S) {
+        var C = S ^ A, ba = B[A], bc = B[C]; if (!ba || !bc) continue;
+        for (var wa in ba) for (var wc in bc) {
+          var step = pwp(+wa) + pwp(+wc) + val[C]; if (step >= LIM) continue;
+          put(B, S, Math.max(+wa, +wc) + 1, { c: ba[wa].c + bc[wc].c + step, a: A, b: C, wa: +wa, wb: +wc, st: step });
+        }
+      }
+    }
+    put(T, 0, used, { c: 0 });
+    for (S = 1; S < N; S++) {
+      for (C = S; C > 0; C = (C - 1) & S) {
+        var R = S ^ C, tr = T[R], bc2 = B[C]; if (!tr || !bc2) continue;
+        for (var wr in tr) for (var wc2 in bc2) {
+          var st2 = pwp(+wr) + pwp(+wc2) + val[C]; if (st2 >= LIM) continue;
+          put(T, S, Math.max(+wr, +wc2) + 1, { c: tr[wr].c + bc2[wc2].c + st2, r: R, b: C, wr: +wr, wb: +wc2, st: st2 });
+        }
+      }
+    }
+    var best = null, bw = null, fin = T[N - 1] || {};
+    for (var w in fin) if (!best || fin[w].c < best.c) { best = fin[w]; bw = +w; }
+    if (!best) return null;
+    var steps = [];
+    function label(S) { var a = []; for (var i = 0; i < n; i++) if (S & (1 << i)) a.push(books[i].name + (ANVIL[books[i].id][1] > 1 ? ' ' + ROMAN[books[i].lv] : '')); return a; }
+    function book(S, w) { if (!(S & (S - 1))) return; var r = B[S][w]; book(r.a, r.wa); book(r.b, r.wb); steps.push({ item: false, t: label(r.a), s: label(r.b), c: r.st }); }
+    function item(S, w) { if (!S) return; var r = T[S][w]; item(r.r, r.wr); book(r.b, r.wb); steps.push({ item: true, t: label(r.r), s: label(r.b), c: r.st }); }
+    item(N - 1, bw);
+    return { total: best.c, steps: steps, max: Math.max.apply(null, steps.map(function (x) { return x.c; }).concat([0])), work: bw };
+  }
+  function renderAnvil() {
+    if (!$('a-item').options.length) $('a-item').innerHTML = ITEMS.map(function (it) { return '<option value="' + it.id + '">' + esc(it.name) + '</option>'; }).join('');
+    $('a-item').value = aState.item; $('a-used').value = String(aState.used || 0);
+    var it = aItem(), sel = aSel();
+    $('a-ench').innerHTML = it.all.map(function (e) {
+      var on = e in sel, cf = on ? [] : conflicts(e, sel), mx = ANVIL[e][1];
+      return '<div class="erow' + (on ? ' on' : '') + (cf.length ? ' off' : '') + '" data-e="' + e + '"><button type="button" class="etog" aria-pressed="' + on + '"' + (cf.length ? ' aria-disabled="true"' : '') + '><span>' + esc(ANVIL[e][0]) +
+        (cf.length ? '<small>passt nicht zu ' + esc(cf.map(function (x) { return ANVIL[x][0]; }).join(', ')) + '</small>' : '') + '</span></button>' +
+        (mx > 1 ? '<select aria-label="Stufe ' + esc(ANVIL[e][0]) + '"' + (on ? '' : ' disabled') + '>' + ROMAN.slice(1, mx + 1).map(function (r, k) { return '<option value="' + (k + 1) + '"' + ((sel[e] || mx) === k + 1 ? ' selected' : '') + '>' + r + '</option>'; }).join('') + '</select>' : '') + '</div>';
+    }).join('');
+    var books = Object.keys(sel).map(function (e) { return { id: e, name: ANVIL[e][0], lv: sel[e], v: sel[e] * (BOOKMULT[e] || 1) }; });
+    var out = '';
+    if (!books.length) out = '<p class="fine">Wähle mindestens eine Verzauberung.</p>';
+    else {
+      var plan = anvilPlan(books, +aState.used || 0);
+      if (!plan) out = '<p class="warn"><b>Zu teuer:</b> In jeder Reihenfolge kostet mindestens ein Schritt 40 Level oder mehr. Lass eine Verzauberung weg oder nimm einen Gegenstand, der noch nie am Amboss war.</p>';
+      else {
+        out = '<div class="asum"><div><span>Gesamt</span><b>' + plan.total + ' Level</b></div><div><span>Schritte</span><b>' + plan.steps.length + '</b></div><div><span>Teuerster Schritt</span><b>' + plan.max + ' Level</b></div></div><ol class="asteps">' +
+          plan.steps.map(function (st) {
+            var tgt = st.item ? aItem().name + (st.t.length ? ' (mit ' + st.t.join(', ') + ')' : '') : 'Buch ' + st.t.join(', ');
+            return '<li class="' + (st.item ? 'item' : '') + '"><span>' + esc(tgt) + ' <b>+</b> Buch ' + esc(st.s.join(', ')) + '<small>' + (st.item ? 'Gegenstand links, Buch rechts' : 'beide Bücher in den Amboss, das erste links') + '</small></span><span class="acost">' + st.c + ' Level</span></li>';
+          }).join('') + '</ol><p class="fine" style="margin:0">Danach war der Gegenstand ' + plan.work + '-mal am Amboss. Jede weitere Reparatur kostet dann mindestens ' + ((1 << plan.work) - 1) + ' Level zusätzlich.</p>';
+      }
+    }
+    $('a-out').innerHTML = out;
+    saveJSON('amboss', aState);
+  }
+  $('a-item').addEventListener('change', function () { aState.item = this.value; aState.sel = null; renderAnvil(); });
+  $('a-used').addEventListener('change', function () { aState.used = +this.value; renderAnvil(); });
+  $('a-ench').addEventListener('click', function (e) {
+    var b = e.target.closest('.etog'); if (!b || b.getAttribute('aria-disabled') === 'true') return;
+    var id = b.closest('[data-e]').getAttribute('data-e'), sel = aSel();
+    if (id in sel) delete sel[id]; else sel[id] = ANVIL[id][1];
+    renderAnvil();
+    var nb = $('a-ench').querySelector('[data-e="' + id + '"] .etog'); if (nb) nb.focus();
+  });
+  $('a-ench').addEventListener('change', function (e) {
+    if (e.target.tagName !== 'SELECT') return; var id = e.target.closest('[data-e]').getAttribute('data-e'); aSel()[id] = +e.target.value; renderAnvil();
+    var ns = $('a-ench').querySelector('[data-e="' + id + '"] select'); if (ns) ns.focus();
+  });
+
+  /* Daten übertragen */
+  function bauKeys() { return PLANS.map(function (p) { return p.id; }); }
+  $('s-export').addEventListener('click', function () {
+    var bau = {}; bauKeys().forEach(function (id) { try { var v = JSON.parse(localStorage.getItem('bp.done.' + id) || '[]'); if (Array.isArray(v) && v.length) bau[id] = v; } catch (e) {} });
+    var data = JSON.stringify({ app: 'bedrock-werkbank', v: 1, liste: list, orte: places, bau: bau });
+    $('s-text').hidden = false; $('s-row').hidden = true; $('s-text').value = data; $('s-text').select();
+    copyText(data, function (ok) { $('s-msg').textContent = ok ? 'Kopiert. Füge den Text auf dem anderen Gerät unter Werkzeuge → Daten einfügen ein.' : 'Markiere den Text und kopiere ihn selbst.'; });
+  });
+  $('s-import').addEventListener('click', function () { $('s-text').hidden = false; $('s-row').hidden = false; $('s-text').value = ''; $('s-msg').textContent = 'Füge den kopierten Text ein und tippe auf Übernehmen.'; $('s-text').focus(); });
+  $('s-apply').addEventListener('click', function () {
+    var d; try { d = JSON.parse($('s-text').value.trim()); } catch (e) { d = null; }
+    if (!d || d.app !== 'bedrock-werkbank' || !Array.isArray(d.liste) || !Array.isArray(d.orte)) { $('s-msg').textContent = 'Das ist kein Text aus der Bedrock-Werkbank.'; return; }
+    arm(this, 'Ersetzt deine Daten hier. Sicher?', function () {
+      list = d.liste.filter(function (e) { return e && typeof e.k === 'string' && typeof e.t === 'string' && e.n > 0; });
+      places = d.orte.filter(function (p) { return p && typeof p.name === 'string' && DIMS[p.dim] && isFinite(p.x) && isFinite(p.z); });
+      storeList(); storePlaces();
+      bauKeys().forEach(function (id) { try { var v = (d.bau || {})[id]; localStorage.setItem('bp.done.' + id, JSON.stringify(Array.isArray(v) ? v.filter(function (n) { return n >= 0 && n < 99; }) : [])); } catch (e) {} });
+      try { if (ready.bau) frames.bau.contentWindow.location.reload(); } catch (e) {}
+      $('s-text').hidden = true; $('s-row').hidden = true; $('s-msg').textContent = 'Übernommen: ' + plural(list.length, 'Eintrag', 'Einträge') + ', ' + plural(places.length, 'Ort', 'Orte') + '.';
+      renderTools();
+    });
+  });
+
+  function renderTiles() {
+    var open = list.filter(function (e) { return !e.d; }).length;
+    $('ts-liste').textContent = list.length ? open + ' offen, ' + (list.length - open) + ' erledigt' : 'Rohstoffe zum Abhaken';
+    $('ts-orte').textContent = places.length ? plural(places.length, 'Ort', 'Orte') + ' gespeichert' : 'Basis, Dörfer, Portale merken';
+  }
+
+  /* Was ist neu */
+  var NEWS = ['Neuer Bereich Werkzeuge: Sammelliste zum Abhaken, Koordinaten-Notizbuch, Amboss-Planer und Portal-Rechner',
+              'Rohstoffrechner und Bauplan-Material lassen sich auf die Sammelliste schicken',
+              'Neuer Bauplan: Zuckerrohrfarm mit Beobachtern und Kolben',
+              'Steckbriefe für 62 Mobs im Lexikon: Lebenspunkte, Erfahrung, Spawnregeln',
+              'Daten zwischen iPhone und PC übertragen',
+              'Korrekturen: Versionsnummer 26.60, Rezepte fürs Inventar markiert, Hinweise zu Eisenfarm, XP-Farm und Kaktusfarm genauer'];
+  function maybeNews() {
+    var seen = load('seen');
+    if (seen === APPVER) return;
+    save('seen', APPVER);
+    if (!seen) return;                       // Erster Start: nichts Neues anzeigen
+    $('newslist').innerHTML = NEWS.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('');
+    try { $('news').showModal(); } catch (e) {}
+  }
+  $('news-ok').addEventListener('click', function () { $('news').close(); });
+  $('news').addEventListener('close', focusView);
+
   /* ---------- Links nach außen ---------- */
   function openExternal(url) {
     if (typeof window.appOpenExternal === 'function') { try { window.appOpenExternal(url); } catch (e) {} }
@@ -601,8 +1107,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     if (e.key === 'F1') { e.preventDefault(); openInfo(); return; }
     if (info.open) return;
     var mod = (e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey;
-    if (mod && e.key >= '0' && e.key <= '5') { e.preventDefault(); show(VIEWS[+e.key].id); return; }
-    if (mod && (e.key === 'k' || e.key === 'K') && cur && !cur.frame) { e.preventDefault(); $('hq').focus(); }
+    if (mod && e.key >= '0' && e.key <= '3') { e.preventDefault(); show(KEYS[+e.key]); return; }
+    if (mod && (e.key === 'k' || e.key === 'K') && cur && cur.id === 'start') { e.preventDefault(); $('hq').focus(); }
   }
 
   function wire(key) {
@@ -642,7 +1148,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   function toTop(id) {
     var v = byId[id === 'bau' ? lastPlan : id]; if (!v) return;
     var smooth = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    if (!v.frame) { $('hq').value = ''; startEl.scrollTo({ top: 0, behavior: smooth }); return; }
+    if (!v.frame) { if (v.id === 'start') $('hq').value = ''; $(v.el).scrollTo({ top: 0, behavior: smooth }); return; }
     try {
       var w = frames[v.frame].contentWindow, d = frames[v.frame].contentDocument;
       if (v.frame === 'lex') {
@@ -662,8 +1168,9 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     });
   });
   startEl.addEventListener('click', function (e) {
-    var t = e.target.closest ? e.target.closest('[data-go],[data-item],[data-slug]') : null; if (!t) return;
-    if (t.hasAttribute('data-go')) show(t.getAttribute('data-go'));
+    var t = e.target.closest ? e.target.closest('[data-go],[data-item],[data-slug],[data-tool]') : null; if (!t) return;
+    if (t.hasAttribute('data-tool')) openTool(t.getAttribute('data-tool'));
+    else if (t.hasAttribute('data-go')) show(t.getAttribute('data-go'));
     else if (t.hasAttribute('data-item')) openItem(slug(t.getAttribute('data-item')));
     else openItem(t.getAttribute('data-slug'));
   });
@@ -690,6 +1197,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   var lexHash = load('lex'); if (!/^#[a-z0-9-]+$/.test(lexHash || '')) lexHash = '';
   wire('lex'); wire('bau');
   show('start', true);
+  maybeNews();
   frames.lex.src = PATHS.lex + lexHash;
   frames.bau.src = PATHS.bau + '#' + lastPlan;
 })();

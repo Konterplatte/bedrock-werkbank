@@ -1,6 +1,6 @@
 # Bedrock-Werkbank
 
-Ressourcen-Lexikon und Baupläne (Eisenfarm, Handelsstation, Kaktusfarm, XP-Farm) für **Minecraft Bedrock Edition 1.26.60** als Web-App fürs iPhone. Nach dem ersten Öffnen läuft sie komplett ohne Internet.
+Ressourcen-Lexikon, Baupläne (Eisenfarm, Handelsstation, Kaktusfarm, XP-Farm, Zuckerrohrfarm) und Werkzeuge für **Minecraft Bedrock Edition 26.60** als Web-App fürs iPhone. Nach dem ersten Öffnen läuft sie komplett ohne Internet.
 
 **App öffnen:** https://konterplatte.github.io/bedrock-werkbank/
 
@@ -18,12 +18,12 @@ Dieselbe App als eigenes Programm für Windows 10 und 11: [Bedrock-Werkbank-Wind
 
 ## Inhalt
 
-- `index.html`: Startseite und Navigation, mit Nether-Portal-Rechner
-- `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen, mit Rohstoffrechner und Übersichten nach Fundort und Dorfbewohner-Beruf
-- `bauplaene/`: Baupläne Block für Block, darunter eine Enderman-XP-Farm fürs End; fertige Ebenen lassen sich abhaken
+- `index.html`: Startseite, Navigation und Werkzeuge (Sammelliste, Koordinaten-Notizbuch, Amboss-Planer, Nether-Portal-Rechner, Datenübertragung)
+- `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen, mit Rohstoffrechner, Fundorten, Dorfbewohner-Berufen und Steckbriefen für 62 Mobs
+- `bauplaene/`: fünf Baupläne Block für Block, darunter eine Enderman-XP-Farm fürs End und eine Zuckerrohrfarm; fertige Ebenen lassen sich abhaken
 - `sw.js`, `manifest.webmanifest`, `icons/`: Offline-Betrieb und App-Symbol
 - `lizenzen.txt`: Lizenzen der Schriften
 
 Made by Konterplatte.
 
-Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Namen und Rezeptdaten stammen aus Mojangs öffentlichem Repository bedrock-samples. Die Bilder sind eigene Zeichnungen, keine Grafiken aus dem Spiel.
+NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT. Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Namen und Rezeptdaten stammen aus Mojangs öffentlichem Repository bedrock-samples. Die Bilder sind eigene Zeichnungen, keine Grafiken aus dem Spiel.
