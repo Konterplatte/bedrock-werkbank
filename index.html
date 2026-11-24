@@ -135,6 +135,37 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .qchip svg { width: 26px; height: 26px; flex: none; }
 .fine { margin: 6px 0 0; font-size: .84rem; color: var(--ink-soft); max-width: 80ch; }
 
+/* Werkzeuge */
+.tools { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.tcard { border: 1px solid var(--line); border-radius: var(--r); background: var(--sheet); box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.thead { display: flex; gap: 14px; align-items: center; }
+.ticon { width: 64px; height: 64px; flex: none; border-radius: 14px; background: var(--pic); padding: 6px; }
+.ticon svg { width: 100%; height: 100%; display: block; }
+.thead p { margin: 4px 0 0; color: var(--ink-soft); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; gap: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); }
+.seg button { appearance: none; min-height: 44px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft); font-weight: 600; font-size: 1rem; cursor: pointer; padding: 4px 8px; }
+.seg button[aria-checked="true"] { background: var(--sheet); color: var(--ink); box-shadow: 0 1px 4px rgba(19, 38, 63, .16); }
+.coords { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.coords label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: .9rem; color: var(--ink-soft); min-width: 0; }
+.coords input { width: 100%; min-width: 0; height: 48px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--sheet); color: var(--ink); padding: 0 12px;
+  font-size: 1.15rem; font-weight: 600; font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield; }
+.coords input::-webkit-outer-spin-button, .coords input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.coords input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.pres { border-radius: 14px; background: var(--band); color: var(--band-ink); padding: 12px 14px 14px; }
+.pres small { display: block; color: var(--band-soft); font-size: .9rem; margin-bottom: 6px; }
+.pres .xyz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.pres .xyz div { min-width: 0; }
+.pres .xyz span { display: block; font-size: .8rem; color: var(--band-soft); letter-spacing: .06em; }
+.pres .xyz b { display: block; font-size: 1.7rem; line-height: 1.1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.tcard .fine { margin: 0; }
+.tlinks { display: flex; flex-direction: column; gap: 10px; }
+.tlink { appearance: none; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 14px 10px 10px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--sheet);
+  cursor: pointer; text-align: left; color: inherit; }
+.tlink:hover { border-color: var(--accent); }
+.tlink svg { width: 40px; height: 40px; flex: none; }
+.tlink b { display: block; font-size: 1.08rem; }
+.tlink small { display: block; color: var(--ink-soft); font-size: .9rem; }
+
 /* Info-Fenster */
 dialog { border: 1px solid var(--line); border-radius: 20px; padding: 0; background: var(--sheet); color: var(--ink); width: min(690px, calc(100vw - 28px)); max-height: calc(100dvh - 28px);
   box-shadow: 0 24px 80px rgba(6, 18, 31, .35); overflow: hidden; }
@@ -161,6 +192,9 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 @media (max-width: 1100px) {
   .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (max-width: 900px) {
+  .tools { grid-template-columns: minmax(0, 1fr); }
+}
 /* iPhone und schmale Fenster: schwebende Tab-Leiste aus Glas */
 @media (max-width: 720px) {
   body { grid-template-columns: minmax(0, 1fr); }
@@ -180,6 +214,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   .hsearch .btn { display: none; }
   .sv { padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)); gap: 26px; }
   .plans { grid-template-columns: minmax(0, 1fr); }
+  .tools { grid-template-columns: minmax(0, 1fr); }
+  .pres .xyz b { font-size: 1.45rem; }
   .ppic { height: 150px; }
   .lexcard { flex-direction: column; }
   .lexcard .ppic { width: auto; min-height: 150px; height: 150px; border-right: 0; border-bottom: 1px solid var(--line); }
@@ -271,6 +307,42 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
           <div class="qchips" id="recent"></div>
         </div>
       </section>
+      <section aria-labelledby="h-tools">
+        <h2 id="h-tools">Werkzeuge</h2>
+        <div class="tools">
+          <div class="tcard" id="portal">
+            <div class="thead">
+              <div class="ticon" id="portalpic" aria-hidden="true"></div>
+              <div>
+                <div class="ptitle">Nether-Portal-Rechner</div>
+                <p>Wo das zweite Portal hin muss, damit beide Portale miteinander verbunden sind.</p>
+              </div>
+            </div>
+            <div class="seg" role="radiogroup" aria-label="Richtung">
+              <button type="button" role="radio" aria-checked="true" data-dir="nether">Oberwelt → Nether</button>
+              <button type="button" role="radio" aria-checked="false" data-dir="ober">Nether → Oberwelt</button>
+            </div>
+            <p class="fine" id="pfrom"></p>
+            <div class="coords">
+              <label>X <input type="number" id="px" step="1" autocomplete="off" placeholder="0" aria-describedby="pfrom"></label>
+              <label>Y <input type="number" id="py" step="1" autocomplete="off" placeholder="64" aria-describedby="pfrom"></label>
+              <label>Z <input type="number" id="pz" step="1" autocomplete="off" placeholder="0" aria-describedby="pfrom"></label>
+            </div>
+            <div class="pres" aria-live="polite">
+              <small id="pto"></small>
+              <div class="xyz"><div><span>X</span><b id="rx">0</b></div><div><span>Y</span><b id="ry">64</b></div><div><span>Z</span><b id="rz">0</b></div></div>
+            </div>
+            <p class="fine">Im Nether zählt jeder Block wie acht Blöcke in der Oberwelt. X und Z werden deshalb durch 8 geteilt und abgerundet, auf dem Rückweg mal 8 genommen. Die Höhe Y bleibt gleich. Steht in der Nähe schon ein anderes Portal, verbindet das Spiel womöglich mit diesem, also das zweite Portal genau an diese Stelle bauen. Deine Koordinaten zeigt das Spiel, wenn du in den Welteinstellungen <b>Koordinaten anzeigen</b> einschaltest.</p>
+          </div>
+          <div class="tcard">
+            <div class="ptitle">Übersichten im Lexikon</div>
+            <div class="tlinks">
+              <button type="button" class="tlink" data-slug="orte"><span id="icon-orte"></span><span><b>Fundorte</b><small>Was in welcher Truhe liegt und welcher Mob was fallen lässt</small></span></button>
+              <button type="button" class="tlink" data-slug="berufe"><span id="icon-berufe"></span><span><b>Dorfbewohner</b><small>Alle Berufe mit ihren Angeboten, Stufe für Stufe</small></span></button>
+            </div>
+          </div>
+        </div>
+      </section>
       <div class="install web-only" id="windl" hidden>
         <p><b>Auch für Windows 10 und 11:</b> dieselbe App als eigenes Programm. ZIP herunterladen, entpacken, <b>Bedrock-Werkbank.exe</b> starten.</p>
         <a class="btn primary dl" href="download/Bedrock-Werkbank-Windows.zip" download>Herunterladen</a>
@@ -288,7 +360,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.1 · Datenstand Bedrock Edition 1.26.60</p>
+      <p>Version 1.2 · Datenstand Bedrock Edition 1.26.60</p>
     </div>
   </div>
   <div class="dbody">
@@ -395,6 +467,45 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     return list.map(function (e) { return '<button type="button" class="qchip" data-item="' + esc(e[0]) + '">' + chipIcon(e[2] || '#0B5CAD') + '<span>' + esc(e[1]) + '</span></button>'; }).join('');
   }
   $('popular').innerHTML = chipsFor(POPULAR);
+  $('icon-orte').innerHTML = iso([[0, 0, 0, K.wood, .8], [1.2, 0, 0, K.stone], [1.2, 0, 1, K.end, .5]]);
+  $('icon-berufe').innerHTML = iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]);
+
+  /* ---------- Nether-Portal-Rechner ---------- */
+  var OBS = ['#3B2D57', '#2A2040', '#1D1630'], PUR = ['#B88BFF', '#8F5BEA', '#7444CC'];
+  (function () {
+    var c = [];
+    for (var x = 0; x < 4; x++) for (var z = 0; z < 5; z++) c.push([x, 0, z, (x === 0 || x === 3 || z === 0 || z === 4) ? OBS : PUR]);
+    $('portalpic').innerHTML = iso(c);
+  })();
+  var portal = { dir: 'nether', x: '', y: '', z: '' };
+  try { var ps = JSON.parse(load('portal') || 'null'); if (ps && (ps.dir === 'nether' || ps.dir === 'ober')) portal = ps; } catch (e) {}
+  function num(v) { return v === '' || v == null || !isFinite(+v) ? null : Math.trunc(+v); }
+  function fmt(n) { return n == null ? '–' : (n < 0 ? '−' : '') + Math.abs(n).toLocaleString('de-DE'); }
+  function calcPortal() {
+    var toN = portal.dir === 'nether', x = num(portal.x), y = num(portal.y), z = num(portal.z);
+    function conv(v) { return v == null ? null : (toN ? Math.floor(v / 8) : v * 8); }
+    [].forEach.call(document.querySelectorAll('#portal .seg button'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-dir') === portal.dir)); });
+    $('pfrom').textContent = toN ? 'Koordinaten deines Portals in der Oberwelt:' : 'Koordinaten deines Portals im Nether:';
+    $('pto').textContent = toN ? 'Baue das Portal im Nether bei' : 'Baue das Portal in der Oberwelt bei';
+    $('rx').textContent = fmt(conv(x)); $('ry').textContent = fmt(y); $('rz').textContent = fmt(conv(z));
+    save('portal', JSON.stringify(portal));
+  }
+  ['x', 'y', 'z'].forEach(function (k) {
+    var el = $('p' + k); el.value = portal[k];
+    el.addEventListener('input', function () { if (el.value !== '' || !el.validity.badInput) { portal[k] = el.value; calcPortal(); } });
+  });
+  $('portal').querySelector('.seg').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-dir]'); if (!b || b.getAttribute('data-dir') === portal.dir) return;
+    // Beim Umschalten das Ergebnis als neue Eingabe nehmen: so lässt sich hin und her rechnen
+    var toN = portal.dir === 'nether';
+    ['x', 'z'].forEach(function (k) { var v = num(portal[k]); if (v != null) portal[k] = String(toN ? Math.floor(v / 8) : v * 8); $('p' + k).value = portal[k]; });
+    portal.dir = b.getAttribute('data-dir'); calcPortal();
+  });
+  $('portal').querySelector('.seg').addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault(); var other = this.querySelector('button[aria-checked="false"]'); other.click(); other.focus();
+  });
+  calcPortal();
 
   // Zuletzt angesehen: Einträge aus dem Lexikon (Namen stehen in dessen Daten)
   var names = null;
@@ -415,7 +526,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     $('recent').innerHTML = a.map(function (s) { return '<button type="button" class="qchip" data-slug="' + s + '">' + chipIcon(s.indexOf('enchanted-book') === 0 ? '#7B4BC2' : '#8D96A3') + '<span>' + esc(n[s][0]) + '</span></button>'; }).join('');
   }
   function remember(s) {
-    if (!/^[a-z0-9-]+$/.test(s) || s === 'liste') return;
+    if (!/^[a-z0-9-]+$/.test(s) || /^(liste|orte|berufe|ort-\d+|beruf-\d+)$/.test(s)) return;
     var a = recents().filter(function (x) { return x !== s; }); a.unshift(s); save('recent', JSON.stringify(a.slice(0, 12)));
   }
 

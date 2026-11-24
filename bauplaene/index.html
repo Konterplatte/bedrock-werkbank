@@ -17,6 +17,7 @@
   --accent: #0B5CAD;
   --on-accent: #FFFFFF;
   --mark: #C2410C;
+  --ok: #1E7A3C; --ok-soft: #E3F3E7;
   --f-display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
   --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --cell-line: #D5DEE8;
@@ -48,7 +49,7 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --paper: #0A1626; --sheet: #10223A; --ink: #E4EDF8; --ink-soft: #9DB2CC; --line: #2A4466;
-    --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --cell-line: #1F3854;
+    --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --cell-line: #1F3854; --ok: #5FD38A; --ok-soft: #12362A;
     --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
     --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
     --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
@@ -58,7 +59,7 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --paper: #0A1626; --sheet: #10223A; --ink: #E4EDF8; --ink-soft: #9DB2CC; --line: #2A4466;
-  --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --cell-line: #1F3854;
+  --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --cell-line: #1F3854; --ok: #5FD38A; --ok-soft: #12362A;
   --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
   --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
   --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
@@ -98,7 +99,22 @@ a { color: var(--accent); }
 .lname { font-size: 1.45rem; font-weight: 600; line-height: 1.1; }
 .steps { display: flex; gap: 6px; overflow-x: auto; padding: 2px 2px 6px; margin: 0; list-style: none; }
 .steps button { min-width: 40px; height: 40px; padding: 0 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--sheet); color: var(--ink-soft); font-size: 1.1rem; font-weight: 600; cursor: pointer; font-variant-numeric: tabular-nums; }
+.steps button[data-done] { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.steps button[data-done]::after { content: '✓'; font-size: .8em; margin-left: 2px; }
 .steps button[aria-current="step"] { background: var(--mark); border-color: var(--mark); color: #fff; }
+.steps button[aria-current="step"][data-done] { box-shadow: inset 0 -4px 0 var(--ok); }
+.progress { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; }
+.progress .ptext { font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.progress .pbar { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--paper); overflow: hidden; }
+.progress .pbar i { display: block; height: 100%; width: 0; background: var(--ok); border-radius: 3px; transition: width .25s ease; }
+.progress button { border: 0; background: none; color: var(--accent); font: inherit; font-size: .9rem; cursor: pointer; padding: 6px 0; min-height: 36px; }
+.progress button[data-armed] { color: var(--mark); font-weight: 600; }
+.progress button:disabled { color: var(--ink-soft); opacity: .5; cursor: default; }
+.donebtn { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 8px; border: 1.5px solid var(--ok);
+  background: var(--sheet); color: var(--ok); font: 600 1.05rem var(--f-display); cursor: pointer; }
+.donebtn[aria-pressed="true"] { background: var(--ok); color: var(--sheet); }
+.donebtn:focus-visible, .progress button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .progress .pbar i { transition: none; } }
 svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
 svg text { font-family: var(--f-display); font-weight: 600; }
 .plan svg, .side svg { cursor: pointer; }
@@ -225,6 +241,7 @@ html.app .foot { max-width: none; }
     <button type="button" id="next" aria-label="Eine Ebene höher">›</button>
   </div>
   <ol class="steps" id="steps" aria-label="Ebenen"></ol>
+  <div class="progress"><span class="ptext" id="ptext" aria-live="polite"></span><button type="button" id="preset">Zurücksetzen</button><div class="pbar" aria-hidden="true"><i id="pbar"></i></div></div>
   <div class="plan" id="plan"></div>
   <p class="probe" id="probe" aria-live="polite"></p>
   <div>
@@ -232,6 +249,7 @@ html.app .foot { max-width: none; }
     <ul class="chips" id="chips"></ul>
   </div>
   <p class="instruction" id="instruction"></p>
+  <button type="button" class="donebtn" id="done" aria-pressed="false"></button>
   <div class="side">
     <p class="sub">Schnitt von der Seite</p>
     <div id="side"></div>
@@ -765,7 +783,16 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 </script>
 <script>
 (function () {
-  var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null };
+  var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
+  function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
+  function save(k, v) { try { window.localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  PLANS.forEach(function (q, i) {
+    var d = load('bp.done.' + q.id), l = load('bp.layer.' + q.id);
+    st.done[q.id] = {}; if (Array.isArray(d)) d.forEach(function (n) { if (n >= 0 && n < q.layers.length) st.done[q.id][n] = 1; });
+    if (typeof l === 'number' && l >= 0 && l < q.layers.length) st.layer[i] = l;
+  });
+  function doneList(p) { return Object.keys(st.done[p.id]).map(Number).sort(function (a, b) { return a - b; }); }
+  function storeDone(p) { save('bp.done.' + p.id, doneList(p)); }
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function geom(p) {
@@ -916,10 +943,21 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     $('lcount').textContent = 'Ebene ' + (i + 1) + ' von ' + p.layers.length + ' · Höhe ' + yText(l);
     $('lname').textContent = l.name;
     $('prev').disabled = i === 0; $('next').disabled = i === p.layers.length - 1;
+    var D = st.done[p.id], nd = doneList(p).length, isDone = !!D[i];
     [].forEach.call($('steps').querySelectorAll('button'), function (b) {
-      if (+b.getAttribute('data-i') === i) { b.setAttribute('aria-current', 'step'); if (b.scrollIntoView) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+      var k = +b.getAttribute('data-i'), lab = 'Ebene ' + (k + 1) + ', ' + p.layers[k].name + (D[k] ? ', fertig' : '');
+      if (D[k]) b.setAttribute('data-done', ''); else b.removeAttribute('data-done');
+      b.setAttribute('aria-label', lab);
+      if (k === i) { b.setAttribute('aria-current', 'step'); if (b.scrollIntoView) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
       else b.removeAttribute('aria-current');
     });
+    $('ptext').textContent = nd === p.layers.length ? 'Alle ' + nd + ' Ebenen fertig. Gut gebaut!' : nd + ' von ' + p.layers.length + ' Ebenen fertig';
+    $('pbar').style.width = (nd / p.layers.length * 100) + '%';
+    $('preset').disabled = !nd;
+    $('done').setAttribute('aria-pressed', String(isDone));
+    $('done').textContent = isDone ? '✓ Ebene fertig' : (i < p.layers.length - 1 ? 'Ebene fertig, weiter ›' : 'Ebene fertig');
+    $('done').title = isDone ? 'Noch einmal tippen, um den Haken zu entfernen' : '';
+    save('bp.layer.' + p.id, i);
     $('plan').innerHTML = drawPlan(p, l);
     $('side').innerHTML = drawSide(p, l);
     var c = counts(l);
@@ -941,6 +979,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     renderLayer();
   }
   function route() {
+    disarm();
     var want = 0;
     PLANS.forEach(function (q, i) { if (location.hash === '#' + q.id) want = i; });
     st.plan = want; st.sel = null;
@@ -954,6 +993,21 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     return (x < 0 || y < 0 || x >= (colsN || p.w) || y >= rowsN) ? null : [x, y];
   }
 
+  $('done').addEventListener('click', function () {
+    var p = PLANS[st.plan], i = st.layer[st.plan], D = st.done[p.id];
+    if (D[i]) { delete D[i]; storeDone(p); renderLayer(); return; }
+    D[i] = 1; storeDone(p);
+    var next = -1;
+    for (var k = i + 1; k < p.layers.length; k++) if (!D[k]) { next = k; break; }
+    if (next >= 0) go(next); else renderLayer();
+  });
+  var armT = null;
+  function disarm() { clearTimeout(armT); armT = null; $('preset').textContent = 'Zurücksetzen'; $('preset').removeAttribute('data-armed'); }
+  $('preset').addEventListener('click', function () {
+    var p = PLANS[st.plan], b = $('preset');
+    if (!b.hasAttribute('data-armed')) { b.setAttribute('data-armed', ''); b.textContent = 'Wirklich alle Haken entfernen?'; armT = setTimeout(disarm, 4000); return; }
+    disarm(); st.done[p.id] = {}; storeDone(p); go(0);
+  });
   $('prev').addEventListener('click', function () { go(st.layer[st.plan] - 1); });
   $('next').addEventListener('click', function () { go(st.layer[st.plan] + 1); });
   $('steps').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) go(+b.getAttribute('data-i')); });

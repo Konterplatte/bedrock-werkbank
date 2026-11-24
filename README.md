@@ -18,9 +18,9 @@ Dieselbe App als eigenes Programm für Windows 10 und 11: [Bedrock-Werkbank-Wind
 
 ## Inhalt
 
-- `index.html`: Startseite und Navigation
-- `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen
-- `bauplaene/`: Baupläne Block für Block, darunter eine Enderman-XP-Farm fürs End
+- `index.html`: Startseite und Navigation, mit Nether-Portal-Rechner
+- `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen, mit Rohstoffrechner und Übersichten nach Fundort und Dorfbewohner-Beruf
+- `bauplaene/`: Baupläne Block für Block, darunter eine Enderman-XP-Farm fürs End; fertige Ebenen lassen sich abhaken
 - `sw.js`, `manifest.webmanifest`, `icons/`: Offline-Betrieb und App-Symbol
 - `lizenzen.txt`: Lizenzen der Schriften
 

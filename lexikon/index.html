@@ -170,6 +170,27 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
 .pill { flex: none; padding: 2px 10px; border-radius: 999px; background: var(--tint); font-size: .95rem; font-weight: 600; letter-spacing: .02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .toggle { align-self: flex-start; min-height: 44px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--sheet); cursor: pointer; font-weight: 600; font-size: .95rem; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tbl .ln a, .lk { color: var(--accent); text-decoration: none; }
+.tbl .ln a:hover, .lk:hover { text-decoration: underline; }
+.catlink { display: inline-flex; align-items: center; text-decoration: none; border-style: dashed; color: var(--accent); }
+.calcrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 4px 0 14px; }
+.calcrow label { font-weight: 600; }
+.stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--sheet); }
+.stepper button { width: 44px; height: 44px; border: 0; background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; color: var(--ink); }
+.stepper button:hover { background: var(--tint); }
+.stepper input { width: 84px; height: 44px; border: 0; border-left: 1px solid var(--line); border-right: 1px solid var(--line); text-align: center; font: 600 1.1rem var(--f-body);
+  background: transparent; color: var(--ink); -moz-appearance: textfield; appearance: textfield; }
+.stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.need { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+.need a { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--ink); background: var(--sheet); min-height: 52px; }
+.need a:hover { border-color: var(--accent); }
+.need b { font: 700 1.25rem var(--f-display); font-variant-numeric: tabular-nums; min-width: 2.2ch; text-align: right; }
+.need span { min-width: 0; overflow-wrap: anywhere; line-height: 1.25; }
+.calc h3 { font: 600 .95rem var(--f-display); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin: 4px 0 8px; }
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
+.pgrid a { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--ink); background: var(--sheet); min-height: 48px; }
+.pgrid a:hover { border-color: var(--accent); }
+.pgrid small { color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .fx { margin: 0; font-size: 1.05rem; max-width: 65ch; }
 .facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 18px; margin: 14px 0 0; }
 .facts dt { font-weight: 600; color: var(--ink-soft); }
@@ -455,17 +476,17 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
   }
   function lootCards(id) {
     var groups = {}, s = '';
-    (D.loot[id] || []).forEach(function (e) { var l = D.labels[e[0]]; (groups[l[0]] = groups[l[0]] || []).push([l[1], l[2], e[1], e[2]]); });
+    (D.loot[id] || []).forEach(function (e) { var l = D.labels[e[0]]; (groups[l[0]] = groups[l[0]] || []).push([l[1], l[2], e[1], e[2], e[0]]); });
     KORDER.forEach(function (k) {
       if (!groups[k]) return;
       var rows = groups[k].sort(function (a, b) { return a[0].localeCompare(b[0], 'de'); });
       s += '<div class="card"><div class="chead"><span class="ctitle">' + KIND[k] + '</span><span class="badge">' + rows.length + (rows.length === 1 ? ' Quelle' : ' Quellen') + '</span></div><ul class="tbl">';
-      rows.forEach(function (r, n) { s += row(esc(r[0]), esc(r[1]), rng(r[2], r[3]) + ' Stück', n >= 5); });
+      rows.forEach(function (r, n) { s += row('<a href="#ort-' + r[4] + '">' + esc(r[0]) + '</a>', esc(r[1]), rng(r[2], r[3]) + ' Stück', n >= 5); });
       s += '</ul>' + (rows.length > 5 ? '<button type="button" class="toggle" data-more>Alle ' + rows.length + ' anzeigen</button>' : '') + '</div>';
     });
     return s;
   }
-  function profLabel(e) { return esc(D.profs[e[0]][0]) + (e[1] ? ', Stufe ' + e[1] + ' (' + LV[e[1]] + ')' : ''); }
+  function profLabel(e) { return '<a href="#beruf-' + e[0] + '">' + esc(D.profs[e[0]][0]) + '</a>' + (e[1] ? ', Stufe ' + e[1] + ' (' + LV[e[1]] + ')' : ''); }
   function tradeCards(id) {
     var s = '', b = D.buy[id], v = D.sell[id];
     if (b) {
@@ -483,6 +504,120 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
       s += '</ul></div>';
     }
     return s;
+  }
+
+  /* ---------- Rohstoffrechner: Gesamtbedarf über den Hauptweg ---------- */
+  function craftable(id) { var p = primary(id); return p.t === 'r' && p.r.k !== 'b'; }
+  function plan(root, qty) {
+    var forced = {}, tagUsed = false, order, state;
+    function res(ref) { if (ref.charAt(0) === '#') { tagUsed = true; return D.tagrep[ref.slice(1)] || null; } return ref; }
+    function isCraft(id) { return !forced[id] && craftable(id); }
+    function kids(id) { return counts(primary(id).r).map(function (c) { return [res(c[0]), c[1]]; }).filter(function (c) { return c[0] && I[c[0]]; }); }
+    for (var tries = 0; tries < 6; tries++) {
+      var cyc = false; order = []; state = {};
+      (function dfs(id) {
+        state[id] = 1;
+        if (isCraft(id)) kids(id).forEach(function (c) { if (state[c[0]] === 1) { forced[c[0]] = true; cyc = true; } else if (!state[c[0]]) dfs(c[0]); });
+        state[id] = 2; order.push(id);
+      })(root);
+      if (!cyc) break;
+    }
+    var dem = {}, leaves = [], steps = []; dem[root] = qty;
+    for (var i = order.length - 1; i >= 0; i--) {
+      var id = order[i], d = dem[id] || 0; if (!d) continue;
+      if (isCraft(id)) {
+        var r = primary(id).r, n = Math.ceil(d / (r.n || 1));
+        steps.push([id, n, r]);
+        kids(id).forEach(function (c) { dem[c[0]] = (dem[c[0]] || 0) + c[1] * n; });
+      } else leaves.push([id, d]);
+    }
+    leaves.sort(function (a, b) { return b[1] - a[1] || nm(a[0]).localeCompare(nm(b[0]), 'de'); });
+    return { leaves: leaves, steps: steps.reverse(), tag: tagUsed, smelt: steps.some(function (x) { return x[2].k === 'f'; }) };
+  }
+  function calcOut(id, qty) {
+    var r = plan(id, qty), s = '<h3>Das brauchst du insgesamt</h3><ul class="need">';
+    s += r.leaves.map(function (l) { return '<li><a href="#' + slug(l[0]) + '"><b>' + l[1].toLocaleString('de-DE') + '</b>' + tile(l[0], 's') + '<span>' + esc(nm(l[0])) + '</span></a></li>'; }).join('') + '</ul>';
+    s += '<h3>Arbeitsschritte · ' + r.steps.length + '</h3><ul class="tbl">';
+    s += r.steps.map(function (x) {
+      return row('<a href="#' + slug(x[0]) + '">' + esc(nm(x[0])) + '</a>', esc(stationShort(x[2])) + ', ' + x[1].toLocaleString('de-DE') + (x[1] === 1 ? ' Durchgang' : ' Durchgänge'),
+        'ergibt ' + (x[1] * (x[2].n || 1)).toLocaleString('de-DE'), false);
+    }).join('') + '</ul>';
+    var notes = ['Gerechnet über den Hauptweg, also das erste Rezept jeder Stufe.'];
+    if (r.smelt) notes.push('Brennstoff fürs Schmelzen ist nicht eingerechnet.');
+    if (r.tag) notes.push('Wo jede Sorte geht, etwa bei Holz oder Wolle, steht eine Sorte als Beispiel.');
+    return s + '<p class="note" style="margin-top:12px">' + notes.join(' ') + '</p>';
+  }
+  function calcPanel(id) {
+    if (!craftable(id)) return '';
+    var n = primary(id).r.n || 1;
+    return '<section class="panel calc" data-calc="' + esc(id) + '"><p class="sub">Rohstoffrechner</p><div class="calcrow"><label for="cq">Wie viele willst du herstellen?</label>' +
+      '<div class="stepper"><button type="button" data-step="-1" aria-label="Weniger">−</button><input id="cq" type="number" inputmode="numeric" min="1" max="9999" step="' + n + '" value="' + n + '">' +
+      '<button type="button" data-step="1" aria-label="Mehr">+</button></div></div><div id="cout">' + calcOut(id, n) + '</div></section>';
+  }
+  function calcUpdate(panel, v) {
+    var id = panel.getAttribute('data-calc'), q = Math.max(1, Math.min(9999, Math.round(+v) || 1));
+    panel.querySelector('#cout').innerHTML = calcOut(id, q);
+    return q;
+  }
+
+  /* ---------- Übersichten: Fundorte und Dorfbewohner ---------- */
+  var BYPLACE = {}, BYPROF = {};
+  Object.keys(D.loot).forEach(function (id) { D.loot[id].forEach(function (e) { (BYPLACE[e[0]] = BYPLACE[e[0]] || []).push([id, e[1], e[2]]); }); });
+  Object.keys(D.buy).forEach(function (id) { D.buy[id].forEach(function (e) { (BYPROF[e[0]] = BYPROF[e[0]] || []).push(['b', id, e]); }); });
+  Object.keys(D.sell).forEach(function (id) { D.sell[id].forEach(function (e) { (BYPROF[e[0]] = BYPROF[e[0]] || []).push(['s', id, e]); }); });
+  function head(title, sub, badges) {
+    return '<section class="panel"><div class="ititle"><div style="min-width:0"><div class="lname">' + esc(title) + '</div><div class="meta">' + (badges || []).map(function (b) { return '<span class="badge">' + esc(b) + '</span>'; }).join('') +
+      '</div>' + (sub ? '<p class="note" style="margin:8px 0 0">' + esc(sub) + '</p>' : '') + '</div></div></section>';
+  }
+  function byName(a, b) { return nm(a[0]).localeCompare(nm(b[0]), 'de'); }
+  function special(h) {
+    var s = '<div class="stack">', m;
+    if (h === 'orte') {
+      s += head('Fundorte', 'Truhen, Mobs und andere Quellen. Tippe einen Ort an, dann siehst du alles, was es dort gibt.', [Object.keys(BYPLACE).length + ' Orte']);
+      KORDER.forEach(function (k) {
+        var list = D.labels.map(function (l, n) { return [l, n]; }).filter(function (x) { return x[0][0] === k && BYPLACE[x[1]]; })
+          .sort(function (a, b) { return a[0][1].localeCompare(b[0][1], 'de'); });
+        if (!list.length) return;
+        s += '<section class="panel"><p class="sub">' + KIND[k] + ' · ' + list.length + '</p><ul class="pgrid">' + list.map(function (x) {
+          return '<li><a href="#ort-' + x[1] + '"><span>' + esc(x[0][1]) + '</span><small>' + BYPLACE[x[1]].length + '</small></a></li>'; }).join('') + '</ul></section>';
+      });
+      return { html: s + '</div>', title: 'Fundorte' };
+    }
+    if ((m = /^ort-(\d+)$/.exec(h)) && D.labels[+m[1]]) {
+      var L = D.labels[+m[1]], items = (BYPLACE[+m[1]] || []).slice().sort(byName);
+      s += head(L[1], L[2], [KIND[L[0]], items.length + (items.length === 1 ? ' Gegenstand' : ' Gegenstände')]);
+      s += '<section class="panel"><p class="sub">Das gibt es hier</p><ul class="tbl">' + items.map(function (x) {
+        return row('<a href="#' + slug(x[0]) + '">' + esc(nm(x[0])) + '</a>', '', rng(x[1], x[2]) + ' Stück', false); }).join('') + '</ul>' +
+        '<p class="note" style="margin-top:12px"><a class="lk" href="#orte">Alle Fundorte</a></p></section>';
+      return { html: s + '</div>', title: L[1] };
+    }
+    if (h === 'berufe') {
+      s += head('Dorfbewohner', 'Alle Berufe mit ihren Handelsangeboten. Tippe einen Beruf an.', [D.profs.length + ' Berufe']);
+      s += '<section class="panel"><ul class="pgrid">' + D.profs.map(function (p, n) { return [p, n]; }).filter(function (x) { return BYPROF[x[1]]; })
+        .sort(function (a, b) { return a[0][0].localeCompare(b[0][0], 'de'); }).map(function (x) {
+          return '<li><a href="#beruf-' + x[1] + '"><span>' + esc(x[0][0]) + '</span><small>' + BYPROF[x[1]].length + ' Angebote</small></a></li>'; }).join('') + '</ul></section>';
+      return { html: s + '</div>', title: 'Dorfbewohner' };
+    }
+    if ((m = /^beruf-(\d+)$/.exec(h)) && D.profs[+m[1]]) {
+      var P = D.profs[+m[1]], offers = BYPROF[+m[1]] || [], lvs = {};
+      offers.forEach(function (o) { (lvs[o[2][1]] = lvs[o[2][1]] || []).push(o); });
+      s += head(P[0], P[1] ? 'Arbeitsblock: ' + nm(P[1]) + '. Ein Dorfbewohner ohne Beruf bekommt diesen Beruf, wenn er den Arbeitsblock für sich beansprucht.' : 'Erscheint gelegentlich in deiner Nähe und verschwindet nach einiger Zeit wieder.', [offers.length + ' Angebote']);
+      Object.keys(lvs).sort(function (a, b) { return a - b; }).forEach(function (lv) {
+        var b = lvs[lv].filter(function (o) { return o[0] === 'b'; }).sort(function (x, y) { return nm(x[1]).localeCompare(nm(y[1]), 'de'); }),
+            v = lvs[lv].filter(function (o) { return o[0] === 's'; }).sort(function (x, y) { return nm(x[1]).localeCompare(nm(y[1]), 'de'); });
+        s += '<section class="panel"><p class="sub">' + (+lv ? 'Stufe ' + lv + ' · ' + LV[+lv] : 'Angebote') + '</p><div class="srcs">';
+        if (b.length) s += '<div class="card"><div class="chead"><span class="ctitle">Verkauft dir</span></div><ul class="tbl">' + b.map(function (o) {
+          return row('<a href="#' + slug(o[1]) + '">' + esc(nm(o[1])) + '</a>', 'Preis: ' + o[2][2].map(function (w) { return rng(w[1][0], w[1][1]) + ' × ' + esc(nm(w[0])); }).join(' + '),
+            rng(o[2][3][0], o[2][3][1]) + ' Stück', false); }).join('') + '</ul></div>';
+        if (v.length) s += '<div class="card"><div class="chead"><span class="ctitle">Kauft dir ab</span></div><ul class="tbl">' + v.map(function (o) {
+          return row('<a href="#' + slug(o[1]) + '">' + esc(nm(o[1])) + '</a>', 'Dafür gibt es ' + rng(o[2][3][0], o[2][3][1]) + ' × ' + esc(nm('emerald')),
+            rng(o[2][2][0], o[2][2][1]) + ' Stück', false); }).join('') + '</ul></div>';
+        s += '</div></section>';
+      });
+      s += '<p class="note"><a class="lk" href="#berufe">Alle Dorfbewohner</a></p>';
+      return { html: s + '</div>', title: P[0] };
+    }
+    return null;
   }
 
   /* ---------- Verzauberungen ---------- */
@@ -516,6 +651,7 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
          (it[1] ? '<a class="wiki" href="https://minecraft.wiki/w/Special:Search?search=' + encodeURIComponent(it[1].replace(/\s*\((extended|level II|level IV)\)$/, '')) + '">Originalbild im Minecraft Wiki ↗</a>' : '') + '</div></div></section>';
     s += enchPanel(id);
     s += '<section class="panel"><p class="sub">Herkunft</p><div class="tree">' + renderNode(buildTree(id), true) + '</div></section>';
+    s += calcPanel(id);
 
     s += '<section class="panel"><p class="sub">So bekommst du es</p><div class="srcs">';
     if (NAT[id]) s += '<div class="card' + (p.t === 'n' ? ' is-main' : '') + '"><div class="chead"><span class="ctitle">Fundort und Gewinnung</span>' + (p.t === 'n' ? '<span class="badge main">Hauptweg</span>' : '') + '</div><p>' + linkify(NAT[id].t) + '</p></div>';
@@ -583,6 +719,7 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
     IDS.forEach(function (id) { cnt[I[id][2]]++; });
     var s = '<button type="button" class="catbtn" data-c="-1" aria-pressed="' + (st.cat < 0) + '">Alle<small>' + IDS.length + '</small></button>';
     D.cats.forEach(function (c, i) { if (cnt[i]) s += '<button type="button" class="catbtn" data-c="' + i + '" aria-pressed="' + (st.cat === i) + '">' + esc(c) + '<small>' + cnt[i] + '</small></button>'; });
+    s += '<a class="catbtn catlink" href="#orte">Fundorte ›</a><a class="catbtn catlink" href="#berufe">Dorfbewohner ›</a>';
     $('cats').innerHTML = s;
   }
   function renderHero() {
@@ -599,16 +736,17 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
     if (window.scrollY > y) window.scrollTo(0, Math.max(0, y));
   }
   function route() {
-    var h = location.hash.replace(/^#/, ''), id = h && h !== 'liste' ? unslug(h) : null, wide = WIDE.matches;
+    var h = location.hash.replace(/^#/, ''), sp = /^(orte|berufe|ort-\d+|beruf-\d+)$/.test(h) ? special(h) : null,
+        id = !sp && h && h !== 'liste' ? unslug(h) : null, wide = WIDE.matches;
     if (id && !I[id]) id = null;
-    if (id || wide) {
+    if (sp || id || wide) {
       var show = id || st.current || DEFAULT;
       if (!wide && !$('home').hidden) listScroll = window.scrollY;
-      st.current = id ? show : st.current;
-      renderDetail(show);
+      if (sp) { $('detail').innerHTML = sp.html; }
+      else { st.current = id ? show : st.current; renderDetail(show); }
       $('home').hidden = !wide; $('catrow').hidden = !wide; $('detail').hidden = false; $('backbtn').hidden = wide;
-      document.title = id ? nm(show) + ' · Ressourcen-Lexikon' : 'Ressourcen-Lexikon Bedrock';
-      if (wide) { markCurrent(); if (id) toDetailTop(); }
+      document.title = sp ? sp.title + ' · Ressourcen-Lexikon' : (id ? nm(show) + ' · Ressourcen-Lexikon' : 'Ressourcen-Lexikon Bedrock');
+      if (wide) { markCurrent(); if (id || sp) toDetailTop(); }
       else window.scrollTo(0, Math.max(0, $('detail').getBoundingClientRect().top + window.scrollY - barH() - 12));
     } else {
       var was = $('home').hidden;
@@ -659,7 +797,21 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (en) { if (en[0].isIntersecting && !$('more').hidden) { st.shown += 60; renderList(); } }, { rootMargin: '300px' }).observe($('more'));
   }
+  $('detail').addEventListener('input', function (e) {
+    if (e.target.id !== 'cq') return;
+    var panel = e.target.closest('[data-calc]'); if (panel && e.target.value !== '') calcUpdate(panel, e.target.value);
+  });
+  $('detail').addEventListener('change', function (e) {
+    if (e.target.id !== 'cq') return;
+    var panel = e.target.closest('[data-calc]'); if (panel) e.target.value = calcUpdate(panel, e.target.value);
+  });
   $('detail').addEventListener('click', function (e) {
+    var stp = e.target.closest('[data-step]');
+    if (stp) {
+      var panel = stp.closest('[data-calc]'), inp = panel.querySelector('#cq'), step = +inp.step || 1;
+      inp.value = calcUpdate(panel, Math.max(step, (+inp.value || 0) + (+stp.getAttribute('data-step')) * step));
+      return;
+    }
     var b = e.target.closest('[data-more]'); if (!b) return;
     [].forEach.call(b.parentNode.querySelectorAll('.xtra'), function (x) { x.hidden = false; });
     b.hidden = true;
