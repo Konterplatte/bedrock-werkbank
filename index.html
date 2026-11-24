@@ -135,6 +135,13 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
   background: var(--sheet); cursor: pointer; font-size: .98rem; text-align: left; }
 .qchip:hover { border-color: var(--accent); }
 .qchip svg { width: 26px; height: 26px; flex: none; }
+/* Originalbilder aus Mojangs Resource Pack, geladen auf dem Gerät */
+.qt { position: relative; display: inline-flex; width: 26px; height: 26px; flex: none; }
+.qt > svg { width: 100%; height: 100%; }
+.qt.tx > svg:not(.txi) { display: none; }
+.qt .txi { position: absolute; inset: 0; }
+.li .qt { width: 30px; height: 30px; }
+.txi image { image-rendering: crisp-edges; image-rendering: pixelated; }
 .fine { margin: 6px 0 0; font-size: .84rem; color: var(--ink-soft); max-width: 80ch; }
 
 /* Werkzeuge */
@@ -409,7 +416,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <p><b>Auch für Windows 10 und 11:</b> dieselbe App als eigenes Programm. ZIP herunterladen, entpacken, <b>Bedrock-Werkbank.exe</b> starten.</p>
         <a class="btn primary dl" href="download/Bedrock-Werkbank-Windows.zip" download>Herunterladen</a>
       </div>
-      <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Bilder sind eigene Zeichnungen, keine Grafiken aus dem Spiel. NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+      <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Originalbilder sind nicht in der App enthalten: Sie werden beim Anzeigen aus Mojangs Repository bedrock-samples auf dein Gerät geladen und nur dort gespeichert. NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
     </div>
   </section>
   <section class="startview off" id="v-tools" aria-label="Werkzeuge" tabindex="-1">
@@ -542,7 +549,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 1.3</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 1.4</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -556,7 +563,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.3 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 1.4 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
@@ -575,8 +582,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       </dl>
     </div>
     <p class="small web-only">Als Web-App auf dem Home-Bildschirm lädt sie Neuerungen automatisch, sobald du online bist. Gespeichert wird nur auf diesem Gerät: was du zuletzt offen hattest, Sammelliste, Orte und Baufortschritt.</p>
-    <p class="small">Inoffizielles Hilfsprogramm. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Die App enthält keine Grafiken aus dem Spiel.<br>NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
-    <p class="small exe-only">Das Programm legt nur einen Ordner an: <span style="white-space:nowrap">%LocalAppData%\BedrockWerkbank</span> (Zwischenspeicher der Anzeige und deine gespeicherten Listen). Zum Entfernen die EXE und diesen Ordner löschen.</p>
+    <p class="small">Inoffizielles Hilfsprogramm. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Die App enthält keine Grafiken aus dem Spiel: Die Originalbilder lädt sie beim Anzeigen aus Mojangs Repository bedrock-samples und speichert sie nur auf diesem Gerät.<br>NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+    <p class="small exe-only">Das Programm legt nur einen Ordner an: <span style="white-space:nowrap">%LocalAppData%\BedrockWerkbank</span> (Zwischenspeicher der Anzeige, deine gespeicherten Listen und die geladenen Originalbilder). Zum Entfernen die EXE und diesen Ordner löschen.</p>
     <pre class="lic" id="lic" tabindex="0" hidden></pre>
   </div>
   <div class="dfoot">
@@ -591,9 +598,108 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
-  var APPVER = '1.3';
+  var APPVER = '1.4';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
+  // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
+  window.BW_TEX = PLATFORM === 'exe' ? '/tex/' : 'https://raw.githubusercontent.com/Mojang/bedrock-samples/v1.26.60.5/resource_pack/textures/';
+/* Originalbilder aus Mojangs Resource Pack. Die Seiten enthalten keine Spielgrafiken: Die Bilder werden zur Laufzeit
+   aus Mojangs offiziellem Repository (oder im Windows-Programm über dessen Zwischenspeicher) geladen. Fehlt ein Bild,
+   bleibt das farbige Plättchen stehen. */
+var BWTEX = (function () {
+  'use strict';
+  var REPO = 'https://raw.githubusercontent.com/Mojang/bedrock-samples/v1.26.60.5/resource_pack/textures/';
+  var BASE = (function () { try { if (window.parent !== window && window.parent.BW_TEX) return window.parent.BW_TEX; } catch (e) {} return window.BW_TEX || REPO; })();
+  var PATHS = [], MAP = {}, cache = {};
+  // Formen als Quader in Blockeinheiten [x0, y0, z0, x1, y1, z1]
+  var SH = {
+    c: [[0, 0, 0, 1, 1, 1]], s: [[0, 0, 0, 1, 1, .5]], st: [[0, 0, 0, 1, 1, .5], [0, 0, .5, 1, .5, 1]],
+    fe: [[.375, 0, 0, .625, .25, 1], [.4375, .25, .375, .5625, .75, .5625], [.4375, .25, .75, .5625, .75, .9375], [.375, .75, 0, .625, 1, 1]],
+    fg: [[.4375, 0, .3125, .5625, .125, 1], [.4375, .125, .375, .5625, .875, .5625], [.4375, .125, .75, .5625, .875, .9375], [.4375, .875, .3125, .5625, 1, 1]],
+    w: [[.3125, 0, 0, .6875, 1, .8125], [.25, .25, 0, .75, .75, 1]], pp: [[.0625, .0625, 0, .9375, .9375, .0625]],
+    b: [[.3125, .375, 0, .6875, .625, .125]], ca: [[0, 0, 0, 1, 1, .0625]], t: [[0, 0, 0, 1, 1, .1875]]
+  };
+  function P(x, y, z) { return [16 + (x - y) * 15, 1 + (x + y) * 7.5 + (1 - z) * 15]; }
+  function r2(v) { return Math.round(v * 1000) / 1000; }
+  function img(p, m) {
+    return '<image data-p="' + p + '" width="16" height="16" preserveAspectRatio="xMinYMin slice"' + (m ? ' transform="matrix(' + m.map(r2).join(' ') + ')"' : '') + '/>';
+  }
+  function face(p, O, A, B, shade) {
+    var s = img(p, [(A[0] - O[0]) / 16, (A[1] - O[1]) / 16, (B[0] - O[0]) / 16, (B[1] - O[1]) / 16, O[0], O[1]]);
+    if (shade) s += '<polygon points="' + [O, A, [A[0] + B[0] - O[0], A[1] + B[1] - O[1]], B].map(function (q) { return r2(q[0]) + ',' + r2(q[1]); }).join(' ') + '" fill="#000" opacity="' + shade + '"/>';
+    return s;
+  }
+  function box(b, t) {
+    return face(t[0], P(b[0], b[1], b[5]), P(b[3], b[1], b[5]), P(b[0], b[4], b[5]), 0) +
+           face(t[1], P(b[0], b[4], b[5]), P(b[3], b[4], b[5]), P(b[0], b[4], b[2]), .18) +
+           face(t[2], P(b[3], b[4], b[5]), P(b[3], b[1], b[5]), P(b[3], b[4], b[2]), .38);
+  }
+  function spec(id) { var m = MAP[id]; return m ? [m[0]].concat(m.slice(1).map(function (n) { return PATHS[n]; })) : null; }
+  function svg(sp) {
+    if (sp[0] === 'f') return '<svg class="txi" viewBox="0 0 16 16" aria-hidden="true">' + img(sp[1]) + '</svg>';
+    var boxes = (SH[sp[0]] || SH.c).slice().sort(function (a, b) { return (a[0] + a[1] + a[3] + a[4]) - (b[0] + b[1] + b[3] + b[4]) || a[2] - b[2]; });
+    return '<svg class="txi" viewBox="0 0 32 32" aria-hidden="true">' + boxes.map(function (b) { return box(b, sp.slice(1)); }).join('') + '</svg>';
+  }
+  /* TGA (einige Mojang-Texturen) im Browser in ein Bild umwandeln */
+  function tga(buf) {
+    var b = new Uint8Array(buf), type = b[2], w = b[12] | b[13] << 8, h = b[14] | b[15] << 8, bpp = b[16], desc = b[17];
+    if ((type !== 2 && type !== 10) || (bpp !== 24 && bpp !== 32) || !w || !h) throw new Error('tga');
+    var px = bpp >> 3, o = 18 + b[0] + (b[1] ? (b[5] | b[6] << 8) * (b[7] >> 3) : 0), n = w * h, out = new Uint8ClampedArray(n * 4), i = 0;
+    function put(j) { var k = i * 4; out[k] = b[j + 2]; out[k + 1] = b[j + 1]; out[k + 2] = b[j]; out[k + 3] = px === 4 ? b[j + 3] : 255; i++; }
+    if (type === 2) while (i < n) { put(o); o += px; }
+    else while (i < n) { var c = b[o++], cnt = (c & 127) + 1, r; if (c & 128) { for (r = 0; r < cnt && i < n; r++) put(o); o += px; } else for (r = 0; r < cnt && i < n; r++) { put(o); o += px; } }
+    var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+    var ctx = cv.getContext('2d'), id = new ImageData(out, w, h);
+    if (desc & 32) ctx.putImageData(id, 0, 0);
+    else { var tmp = document.createElement('canvas'); tmp.width = w; tmp.height = h; tmp.getContext('2d').putImageData(id, 0, 0); ctx.translate(0, h); ctx.scale(1, -1); ctx.drawImage(tmp, 0, 0); }
+    return cv.toDataURL('image/png');
+  }
+  function url(p) {
+    if (cache[p]) return cache[p];
+    if (!/\.tga$/.test(p)) return (cache[p] = Promise.resolve(BASE + p));
+    return (cache[p] = fetch(BASE + p, { mode: 'cors', credentials: 'omit' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }).then(tga));
+  }
+  function fail(el) { el.classList.remove('tx'); el.classList.add('txfail'); var s = el.querySelector('svg.txi'); if (s) s.remove(); }
+  function paint(el) {
+    var sp = spec(el.getAttribute('data-tx')); if (!sp) return;
+    el.insertAdjacentHTML('afterbegin', svg(sp)); el.classList.add('tx');
+    [].forEach.call(el.querySelectorAll('svg.txi image[data-p]'), function (im) {
+      url(im.getAttribute('data-p')).then(function (u) { im.setAttribute('href', u); }, function () { fail(el); });
+    });
+  }
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); paint(e.target); } });
+  }, { rootMargin: '300px' }) : null;
+  function scan(root) {
+    [].forEach.call((root || document).querySelectorAll('[data-tx]:not([data-txo])'), function (el) {
+      el.setAttribute('data-txo', ''); if (!MAP[el.getAttribute('data-tx')]) return;
+      if (io) io.observe(el); else paint(el);
+    });
+  }
+  var pending = false;
+  function later() { if (pending) return; pending = true; (window.requestAnimationFrame || setTimeout)(function () { pending = false; scan(document); }); }
+  document.addEventListener('error', function (e) {
+    var t = e.target; if (!t || !t.tagName || t.tagName.toLowerCase() !== 'image' || !t.closest) return;
+    var el = t.closest('.tx'); if (el) fail(el); else if (t.hasAttribute('data-p')) t.remove();
+  }, true);
+  // Bilder in fertigem SVG (z. B. Bauplan-Raster) nachladen
+  function fill(root) {
+    [].forEach.call((root || document).querySelectorAll('image[data-p]:not([href])'), function (im) {
+      url(im.getAttribute('data-p')).then(function (u) { im.setAttribute('href', u); }, function () { im.remove(); });
+    });
+  }
+  return {
+    init: function (paths, map) {
+      PATHS = paths || []; MAP = map || {};
+      if (window.MutationObserver) new MutationObserver(later).observe(document.documentElement, { childList: true, subtree: true });
+      later();
+    },
+    has: function (id) { return !!MAP[id]; },
+    svg: function (id) { var sp = spec(id); return sp ? svg(sp) : ''; },
+    url: url, paint: paint, scan: scan, fill: fill, base: BASE
+  };
+})();
+
   var VIEWS = [{ id: 'start', frame: null, el: 'v-start', title: 'Start' }, { id: 'lexikon', frame: 'lex', title: 'Ressourcen-Lexikon' }]
     .concat(PLANS.map(function (p) { return { id: p.id, frame: 'bau', title: 'Bauplan ' + p.title }; }))
     .concat([{ id: 'werkzeuge', frame: null, el: 'v-tools', title: 'Werkzeuge' }]);
@@ -660,8 +766,9 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       p.specs.map(function (f) { return '<div class="fact"><small>' + esc(f[0]) + '</small><b>' + esc(f[1]) + '</b></div>'; }).join('') + '</div></div></button>';
   }).join('');
   function chipIcon(col) { return iso([[0, 0, 0, col]]); }
+  function qt(id, col) { return '<span class="qt"' + (id ? ' data-tx="' + esc(id) + '"' : '') + '>' + chipIcon(col) + '</span>'; }
   function chipsFor(list) {
-    return list.map(function (e) { return '<button type="button" class="qchip" data-item="' + esc(e[0]) + '">' + chipIcon(e[2] || '#0B5CAD') + '<span>' + esc(e[1]) + '</span></button>'; }).join('');
+    return list.map(function (e) { return '<button type="button" class="qchip" data-item="' + esc(e[0]) + '">' + qt(e[0], e[2] || '#0B5CAD') + '<span>' + esc(e[1]) + '</span></button>'; }).join('');
   }
   $('popular').innerHTML = chipsFor(POPULAR);
   $('ti-liste').innerHTML = iso([[0, 0, 0, K.paper, .25], [0, 0, .25, K.paper, .25], [0.15, 0.1, .5, K.stone, .5]]);
@@ -714,13 +821,14 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   });
 
   // Zuletzt angesehen: Einträge aus dem Lexikon (Namen stehen in dessen Daten)
-  var names = null;
+  var names = null, texReady = false;
   function lexNames() {
     if (names) return names;
     try {
       var D = JSON.parse(frames.lex.contentDocument.getElementById('data').textContent);
       names = {};
-      Object.keys(D.items).forEach(function (id) { var it = D.items[id]; names[slug(id)] = [it[0] + (it[3] ? ' (' + it[3] + ')' : ''), D.cats[it[2]]]; });
+      Object.keys(D.items).forEach(function (id) { var it = D.items[id]; names[slug(id)] = [it[0] + (it[3] ? ' (' + it[3] + ')' : ''), D.cats[it[2]], id]; });
+      if (D.tex && !texReady) { texReady = true; BWTEX.init(D.tex.p, D.tex.m); }
     } catch (e) { names = null; }
     return names;
   }
@@ -729,7 +837,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   function renderRecent() {
     var n = lexNames(), a = recents().filter(function (s) { return n && n[s]; }).slice(0, 8);
     $('recentbox').hidden = !a.length;
-    $('recent').innerHTML = a.map(function (s) { return '<button type="button" class="qchip" data-slug="' + s + '">' + chipIcon(s.indexOf('enchanted-book') === 0 ? '#7B4BC2' : '#8D96A3') + '<span>' + esc(n[s][0]) + '</span></button>'; }).join('');
+    $('recent').innerHTML = a.map(function (s) { return '<button type="button" class="qchip" data-slug="' + s + '">' + qt(n[s][2], s.indexOf('enchanted-book') === 0 ? '#7B4BC2' : '#8D96A3') + '<span>' + esc(n[s][0]) + '</span></button>'; }).join('');
   }
   function remember(s) {
     if (!/^[a-z0-9-]+$/.test(s) || /^(liste|orte|berufe|ort-\d+|beruf-\d+)$/.test(s)) return;
@@ -860,7 +968,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     var sorted = list.map(function (e, i) { return [e, i]; }).sort(function (a, b) { return (a[0].d - b[0].d) || (a[1] - b[1]); });
     $('l-list').innerHTML = sorted.map(function (x) {
       var e = x[0], i = x[1], lex = !/^(mat|own):/.test(e.k);
-      return '<li class="li' + (e.d ? ' done' : '') + '" data-i="' + i + '"><button type="button" class="chk" aria-pressed="' + e.d + '" aria-label="' + esc(e.t) + ' erledigt"></button>' +
+      return '<li class="li' + (e.d ? ' done' : '') + '" data-i="' + i + '"><button type="button" class="chk" aria-pressed="' + e.d + '" aria-label="' + esc(e.t) + ' erledigt"></button>' + qt(lex ? e.k : null, '#8D96A3') +
         '<div class="lbody"><b>' + fmtN(e.n) + ' ×</b> ' + (lex ? '<button type="button" class="lname" data-open="' + esc(slug(e.k)) + '">' + esc(e.t) + '</button>' : '<span class="ltext">' + esc(e.t) + '</span>') +
         (e.s ? '<small>für ' + esc(e.s) + '</small>' : '') + '</div><button type="button" class="xbtn" aria-label="' + esc(e.t) + ' entfernen">×</button></li>';
     }).join('');
@@ -1070,12 +1178,10 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   }
 
   /* Was ist neu */
-  var NEWS = ['Neuer Bereich Werkzeuge: Sammelliste zum Abhaken, Koordinaten-Notizbuch, Amboss-Planer und Portal-Rechner',
-              'Rohstoffrechner und Bauplan-Material lassen sich auf die Sammelliste schicken',
-              'Neuer Bauplan: Zuckerrohrfarm mit Beobachtern und Kolben',
-              'Steckbriefe für 62 Mobs im Lexikon: Lebenspunkte, Erfahrung, Spawnregeln',
-              'Daten zwischen iPhone und PC übertragen',
-              'Korrekturen: Versionsnummer 26.60, Rezepte fürs Inventar markiert, Hinweise zu Eisenfarm, XP-Farm und Kaktusfarm genauer'];
+  var NEWS = ['Originalbilder aus Minecraft: Lexikon, Baupläne, Startseite und Sammelliste zeigen jetzt die echten Texturen aus Mojangs Resource Pack',
+              'Die Bilder werden beim ersten Ansehen aus dem Internet geladen und auf deinem Gerät gespeichert, danach gehen sie auch ohne Internet',
+              'Im Bauplan blendet der Schalter „Originalbilder“ die Texturen bei Bedarf aus',
+              'Aus Version 1.3: Bereich Werkzeuge (Sammelliste, Koordinaten, Amboss-Planer, Portal-Rechner), Zuckerrohrfarm, Mob-Steckbriefe und Datenübertragung zwischen iPhone und PC'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;
@@ -1123,7 +1229,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       d.addEventListener('keydown', onKey, true);
       w.addEventListener('hashchange', function () { onFrameHash(key, w.location.hash); });
       if (key === 'bau' && w.location.hash !== '#' + lastPlan) w.location.hash = lastPlan;
-      if (key === 'lex' && cur && !cur.frame) renderRecent();
+      if (key === 'lex') { lexNames(); if (cur && cur.id === 'start') renderRecent(); }
       if (cur && cur.frame === key) focusView();
     });
   }

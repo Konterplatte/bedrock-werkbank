@@ -1,6 +1,6 @@
 // Bedrock-Werkbank als Web-App: speichert alle Dateien beim ersten Besuch, danach läuft sie ohne Internet.
 'use strict';
-const VERSION = "bw-1bd20ad438d7";
+const VERSION = "bw-d220ca73582a";
 const FILES = [
  "./",
  "lexikon/",
@@ -36,9 +36,21 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Originalbilder: kommen direkt aus Mojangs Repository und bleiben nur auf diesem Gerät gespeichert (eigener Speicher, übersteht Updates)
+const TEX = 'https://raw.githubusercontent.com/Mojang/bedrock-samples/';
+const TEXCACHE = 'mojang-tex-1';
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
+  if (req.url.startsWith(TEX)) {
+    event.respondWith(caches.open(TEXCACHE).then((cache) => cache.match(req.url).then((hit) => hit ||
+      fetch(new Request(req.url, { mode: 'cors', credentials: 'omit' })).then((res) => {
+        if (res.ok) cache.put(req.url, res.clone());
+        return res;
+      }))));
+    return;
+  }
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || url.pathname.includes('/download/')) return;   // Downloads nie zwischenspeichern
   event.respondWith(
