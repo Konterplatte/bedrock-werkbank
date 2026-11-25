@@ -20,7 +20,7 @@ Dieselbe App als eigenes Programm für Windows 10 und 11: [Bedrock-Werkbank-Wind
 
 - `index.html`: Startseite, Navigation und Werkzeuge (Sammelliste, Koordinaten-Notizbuch, Amboss-Planer, Nether-Portal-Rechner, Datenübertragung)
 - `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen, mit Rohstoffrechner, Fundorten, Dorfbewohner-Berufen und Steckbriefen für 62 Mobs
-- `bauplaene/`: acht Baupläne Block für Block, von der Eisenfarm und der Enderman-XP-Farm fürs End bis zur Kürbisfarm, der Hühnerfarm mit Kochautomat und Lava aus Tropfstein; fertige Ebenen lassen sich abhaken
+- `bauplaene/`: neun Baupläne Block für Block, von der Eisenfarm und den XP-Farmen (Endermen im End, Zombie- oder Skelett-Spawner) bis zur Kürbisfarm, der Hühnerfarm mit Kochautomat und Lava aus Tropfstein; fertige Ebenen lassen sich abhaken
 - `sw.js`, `manifest.webmanifest`, `icons/`: Offline-Betrieb und App-Symbol
 - `lizenzen.txt`: Lizenzen der Schriften und Herkunft der Bilder
 

@@ -57,6 +57,7 @@
   --b-chicken: #F4F1E8;
   --b-cauldron: #3F454E;
   --b-drip: #A88A6E;
+  --b-spawner: #24303D;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -66,7 +67,7 @@
     --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
     --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
     --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C;
+    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C;
   }
 }
 :root[data-theme="dark"] {
@@ -76,7 +77,7 @@
   --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
   --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
   --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C;
+  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C;
 }
 
 * { box-sizing: border-box; }
@@ -249,7 +250,7 @@ html.app .foot { max-width: none; }
 
 <header>
   <p class="eyebrow">Minecraft Bedrock Edition</p>
-  <h1>Acht Baupläne für Farmen und Handel</h1>
+  <h1>Neun Baupläne für Farmen und Handel</h1>
   <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
 </header>
 
@@ -633,7 +634,45 @@ html.app .foot { max-width: none; }
     </ul>
   </div>
 </section>
-<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Kürbis und Melone: Fruchtboden und Wachstum nach der Seite <a href="https://minecraft.wiki/w/Melon">Melon</a>, Bedrock-Verhalten von Beobachter und Kolbenkopf nach den Fehlerberichten MCPE-28520 und MCPE-29532. Hühner: Größen, Legezeit, Schlupfchance und Wachstumsdauer aus Mojangs Bedrock-Daten, Trichter unter einer unteren Stufe nach der Seite Hopper. Lava: Tropfstein nach der Seite <a href="https://minecraft.wiki/w/Pointed_Dripstone">Pointed Dripstone</a>, Ton nach dem Fehlerbericht MCPE-153823. Bibliothekar und Bauer: Handelsangebote aus Mojangs Bedrock-Daten. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
+<section class="notes" id="notes-spawner" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Der Spawner:</strong> In der Bedrock Edition setzt er Mobs bis zu 4 Felder weit um sich herum ab, wobei Schritte nach Norden, Süden, Osten und Westen zusammengezählt werden. Er arbeitet nur, wenn du höchstens 16 Blöcke entfernt bist und es im Raum dunkel ist. Der Raum deckt diesen Bereich genau ab.</li>
+      <li><strong>Das Wasser:</strong> Es schiebt jeden Mob nach Süden in den Graben. Der ist 2 Blöcke tief, dort kommt keiner mehr heraus.</li>
+      <li><strong>Das Töten:</strong> Du stehst im Gang eine Lage tiefer und triffst die Füße der Mobs durch den halben Block Luft unter den Stufen. Die Mobs sehen dich nicht und kommen nicht an dich heran. Schleichen macht das Zielen leichter.</li>
+      <li><strong>XP und Beute:</strong> Laut Mojangs Daten gibt ein Zombie oder Skelett nur XP, wenn der letzte Schlag von dir kommt: 5 Punkte, mit Ausrüstung etwas mehr. Fleisch, Knochen und Pfeile ziehen die Trichter in die Kiste.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Warum ohne langen Fallschacht</h2>
+    <ul>
+      <li><strong>Der Haken der üblichen Anleitungen:</strong> Viele lassen die Mobs 22 Blöcke tief fallen, damit ein Schlag reicht. Unten am Schacht wärst du aber weiter als 16 Blöcke vom Spawner weg, und er hört auf zu arbeiten.</li>
+      <li><strong>Hier:</strong> Du stehst höchstens gut 9 Blöcke entfernt. Dafür haben die Mobs volle Lebenspunkte. Mit einem guten Schwert mit Schärfe reichen meist 2 Schläge, sonst 3.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Finde ein Verlies mit Zombie- oder Skelett-Spawner: ein Raum aus Bruchstein und bemoostem Bruchstein, oft mit Kisten. Setze sofort Fackeln auf und um den Spawner, dann entsteht nichts, während du baust.</li>
+      <li>Grabe Gang, Graben und Nische aus und setze Trichter, Kiste und die oberen Stufen, Ebenen 1 bis 3.</li>
+      <li>Grabe den Raum auf 9 × 9 Felder und genau 2 Blöcke Höhe um den Spawner aus, Ebenen 4 bis 7. Schließe jede Höhle und jeden Gang, der in den Raum führt.</li>
+      <li>Grabe vom Ostende des Gangs eine Treppe oder einen Leiterschacht zu deinem Zugangstunnel.</li>
+      <li>Gieße die 9 Wasserquellen an der Nordwand, Ebene 5. Hol dann alle Fackeln aus dem Raum und geh in den Gang.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Es spawnt nichts:</strong> Im Raum ist noch eine Fackel, oder du bist zu weit weg. Laut einem Bedrock-Fehlerbericht kann ein Spawner, auf den Wasser gegossen wurde, danach nicht mehr spawnen. Gieße deshalb nie direkt auf ihn.</li>
+      <li><strong>Im Süden des Raums spawnt wenig:</strong> Licht aus dem Gang dringt durch den Spalt. Lass den Gang dunkel, ein Trank der Nachtsicht hilft beim Sehen.</li>
+      <li><strong>Mobs bleiben im Raum stehen:</strong> Dort ist der Boden trocken. Prüfe, ob alle 9 Quellen an der Nordwand liegen.</li>
+      <li><strong>Wasser läuft in den Graben:</strong> Eine Quelle liegt zu weit im Süden. Das Wasser muss genau 7 Felder fließen.</li>
+      <li><strong>Spinnen-Spawner:</strong> Dafür passt dieser Plan nicht. Spinnen sind breiter als ein Block und klettern an Wänden hoch.</li>
+    </ul>
+  </div>
+</section>
+<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Kürbis und Melone: Fruchtboden und Wachstum nach der Seite <a href="https://minecraft.wiki/w/Melon">Melon</a>, Bedrock-Verhalten von Beobachter und Kolbenkopf nach den Fehlerberichten MCPE-28520 und MCPE-29532. Hühner: Größen, Legezeit, Schlupfchance und Wachstumsdauer aus Mojangs Bedrock-Daten, Trichter unter einer unteren Stufe nach der Seite Hopper. Lava: Tropfstein nach der Seite <a href="https://minecraft.wiki/w/Pointed_Dripstone">Pointed Dripstone</a>, Ton nach dem Fehlerbericht MCPE-153823. Bibliothekar und Bauer: Handelsangebote aus Mojangs Bedrock-Daten. Spawner: Spawnbereich, Aktivierung und Lichtgrenze nach der Seite <a href="https://minecraft.wiki/w/Monster_Spawner">Monster Spawner</a>, Lebenspunkte, Größen und XP aus Mojangs Bedrock-Daten. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
 
 </div>
 <script>
@@ -816,7 +855,8 @@ var BLOCKS = {
   q: { name: 'Untere Stufe: hier stehen die Küken', mat: 'slab', fill: 'var(--b-slab)', glyph: '▄', dark: true },
   x: { name: 'Hühner, stehen auf dem Trichter', fill: 'var(--b-chicken)', glyph: 'Hu' },
   j: { name: 'Kessel, fängt die Lava auf', mat: 'cauldron', fill: 'var(--b-cauldron)', glyph: 'Ke', dark: true },
-  1: { name: 'Spitzer Tropfstein, hängt unter dem Block', mat: 'dripstone', fill: 'var(--b-drip)', glyph: '▼', dark: true }
+  1: { name: 'Spitzer Tropfstein, hängt unter dem Block', mat: 'dripstone', fill: 'var(--b-drip)', glyph: '▼', dark: true },
+  3: { name: 'Spawner: ist schon da, nicht abbauen und kein Wasser direkt darauf gießen', fill: 'var(--b-spawner)', glyph: '✱', dark: true }
 };
 
 var MATERIALS = {
@@ -1275,7 +1315,62 @@ var PLANS = (function () {
     };
   }
 
-  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava()];
+
+  /* ---------- Spawner-XP-Farm (Zombie oder Skelett): 13 x 13, Ebene 5 = Höhe des Spawners ---------- */
+  function spawner() {
+    var W = 13, D = 13, L = [], g, SX = 5, SZ = 5;
+    function walls(g, top) {                      // Raumwände x0/x10, Nordwand z0, Grabenwand bis z10
+      rect(g, 0, 0, 10, 0, 'S'); rect(g, 0, 0, 0, 10, 'S'); rect(g, 10, 0, 10, 10, 'S'); if (top) rect(g, 0, 10, 10, 10, 'S');
+    }
+    function corridor(g) {                        // Gang z11 von x1 bis x11, Knick bei x11 nach Norden bis vor die Kiste
+      rect(g, 1, 11, 11, 11, 'o'); g[10][11] = 'o';
+      rect(g, 0, 12, 12, 12, 'S'); g[11][0] = 'S'; g[11][12] = 'S'; g[10][12] = 'S';
+    }
+
+    g = mk(W, D); rect(g, 1, 11, 11, 11, 'S'); g[10][11] = 'S';
+    L.push({ y: [1, 1], name: 'Boden des Gangs', grid: rows(g),
+      text: 'Hier beginnst du ganz unten: 4 Blöcke unter dem Spawner liegt der Boden eines Gangs, der südlich am Spawnerraum vorbeiführt. Am Ostende knickt er nach Norden ab, dort kommt die Kiste hin. Im Untergrund ist das meiste schon Stein, du gräbst nur den Gang frei.' });
+
+    g = mk(W, D); rect(g, 0, 8, 10, 8, 'S'); rect(g, 1, 9, 10, 9, 'e'); g[8][SX] = 's'; g[9][0] = 'S'; g[9][11] = 'K'; g[9][12] = 'K';
+    rect(g, 0, 10, 10, 10, 'S'); corridor(g);
+    L.push({ y: [2, 2], name: 'Trichter und Kiste', grid: rows(g), pairs: [[11, 9, 12, 9]],
+      text: 'Lege den Boden des Grabens aus 10 Trichtern, die nach Osten zeigen, der letzte führt durch die Wand in die Doppelkiste. Ein Trichter in der kleinen Nische nördlich davon zeigt nach Süden in die Reihe. Im Gang bleiben 2 Blöcke Luft, deine Füße stehen auf dieser Höhe.' });
+
+    g = mk(W, D); rect(g, 0, 8, 10, 8, 'S'); rect(g, 1, 9, 9, 9, 'o'); g[8][SX] = 'o'; g[7][SX] = 'S'; g[9][0] = 'S'; g[9][10] = 'S'; g[10][0] = 'S'; g[10][10] = 'S';
+    rect(g, 1, 10, 9, 10, 'T'); g[9][11] = 'o'; g[9][12] = 'o'; corridor(g);
+    L.push({ y: [3, 3], name: 'Graben und Schlagfenster', grid: rows(g),
+      text: 'Hier stehen später die Mobs, mit den Füßen auf den Trichtern. Zwischen Graben und Gang setzt du 9 obere Stufen: Klicke dazu die obere Hälfte des Nachbarblocks an. Unter jeder Stufe bleibt ein halber Block Luft. Durch diesen Spalt triffst du die Füße der Mobs, sie selbst kommen nicht an dich heran. Über der Kiste bleibt frei.' });
+
+    g = mk(W, D); walls(g, true); rect(g, 1, 1, 9, 8, 'S'); g[8][SX] = 'o'; rect(g, 1, 9, 9, 9, 'o');
+    rect(g, 0, 11, 12, 11, 'S'); g[10][11] = 'S'; g[10][12] = 'S'; g[9][11] = 'S'; g[9][12] = 'S';
+    L.push({ y: [4, 4], name: 'Boden des Spawnerraums', grid: rows(g),
+      text: 'Das ist der Boden des Spawnerraums, eine Lage unter dem Spawner. Grabe den Raum auf 9 × 9 Felder um den Spawner herum aus. Lass die südlichste Reihe und das Feld direkt südlich der Spawner-Spalte offen, so entstehen Graben und Nische. Darüber deckt eine Reihe Blöcke Fenster und Gang ab.' });
+
+    g = mk(W, D); walls(g, true); rect(g, 1, 1, 9, 1, 'Q'); rect(g, 1, 2, 9, 8, 'f'); g[SZ][SX] = '3'; g[8][SX] = 'h'; rect(g, 1, 9, 9, 9, 'h');
+    L.push({ y: [5, 5], name: 'Wasser und Spawner', grid: rows(g), flow: true,
+      text: 'Auf dieser Höhe steht der Spawner. Gieße entlang der Nordwand 9 Wasserquellen. Das Wasser fließt 7 Felder nach Süden und hört genau vor dem Graben auf, ohne hineinzulaufen. Hinter dem Spawner reicht es nur bis zur Nische, deshalb ist dort ein Feld offen. Gieße nie Wasser direkt auf den Spawner.' });
+
+    g = mk(W, D); walls(g, true); rect(g, 1, 1, 9, 9, 'o');
+    L.push({ y: [6, 6], name: 'Raum, zweite Lage', grid: rows(g),
+      text: 'Der Raum ist innen genau 2 Blöcke hoch, nicht höher. Zombies und Skelette passen hinein, aber auf dem Spawner selbst kann keiner entstehen.' });
+
+    g = mk(W, D); rect(g, 0, 0, 10, 10, 'S');
+    L.push({ y: [7, 7], name: 'Decke', grid: rows(g),
+      text: 'Schließe den Raum mit einer Decke. Oft ist sie im Untergrund schon da. Im Raum darf kein Licht sein: Nimm am Ende alle Fackeln heraus, die du beim Bauen gesetzt hast.' });
+
+    return {
+      id: 'spawner', title: 'Spawner-XP-Farm', w: W, d: D, yMin: 1, yMax: 7, sliceX: 5, ground: false,
+      guides: [],
+      specs: [['Raum', '9 × 9 um den Spawner'], ['Tiefe', '4 Lagen unter dem Spawner'], ['Spawner', 'Zombie oder Skelett'], ['XP', 'je Mob mindestens 5']],
+      extras: [['Wassereimer', '1', 'für die 9 Quellen immer wieder auffüllen'], ['Schwert', '1', 'am besten Diamant mit Schärfe'],
+               ['Fackeln', 'einige', 'nur zum Bauen, danach wieder entfernen']],
+      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', slab: 'obere Stufen, nicht aus Holz', stone: 'im Untergrund oft schon vorhanden',
+               chest: 'ergibt eine Doppelkiste', source: 'aus dem Eimer' },
+      layers: L
+    };
+  }
+
+  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner()];
 })();
 
 if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
@@ -1284,7 +1379,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 <script>
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
-  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/bed_red.png","items/cauldron.png","items/door_wood.png","items/egg.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",33,33,33],"Z":["c",33,33,33],"U":["c",33,33,33],"L":["c",18,18,18],"X":["f",47],"t":["f",42],"n":["f",42],"e":["f",42],"s":["f",42],"K":["c",6,4,5],"B":["f",38],"b":["f",38],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",40],"d":["f",40],"F":["f",34],"N":["c",32,32,32],"c":["c",1,0,0],"z":["fe",28,28,28],"g":["fe",28,28,28],"T":["s",33,33,33],"R":["t",35,35,35],"M":["f",43],"m":["c",22,22,22],"r":["f",45],"G":["c",14,14,14],"P":["c",27,26,26],"p":["c",27,26,26],"Y":["c",25,23,24],"y":["c",25,23,24],"i":["f",44],"a":["c",11,9,9],"k":["f",46],"W":["b",33,33,33],"H":["c",13,10,12],"I":["c",25,23,24],"J":["c",25,23,24],"l":["f",42],"q":["s",33,33,33],"x":["f",41],"j":["f",39],"1":["f",29],"Q":["c",37,37,37],"V":["c",17,17,17]},"g":{"S":[33,33],"Z":[33,33],"U":[33,33],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[34,34],"N":[32,32],"c":[1,0],"z":[28,28],"g":[28,28],"T":[33,33],"R":[35,35],"M":[31,31],"m":[22,22],"r":[45,45],"G":[14,14],"P":[26,26],"p":[26,26],"Y":[25,24],"y":[25,24],"a":[11,9],"W":[33,33],"H":[13,10],"I":[25,24],"J":[25,24],"l":[16,15],"q":[33,33],"j":[3,2],"1":[30,30],"Q":[37,37],"f":[36,36],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","V":"lava_bucket"}};
+  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/bed_red.png","items/cauldron.png","items/door_wood.png","items/egg.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",34,34,34],"Z":["c",34,34,34],"U":["c",34,34,34],"L":["c",18,18,18],"X":["f",48],"t":["f",43],"n":["f",43],"e":["f",43],"s":["f",43],"K":["c",6,4,5],"B":["f",39],"b":["f",39],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",41],"d":["f",41],"F":["f",35],"N":["c",33,33,33],"c":["c",1,0,0],"z":["fe",29,29,29],"g":["fe",29,29,29],"T":["s",34,34,34],"R":["t",36,36,36],"M":["f",44],"m":["c",23,23,23],"r":["f",46],"G":["c",14,14,14],"P":["c",28,27,27],"p":["c",28,27,27],"Y":["c",26,24,25],"y":["c",26,24,25],"i":["f",45],"a":["c",11,9,9],"k":["f",47],"W":["b",34,34,34],"H":["c",13,10,12],"I":["c",26,24,25],"J":["c",26,24,25],"l":["f",43],"q":["s",34,34,34],"x":["f",42],"j":["f",40],"1":["f",30],"3":["c",22,22,22],"Q":["c",38,38,38],"V":["c",17,17,17]},"g":{"S":[34,34],"Z":[34,34],"U":[34,34],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[35,35],"N":[33,33],"c":[1,0],"z":[29,29],"g":[29,29],"T":[34,34],"R":[36,36],"M":[32,32],"m":[23,23],"r":[46,46],"G":[14,14],"P":[27,27],"p":[27,27],"Y":[26,25],"y":[26,25],"a":[11,9],"W":[34,34],"H":[13,10],"I":[26,25],"J":[26,25],"l":[16,15],"q":[34,34],"j":[3,2],"1":[31,31],"3":[22,22],"Q":[38,38],"f":[37,37],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","V":"lava_bucket"}};
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
   function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
