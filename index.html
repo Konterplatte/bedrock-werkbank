@@ -549,7 +549,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 1.4</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 1.4.1</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -563,7 +563,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.4 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 1.4.1 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
@@ -598,7 +598,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
-  var APPVER = '1.4';
+  var APPVER = '1.4.1';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -640,24 +640,50 @@ var BWTEX = (function () {
     var boxes = (SH[sp[0]] || SH.c).slice().sort(function (a, b) { return (a[0] + a[1] + a[3] + a[4]) - (b[0] + b[1] + b[3] + b[4]) || a[2] - b[2]; });
     return '<svg class="txi" viewBox="0 0 32 32" aria-hidden="true">' + boxes.map(function (b) { return box(b, sp.slice(1)); }).join('') + '</svg>';
   }
-  /* TGA (einige Mojang-Texturen) im Browser in ein Bild umwandeln */
+  /* TGA (einige Mojang-Texturen) im Browser dekodieren: liefert Pixel von oben nach unten */
   function tga(buf) {
-    var b = new Uint8Array(buf), type = b[2], w = b[12] | b[13] << 8, h = b[14] | b[15] << 8, bpp = b[16], desc = b[17];
+    var b = new Uint8Array(buf), type = b[2], w = b[12] | b[13] << 8, h = b[14] | b[15] << 8, bpp = b[16], top = b[17] & 32;
     if ((type !== 2 && type !== 10) || (bpp !== 24 && bpp !== 32) || !w || !h) throw new Error('tga');
     var px = bpp >> 3, o = 18 + b[0] + (b[1] ? (b[5] | b[6] << 8) * (b[7] >> 3) : 0), n = w * h, out = new Uint8ClampedArray(n * 4), i = 0;
-    function put(j) { var k = i * 4; out[k] = b[j + 2]; out[k + 1] = b[j + 1]; out[k + 2] = b[j]; out[k + 3] = px === 4 ? b[j + 3] : 255; i++; }
+    function put(j) {
+      var y = (i / w) | 0, k = ((top ? y : h - 1 - y) * w + i % w) * 4;
+      out[k] = b[j + 2]; out[k + 1] = b[j + 1]; out[k + 2] = b[j]; out[k + 3] = px === 4 ? b[j + 3] : 255; i++;
+    }
     if (type === 2) while (i < n) { put(o); o += px; }
     else while (i < n) { var c = b[o++], cnt = (c & 127) + 1, r; if (c & 128) { for (r = 0; r < cnt && i < n; r++) put(o); o += px; } else for (r = 0; r < cnt && i < n; r++) { put(o); o += px; } }
-    var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
-    var ctx = cv.getContext('2d'), id = new ImageData(out, w, h);
-    if (desc & 32) ctx.putImageData(id, 0, 0);
-    else { var tmp = document.createElement('canvas'); tmp.width = w; tmp.height = h; tmp.getContext('2d').putImageData(id, 0, 0); ctx.translate(0, h); ctx.scale(1, -1); ctx.drawImage(tmp, 0, 0); }
+    return { w: w, h: h, d: out };
+  }
+  /* PNG/JPEG über ein Bitmap in Pixel umwandeln (nur für Texturen mit Färbemaske nötig) */
+  function bitmap(blob) {
+    return createImageBitmap(blob).then(function (bm) {
+      var cv = document.createElement('canvas'); cv.width = bm.width; cv.height = bm.height;
+      var ctx = cv.getContext('2d'); ctx.drawImage(bm, 0, 0);
+      return { w: bm.width, h: bm.height, d: ctx.getImageData(0, 0, bm.width, bm.height).data };
+    });
+  }
+  /* Färbemaske wie im Spiel: Alpha 255 = voll einfärben, kleiner Wert = kaum einfärben; jedes Pixel außer Alpha 0 wird deckend */
+  function mask(im, hex) {
+    var t = /^[0-9a-f]{6}$/i.test(hex) ? [parseInt(hex.slice(0, 2), 16) / 255, parseInt(hex.slice(2, 4), 16) / 255, parseInt(hex.slice(4, 6), 16) / 255] : [1, 1, 1];
+    for (var k = 0, d = im.d; k < d.length; k += 4) {
+      var a = d[k + 3]; if (!a) continue;
+      var f = a / 255; d[k] *= 1 - f + f * t[0]; d[k + 1] *= 1 - f + f * t[1]; d[k + 2] *= 1 - f + f * t[2]; d[k + 3] = 255;
+    }
+    return im;
+  }
+  function dataUrl(im) {
+    var cv = document.createElement('canvas'); cv.width = im.w; cv.height = im.h;
+    cv.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(im.d), im.w, im.h), 0, 0);
     return cv.toDataURL('image/png');
   }
+  /* Pfad "datei.png" oder "datei.tga#a06540" (Färbemaske mit Standardfarbe, "#" allein = Maske ohne Farbe) */
   function url(p) {
     if (cache[p]) return cache[p];
-    if (!/\.tga$/.test(p)) return (cache[p] = Promise.resolve(BASE + p));
-    return (cache[p] = fetch(BASE + p, { mode: 'cors', credentials: 'omit' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }).then(tga));
+    var h = p.indexOf('#'), file = h < 0 ? p : p.slice(0, h), col = h < 0 ? null : p.slice(h + 1), isTga = /\.tga$/.test(file);
+    if (!isTga && col === null) return (cache[p] = Promise.resolve(BASE + file));
+    return (cache[p] = fetch(BASE + file, { mode: 'cors', credentials: 'omit' }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return isTga ? r.arrayBuffer().then(tga) : r.blob().then(bitmap);
+    }).then(function (im) { return dataUrl(col === null ? im : mask(im, col)); }));
   }
   function fail(el) { el.classList.remove('tx'); el.classList.add('txfail'); var s = el.querySelector('svg.txi'); if (s) s.remove(); }
   function paint(el) {
@@ -941,7 +967,7 @@ var BWTEX = (function () {
   }
   $('toast-b').addEventListener('click', function () { $('toast').classList.remove('show'); if (toastGo) toastGo(); });
 
-  /* Sammelliste: [{k, t, n, d, s}] – k ist eine Lexikon-Kennung, 'mat:…' oder 'own:…' */
+  /* Sammelliste: [{k, t, n, d, s, x}] – k ist eine Lexikon-Kennung, 'mat:…' oder 'own:…'; x = Lexikon-Kennung fürs Bild bei Bauplan-Material */
   var list = loadJSON('liste', []);
   if (!Array.isArray(list)) list = [];
   list = list.filter(function (e) { return e && typeof e.k === 'string' && typeof e.t === 'string' && e.n > 0; });
@@ -952,8 +978,9 @@ var BWTEX = (function () {
       (entries || []).forEach(function (e) {
         var n = Math.max(1, Math.round(+e.n || 0)); if (!e.k || !e.t || !isFinite(n)) return;
         var old = list.find(function (x) { return x.k === e.k; });
-        if (old) { old.n += n; old.d = false; if (source && (old.s || '').indexOf(source) < 0) old.s = old.s ? old.s + ', ' + source : source; }
-        else list.push({ k: String(e.k), t: String(e.t), n: n, d: false, s: source || '' });
+        var x = typeof e.x === 'string' && /^[a-z0-9_:]+$/.test(e.x) ? e.x : '';
+        if (old) { old.n += n; old.d = false; if (x && !old.x) old.x = x; if (source && (old.s || '').indexOf(source) < 0) old.s = old.s ? old.s + ', ' + source : source; }
+        else { var item = { k: String(e.k), t: String(e.t), n: n, d: false, s: source || '' }; if (x) item.x = x; list.push(item); }
         added++;
       });
       storeList();
@@ -968,7 +995,7 @@ var BWTEX = (function () {
     var sorted = list.map(function (e, i) { return [e, i]; }).sort(function (a, b) { return (a[0].d - b[0].d) || (a[1] - b[1]); });
     $('l-list').innerHTML = sorted.map(function (x) {
       var e = x[0], i = x[1], lex = !/^(mat|own):/.test(e.k);
-      return '<li class="li' + (e.d ? ' done' : '') + '" data-i="' + i + '"><button type="button" class="chk" aria-pressed="' + e.d + '" aria-label="' + esc(e.t) + ' erledigt"></button>' + qt(lex ? e.k : null, '#8D96A3') +
+      return '<li class="li' + (e.d ? ' done' : '') + '" data-i="' + i + '"><button type="button" class="chk" aria-pressed="' + e.d + '" aria-label="' + esc(e.t) + ' erledigt"></button>' + qt(lex ? e.k : (typeof e.x === 'string' ? e.x : null), '#8D96A3') +
         '<div class="lbody"><b>' + fmtN(e.n) + ' ×</b> ' + (lex ? '<button type="button" class="lname" data-open="' + esc(slug(e.k)) + '">' + esc(e.t) + '</button>' : '<span class="ltext">' + esc(e.t) + '</span>') +
         (e.s ? '<small>für ' + esc(e.s) + '</small>' : '') + '</div><button type="button" class="xbtn" aria-label="' + esc(e.t) + ' entfernen">×</button></li>';
     }).join('');
@@ -1178,10 +1205,9 @@ var BWTEX = (function () {
   }
 
   /* Was ist neu */
-  var NEWS = ['Originalbilder aus Minecraft: Lexikon, Baupläne, Startseite und Sammelliste zeigen jetzt die echten Texturen aus Mojangs Resource Pack',
-              'Die Bilder werden beim ersten Ansehen aus dem Internet geladen und auf deinem Gerät gespeichert, danach gehen sie auch ohne Internet',
-              'Im Bauplan blendet der Schalter „Originalbilder“ die Texturen bei Bedarf aus',
-              'Aus Version 1.3: Bereich Werkzeuge (Sammelliste, Koordinaten, Amboss-Planer, Portal-Rechner), Zuckerrohrfarm, Mob-Steckbriefe und Datenübertragung zwischen iPhone und PC'];
+  var NEWS = ['Korrektur: Lederrüstung erscheint jetzt braun wie im Spiel, der Feuerwerksstern wieder vollständig',
+              'Sammelliste: Material aus den Bauplänen zeigt jetzt ebenfalls das Originalbild',
+              'Aus Version 1.4: Originalbilder aus Mojangs Resource Pack in Lexikon, Bauplänen, Startseite und Sammelliste. Einmal geladen, gehen sie auch ohne Internet'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;

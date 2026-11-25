@@ -543,24 +543,50 @@ var BWTEX = (function () {
     var boxes = (SH[sp[0]] || SH.c).slice().sort(function (a, b) { return (a[0] + a[1] + a[3] + a[4]) - (b[0] + b[1] + b[3] + b[4]) || a[2] - b[2]; });
     return '<svg class="txi" viewBox="0 0 32 32" aria-hidden="true">' + boxes.map(function (b) { return box(b, sp.slice(1)); }).join('') + '</svg>';
   }
-  /* TGA (einige Mojang-Texturen) im Browser in ein Bild umwandeln */
+  /* TGA (einige Mojang-Texturen) im Browser dekodieren: liefert Pixel von oben nach unten */
   function tga(buf) {
-    var b = new Uint8Array(buf), type = b[2], w = b[12] | b[13] << 8, h = b[14] | b[15] << 8, bpp = b[16], desc = b[17];
+    var b = new Uint8Array(buf), type = b[2], w = b[12] | b[13] << 8, h = b[14] | b[15] << 8, bpp = b[16], top = b[17] & 32;
     if ((type !== 2 && type !== 10) || (bpp !== 24 && bpp !== 32) || !w || !h) throw new Error('tga');
     var px = bpp >> 3, o = 18 + b[0] + (b[1] ? (b[5] | b[6] << 8) * (b[7] >> 3) : 0), n = w * h, out = new Uint8ClampedArray(n * 4), i = 0;
-    function put(j) { var k = i * 4; out[k] = b[j + 2]; out[k + 1] = b[j + 1]; out[k + 2] = b[j]; out[k + 3] = px === 4 ? b[j + 3] : 255; i++; }
+    function put(j) {
+      var y = (i / w) | 0, k = ((top ? y : h - 1 - y) * w + i % w) * 4;
+      out[k] = b[j + 2]; out[k + 1] = b[j + 1]; out[k + 2] = b[j]; out[k + 3] = px === 4 ? b[j + 3] : 255; i++;
+    }
     if (type === 2) while (i < n) { put(o); o += px; }
     else while (i < n) { var c = b[o++], cnt = (c & 127) + 1, r; if (c & 128) { for (r = 0; r < cnt && i < n; r++) put(o); o += px; } else for (r = 0; r < cnt && i < n; r++) { put(o); o += px; } }
-    var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
-    var ctx = cv.getContext('2d'), id = new ImageData(out, w, h);
-    if (desc & 32) ctx.putImageData(id, 0, 0);
-    else { var tmp = document.createElement('canvas'); tmp.width = w; tmp.height = h; tmp.getContext('2d').putImageData(id, 0, 0); ctx.translate(0, h); ctx.scale(1, -1); ctx.drawImage(tmp, 0, 0); }
+    return { w: w, h: h, d: out };
+  }
+  /* PNG/JPEG über ein Bitmap in Pixel umwandeln (nur für Texturen mit Färbemaske nötig) */
+  function bitmap(blob) {
+    return createImageBitmap(blob).then(function (bm) {
+      var cv = document.createElement('canvas'); cv.width = bm.width; cv.height = bm.height;
+      var ctx = cv.getContext('2d'); ctx.drawImage(bm, 0, 0);
+      return { w: bm.width, h: bm.height, d: ctx.getImageData(0, 0, bm.width, bm.height).data };
+    });
+  }
+  /* Färbemaske wie im Spiel: Alpha 255 = voll einfärben, kleiner Wert = kaum einfärben; jedes Pixel außer Alpha 0 wird deckend */
+  function mask(im, hex) {
+    var t = /^[0-9a-f]{6}$/i.test(hex) ? [parseInt(hex.slice(0, 2), 16) / 255, parseInt(hex.slice(2, 4), 16) / 255, parseInt(hex.slice(4, 6), 16) / 255] : [1, 1, 1];
+    for (var k = 0, d = im.d; k < d.length; k += 4) {
+      var a = d[k + 3]; if (!a) continue;
+      var f = a / 255; d[k] *= 1 - f + f * t[0]; d[k + 1] *= 1 - f + f * t[1]; d[k + 2] *= 1 - f + f * t[2]; d[k + 3] = 255;
+    }
+    return im;
+  }
+  function dataUrl(im) {
+    var cv = document.createElement('canvas'); cv.width = im.w; cv.height = im.h;
+    cv.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(im.d), im.w, im.h), 0, 0);
     return cv.toDataURL('image/png');
   }
+  /* Pfad "datei.png" oder "datei.tga#a06540" (Färbemaske mit Standardfarbe, "#" allein = Maske ohne Farbe) */
   function url(p) {
     if (cache[p]) return cache[p];
-    if (!/\.tga$/.test(p)) return (cache[p] = Promise.resolve(BASE + p));
-    return (cache[p] = fetch(BASE + p, { mode: 'cors', credentials: 'omit' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }).then(tga));
+    var h = p.indexOf('#'), file = h < 0 ? p : p.slice(0, h), col = h < 0 ? null : p.slice(h + 1), isTga = /\.tga$/.test(file);
+    if (!isTga && col === null) return (cache[p] = Promise.resolve(BASE + file));
+    return (cache[p] = fetch(BASE + file, { mode: 'cors', credentials: 'omit' }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return isTga ? r.arrayBuffer().then(tga) : r.blob().then(bitmap);
+    }).then(function (im) { return dataUrl(col === null ? im : mask(im, col)); }));
   }
   function fail(el) { el.classList.remove('tx'); el.classList.add('txfail'); var s = el.querySelector('svg.txi'); if (s) s.remove(); }
   function paint(el) {
@@ -1000,7 +1026,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 <script>
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
-  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/bed_red.png","items/door_wood.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/sign.png"],"m":{"S":["c",24,24,24],"Z":["c",24,24,24],"U":["c",24,24,24],"L":["c",11,11,11],"X":["f",35],"t":["f",31],"n":["f",31],"e":["f",31],"s":["f",31],"K":["c",4,2,3],"B":["f",29],"b":["f",29],"C":["c",6,5,5],"A":["c",14,13,12],"D":["f",30],"d":["f",30],"F":["f",25],"N":["c",23,23,23],"c":["c",1,0,0],"z":["fe",21,21,21],"g":["fe",21,21,21],"T":["s",24,24,24],"R":["t",26,26,26],"M":["f",32],"m":["c",15,15,15],"r":["f",34],"G":["c",7,7,7],"P":["c",20,19,19],"p":["c",20,19,19],"Y":["c",18,16,17],"y":["c",18,16,17],"i":["f",33],"Q":["c",28,28,28],"V":["c",10,10,10]},"g":{"S":[24,24],"Z":[24,24],"U":[24,24],"L":[11,11],"t":[9,8],"n":[9,8],"e":[9,8],"s":[9,8],"K":[4,2],"C":[6,5],"F":[25,25],"N":[23,23],"c":[1,0],"z":[21,21],"g":[21,21],"T":[24,24],"R":[26,26],"M":[22,22],"m":[15,15],"r":[34,34],"G":[7,7],"P":[19,19],"p":[19,19],"Y":[18,17],"y":[18,17],"Q":[28,28],"f":[27,27],"V":[10,10]}};
+  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/bed_red.png","items/door_wood.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/sign.png"],"m":{"S":["c",24,24,24],"Z":["c",24,24,24],"U":["c",24,24,24],"L":["c",11,11,11],"X":["f",35],"t":["f",31],"n":["f",31],"e":["f",31],"s":["f",31],"K":["c",4,2,3],"B":["f",29],"b":["f",29],"C":["c",6,5,5],"A":["c",14,13,12],"D":["f",30],"d":["f",30],"F":["f",25],"N":["c",23,23,23],"c":["c",1,0,0],"z":["fe",21,21,21],"g":["fe",21,21,21],"T":["s",24,24,24],"R":["t",26,26,26],"M":["f",32],"m":["c",15,15,15],"r":["f",34],"G":["c",7,7,7],"P":["c",20,19,19],"p":["c",20,19,19],"Y":["c",18,16,17],"y":["c",18,16,17],"i":["f",33],"Q":["c",28,28,28],"V":["c",10,10,10]},"g":{"S":[24,24],"Z":[24,24],"U":[24,24],"L":[11,11],"t":[9,8],"n":[9,8],"e":[9,8],"s":[9,8],"K":[4,2],"C":[6,5],"F":[25,25],"N":[23,23],"c":[1,0],"z":[21,21],"g":[21,21],"T":[24,24],"R":[26,26],"M":[22,22],"m":[15,15],"r":[34,34],"G":[7,7],"P":[19,19],"p":[19,19],"Y":[18,17],"y":[18,17],"Q":[28,28],"f":[27,27],"V":[10,10]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","V":"lava_bucket"}};
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
   function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
@@ -1122,6 +1148,9 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     });
     return order.map(function (m) { return { mat: m, n: c[m].n, fill: c[m].fill, ch: c[m].ch }; });
   }
+  /* Lexikon-Kennung zum Material, damit die Sammelliste das passende Originalbild zeigt */
+  var EXTRA_LEX = { 'Schere': 'shears', 'Wassereimer': 'water_bucket', 'Schwert': 'iron_sword', 'Wasserflaschen': 'potion:water' };
+  function matLex(m) { for (var ch in BLOCKS) if (BLOCKS[ch].mat === m && BTX.x && BTX.x[ch]) return BTX.x[ch]; return null; }
   function matIcon(ch) { return BTX.m && BTX.m[ch] ? '<i class="bi" data-tx="' + ch + '"></i>' : ''; }
   function stacks(m, n) {
     if ((m !== 'stone' && m !== 'leaf' && m !== 'sand') || n < 64) return '';
@@ -1226,8 +1255,8 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   $('tolist').hidden = !appList();
   $('tolistbtn').addEventListener('click', function () {
     var p = PLANS[st.plan], L = appList(); if (!L || !st.mats) return;
-    var entries = st.mats.order.filter(function (m) { return m !== 'source'; }).map(function (m) { return { k: 'mat:' + m, t: MATERIALS[m], n: st.mats.tot[m] }; });
-    p.extras.forEach(function (e) { if (/^\d+$/.test(e[1])) entries.push({ k: 'mat:x:' + e[0].toLowerCase(), t: e[0], n: +e[1] }); });
+    var entries = st.mats.order.filter(function (m) { return m !== 'source'; }).map(function (m) { var e = { k: 'mat:' + m, t: MATERIALS[m], n: st.mats.tot[m] }, x = matLex(m); if (x) e.x = x; return e; });
+    p.extras.forEach(function (e) { if (/^\d+$/.test(e[1])) { var x = { k: 'mat:x:' + e[0].toLowerCase(), t: e[0], n: +e[1] }; if (EXTRA_LEX[e[0]]) x.x = EXTRA_LEX[e[0]]; entries.push(x); } });
     L.add(entries, 'Bauplan ' + p.title);
   });
   function syncTex() { $('texbtn').setAttribute('aria-pressed', String(texOn)); $('texbtn').textContent = texOn ? 'Originalbilder: an' : 'Originalbilder: aus'; }
