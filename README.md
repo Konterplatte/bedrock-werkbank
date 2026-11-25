@@ -1,6 +1,6 @@
 # Bedrock-Werkbank
 
-Ressourcen-Lexikon, Baupläne (Eisenfarm, Handelsstation, Kaktusfarm, XP-Farm, Zuckerrohrfarm) und Werkzeuge für **Minecraft Bedrock Edition 26.60** als Web-App fürs iPhone. Nach dem ersten Öffnen läuft sie ohne Internet; die Originalbilder brauchen beim ersten Ansehen einmal eine Verbindung.
+Ressourcen-Lexikon, zehn Baupläne (von der Eisenfarm bis zur Gürteltierfarm) und Werkzeuge für **Minecraft Bedrock Edition 26.60** als Web-App fürs iPhone. Nach dem ersten Öffnen läuft sie ohne Internet; die Originalbilder brauchen beim ersten Ansehen einmal eine Verbindung.
 
 **App öffnen:** https://konterplatte.github.io/bedrock-werkbank/
 
@@ -18,9 +18,9 @@ Dieselbe App als eigenes Programm für Windows 10 und 11: [Bedrock-Werkbank-Wind
 
 ## Inhalt
 
-- `index.html`: Startseite, Navigation und Werkzeuge (Sammelliste, Koordinaten-Notizbuch, Amboss-Planer, Nether-Portal-Rechner, Datenübertragung)
+- `index.html`: Startseite, Navigation und Werkzeuge (Sammelliste, Koordinaten-Notizbuch, Brau-Planer, Amboss-Planer mit Vorlagen, Nether-Portal-Rechner, Favoriten, Datenübertragung)
 - `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen, mit Rohstoffrechner, Fundorten, Dorfbewohner-Berufen und Steckbriefen für 62 Mobs
-- `bauplaene/`: neun Baupläne Block für Block, von der Eisenfarm und den XP-Farmen (Endermen im End, Zombie- oder Skelett-Spawner) bis zur Kürbisfarm, der Hühnerfarm mit Kochautomat und Lava aus Tropfstein; fertige Ebenen lassen sich abhaken
+- `bauplaene/`: zehn Baupläne Block für Block, von der Eisenfarm und den XP-Farmen (Endermen im End, Zombie- oder Skelett-Spawner) bis zur Kürbisfarm, der Hühnerfarm mit Kochautomat, Lava aus Tropfstein und der Gürteltierfarm; fertige Ebenen lassen sich abhaken
 - `sw.js`, `manifest.webmanifest`, `icons/`: Offline-Betrieb und App-Symbol
 - `lizenzen.txt`: Lizenzen der Schriften und Herkunft der Bilder
 

@@ -132,6 +132,9 @@ h2 { font-size: 1.5rem; font-weight: 600; margin: 0; letter-spacing: .01em; text
 .badge.main { border-color: var(--mark); background: var(--mark); color: #fff; font-weight: 600; }
 :root[data-theme="dark"] .badge.main { color: #1A0E05; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .badge.main { color: #1A0E05; } }
+.favbtn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: 10px 8px 0 0; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 999px; font: 600 .95rem inherit; background: var(--sheet); color: var(--ink); cursor: pointer; }
+.favbtn[aria-pressed="true"] { border-color: var(--accent); background: var(--tint); color: var(--accent); }
+#favbox h2 { margin: 0 0 10px; }
 .wiki { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 10px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 999px; font-size: .95rem; font-weight: 600; text-decoration: none; background: var(--sheet); }
 
 /* Herkunftsdiagramm */
@@ -293,6 +296,7 @@ span.chip { color: var(--ink-soft); border-style: dashed; }
   <aside id="home" aria-label="Liste der Ressourcen">
     <div class="stack">
       <section class="panel" id="hero"></section>
+      <section class="panel" id="favbox" hidden><h2>Deine Favoriten</h2><div class="chips" id="favs"></div></section>
       <section>
         <div class="listhead"><h2 id="listtitle">Alle Ressourcen</h2><span class="count" id="count"></span></div>
         <ul class="rows" id="rows"></ul>
@@ -814,10 +818,25 @@ var BWTEX = (function () {
   }
 
   /* ---------- Eintrag ---------- */
+  /* Favoriten: gemeinsam mit der App unter bw.fav gespeichert (Liste von Kurznamen) */
+  function favs() { try { var a = JSON.parse(localStorage.getItem('bw.fav') || '[]'); return Array.isArray(a) ? a.filter(function (x) { return typeof x === 'string'; }) : []; } catch (e) { return []; } }
+  function isFav(id) { return favs().indexOf(slug(id)) >= 0; }
+  function toggleFav(id) {
+    var a = favs(), s2 = slug(id), i = a.indexOf(s2);
+    if (i >= 0) a.splice(i, 1); else a.unshift(s2);
+    try { localStorage.setItem('bw.fav', JSON.stringify(a.slice(0, 40))); } catch (e) {}
+    renderFavs();
+  }
+  function renderFavs() {
+    var a = favs().map(unslug).filter(function (x) { return x && I[x]; });
+    $('favbox').hidden = !a.length;
+    $('favs').innerHTML = a.map(function (x) { return chip(x, 1); }).join('');
+  }
   function renderDetail(id) {
     var it = I[id], p = primary(id), s = '<div class="stack">';
     s += '<section class="panel"><div class="ititle">' + tile(id, 'l') + '<div style="min-width:0"><div class="lname">' + esc(nm(id)) + '</div><div class="meta"><span class="badge">' + esc(D.cats[it[2]]) + '</span>' +
          (id.indexOf(':') < 0 ? '<span class="badge">minecraft:' + esc(id) + '</span>' : '') + (it[1] ? '<span class="badge">Englisch: ' + esc(it[1]) + '</span>' : '') + '</div>' +
+         '<button type="button" class="favbtn" data-fav="' + esc(id) + '" aria-pressed="' + isFav(id) + '">' + (isFav(id) ? '★ Gemerkt' : '☆ Merken') + '</button>' +
          (it[1] ? '<a class="wiki" href="https://minecraft.wiki/w/Special:Search?search=' + encodeURIComponent(it[1].replace(/\s*\((extended|level II|level IV)\)$/, '')) + '">Originalbild im Minecraft Wiki ↗</a>' : '') + '</div></div></section>';
     s += enchPanel(id);
     s += '<section class="panel"><p class="sub">Herkunft</p><div class="tree">' + renderNode(buildTree(id), true) + '</div></section>';
@@ -976,6 +995,12 @@ var BWTEX = (function () {
     var panel = e.target.closest('[data-calc]'); if (panel) e.target.value = calcUpdate(panel, e.target.value);
   });
   $('detail').addEventListener('click', function (e) {
+    var fv = e.target.closest('[data-fav]');
+    if (fv) {
+      var fid = fv.getAttribute('data-fav'); toggleFav(fid);
+      var on = isFav(fid); fv.setAttribute('aria-pressed', String(on)); fv.textContent = on ? '★ Gemerkt' : '☆ Merken';
+      return;
+    }
     var tl = e.target.closest('[data-tolist]');
     if (tl) {
       var cp = tl.closest('[data-calc]'), cid = cp.getAttribute('data-calc'), cq = Math.max(1, Math.round(+cp.querySelector('#cq').value) || 1), L = appList();
@@ -1003,7 +1028,8 @@ var BWTEX = (function () {
   function start(saved) {
     if (saved && typeof saved.q === 'string') { st.q = saved.q; $('q').value = saved.q; }
     if (saved && typeof saved.cat === 'number') st.cat = saved.cat;
-    renderCats(); renderHero(); renderList(); route();
+    renderCats(); renderHero(); renderFavs(); renderList(); route();
+    window.addEventListener('storage', function (e) { if (e.key === 'bw.fav') renderFavs(); });
   }
   var hot = window.claude && window.claude.hot;
   if (hot && hot.snapshot) hot.snapshot(function () { return { q: st.q, cat: st.cat }; });

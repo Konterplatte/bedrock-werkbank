@@ -58,6 +58,7 @@
   --b-cauldron: #3F454E;
   --b-drip: #A88A6E;
   --b-spawner: #24303D;
+  --b-armadillo: #B07A6C;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -67,7 +68,7 @@
     --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
     --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
     --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C;
+    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C; --b-armadillo: #9C6E62;
   }
 }
 :root[data-theme="dark"] {
@@ -77,7 +78,7 @@
   --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
   --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
   --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C;
+  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C; --b-armadillo: #9C6E62;
 }
 
 * { box-sizing: border-box; }
@@ -250,7 +251,7 @@ html.app .foot { max-width: none; }
 
 <header>
   <p class="eyebrow">Minecraft Bedrock Edition</p>
-  <h1>Neun Baupläne für Farmen und Handel</h1>
+  <h1>Zehn Baupläne für Farmen und Handel</h1>
   <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
 </header>
 
@@ -586,6 +587,7 @@ html.app .foot { max-width: none; }
     <h2>Gut zu wissen</h2>
     <ul>
       <li><strong>Mehr Hühner:</strong> Nimm den Deckel kurz ab und wirf weitere Eier in den Pferch.</li>
+      <li><strong>Falls Hühner verschwinden:</strong> Hühner können in der Bedrock Edition laut Mojangs Daten verschwinden, wenn du weit weg bist. Ein Huhn mit Namensschild bleibt sicher. Namensschilder gibt es beim fahrenden Händler, beim Angeln als Schatz und in Truhen von Verliesen und Minen.</li>
       <li><strong>Abschalten:</strong> Die Beobachter laufen ständig. Baue einen davon ab, wenn du die Farm anhalten willst.</li>
       <li><strong>Kleine Verluste:</strong> Ab und zu springt ein Teil der Beute in die Lava und verbrennt.</li>
     </ul>
@@ -672,7 +674,42 @@ html.app .foot { max-width: none; }
     </ul>
   </div>
 </section>
-<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Kürbis und Melone: Fruchtboden und Wachstum nach der Seite <a href="https://minecraft.wiki/w/Melon">Melon</a>, Bedrock-Verhalten von Beobachter und Kolbenkopf nach den Fehlerberichten MCPE-28520 und MCPE-29532. Hühner: Größen, Legezeit, Schlupfchance und Wachstumsdauer aus Mojangs Bedrock-Daten, Trichter unter einer unteren Stufe nach der Seite Hopper. Lava: Tropfstein nach der Seite <a href="https://minecraft.wiki/w/Pointed_Dripstone">Pointed Dripstone</a>, Ton nach dem Fehlerbericht MCPE-153823. Bibliothekar und Bauer: Handelsangebote aus Mojangs Bedrock-Daten. Spawner: Spawnbereich, Aktivierung und Lichtgrenze nach der Seite <a href="https://minecraft.wiki/w/Monster_Spawner">Monster Spawner</a>, Lebenspunkte, Größen und XP aus Mojangs Bedrock-Daten. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
+<section class="notes" id="notes-guerteltier" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Die Hornschilde:</strong> Laut Mojangs Daten lässt jedes ausgewachsene Gürteltier alle 5 bis 10 Minuten ein Hornschild fallen. Es landet im Trichter unter seinen Füßen und wandert durch die Reihe in die Kiste.</li>
+      <li><strong>Das Tempo:</strong> Im Schnitt 8 Hornschilde je Gürteltier und Stunde, mit 6 Tieren also rund 48. Eine Wolfsrüstung braucht 6 Stück. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
+      <li><strong>Jungtiere:</strong> Nur ausgewachsene Gürteltiere lassen Hornschilde fallen. Ein Jungtier braucht 20 Minuten, bis es ausgewachsen ist.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Kiste, Trichterreihe und Sockel, Ebene 1.</li>
+      <li>Zwei Lagen Glas als Wand, Ebenen 2 und 3.</li>
+      <li>2 Gürteltiere an der Leine holen und in den Pferch ziehen. Du findest sie in Savannen und Tafelbergen.</li>
+      <li>Von der Wand aus beide mit Spinnenaugen füttern. Je Fütterung gibt es ein Jungtier. Wiederhole das, bis 6 Tiere im Pferch stehen.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Gut zu wissen</h2>
+    <ul>
+      <li><strong>Einrollen:</strong> Ein Gürteltier rollt sich ein, wenn du im Umkreis von 7 Blöcken rennst, reitest oder es geschlagen hast, oder wenn Untote in der Nähe sind. Eingerollt lässt es sich nicht füttern, Hornschilde verliert es aber weiter. Geh langsam zum Pferch.</li>
+      <li><strong>Pinsel:</strong> Mit einem Pinsel bürstest du einem ausgewachsenen Gürteltier sofort ein Hornschild ab. Das kostet den Pinsel jedes Mal 16 Haltbarkeitspunkte.</li>
+      <li><strong>Falls Gürteltiere verschwinden:</strong> Sie haben laut Mojangs Daten dieselbe Regel zum Verschwinden wie Kühe und Hühner. Ein Gürteltier mit Namensschild bleibt sicher. Namensschilder gibt es beim fahrenden Händler, beim Angeln als Schatz und in Truhen von Verliesen und Minen.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Die Kiste bleibt leer:</strong> Ein Trichter zeigt nicht zum Nachbarn. Der Trichter am Ostende muss in die Kiste zeigen.</li>
+      <li><strong>Sie fressen keine Spinnenaugen:</strong> Sie sind eingerollt. Warte kurz, ohne zu rennen. Jungtiere fressen zwar Spinnenaugen, wachsen dadurch aber nur schneller.</li>
+      <li><strong>Ein Gürteltier ist draußen:</strong> Die Wand ist irgendwo nur einen Block hoch. Sie muss rundum 2 Lagen haben.</li>
+    </ul>
+  </div>
+</section>
+<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Kürbis und Melone: Fruchtboden und Wachstum nach der Seite <a href="https://minecraft.wiki/w/Melon">Melon</a>, Bedrock-Verhalten von Beobachter und Kolbenkopf nach den Fehlerberichten MCPE-28520 und MCPE-29532. Hühner: Größen, Legezeit, Schlupfchance und Wachstumsdauer aus Mojangs Bedrock-Daten, Trichter unter einer unteren Stufe nach der Seite Hopper. Lava: Tropfstein nach der Seite <a href="https://minecraft.wiki/w/Pointed_Dripstone">Pointed Dripstone</a>, Ton nach dem Fehlerbericht MCPE-153823. Bibliothekar und Bauer: Handelsangebote aus Mojangs Bedrock-Daten. Spawner: Spawnbereich, Aktivierung und Lichtgrenze nach der Seite <a href="https://minecraft.wiki/w/Monster_Spawner">Monster Spawner</a>, Lebenspunkte, Größen und XP aus Mojangs Bedrock-Daten. Gürteltier: Größe, Hornschild-Zeit, Pinsel, Zucht, Einrollen und Spawnbiome aus Mojangs Bedrock-Daten. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
 
 </div>
 <script>
@@ -856,7 +893,8 @@ var BLOCKS = {
   x: { name: 'Hühner, stehen auf dem Trichter', fill: 'var(--b-chicken)', glyph: 'Hu' },
   j: { name: 'Kessel, fängt die Lava auf', mat: 'cauldron', fill: 'var(--b-cauldron)', glyph: 'Ke', dark: true },
   1: { name: 'Spitzer Tropfstein, hängt unter dem Block', mat: 'dripstone', fill: 'var(--b-drip)', glyph: '▼', dark: true },
-  3: { name: 'Spawner: ist schon da, nicht abbauen und kein Wasser direkt darauf gießen', fill: 'var(--b-spawner)', glyph: '✱', dark: true }
+  3: { name: 'Spawner: ist schon da, nicht abbauen und kein Wasser direkt darauf gießen', fill: 'var(--b-spawner)', glyph: '✱', dark: true },
+  2: { name: 'Gürteltiere, stehen auf den Trichtern', fill: 'var(--b-armadillo)', glyph: 'Gü', dark: true }
 };
 
 var MATERIALS = {
@@ -1370,7 +1408,35 @@ var PLANS = (function () {
     };
   }
 
-  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner()];
+  /* ---------- Gürteltierfarm: 10 x 3, Y1 bis Y3 ---------- */
+  function armadillo() {
+    var W = 10, D = 3, L = [], g;
+    function wall(g) { rect(g, 0, 0, 7, 0, 'G'); rect(g, 0, 2, 7, 2, 'G'); g[1][0] = 'G'; g[1][7] = 'G'; }
+
+    g = mk(W, D); rect(g, 0, 0, 7, 0, 'S'); rect(g, 0, 2, 7, 2, 'S'); g[1][0] = 'S'; rect(g, 1, 1, 7, 1, 'e'); g[1][8] = 'K'; g[1][9] = 'K';
+    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[8, 1, 9, 1]],
+      text: 'Stelle die Doppelkiste auf und lege westlich davon eine Reihe aus 7 Trichtern, die nach Osten zeigen: Setze den ersten schleichend an die Kiste und jeden weiteren an den vorigen. Daneben im Norden und Süden je 8 feste Blöcke und einer am Westende. Sie tragen später das Glas.' });
+
+    g = mk(W, D); wall(g); rect(g, 1, 1, 6, 1, '2');
+    L.push({ y: [2, 2], name: 'Pferch', grid: rows(g),
+      text: 'Ziehe aus 18 Glasblöcken eine Wand um die ersten 6 Trichter. Der siebte liegt unter der Ostwand und leitet nur weiter. Über der Kiste bleibt alles frei, sonst lässt sie sich schlecht öffnen. Hier stehen später die Gürteltiere, mit den Füßen auf den Trichtern.' });
+
+    g = mk(W, D); wall(g); rect(g, 1, 1, 6, 1, 'o');
+    L.push({ y: [3, 3], name: 'Wand, zweite Lage', grid: rows(g),
+      text: 'Setze eine zweite Lage aus 18 Glasblöcken darauf. Ein Dach brauchst du nicht: Über 2 Blöcke springt kein Gürteltier, und von oben kannst du sie füttern. Bring jetzt 2 Gürteltiere an der Leine her, stell dich auf die Wand und zieh sie über das Glas in den Pferch. Dann klickst du sie an, und die Leine löst sich.' });
+
+    return {
+      id: 'guerteltier', title: 'Gürteltierfarm für Hornschilde', w: W, d: D, yMin: 1, yMax: 3, sliceZ: 1, ground: true,
+      guides: [],
+      specs: [['Grundfläche', '10 × 3 Blöcke'], ['Höhe', '3 Blöcke'], ['Gürteltiere', '6, eines je Feld'], ['Ertrag', 'rund 8 Hornschilde je Gürteltier und Stunde']],
+      extras: [['Leine', '1', 'um die ersten 2 Gürteltiere herzuholen'], ['Spinnenaugen', '8', 'zum Züchten im Pferch, 2 je Jungtier'],
+               ['Namensschilder', 'bis zu 6', 'nur falls dir Gürteltiere verschwinden']],
+      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', glass: 'Sand im Ofen schmelzen', chest: 'ergibt eine Doppelkiste', stone: 'beliebige feste Blöcke' },
+      layers: L
+    };
+  }
+
+  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner(), armadillo()];
 })();
 
 if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
@@ -1379,7 +1445,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 <script>
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
-  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/bed_red.png","items/cauldron.png","items/door_wood.png","items/egg.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",34,34,34],"Z":["c",34,34,34],"U":["c",34,34,34],"L":["c",18,18,18],"X":["f",48],"t":["f",43],"n":["f",43],"e":["f",43],"s":["f",43],"K":["c",6,4,5],"B":["f",39],"b":["f",39],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",41],"d":["f",41],"F":["f",35],"N":["c",33,33,33],"c":["c",1,0,0],"z":["fe",29,29,29],"g":["fe",29,29,29],"T":["s",34,34,34],"R":["t",36,36,36],"M":["f",44],"m":["c",23,23,23],"r":["f",46],"G":["c",14,14,14],"P":["c",28,27,27],"p":["c",28,27,27],"Y":["c",26,24,25],"y":["c",26,24,25],"i":["f",45],"a":["c",11,9,9],"k":["f",47],"W":["b",34,34,34],"H":["c",13,10,12],"I":["c",26,24,25],"J":["c",26,24,25],"l":["f",43],"q":["s",34,34,34],"x":["f",42],"j":["f",40],"1":["f",30],"3":["c",22,22,22],"Q":["c",38,38,38],"V":["c",17,17,17]},"g":{"S":[34,34],"Z":[34,34],"U":[34,34],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[35,35],"N":[33,33],"c":[1,0],"z":[29,29],"g":[29,29],"T":[34,34],"R":[36,36],"M":[32,32],"m":[23,23],"r":[46,46],"G":[14,14],"P":[27,27],"p":[27,27],"Y":[26,25],"y":[26,25],"a":[11,9],"W":[34,34],"H":[13,10],"I":[26,25],"J":[26,25],"l":[16,15],"q":[34,34],"j":[3,2],"1":[31,31],"3":[22,22],"Q":[38,38],"f":[37,37],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","V":"lava_bucket"}};
+  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/cauldron.png","items/door_wood.png","items/egg.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",34,34,34],"Z":["c",34,34,34],"U":["c",34,34,34],"L":["c",18,18,18],"X":["f",49],"t":["f",44],"n":["f",44],"e":["f",44],"s":["f",44],"K":["c",6,4,5],"B":["f",40],"b":["f",40],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",42],"d":["f",42],"F":["f",35],"N":["c",33,33,33],"c":["c",1,0,0],"z":["fe",29,29,29],"g":["fe",29,29,29],"T":["s",34,34,34],"R":["t",36,36,36],"M":["f",45],"m":["c",23,23,23],"r":["f",47],"G":["c",14,14,14],"P":["c",28,27,27],"p":["c",28,27,27],"Y":["c",26,24,25],"y":["c",26,24,25],"i":["f",46],"a":["c",11,9,9],"k":["f",48],"W":["b",34,34,34],"H":["c",13,10,12],"I":["c",26,24,25],"J":["c",26,24,25],"l":["f",44],"q":["s",34,34,34],"x":["f",43],"j":["f",41],"1":["f",30],"3":["c",22,22,22],"2":["f",39],"Q":["c",38,38,38],"V":["c",17,17,17]},"g":{"S":[34,34],"Z":[34,34],"U":[34,34],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[35,35],"N":[33,33],"c":[1,0],"z":[29,29],"g":[29,29],"T":[34,34],"R":[36,36],"M":[32,32],"m":[23,23],"r":[47,47],"G":[14,14],"P":[27,27],"p":[27,27],"Y":[26,25],"y":[26,25],"a":[11,9],"W":[34,34],"H":[13,10],"I":[26,25],"J":[26,25],"l":[16,15],"q":[34,34],"j":[3,2],"1":[31,31],"3":[22,22],"Q":[38,38],"f":[37,37],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","V":"lava_bucket"}};
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
   function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
@@ -1502,7 +1568,8 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     return order.map(function (m) { return { mat: m, n: c[m].n, fill: c[m].fill, ch: c[m].ch }; });
   }
   /* Lexikon-Kennung zum Material, damit die Sammelliste das passende Originalbild zeigt */
-  var EXTRA_LEX = { 'Schere': 'shears', 'Wassereimer': 'water_bucket', 'Schwert': 'iron_sword', 'Wasserflaschen': 'potion:water', 'Hacke': 'iron_hoe', 'Eier': 'egg', 'Eimer': 'bucket' };
+  var EXTRA_LEX = { 'Schere': 'shears', 'Wassereimer': 'water_bucket', 'Schwert': 'iron_sword', 'Wasserflaschen': 'potion:water', 'Hacke': 'iron_hoe', 'Eier': 'egg', 'Eimer': 'bucket',
+                    'Leine': 'lead', 'Spinnenaugen': 'spider_eye', 'Namensschilder': 'name_tag' };
   function matLex(m) { for (var ch in BLOCKS) if (BLOCKS[ch].mat === m && BTX.x && BTX.x[ch]) return BTX.x[ch]; return null; }
   function matIcon(ch) { return BTX.m && BTX.m[ch] ? '<i class="bi" data-tx="' + ch + '"></i>' : ''; }
   function stacks(m, n) {

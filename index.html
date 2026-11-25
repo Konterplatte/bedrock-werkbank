@@ -358,7 +358,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <div>
           <p class="eyebrow">Minecraft Bedrock Edition 26.60</p>
           <h1>Bedrock-Werkbank</h1>
-          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu neun Baupläne Block für Block und praktische Werkzeuge. Funktioniert ohne Internet.</p>
+          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu zehn Baupläne Block für Block und praktische Werkzeuge. Funktioniert ohne Internet.</p>
           <form class="hsearch" id="hsearch" role="search">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l4.5 4.5"/></svg>
             <input type="search" id="hq" enterkeyhint="search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Ressource suchen, z. B. Reparatur" aria-label="Ressource suchen">
@@ -389,6 +389,10 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         </button>
         <h3>Oft gesucht</h3>
         <div class="qchips" id="popular"></div>
+        <div id="favbox" hidden>
+          <h3>Deine Favoriten</h3>
+          <div class="qchips" id="favs"></div>
+        </div>
         <div id="recentbox" hidden>
           <h3>Zuletzt angesehen</h3>
           <div class="qchips" id="recent"></div>
@@ -401,6 +405,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
             <button type="button" class="ttile" data-tool="liste"><span class="ticon" id="ti-liste" aria-hidden="true"></span><span><b>Sammelliste</b><small id="ts-liste"></small></span></button>
             <button type="button" class="ttile" data-tool="orte"><span class="ticon" id="ti-orte" aria-hidden="true"></span><span><b>Koordinaten</b><small id="ts-orte"></small></span></button>
             <button type="button" class="ttile" data-tool="amboss"><span class="ticon" id="ti-amboss" aria-hidden="true"></span><span><b>Amboss-Planer</b><small>Günstigste Reihenfolge für Zauberbücher</small></span></button>
+            <button type="button" class="ttile" data-tool="brauen"><span class="ticon" id="ti-brauen" aria-hidden="true"></span><span><b>Brau-Planer</b><small>Weg und Zutaten für jeden Trank</small></span></button>
             <button type="button" class="ttile" data-tool="portal"><span class="ticon" id="ti-portal" aria-hidden="true"></span><span><b>Nether-Portal</b><small>Gegenportal berechnen</small></span></button>
           </div>
           <div class="tcard">
@@ -425,7 +430,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <div>
           <p class="eyebrow">Bedrock-Werkbank</p>
           <h1>Werkzeuge</h1>
-          <p class="lead">Sammelliste, Koordinaten, Amboss-Planer und Portal-Rechner. Gespeichert wird alles nur auf diesem Gerät.</p>
+          <p class="lead">Sammelliste, Koordinaten, Amboss-Planer, Brau-Planer und Portal-Rechner. Gespeichert wird alles nur auf diesem Gerät.</p>
         </div>
       </div>
     </div>
@@ -434,6 +439,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <button type="button" role="tab" id="tab-liste" aria-controls="tp-liste" data-tool="liste">Sammelliste</button>
         <button type="button" role="tab" id="tab-orte" aria-controls="tp-orte" data-tool="orte">Koordinaten</button>
         <button type="button" role="tab" id="tab-amboss" aria-controls="tp-amboss" data-tool="amboss">Amboss</button>
+        <button type="button" role="tab" id="tab-brauen" aria-controls="tp-brauen" data-tool="brauen">Brauen</button>
         <button type="button" role="tab" id="tab-portal" aria-controls="tp-portal" data-tool="portal">Portal</button>
       </div>
 
@@ -497,9 +503,35 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
               <option value="0">noch nie</option><option value="1">1-mal</option><option value="2">2-mal</option><option value="3">3-mal</option><option value="4">4-mal</option><option value="5">5-mal</option>
             </select></label>
           </div>
+          <div><p class="fl" style="margin:0 0 6px">Vorlagen</p><div class="qchips" id="a-var"></div></div>
           <div><p class="fl" style="margin:0 0 6px">Verzauberungen (je ein Buch)</p><div class="erows" id="a-ench"></div></div>
           <div class="aout" id="a-out" aria-live="polite"></div>
           <p class="fine">Gerechnet wird mit Büchern, die je eine Verzauberung tragen, und einem Gegenstand ohne Verzauberungen. Jeder Schritt am Amboss kostet die Level der übertragenen Verzauberungen mal ihren Faktor, dazu einen Zuschlag für jedes frühere Mal am Amboss (1, 3, 7, 15 …). Ab 40 Level heißt es „Zu teuer!“, solche Schritte schlägt der Planer nie vor.</p>
+        </div>
+      </div>
+
+      <div class="tpanel" id="tp-brauen" role="tabpanel" aria-labelledby="tab-brauen" hidden>
+        <div class="tcard">
+          <div class="thead">
+            <div class="ticon" id="brewpic" aria-hidden="true"></div>
+            <div>
+              <div class="ptitle">Brau-Planer</div>
+              <p>Der kürzeste Weg von der Wasserflasche zum Wunschtrank, mit allen Zutaten. Nach Mojangs Braurezepten der Bedrock Edition.</p>
+            </div>
+          </div>
+          <div class="twocol">
+            <label class="fl">Trank <select class="inp" id="b-target"></select></label>
+            <label class="fl">Wie viele Flaschen <select class="inp" id="b-n">
+              <option value="3">3</option><option value="6">6</option><option value="9">9</option><option value="12">12</option><option value="18">18</option><option value="27">27</option><option value="36">36</option>
+            </select></label>
+          </div>
+          <div class="seg three" role="radiogroup" aria-label="Form" id="b-form">
+            <button type="button" role="radio" aria-checked="true" data-f="p">Zum Trinken</button>
+            <button type="button" role="radio" aria-checked="false" data-f="s">Wurftrank</button>
+            <button type="button" role="radio" aria-checked="false" data-f="l">Verweiltrank</button>
+          </div>
+          <div class="aout" id="b-out" aria-live="polite"></div>
+          <p class="fine">Ein Braustand braut bis zu 3 Flaschen auf einmal und verbraucht dabei 1 Zutat. 1 Lohenstaub reicht als Brennstoff für 20 Brauvorgänge. Glasflaschen füllst du an einer Wasserquelle oder einem Kessel.</p>
         </div>
       </div>
 
@@ -533,7 +565,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
       <div class="tcard" id="sync">
         <div class="ptitle">Daten übertragen</div>
-        <p class="fine" style="margin:0">Sammelliste, Orte und Baufortschritt vom iPhone auf den PC mitnehmen oder umgekehrt: hier kopieren, auf dem anderen Gerät einfügen, zum Beispiel über eine Nachricht an dich selbst.</p>
+        <p class="fine" style="margin:0">Sammelliste, Orte, Favoriten und Baufortschritt vom iPhone auf den PC mitnehmen oder umgekehrt: hier kopieren, auf dem anderen Gerät einfügen, zum Beispiel über eine Nachricht an dich selbst.</p>
         <div class="tacts"><button type="button" class="btn" id="s-export">Daten kopieren</button><button type="button" class="btn" id="s-import">Daten einfügen</button></div>
         <textarea class="inp" id="s-text" rows="4" spellcheck="false" aria-label="Daten" hidden></textarea>
         <div class="tacts" id="s-row" hidden><button type="button" class="btn primary" id="s-apply">Übernehmen</button></div>
@@ -549,7 +581,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 1.6</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 1.7</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -563,11 +595,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.6 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 1.7 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
-    <p>Ressourcen-Lexikon, neun Baupläne von der Eisenfarm bis zur Spawner-XP-Farm und die Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <p>Ressourcen-Lexikon, zehn Baupläne von der Eisenfarm bis zur Gürteltierfarm und die Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
     <div class="exe-only">
       <h3>Tastatur</h3>
       <dl class="keys">
@@ -581,7 +613,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <dt><kbd>F1</kbd></dt><dd>Dieses Fenster</dd>
       </dl>
     </div>
-    <p class="small web-only">Als Web-App auf dem Home-Bildschirm lädt sie Neuerungen automatisch, sobald du online bist. Gespeichert wird nur auf diesem Gerät: was du zuletzt offen hattest, Sammelliste, Orte und Baufortschritt.</p>
+    <p class="small web-only">Als Web-App auf dem Home-Bildschirm lädt sie Neuerungen automatisch, sobald du online bist. Gespeichert wird nur auf diesem Gerät: was du zuletzt offen hattest, Favoriten, Sammelliste, Orte und Baufortschritt.</p>
     <p class="small">Inoffizielles Hilfsprogramm. Nicht von Mojang oder Microsoft freigegeben und nicht mit ihnen verbunden. Minecraft ist eine Marke der Mojang Synergies AB. Die App enthält keine Grafiken aus dem Spiel: Die Originalbilder lädt sie beim Anzeigen aus Mojangs Repository bedrock-samples und speichert sie nur auf diesem Gerät.<br>NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
     <p class="small exe-only">Das Programm legt nur einen Ordner an: <span style="white-space:nowrap">%LocalAppData%\BedrockWerkbank</span> (Zwischenspeicher der Anzeige, deine gespeicherten Listen und die geladenen Originalbilder). Zum Entfernen die EXE und diesen Ordner löschen.</p>
     <pre class="lic" id="lic" tabindex="0" hidden></pre>
@@ -595,10 +627,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},{"id":"spawner","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7}];
+  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},{"id":"spawner","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
-  var APPVER = '1.6';
+  var BREW = {"e":[["potion:awkward","blaze_powder","potion:strength"],["potion:awkward","breeze_rod","potion:wind_charged"],["potion:awkward","fermented_spider_eye","potion:weakness"],["potion:awkward","ghast_tear","potion:regeneration"],["potion:awkward","golden_carrot","potion:nightvision"],["potion:awkward","magma_cream","potion:fire_resistance"],["potion:awkward","phantom_membrane","potion:slow_falling"],["potion:awkward","pufferfish","potion:water_breathing"],["potion:awkward","rabbit_foot","potion:leaping"],["potion:awkward","slime","potion:oozing"],["potion:awkward","glistering_melon_slice","potion:healing"],["potion:awkward","spider_eye","potion:poison"],["potion:awkward","stone","potion:infested"],["potion:awkward","sugar","potion:swiftness"],["potion:awkward","turtle_helmet","potion:turtle_master"],["potion:awkward","web","potion:weaving"],["potion:fire_resistance","redstone","potion:long_fire_resistance"],["potion:harming","glowstone_dust","potion:strong_harming"],["potion:healing","fermented_spider_eye","potion:harming"],["potion:healing","glowstone_dust","potion:strong_healing"],["potion:invisibility","redstone","potion:long_invisibility"],["potion:leaping","fermented_spider_eye","potion:slowness"],["potion:leaping","glowstone_dust","potion:strong_leaping"],["potion:leaping","redstone","potion:long_leaping"],["potion:long_leaping","fermented_spider_eye","potion:long_slowness"],["potion:long_mundane","fermented_spider_eye","potion:long_weakness"],["potion:long_poison","fermented_spider_eye","potion:harming"],["potion:long_strength","fermented_spider_eye","potion:long_weakness"],["potion:long_nightvision","fermented_spider_eye","potion:long_invisibility"],["potion:long_swiftness","fermented_spider_eye","potion:long_slowness"],["potion:mundane","fermented_spider_eye","potion:weakness"],["potion:nightvision","fermented_spider_eye","potion:invisibility"],["potion:nightvision","redstone","potion:long_nightvision"],["potion:poison","fermented_spider_eye","potion:harming"],["potion:poison","glowstone_dust","potion:strong_poison"],["potion:poison","redstone","potion:long_poison"],["potion:regeneration","glowstone_dust","potion:strong_regeneration"],["potion:regeneration","redstone","potion:long_regeneration"],["potion:slow_falling","redstone","potion:long_slow_falling"],["potion:slowness","glowstone_dust","potion:strong_slowness"],["potion:slowness","redstone","potion:long_slowness"],["potion:strength","fermented_spider_eye","potion:weakness"],["potion:strength","glowstone_dust","potion:strong_strength"],["potion:strength","redstone","potion:long_strength"],["potion:strong_healing","fermented_spider_eye","potion:strong_harming"],["potion:strong_poison","fermented_spider_eye","potion:strong_harming"],["potion:strong_strength","fermented_spider_eye","potion:weakness"],["potion:swiftness","fermented_spider_eye","potion:slowness"],["potion:swiftness","glowstone_dust","potion:strong_swiftness"],["potion:swiftness","redstone","potion:long_swiftness"],["potion:thick","fermented_spider_eye","potion:weakness"],["potion:turtle_master","glowstone_dust","potion:strong_turtle_master"],["potion:turtle_master","redstone","potion:long_turtle_master"],["potion:water","blaze_powder","potion:mundane"],["potion:water_breathing","redstone","potion:long_water_breathing"],["potion:water","breeze_rod","potion:mundane"],["potion:water","fermented_spider_eye","potion:weakness"],["potion:water","ghast_tear","potion:mundane"],["potion:water","glowstone_dust","potion:thick"],["potion:water","magma_cream","potion:mundane"],["potion:water","nether_wart","potion:awkward"],["potion:water","rabbit_foot","potion:mundane"],["potion:water","redstone","potion:mundane"],["potion:water","slime","potion:mundane"],["potion:water","glistering_melon_slice","potion:mundane"],["potion:water","spider_eye","potion:mundane"],["potion:water","stone","potion:mundane"],["potion:water","sugar","potion:mundane"],["potion:water","web","potion:mundane"],["potion:weakness","redstone","potion:long_weakness"],["potion:water","redstone","potion:long_mundane"]],"n":{"potion:awkward":"Seltsamer Trank","blaze_powder":"Lohenstaub","potion:strength":"Trank der Stärke","breeze_rod":"Böenrute","potion:wind_charged":"Trank des Windladens","fermented_spider_eye":"Fermentiertes Spinnenauge","potion:weakness":"Trank der Schwäche","ghast_tear":"Ghast-Träne","potion:regeneration":"Trank der Regeneration","golden_carrot":"Goldene Karotte","potion:nightvision":"Trank der Nachtsicht","magma_cream":"Magmacreme","potion:fire_resistance":"Trank der Feuerresistenz","phantom_membrane":"Phantomhaut","potion:slow_falling":"Trank des sanften Falls","pufferfish":"Kugelfisch","potion:water_breathing":"Trank der Unterwasseratmung","rabbit_foot":"Hasenpfote","potion:leaping":"Trank der Sprungkraft","slime":"Schleimblock","potion:oozing":"Trank des Sickerns","glistering_melon_slice":"Funkelnde Melonenscheibe","potion:healing":"Trank der Heilung","spider_eye":"Spinnenauge","potion:poison":"Trank der Vergiftung","stone":"Stein","potion:infested":"Trank der Verseuchung","sugar":"Zucker","potion:swiftness":"Trank der Schnelligkeit","turtle_helmet":"Schildkrötenpanzer","potion:turtle_master":"Trank des Schildkrötenmeisters","web":"Spinnennetz","potion:weaving":"Trank des Webens","redstone":"Redstone-Staub","potion:long_fire_resistance":"Trank der Feuerresistenz (verlängert)","potion:harming":"Trank des Schadens","glowstone_dust":"Leuchtstein-Staub","potion:strong_harming":"Trank des Schadens (Stufe II)","potion:strong_healing":"Trank der Heilung (Stufe II)","potion:invisibility":"Trank der Unsichtbarkeit","potion:long_invisibility":"Trank der Unsichtbarkeit (verlängert)","potion:slowness":"Trank der Langsamkeit","potion:strong_leaping":"Trank der Sprungkraft (Stufe II)","potion:long_leaping":"Trank der Sprungkraft (verlängert)","potion:long_slowness":"Trank der Langsamkeit (verlängert)","potion:long_mundane":"Gewöhnlicher Trank (verlängert)","potion:long_weakness":"Trank der Schwäche (verlängert)","potion:long_poison":"Trank der Vergiftung (verlängert)","potion:long_strength":"Trank der Stärke (verlängert)","potion:long_nightvision":"Trank der Nachtsicht (verlängert)","potion:long_swiftness":"Trank der Schnelligkeit (verlängert)","potion:mundane":"Gewöhnlicher Trank","potion:strong_poison":"Trank der Vergiftung (Stufe II)","potion:strong_regeneration":"Trank der Regeneration (Stufe II)","potion:long_regeneration":"Trank der Regeneration (verlängert)","potion:long_slow_falling":"Trank des sanften Falls (verlängert)","potion:strong_slowness":"Trank der Langsamkeit (Stufe IV)","potion:strong_strength":"Trank der Stärke (Stufe II)","potion:strong_swiftness":"Trank der Schnelligkeit (Stufe II)","potion:thick":"Dickflüssiger Trank","potion:strong_turtle_master":"Trank des Schildkrötenmeisters (Stufe II)","potion:long_turtle_master":"Trank des Schildkrötenmeisters (verlängert)","potion:water":"Wasserflasche","potion:long_water_breathing":"Trank der Unterwasseratmung (verlängert)","nether_wart":"Netherwarze","glass_bottle":"Glasflasche","gunpowder":"Schwarzpulver","dragon_breath":"Drachenatem","brewing_stand":"Braustand"},"f":{"potion:awkward":["Seltsamer Wurftrank","Seltsamer Verweiltrank"],"potion:strength":["Wurftrank der Stärke","Verweiltrank der Stärke"],"potion:wind_charged":["Wurftrank des Windladens","Verweiltrank des Windladens"],"potion:weakness":["Wurftrank der Schwäche","Verweiltrank der Schwäche"],"potion:regeneration":["Wurftrank der Regeneration","Verweiltrank der Regeneration"],"potion:nightvision":["Wurftrank der Nachtsicht","Verweiltrank der Nachtsicht"],"potion:fire_resistance":["Wurftrank der Feuerresistenz","Verweiltrank der Feuerresistenz"],"potion:slow_falling":["Wurftrank des sanften Falls","Verweiltrank des sanften Falls"],"potion:water_breathing":["Wurftrank der Unterwasseratmung","Verweiltrank der Unterwasseratmung"],"potion:leaping":["Wurftrank der Sprungkraft","Verweiltrank der Sprungkraft"],"potion:oozing":["Wurftrank des Sickerns","Verweiltrank des Sickerns"],"potion:healing":["Wurftrank der Heilung","Verweiltrank der Heilung"],"potion:poison":["Wurftrank der Vergiftung","Verweiltrank der Vergiftung"],"potion:infested":["Wurftrank der Verseuchung","Verweiltrank der Verseuchung"],"potion:swiftness":["Wurftrank der Schnelligkeit","Verweiltrank der Schnelligkeit"],"potion:turtle_master":["Wurftrank des Schildkrötenmeisters","Verweiltrank des Schildkrötenmeisters"],"potion:weaving":["Wurftrank des Webens","Verweiltrank des Webens"],"potion:long_fire_resistance":["Wurftrank der Feuerresistenz (verlängert)","Verweiltrank der Feuerresistenz (verlängert)"],"potion:harming":["Wurftrank des Schadens","Verweiltrank des Schadens"],"potion:strong_harming":["Wurftrank des Schadens (Stufe II)","Verweiltrank des Schadens (Stufe II)"],"potion:strong_healing":["Wurftrank der Heilung (Stufe II)","Verweiltrank der Heilung (Stufe II)"],"potion:invisibility":["Wurftrank der Unsichtbarkeit","Verweiltrank der Unsichtbarkeit"],"potion:long_invisibility":["Wurftrank der Unsichtbarkeit (verlängert)","Verweiltrank der Unsichtbarkeit (verlängert)"],"potion:slowness":["Wurftrank der Langsamkeit","Verweiltrank der Langsamkeit"],"potion:strong_leaping":["Wurftrank der Sprungkraft (Stufe II)","Verweiltrank der Sprungkraft (Stufe II)"],"potion:long_leaping":["Wurftrank der Sprungkraft (verlängert)","Verweiltrank der Sprungkraft (verlängert)"],"potion:long_slowness":["Wurftrank der Langsamkeit (verlängert)","Verweiltrank der Langsamkeit (verlängert)"],"potion:long_mundane":["Gewöhnlicher Wurftrank (verlängert)","Gewöhnlicher Verweiltrank (verlängert)"],"potion:long_weakness":["Wurftrank der Schwäche (verlängert)","Verweiltrank der Schwäche (verlängert)"],"potion:long_poison":["Wurftrank der Vergiftung (verlängert)","Verweiltrank der Vergiftung (verlängert)"],"potion:long_strength":["Wurftrank der Stärke (verlängert)","Verweiltrank der Stärke (verlängert)"],"potion:long_nightvision":["Wurftrank der Nachtsicht (verlängert)","Verweiltrank der Nachtsicht (verlängert)"],"potion:long_swiftness":["Wurftrank der Schnelligkeit (verlängert)","Verweiltrank der Schnelligkeit (verlängert)"],"potion:mundane":["Gewöhnlicher Wurftrank","Gewöhnlicher Verweiltrank"],"potion:strong_poison":["Wurftrank der Vergiftung (Stufe II)","Verweiltrank der Vergiftung (Stufe II)"],"potion:strong_regeneration":["Wurftrank der Regeneration (Stufe II)","Verweiltrank der Regeneration (Stufe II)"],"potion:long_regeneration":["Wurftrank der Regeneration (verlängert)","Verweiltrank der Regeneration (verlängert)"],"potion:long_slow_falling":["Wurftrank des sanften Falls (verlängert)","Verweiltrank des sanften Falls (verlängert)"],"potion:strong_slowness":["Wurftrank der Langsamkeit (Stufe IV)","Verweiltrank der Langsamkeit (Stufe IV)"],"potion:strong_strength":["Wurftrank der Stärke (Stufe II)","Verweiltrank der Stärke (Stufe II)"],"potion:strong_swiftness":["Wurftrank der Schnelligkeit (Stufe II)","Verweiltrank der Schnelligkeit (Stufe II)"],"potion:thick":["Dickflüssiger Wurftrank","Dickflüssiger Verweiltrank"],"potion:strong_turtle_master":["Wurftrank des Schildkrötenmeisters (Stufe II)","Verweiltrank des Schildkrötenmeisters (Stufe II)"],"potion:long_turtle_master":["Wurftrank des Schildkrötenmeisters (verlängert)","Verweiltrank des Schildkrötenmeisters (verlängert)"],"potion:water":["Werfbare Wasserflasche","Verweilende Wasserflasche"],"potion:long_water_breathing":["Wurftrank der Unterwasseratmung (verlängert)","Verweiltrank der Unterwasseratmung (verlängert)"]}};
+  var APPVER = '1.7';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -767,7 +800,7 @@ var BWTEX = (function () {
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
             glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B', end: '#DCD9A6',
             mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C', paper: '#EEE6D2', anvil: '#5A616B',
-            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E',
+            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E', armadillo: '#B07A6C',
             grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
   function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
   var SCENES = {
@@ -786,6 +819,8 @@ var BWTEX = (function () {
       box(0, 0, 2, 4, 1, K.stone), box(0, 0, 3, 4, 1, K.lava, .8)),
     spawner: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .3), [[1, 1, 1.3, K.dark, .9], [0, 3, 0, K.dark, .7], [1, 3, 0, K.dark, .7], [2, 3, 0, K.dark, .7],
       [0, 4, 0, K.stone, .5], [1, 4, 0, K.stone, .5], [2, 4, 0, K.stone, .5]]),
+    guerteltier: [].concat(box(0, 0, 0, 4, 1, K.stone, .7), box(0, 0, .7, 4, 1, K.glass), box(0, 0, 1.7, 4, 1, K.glass), box(0, 1, 0, 4, 1, K.dark, .7),
+      [[0.15, 1.15, .7, K.armadillo, .55], [1.15, 1.15, .7, K.armadillo, .55], [2.15, 1.15, .7, K.armadillo, .55], [3.15, 1.15, .7, K.armadillo, .55], [4, 1, 0, K.wood, .9]]),
     lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
     hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
       [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],
@@ -808,6 +843,7 @@ var BWTEX = (function () {
   $('popular').innerHTML = chipsFor(POPULAR);
   $('ti-liste').innerHTML = iso([[0, 0, 0, K.paper, .25], [0, 0, .25, K.paper, .25], [0.15, 0.1, .5, K.stone, .5]]);
   $('ti-orte').innerHTML = iso([[0, 0, 0, K.grass], [1, 0, 0, K.grass], [0.5, 0.5, 1, K.copper, .5]]);
+  $('ti-brauen').innerHTML = $('brewpic').innerHTML = iso([[0, 0, 0, K.stone, .3], [1, 0, 0, K.stone, .3], [0, 0, .3, '#C94DCB', .7], [1, 0, .3, '#4C8FE3', .7], [0.5, 1, 0, K.stone, .3], [0.5, 1, .3, '#E5591A', .7]]);
   $('ti-amboss').innerHTML = iso([[0, 0, 0, K.anvil, .4], [0.25, 0, .4, K.anvil, .4], [0, 0, .8, K.anvil, .5]]);
   $('icon-orte').innerHTML = iso([[0, 0, 0, K.wood, .8], [1.2, 0, 0, K.stone], [1.2, 0, 1, K.end, .5]]);
   $('icon-berufe').innerHTML = iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]);
@@ -869,8 +905,12 @@ var BWTEX = (function () {
   }
   function slug(id) { return id.replace(/:/g, '--').replace(/_/g, '-'); }
   function recents() { try { var a = JSON.parse(load('recent') || '[]'); return Array.isArray(a) ? a.filter(function (s) { return /^[a-z0-9-]+$/.test(s); }) : []; } catch (e) { return []; } }
+  function favSlugs() { var a = loadJSON('fav', []); return Array.isArray(a) ? a.filter(function (x) { return typeof x === 'string' && /^[a-z0-9-]+$/.test(x); }) : []; }
   function renderRecent() {
-    var n = lexNames(), a = recents().filter(function (s) { return n && n[s]; }).slice(0, 8);
+    var n = lexNames(), f = favSlugs().filter(function (s) { return n && n[s]; });
+    $('favbox').hidden = !f.length;
+    $('favs').innerHTML = f.map(function (s) { return '<button type="button" class="qchip" data-slug="' + s + '">' + qt(n[s][2], s.indexOf('enchanted-book') === 0 ? '#7B4BC2' : '#8D96A3') + '<span>' + esc(n[s][0]) + '</span></button>'; }).join('');
+    var a = recents().filter(function (s) { return n && n[s]; }).slice(0, 8);
     $('recentbox').hidden = !a.length;
     $('recent').innerHTML = a.map(function (s) { return '<button type="button" class="qchip" data-slug="' + s + '">' + qt(n[s][2], s.indexOf('enchanted-book') === 0 ? '#7B4BC2' : '#8D96A3') + '<span>' + esc(n[s][0]) + '</span></button>'; }).join('');
   }
@@ -937,16 +977,17 @@ var BWTEX = (function () {
   function fmtN(n) { return Number(n).toLocaleString('de-DE'); }
   function plural(n, a, b) { return fmtN(n) + ' ' + (n === 1 ? a : b); }
   var tool = load('tool') || 'liste';
-  if (['liste', 'orte', 'amboss', 'portal'].indexOf(tool) < 0) tool = 'liste';
+  if (['liste', 'orte', 'amboss', 'brauen', 'portal'].indexOf(tool) < 0) tool = 'liste';
   function openTool(t) { tool = t; save('tool', t); show('werkzeuge'); }
   function renderTools() {
     [].forEach.call(document.querySelectorAll('.tabsbar [data-tool]'), function (b) {
       var on = b.getAttribute('data-tool') === tool; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
     });
-    ['liste', 'orte', 'amboss', 'portal'].forEach(function (t) { $('tp-' + t).hidden = t !== tool; });
+    ['liste', 'orte', 'amboss', 'brauen', 'portal'].forEach(function (t) { $('tp-' + t).hidden = t !== tool; });
     if (tool === 'liste') renderList();
     if (tool === 'orte') renderPlaces();
     if (tool === 'amboss') renderAnvil();
+    if (tool === 'brauen') renderBrew();
   }
   toolsEl.querySelector('.tabsbar').addEventListener('click', function (e) {
     var b = e.target.closest('[data-tool]'); if (!b) return; tool = b.getAttribute('data-tool'); save('tool', tool); renderTools();
@@ -1106,6 +1147,20 @@ var BWTEX = (function () {
     if (!aState.sel) { aState.sel = {}; it.def.forEach(function (e) { aState.sel[e] = ANVIL[e][1]; }); }
     return aState.sel;
   }
+  /* Vorlagen: die Standardauswahl und jede Variante, in der eine unverträgliche Verzauberung die Standard-Verzauberungen ersetzt (Mojangs Daten) */
+  function exclusive(a, b) { return (ANVIL[a][2] || []).indexOf(b) >= 0 || (ANVIL[b][2] || []).indexOf(a) >= 0; }
+  function aVariants(it) {
+    var out = [{ label: 'Standard', set: it.def.slice() }], seen = {};
+    seen[it.def.slice().sort().join()] = 1;
+    it.all.forEach(function (alt) {
+      if (it.def.indexOf(alt) >= 0) return;
+      var gone = it.def.filter(function (x) { return exclusive(x, alt); }); if (!gone.length) return;
+      var set = it.def.filter(function (x) { return gone.indexOf(x) < 0; }).concat([alt]), key = set.slice().sort().join();
+      if (seen[key]) return; seen[key] = 1;
+      out.push({ label: ANVIL[alt][0] + ' statt ' + gone.map(function (x) { return ANVIL[x][0]; }).join(' und '), set: set });
+    });
+    return out;
+  }
   function conflicts(e, sel) { return Object.keys(sel).filter(function (x) { return x !== e && ((ANVIL[e][2] || []).indexOf(x) >= 0 || (ANVIL[x][2] || []).indexOf(e) >= 0); }); }
   function anvilPlan(books, used) {
     var n = books.length, N = 1 << n, LIM = 40, val = [], B = [], T = [], S, A;
@@ -1146,7 +1201,11 @@ var BWTEX = (function () {
   function renderAnvil() {
     if (!$('a-item').options.length) $('a-item').innerHTML = ITEMS.map(function (it) { return '<option value="' + it.id + '">' + esc(it.name) + '</option>'; }).join('');
     $('a-item').value = aState.item; $('a-used').value = String(aState.used || 0);
-    var it = aItem(), sel = aSel();
+    var it = aItem(), sel = aSel(), cur = Object.keys(sel).sort().join(), full = Object.keys(sel).every(function (e) { return sel[e] === ANVIL[e][1]; });
+    $('a-var').innerHTML = aVariants(it).map(function (v, k) {
+      var on = full && v.set.slice().sort().join() === cur;
+      return '<button type="button" class="qchip" data-v="' + k + '" aria-pressed="' + on + '"' + (on ? ' style="border-color:var(--accent);background:var(--tint)"' : '') + '><span>' + esc(v.label) + '</span></button>';
+    }).join('');
     $('a-ench').innerHTML = it.all.map(function (e) {
       var on = e in sel, cf = on ? [] : conflicts(e, sel), mx = ANVIL[e][1];
       return '<div class="erow' + (on ? ' on' : '') + (cf.length ? ' off' : '') + '" data-e="' + e + '"><button type="button" class="etog" aria-pressed="' + on + '"' + (cf.length ? ' aria-disabled="true"' : '') + '><span>' + esc(ANVIL[e][0]) +
@@ -1172,6 +1231,12 @@ var BWTEX = (function () {
   }
   $('a-item').addEventListener('change', function () { aState.item = this.value; aState.sel = null; renderAnvil(); });
   $('a-used').addEventListener('change', function () { aState.used = +this.value; renderAnvil(); });
+  $('a-var').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-v]'); if (!b) return;
+    var v = aVariants(aItem())[+b.getAttribute('data-v')]; if (!v) return;
+    aState.sel = {}; v.set.forEach(function (x) { aState.sel[x] = ANVIL[x][1]; }); renderAnvil();
+    var nb = $('a-var').querySelector('[data-v="' + b.getAttribute('data-v') + '"]'); if (nb) nb.focus();
+  });
   $('a-ench').addEventListener('click', function (e) {
     var b = e.target.closest('.etog'); if (!b || b.getAttribute('aria-disabled') === 'true') return;
     var id = b.closest('[data-e]').getAttribute('data-e'), sel = aSel();
@@ -1184,11 +1249,59 @@ var BWTEX = (function () {
     var ns = $('a-ench').querySelector('[data-e="' + id + '"] select'); if (ns) ns.focus();
   });
 
+  /* ---------- Brau-Planer: kürzester Weg ab der Wasserflasche (Breitensuche über Mojangs Braurezepte) ---------- */
+  var BSKIP = { 'potion:water': 1, 'potion:awkward': 1, 'potion:mundane': 1, 'potion:long_mundane': 1, 'potion:thick': 1 };
+  var bPrev = (function () {
+    var prev = { 'potion:water': null }, q = ['potion:water'];
+    while (q.length) { var c = q.shift(); (BREW.e || []).forEach(function (e) { if (e[0] === c && !(e[2] in prev)) { prev[e[2]] = { from: c, r: e[1] }; q.push(e[2]); } }); }
+    return prev;
+  })();
+  var BTARGETS = Object.keys(bPrev).filter(function (t) { return !BSKIP[t] && BREW.n[t]; }).sort(function (a, b) { return BREW.n[a].localeCompare(BREW.n[b], 'de'); });
+  var bState = loadJSON('brauen', null);
+  if (!bState || BTARGETS.indexOf(bState.t) < 0) bState = { t: BTARGETS.indexOf('potion:healing') >= 0 ? 'potion:healing' : BTARGETS[0], f: 'p', n: 3 };
+  if (['p', 's', 'l'].indexOf(bState.f) < 0) bState.f = 'p';
+  if ([3, 6, 9, 12, 18, 27, 36].indexOf(+bState.n) < 0) bState.n = 3;
+  function bPath(t) { var st = []; while (bPrev[t]) { st.unshift({ from: t === null ? null : bPrev[t].from, r: bPrev[t].r, to: t }); t = bPrev[t].from; } return st; }
+  function bName(t, f) { var fx = BREW.f[t] || []; return f === 's' ? (fx[0] || BREW.n[t]) : f === 'l' ? (fx[1] || BREW.n[t]) : BREW.n[t]; }
+  function brewPlan(t, f, n) {
+    var batches = Math.ceil(n / 3), bottles = batches * 3;
+    var rows = bPath(t).map(function (s) { return { a: BREW.n[s.from], r: s.r, b: BREW.n[s.to] }; });
+    if (f !== 'p') rows.push({ a: BREW.n[t], r: 'gunpowder', b: bName(t, 's') });
+    if (f === 'l') rows.push({ a: bName(t, 's'), r: 'dragon_breath', b: bName(t, 'l') });
+    var ops = rows.length * batches, fuel = Math.ceil(ops / 20), need = [], idx = {};
+    function add(id, k) { if (id in idx) need[idx[id]].n += k; else { idx[id] = need.length; need.push({ k: id, t: BREW.n[id] || id, n: k }); } }
+    add('glass_bottle', bottles); rows.forEach(function (r) { add(r.r, batches); }); add('blaze_powder', fuel);
+    return { batches: batches, bottles: bottles, rows: rows, ops: ops, fuel: fuel, need: need, out: bName(t, f) };
+  }
+  function renderBrew() {
+    if (!$('b-target').options.length) $('b-target').innerHTML = BTARGETS.map(function (t) { return '<option value="' + esc(t) + '">' + esc(BREW.n[t]) + '</option>'; }).join('');
+    $('b-target').value = bState.t; $('b-n').value = String(bState.n);
+    [].forEach.call($('b-form').querySelectorAll('[data-f]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-f') === bState.f)); });
+    var P = brewPlan(bState.t, bState.f, +bState.n);
+    $('b-out').innerHTML = '<div class="asum"><div><span>Ergebnis</span><b>' + P.bottles + ' Flaschen</b></div><div><span>Brauvorgänge</span><b>' + P.ops + '</b></div><div><span>Lohenstaub zum Heizen</span><b>' + P.fuel + '</b></div></div>' +
+      '<ol class="asteps">' + P.rows.map(function (r) {
+        return '<li><span>' + esc(P.bottles + ' × ' + r.a) + ' <b>+</b> ' + esc(P.batches + ' × ' + (BREW.n[r.r] || r.r)) + '<small>ergibt ' + esc(r.b) + (P.batches > 1 ? ', in ' + P.batches + ' Durchgängen zu je 3 Flaschen' : '') + '</small></span></li>';
+      }).join('') + '</ol>' +
+      '<p class="fl" style="margin:4px 0 0">Zutaten für ' + esc(P.bottles + ' × ' + P.out) + '</p><div class="qchips">' +
+      P.need.map(function (x) { return '<button type="button" class="qchip" data-item="' + esc(x.k) + '">' + qt(x.k, '#8D96A3') + '<span>' + esc(x.n + ' × ' + x.t) + '</span></button>'; }).join('') +
+      '</div><div class="tacts"><button type="button" class="btn" id="b-add">Zutaten auf die Sammelliste</button></div>';
+    saveJSON('brauen', bState);
+  }
+  $('b-target').addEventListener('change', function () { bState.t = this.value; renderBrew(); });
+  $('b-n').addEventListener('change', function () { bState.n = +this.value; renderBrew(); });
+  $('b-form').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (!b) return; bState.f = b.getAttribute('data-f'); renderBrew(); });
+  $('b-out').addEventListener('click', function (e) {
+    var it = e.target.closest('[data-item]'); if (it) { openItem(slug(it.getAttribute('data-item'))); return; }
+    if (!e.target.closest('#b-add')) return;
+    var P = brewPlan(bState.t, bState.f, +bState.n);
+    window.bwList.add(P.need.map(function (x) { return { k: x.k, t: x.t, n: x.n }; }), 'Brau-Planer: ' + P.out);
+  });
+
   /* Daten übertragen */
   function bauKeys() { return PLANS.map(function (p) { return p.id; }); }
   $('s-export').addEventListener('click', function () {
     var bau = {}; bauKeys().forEach(function (id) { try { var v = JSON.parse(localStorage.getItem('bp.done.' + id) || '[]'); if (Array.isArray(v) && v.length) bau[id] = v; } catch (e) {} });
-    var data = JSON.stringify({ app: 'bedrock-werkbank', v: 1, liste: list, orte: places, bau: bau });
+    var data = JSON.stringify({ app: 'bedrock-werkbank', v: 1, liste: list, orte: places, bau: bau, fav: favSlugs() });
     $('s-text').hidden = false; $('s-row').hidden = true; $('s-text').value = data; $('s-text').select();
     copyText(data, function (ok) { $('s-msg').textContent = ok ? 'Kopiert. Füge den Text auf dem anderen Gerät unter Werkzeuge → Daten einfügen ein.' : 'Markiere den Text und kopiere ihn selbst.'; });
   });
@@ -1200,6 +1313,7 @@ var BWTEX = (function () {
       list = d.liste.filter(function (e) { return e && typeof e.k === 'string' && typeof e.t === 'string' && e.n > 0; });
       places = d.orte.filter(function (p) { return p && typeof p.name === 'string' && DIMS[p.dim] && isFinite(p.x) && isFinite(p.z); });
       storeList(); storePlaces();
+      if (Array.isArray(d.fav)) saveJSON('fav', d.fav.filter(function (x) { return typeof x === 'string' && /^[a-z0-9-]+$/.test(x); }).slice(0, 40));
       bauKeys().forEach(function (id) { try { var v = (d.bau || {})[id]; localStorage.setItem('bp.done.' + id, JSON.stringify(Array.isArray(v) ? v.filter(function (n) { return n >= 0 && n < 99; }) : [])); } catch (e) {} });
       try { if (ready.bau) frames.bau.contentWindow.location.reload(); } catch (e) {}
       $('s-text').hidden = true; $('s-row').hidden = true; $('s-msg').textContent = 'Übernommen: ' + plural(list.length, 'Eintrag', 'Einträge') + ', ' + plural(places.length, 'Ort', 'Orte') + '.';
@@ -1214,8 +1328,11 @@ var BWTEX = (function () {
   }
 
   /* Was ist neu */
-  var NEWS = ['Neuer Bauplan: Spawner-XP-Farm für Zombie- und Skelett-Spawner. Du bleibst nah genug am Spawner und triffst die Mobs sicher durch einen Spalt',
-              'Aus Version 1.5: Kürbis- und Melonenfarm, Hühnerfarm mit Kochautomat, Lava aus Tropfstein und die Zauberbuch-Anleitung in der Handelsstation'];
+  var NEWS = ['Neues Werkzeug Brau-Planer: Trank, Menge und Form wählen, du bekommst jeden Brauschritt und alle Zutaten samt Lohenstaub',
+              'Favoriten: Im Lexikon markierst du Einträge mit dem Stern, sie stehen dann oben auf der Startseite',
+              'Amboss-Rechner mit Vorlagen: ein Tippen setzt alle passenden Verzauberungen, auch Varianten wie Behutsamkeit statt Glück',
+              'Neuer Bauplan: Gürteltierfarm für Hornschilde, etwa für Wolfsrüstung',
+              'Aus Version 1.6: Spawner-XP-Farm für Zombie- und Skelett-Spawner'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;
