@@ -50,6 +50,13 @@
   --b-piston: #A88B5C;
   --b-observer: #4E5560;
   --b-dust: #C21F1F;
+  --b-farmland: #7A5230;
+  --b-stem: #6FA83A;
+  --b-button: #8D96A3;
+  --b-dispenser: #6B7380;
+  --b-chicken: #F4F1E8;
+  --b-cauldron: #3F454E;
+  --b-drip: #A88A6E;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -59,7 +66,7 @@
     --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
     --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
     --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C;
+    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C;
   }
 }
 :root[data-theme="dark"] {
@@ -69,7 +76,7 @@
   --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
   --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
   --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C;
+  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C;
 }
 
 * { box-sizing: border-box; }
@@ -242,7 +249,7 @@ html.app .foot { max-width: none; }
 
 <header>
   <p class="eyebrow">Minecraft Bedrock Edition</p>
-  <h1>Baupläne für Eisenfarm, Handel, Kaktus, XP und Zuckerrohr</h1>
+  <h1>Acht Baupläne für Farmen und Handel</h1>
   <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
 </header>
 
@@ -355,6 +362,15 @@ html.app .foot { max-width: none; }
         </tbody>
       </table>
     </div>
+  </div>
+  <div>
+    <h2>Zauberbücher gezielt bekommen</h2>
+    <ul>
+      <li><strong>Die Chance:</strong> Laut Mojangs Handelsdaten bietet ein neuer Bibliothekar auf Stufe 1 entweder ein Bücherregal oder ein verzaubertes Buch an, beides gleich wahrscheinlich. Auf Stufe 2 kommt entweder eine Laterne oder ein weiteres Buch.</li>
+      <li><strong>Austauschen:</strong> Solange du noch nie mit ihm gehandelt hast, baust du das Lesepult vor seiner Box ab und setzt es neu. Er verliert den Beruf, nimmt ihn wieder an und würfelt neue Angebote. Ansehen ist erlaubt, erst ein Handel legt die Angebote fest.</li>
+      <li><strong>Festhalten:</strong> Siehst du dein Wunschbuch, zum Beispiel Reparatur, handle sofort einmal mit ihm. Dann bleibt das Angebot für immer.</li>
+      <li><strong>Preis:</strong> Ein Buch kostet Smaragde und ein normales Buch. Papier aus der Zuckerrohrfarm kauft er dir für Smaragde ab.</li>
+    </ul>
   </div>
   <div>
     <h2>Reihenfolge beim Bauen</h2>
@@ -502,7 +518,122 @@ html.app .foot { max-width: none; }
     </ul>
   </div>
 </section>
-<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
+<section class="notes" id="notes-kuerbis" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Das Wachstum:</strong> Ein ausgewachsener Stiel setzt eine Frucht auf ein zufälliges Nachbarfeld. Hier sind nur die beiden Schlammfelder frei, alle anderen Seiten sind belegt. Solange eine Frucht am Stiel hängt, wächst keine neue.</li>
+      <li><strong>Die Ernte:</strong> Ein Druck auf den Knopf, und alle 16 Kolben fahren einmal aus. Sie zerschlagen jede Frucht, die gerade da ist. Kürbisse fallen als ganzer Block, Melonen als 3 bis 7 Scheiben.</li>
+      <li><strong>Die Sammlung:</strong> Die Ernte fällt auf den Schlamm, der Trichter darunter zieht sie hindurch und reicht sie bis in die Kiste weiter. Das klappt nur mit Schlamm, nicht mit Erde.</li>
+      <li><strong>Das Tempo:</strong> Eine Frucht braucht 10 bis 30 Minuten. Drückst du etwa jede halbe Stunde, bekommst du fast jedes Mal 8 Früchte. Die Pflanzen wachsen nur, solange du in der Nähe bist.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Warum ein Knopf statt Beobachter</h2>
+    <ul>
+      <li><strong>Endlosschleife:</strong> Schaut ein Beobachter auf das Fruchtfeld, sieht er auch den Kolbenkopf, der dort hineinfährt. In der Bedrock Edition löst ihn das immer wieder aus, die Kolben schlagen dann ohne Pause. Mojang hat dieses Verhalten als gewollt bestätigt.</li>
+      <li><strong>Stiel unzuverlässig:</strong> Schaut der Beobachter auf den Stiel, bemerkt er in der Bedrock Edition laut mehreren Fehlerberichten oft nicht, dass eine Frucht angewachsen ist, bei Melonen am häufigsten.</li>
+      <li><strong>Darum der Knopf:</strong> Er funktioniert immer und kostet nur einen Stein.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Stelle die Kiste auf und lege die Trichter, Ebene 1. Schleiche beim Setzen.</li>
+      <li>Leere 16 Wasserflaschen auf Erde, so entsteht Schlamm. Lege ihn auf die Trichter. Lege die Erde in die Mitte, mach sie mit der Hacke zu Ackerboden und gieße die beiden Wasserquellen, Ebene 2.</li>
+      <li>Setze die Kolben und die Blöcke dahinter. Pflanze erst danach die Kerne, Ebene 3. Spring nie auf den Ackerboden.</li>
+      <li>Streue den Staub und setze den Knopf, Ebene 4.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Nutzen und Ausbau</h2>
+    <ul>
+      <li><strong>Smaragde:</strong> Laut Mojangs Handelsdaten kauft ein Bauer auf Stufe 2 sechs Kürbisse für einen Smaragd und auf Stufe 3 vier Melonenblöcke für einen Smaragd. Aus 9 Melonenscheiben machst du einen Block.</li>
+      <li><strong>Sonst:</strong> Kürbisse für Kürbiskuchen, geschnitzte Kürbisse für Schnee- und Eisengolems. Melonenscheiben mit Goldnuggets ergeben glitzernde Melonenscheiben für Heiltränke.</li>
+      <li><strong>Größer:</strong> Die zwei Wasserquellen reichen für genau 8 Stiele. Für mehr baust du eine zweite Farm daneben.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Es wächst nichts:</strong> Über den Stielen muss der Himmel frei sein, und der Ackerboden darf nicht wieder zu Erde geworden sein. Das passiert, wenn du darauf springst.</li>
+      <li><strong>Eine Frucht bleibt nach dem Knopfdruck stehen:</strong> Der Kolben davor zeigt in die falsche Richtung, oder auf dem Block dahinter fehlt Staub.</li>
+      <li><strong>Die Ernte bleibt liegen:</strong> Unter diesem Schlamm fehlt ein Trichter, oder dort liegt Erde statt Schlamm.</li>
+    </ul>
+  </div>
+</section>
+<section class="notes" id="notes-huehner" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Die Eier:</strong> Laut Mojangs Daten legt jedes Huhn alle 5 bis 10 Minuten ein Ei. Es fällt in den Trichter unter dem Pferch und weiter in den Spender.</li>
+      <li><strong>Der Spender:</strong> Die beiden Beobachter lösen sich ständig gegenseitig aus, der östliche gibt dabei jedes Mal ein Signal an den Spender. Er wirft ein Ei auf die Stufe, sobald eines in ihm liegt. Aus jedem achten Ei schlüpft ein Küken.</li>
+      <li><strong>Das Kochen:</strong> Nach 20 Minuten ist das Küken ausgewachsen. Es ist dann 0,8 Blöcke hoch, berührt die Lava und verbrennt. Dabei lässt es gebratenes Hähnchen und Federn fallen. Der Trichter zieht beides durch die untere Stufe in die Kiste.</li>
+      <li><strong>Das Tempo:</strong> Rund ein Brathähnchen je Huhn im Pferch und Stunde, mit 8 Hühnern also etwa 8. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Kiste, Sockel und unteren Trichter setzen, Ebenen 1 und 2.</li>
+      <li>Erst die beiden Beobachter, dann den Spender, dann Stufe und Glas, Ebene 3.</li>
+      <li>Oberen Trichter, Glas und zuletzt die Lava, Ebene 4.</li>
+      <li>Pferch bauen, Eier hineinwerfen, Deckel drauf, Ebenen 5 und 6.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Gut zu wissen</h2>
+    <ul>
+      <li><strong>Mehr Hühner:</strong> Nimm den Deckel kurz ab und wirf weitere Eier in den Pferch.</li>
+      <li><strong>Abschalten:</strong> Die Beobachter laufen ständig. Baue einen davon ab, wenn du die Farm anhalten willst.</li>
+      <li><strong>Kleine Verluste:</strong> Ab und zu springt ein Teil der Beute in die Lava und verbrennt.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Küken verbrennen sofort:</strong> Statt einer unteren liegt eine obere Stufe auf dem Trichter, oder sie fehlt ganz.</li>
+      <li><strong>Ausgewachsene Hühner bleiben am Leben:</strong> Über der Stufe fehlt die Lava, oder es ist fließende Lava statt einer Quelle.</li>
+      <li><strong>Der Spender wirft nichts:</strong> Der rote Punkt des östlichen Beobachters muss zum Spender zeigen, und der obere Trichter muss nach unten in den Spender zeigen.</li>
+      <li><strong>Die Kiste bleibt leer:</strong> Der Trichter unter der Stufe zeigt nicht in die Kiste.</li>
+    </ul>
+  </div>
+</section>
+<section class="notes" id="notes-lava" hidden>
+  <div>
+    <h2>So arbeitet die Farm</h2>
+    <ul>
+      <li><strong>Das Tropfen:</strong> Liegt eine Lavaquelle auf einem Block, unter dem ein spitzer Tropfstein hängt, tropft Lava aus seiner Spitze. Trifft ein Tropfen den Kessel darunter, ist er auf einmal voll. Die Lavaquelle wird dabei nicht verbraucht.</li>
+      <li><strong>Das Tempo:</strong> Ein Kessel braucht im Schnitt knapp einen Minecraft-Tag, also rund 20 Minuten. Mit 6 Kesseln holst du so etwa 18 Eimer pro Stunde. In der Bedrock Edition berichten Spieler, dass es eher langsamer geht. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
+      <li><strong>Abschöpfen:</strong> Klicke mit einem leeren Eimer auf einen vollen Kessel. Ein Eimer Lava brennt im Ofen 100 Gegenstände.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Und der Ton?</h2>
+    <ul>
+      <li><strong>In Java</strong> wird Schlamm auf einem Block mit Tropfstein darunter mit der Zeit zu Ton.</li>
+      <li><strong>In der Bedrock Edition</strong> ist das in Mojangs Fehlerdatenbank als Fehler bestätigt (MCPE-153823). Darum hat diese Farm keinen Tonteil. Ob der Fehler inzwischen behoben ist, ließ sich nicht prüfen.</li>
+      <li><strong>Selbst testen:</strong> Ersetze eine Lavaquelle durch einen Schlammblock. Wird er nach einiger Zeit zu Ton, klappt es in deiner Version, und du kannst die Farm umbauen.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Baue die beiden Säulen und die tragende Lage, Ebenen 1 bis 3.</li>
+      <li>Hänge die 6 Tropfsteine unter die tragende Lage und stelle die Kessel genau darunter.</li>
+      <li>Ziehe den Rand hoch und gieße die Lava hinein, Ebene 4. Lava bekommst du im Nether oder tief unter der Erde.</li>
+      <li>Leg den Deckel auf, Ebene 5.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Ein Kessel füllt sich nie:</strong> Über diesem Block liegt fließende Lava statt einer Quelle, oder der Tropfstein hängt nicht genau darunter.</li>
+      <li><strong>Es tropft, aber der Kessel bleibt leer:</strong> Der Kessel steht nicht genau unter der Spitze. Häng außerdem nur einen Tropfstein je Kessel auf.</li>
+    </ul>
+  </div>
+</section>
+<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Kürbis und Melone: Fruchtboden und Wachstum nach der Seite <a href="https://minecraft.wiki/w/Melon">Melon</a>, Bedrock-Verhalten von Beobachter und Kolbenkopf nach den Fehlerberichten MCPE-28520 und MCPE-29532. Hühner: Größen, Legezeit, Schlupfchance und Wachstumsdauer aus Mojangs Bedrock-Daten, Trichter unter einer unteren Stufe nach der Seite Hopper. Lava: Tropfstein nach der Seite <a href="https://minecraft.wiki/w/Pointed_Dripstone">Pointed Dripstone</a>, Ton nach dem Fehlerbericht MCPE-153823. Bibliothekar und Bauer: Handelsangebote aus Mojangs Bedrock-Daten. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
 
 </div>
 <script>
@@ -669,11 +800,23 @@ var BLOCKS = {
   r: { name: 'Zuckerrohr, unterster Block (bleibt stehen)', mat: 'cane', fill: 'var(--b-cane)', glyph: 'Z', dark: true },
   u: { name: 'Wuchsfeld, frei lassen: hier wächst das Zuckerrohr nach', fill: 'var(--b-air)', glyph: '↑', ink: true },
   G: { name: 'Glas', mat: 'glass', fill: 'var(--b-glass)', glyph: 'Gl' },
-  P: { name: 'Kolben, Kopf zeigt nach Süden (↓) zum Zuckerrohr', mat: 'piston', fill: 'var(--b-piston)', glyph: 'K↓', dark: true },
-  p: { name: 'Kolben, Kopf zeigt nach Norden (↑) zum Zuckerrohr', mat: 'piston', fill: 'var(--b-piston)', glyph: 'K↑', dark: true },
+  P: { name: 'Kolben, Kopf zeigt nach Süden (↓) zur Pflanze', mat: 'piston', fill: 'var(--b-piston)', glyph: 'K↓', dark: true },
+  p: { name: 'Kolben, Kopf zeigt nach Norden (↑) zur Pflanze', mat: 'piston', fill: 'var(--b-piston)', glyph: 'K↑', dark: true },
   Y: { name: 'Beobachter, Gesicht nach Süden (↓) zum Zuckerrohr, roter Punkt nach Norden', mat: 'observer', fill: 'var(--b-observer)', glyph: 'B↓', dark: true },
   y: { name: 'Beobachter, Gesicht nach Norden (↑) zum Zuckerrohr, roter Punkt nach Süden', mat: 'observer', fill: 'var(--b-observer)', glyph: 'B↑', dark: true },
-  i: { name: 'Redstone-Staub', mat: 'dust', fill: 'var(--b-dust)', glyph: '•', dark: true }
+  i: { name: 'Redstone-Staub', mat: 'dust', fill: 'var(--b-dust)', glyph: '•', dark: true },
+  a: { name: 'Ackerboden: Erde, mit der Hacke bearbeitet', mat: 'dirt', fill: 'var(--b-farmland)' },
+  k: { name: 'Kürbis- oder Melonenstiel: Kern auf den Ackerboden', mat: 'seeds', fill: 'var(--b-stem)', glyph: 'St', dark: true },
+  v: { name: 'Fruchtfeld, frei lassen: hier wächst die Frucht', fill: 'var(--b-air)', glyph: '◆', ink: true },
+  W: { name: 'Steinknopf: ein Druck erntet alle Früchte', mat: 'button', fill: 'var(--b-button)', glyph: 'Kn', dark: true },
+  H: { name: 'Spender, zeigt nach Osten (→) in die Kammer', mat: 'dispenser', fill: 'var(--b-dispenser)', glyph: 'Sp', dark: true },
+  I: { name: 'Beobachter, Gesicht nach Osten (→) zum zweiten Beobachter, roter Punkt nach Westen', mat: 'observer', fill: 'var(--b-observer)', glyph: 'B→', dark: true },
+  J: { name: 'Beobachter, Gesicht nach Westen (←) zum ersten Beobachter, roter Punkt nach Osten zum Spender', mat: 'observer', fill: 'var(--b-observer)', glyph: 'B←', dark: true },
+  l: { name: 'Trichter, zeigt nach unten in den Spender', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↓', dark: true },
+  q: { name: 'Untere Stufe: hier stehen die Küken', mat: 'slab', fill: 'var(--b-slab)', glyph: '▄', dark: true },
+  x: { name: 'Hühner, stehen auf dem Trichter', fill: 'var(--b-chicken)', glyph: 'Hu' },
+  j: { name: 'Kessel, fängt die Lava auf', mat: 'cauldron', fill: 'var(--b-cauldron)', glyph: 'Ke', dark: true },
+  1: { name: 'Spitzer Tropfstein, hängt unter dem Block', mat: 'dripstone', fill: 'var(--b-drip)', glyph: '▼', dark: true }
 };
 
 var MATERIALS = {
@@ -700,7 +843,13 @@ var MATERIALS = {
   glass: 'Glas',
   piston: 'Kolben',
   observer: 'Beobachter',
-  dust: 'Redstone-Staub'
+  dust: 'Redstone-Staub',
+  dirt: 'Erde (wird Ackerboden)',
+  seeds: 'Kürbis- oder Melonenkerne',
+  button: 'Steinknopf',
+  dispenser: 'Spender',
+  cauldron: 'Kessel',
+  dripstone: 'Spitzer Tropfstein'
 };
 
 var PLANS = (function () {
@@ -1017,7 +1166,116 @@ var PLANS = (function () {
     };
   }
 
-  return [farm(), hall(), cactus(), xp(), cane()];
+  /* ---------- Kürbis- und Melonenfarm: 13 x 7, Y1 bis Y4, Ernte per Knopf ---------- */
+  function pumpkin() {
+    var W = 13, D = 7, L = [], g;
+
+    g = mk(W, D); rect(g, 1, 1, 10, 1, 'S'); rect(g, 0, 3, 10, 3, 'S'); rect(g, 1, 5, 10, 5, 'S'); g[2][1] = 'S'; g[4][1] = 'S';
+    rect(g, 2, 2, 10, 2, 'e'); rect(g, 2, 4, 10, 4, 'e'); g[2][11] = 's'; g[3][11] = 'e'; g[4][11] = 'n'; g[3][12] = 'K'; g[4][12] = 'K';
+    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[12, 3, 12, 4]],
+      text: 'Stelle die Doppelkiste ganz im Osten auf. Lege zwei Reihen aus je 9 Trichtern, die nach Osten zeigen: Klicke beim Bauen immer schleichend die Seite des vorigen Trichters an. Am Ende führen zwei Trichter nach Süden und Norden in den mittleren, der zeigt nach Osten in die Kiste. Dazwischen und außen liegen feste Blöcke als Boden.' });
+
+    g = mk(W, D); rect(g, 1, 1, 10, 1, 'S'); rect(g, 1, 5, 10, 5, 'S'); g[2][1] = 'S'; g[2][10] = 'S'; g[4][1] = 'S'; g[4][10] = 'S';
+    rect(g, 2, 2, 9, 2, 'm'); rect(g, 2, 4, 9, 4, 'm'); g[3][0] = 'S'; g[3][1] = 'Q'; rect(g, 2, 3, 9, 3, 'a'); g[3][10] = 'Q'; g[3][11] = 'S';
+    L.push({ y: [2, 2], name: 'Schlamm, Ackerboden, Wasser', grid: rows(g),
+      text: 'Lege auf die 8 westlichen Trichter jeder Reihe einen Schlammblock, insgesamt 16. Auf dem Schlamm wachsen später die Früchte, der Trichter darunter zieht die Ernte durch den Schlamm ein. In die Mitte kommt eine Reihe Erde, die du mit der Hacke zu Ackerboden machst. An beiden Enden dieser Reihe liegt eine Wasserquelle, so ist jeder Ackerboden höchstens 4 Felder vom Wasser entfernt. Feste Blöcke halten das Wasser fest.' });
+
+    g = mk(W, D); rect(g, 1, 0, 9, 0, 'S'); rect(g, 1, 6, 9, 6, 'S'); rect(g, 1, 1, 1, 5, 'S'); g[3][0] = 'S';
+    rect(g, 2, 1, 9, 1, 'P'); rect(g, 2, 2, 9, 2, 'v'); rect(g, 2, 3, 9, 3, 'k'); rect(g, 2, 4, 9, 4, 'v'); rect(g, 2, 5, 9, 5, 'p');
+    L.push({ y: [3, 3], name: 'Kolben und Kerne', grid: rows(g),
+      text: 'Setze 16 normale Kolben, keine klebrigen, deren Kopf zum Schlamm zeigt. Ein Kolben zeigt beim Setzen mit dem Kopf zu dir: Stell dich auf den Schlamm und schau waagerecht nach außen. Dahinter kommt je eine Reihe fester Blöcke, im Westen eine Querreihe, die auch die westliche Wasserquelle abdeckt. Pflanze erst jetzt die 8 Kerne auf den Ackerboden und spring nie darauf, sonst wird er wieder zu Erde. Die Felder über dem Schlamm bleiben frei, dort wachsen die Früchte.' });
+
+    g = mk(W, D); rect(g, 1, 0, 9, 0, 'i'); rect(g, 1, 6, 9, 6, 'i'); rect(g, 1, 1, 1, 5, 'i'); g[3][0] = 'W';
+    L.push({ y: [4, 4], name: 'Redstone und Knopf', grid: rows(g),
+      text: 'Streue Redstone-Staub auf die äußeren Blockreihen und die Querreihe im Westen, so entsteht ein U. Setze den Steinknopf ganz im Westen oben auf den einzelnen Block neben dem Staub. Ein Druck auf den Knopf, und alle 16 Kolben fahren einmal aus. Sie zerschlagen jede Frucht, die gerade da ist, und die Trichter bringen alles in die Kiste.' });
+
+    return {
+      id: 'kuerbis', title: 'Kürbis- und Melonenfarm', w: W, d: D, yMin: 1, yMax: 4, sliceX: 5, ground: true,
+      guides: [],
+      specs: [['Grundfläche', '13 × 7 Blöcke'], ['Höhe', '4 Blöcke'], ['Stiele', '8 Pflanzen'], ['Ertrag', 'bis 8 Früchte je Knopfdruck']],
+      extras: [['Wasserflaschen', '16', 'für den Schlamm: Flasche auf Erde leeren'], ['Wassereimer', '1', 'für die 2 Quellen'],
+               ['Hacke', '1', 'macht aus Erde Ackerboden']],
+      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', mud: 'Wasserflasche auf Erde', dirt: 'mit der Hacke zu Ackerboden',
+               seeds: 'Kürbis oder Melone, auch gemischt', piston: 'normale Kolben, keine klebrigen', dust: 'ein U um die Kolben',
+               button: 'aus einem Stein', source: 'aus dem Eimer', chest: 'ergibt eine Doppelkiste' },
+      layers: L
+    };
+  }
+
+  /* ---------- Hühnerfarm mit Kochautomat: 5 x 3, Y1 bis Y6 ---------- */
+  function chicken() {
+    var W = 5, D = 3, L = [], g;
+
+    g = mk(W, D); rect(g, 0, 1, 2, 1, 'S'); g[1][3] = 'K'; g[1][4] = 'K';
+    L.push({ y: [1, 1], name: 'Kiste', grid: rows(g), pairs: [[3, 1, 4, 1]],
+      text: 'Stelle die Doppelkiste auf. Daneben im Westen kommen 3 feste Blöcke als Sockel.' });
+
+    g = mk(W, D); rect(g, 0, 1, 2, 1, 'S'); g[1][3] = 't';
+    L.push({ y: [2, 2], name: 'Trichter', grid: rows(g),
+      text: 'Setze auf die westliche Kistenhälfte einen Trichter. Schleiche dabei und klicke auf die Oberseite der Kiste, dann zeigt er nach unten hinein. Der Sockel wächst eine Lage höher. Auf die östliche Kistenhälfte kommt nichts, sonst lässt sie sich schlecht öffnen.' });
+
+    g = mk(W, D); g[1][0] = 'I'; g[1][1] = 'J'; g[1][2] = 'H'; g[1][3] = 'q'; g[0][3] = 'G'; g[2][3] = 'G'; g[1][4] = 'G';
+    L.push({ y: [3, 3], name: 'Spender, Beobachter, Kükenplatz', grid: rows(g),
+      text: 'Zuerst die Beobachter. Ein Beobachter schaut beim Setzen in deine Blickrichtung. Für den östlichen stellst du dich auf den Sockelblock, wo gleich der Spender hinkommt, und schaust nach Westen: Sein roter Punkt zeigt dann zum Spender. Den westlichen setzt du von Westen aus mit Blick nach Osten. Die beiden lösen sich ab jetzt ständig gegenseitig aus. Dann der Spender: Er zeigt beim Setzen mit der Öffnung zu dir, also stell dich auf das Feld östlich davon und schau nach Westen. Lege auf den Trichter eine untere Stufe, darauf stehen später die Küken, und umgib sie mit 3 Glasblöcken.' });
+
+    g = mk(W, D); g[1][2] = 'l'; g[1][3] = 'V'; g[0][3] = 'G'; g[2][3] = 'G'; g[1][4] = 'G';
+    L.push({ y: [4, 4], name: 'Trichter und Lava', grid: rows(g),
+      text: 'Setze auf den Spender einen Trichter, schleichend auf die Oberseite geklickt, damit er nach unten in den Spender zeigt. Baue 3 Glasblöcke um das Feld über der Stufe und gieße dort einen Eimer Lava hinein. Die Lava bleibt oben, weil sie nicht in die Stufe fließen kann. Küken sind 0,4 Blöcke hoch und bleiben darunter, ausgewachsene Hühner mit 0,8 Blöcken berühren sie.' });
+
+    g = mk(W, D); g[1][2] = 'x'; g[1][1] = 'G'; g[0][2] = 'G'; g[2][2] = 'G'; g[1][3] = 'G';
+    L.push({ y: [5, 5], name: 'Pferch', grid: rows(g),
+      text: 'Umgib das Feld über dem oberen Trichter mit 4 Glasblöcken. Das ist der Pferch, er deckt auch die Lava ab. Wirf von oben Eier hinein, bis 4 bis 8 Küken darin sind: Aus jedem achten Ei schlüpft eines. Sie wachsen im Pferch heran und legen später ihre Eier direkt in den Trichter.' });
+
+    g = mk(W, D); g[1][2] = 'G';
+    L.push({ y: [6, 6], name: 'Deckel', grid: rows(g),
+      text: 'Schließe den Pferch mit einem Glasblock, sobald genug Hühner darin sind. Ein Huhn ist 0,8 Blöcke hoch und passt unter den Deckel.' });
+
+    return {
+      id: 'huehner', title: 'Hühnerfarm mit Kochautomat', w: W, d: D, yMin: 1, yMax: 6, sliceZ: 1, ground: true,
+      guides: [],
+      specs: [['Grundfläche', '5 × 3 Blöcke'], ['Höhe', '6 Blöcke'], ['Hühner', '4 bis 8 im Pferch'], ['Ertrag', 'rund 1 Brathähnchen je Huhn und Stunde']],
+      extras: [['Eier', '32', 'in den Pferch werfen, bis 4 bis 8 Küken geschlüpft sind']],
+      hints: { observer: 'Quarz aus dem Nether nötig', dispenser: 'Bogen, Redstone und Bruchstein', hopper: '5 Eisenbarren und eine Truhe je Trichter',
+               slab: 'eine untere Stufe, nicht aus Holz', lava: '1 Eimer', glass: 'Sand im Ofen schmelzen', chest: 'ergibt eine Doppelkiste' },
+      layers: L
+    };
+  }
+
+  /* ---------- Lava aus Tropfstein: 8 x 3, Y1 bis Y5 ---------- */
+  function lava() {
+    var W = 8, D = 3, L = [], g;
+
+    g = mk(W, D); rect(g, 1, 1, 6, 1, 'j'); g[1][0] = 'S'; g[1][7] = 'S';
+    L.push({ y: [1, 1], name: 'Kessel', grid: rows(g),
+      text: 'Stelle 6 Kessel in eine Reihe, an beiden Enden einen festen Block als Säule. Vorn und hinten bleibt alles frei, damit du mit dem Eimer an jeden Kessel kommst. Setze die Kessel erst, wenn die Tropfsteine darüber hängen, dann siehst du genau, wohin sie gehören.' });
+
+    g = mk(W, D); rect(g, 1, 1, 6, 1, '1'); g[1][0] = 'S'; g[1][7] = 'S';
+    L.push({ y: [2, 2], name: 'Tropfstein', grid: rows(g),
+      text: 'Hänge unter jeden Block der nächsten Lage einen spitzen Tropfstein: Klicke dazu die Unterseite des Blocks an. Je Kessel genau ein Tropfstein, seine Spitze zeigt direkt auf den Kessel.' });
+
+    g = mk(W, D); rect(g, 0, 0, 7, 2, 'S');
+    L.push({ y: [3, 3], name: 'Tragende Lage', grid: rows(g),
+      text: 'Lege 8 × 3 feste Blöcke, gestützt von den beiden Säulen. Nimm Stein oder Bruchstein, nichts Brennbares. Baue diese Lage zuerst und hänge dann die Tropfsteine darunter.' });
+
+    g = mk(W, D); ring(g, 0, 0, 7, 2, 'S'); rect(g, 1, 1, 6, 1, 'V');
+    L.push({ y: [4, 4], name: 'Lava', grid: rows(g),
+      text: 'Ziehe einen Rand aus 18 festen Blöcken hoch und gieße 6 Eimer Lava hinein, je einen genau über jeden Tropfstein. Es müssen Quellen sein, fließende Lava tropft nicht.' });
+
+    g = mk(W, D); rect(g, 0, 0, 7, 2, 'S');
+    L.push({ y: [5, 5], name: 'Deckel', grid: rows(g),
+      text: 'Decke die Lava mit 8 × 3 festen Blöcken ab. So fällt niemand hinein, und kein Feuer springt über.' });
+
+    return {
+      id: 'lava', title: 'Lava aus Tropfstein', w: W, d: D, yMin: 1, yMax: 5, sliceX: 3, ground: true,
+      guides: [],
+      specs: [['Grundfläche', '8 × 3 Blöcke'], ['Höhe', '5 Blöcke'], ['Kessel', '6'], ['Ertrag', 'etwa 1 Eimer je Kessel alle 20 Minuten']],
+      extras: [['Eimer', '1', 'zum Abschöpfen der Kessel']],
+      hints: { cauldron: '7 Eisenbarren je Kessel', dripstone: 'aus Tropfsteinhöhlen, mit der Spitzhacke', lava: 'ein Eimer je Quelle', stone: 'nichts Brennbares' },
+      layers: L
+    };
+  }
+
+  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava()];
 })();
 
 if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
@@ -1026,7 +1284,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 <script>
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
-  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/bed_red.png","items/door_wood.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/sign.png"],"m":{"S":["c",24,24,24],"Z":["c",24,24,24],"U":["c",24,24,24],"L":["c",11,11,11],"X":["f",35],"t":["f",31],"n":["f",31],"e":["f",31],"s":["f",31],"K":["c",4,2,3],"B":["f",29],"b":["f",29],"C":["c",6,5,5],"A":["c",14,13,12],"D":["f",30],"d":["f",30],"F":["f",25],"N":["c",23,23,23],"c":["c",1,0,0],"z":["fe",21,21,21],"g":["fe",21,21,21],"T":["s",24,24,24],"R":["t",26,26,26],"M":["f",32],"m":["c",15,15,15],"r":["f",34],"G":["c",7,7,7],"P":["c",20,19,19],"p":["c",20,19,19],"Y":["c",18,16,17],"y":["c",18,16,17],"i":["f",33],"Q":["c",28,28,28],"V":["c",10,10,10]},"g":{"S":[24,24],"Z":[24,24],"U":[24,24],"L":[11,11],"t":[9,8],"n":[9,8],"e":[9,8],"s":[9,8],"K":[4,2],"C":[6,5],"F":[25,25],"N":[23,23],"c":[1,0],"z":[21,21],"g":[21,21],"T":[24,24],"R":[26,26],"M":[22,22],"m":[15,15],"r":[34,34],"G":[7,7],"P":[19,19],"p":[19,19],"Y":[18,17],"y":[18,17],"Q":[28,28],"f":[27,27],"V":[10,10]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","V":"lava_bucket"}};
+  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/bed_red.png","items/cauldron.png","items/door_wood.png","items/egg.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",33,33,33],"Z":["c",33,33,33],"U":["c",33,33,33],"L":["c",18,18,18],"X":["f",47],"t":["f",42],"n":["f",42],"e":["f",42],"s":["f",42],"K":["c",6,4,5],"B":["f",38],"b":["f",38],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",40],"d":["f",40],"F":["f",34],"N":["c",32,32,32],"c":["c",1,0,0],"z":["fe",28,28,28],"g":["fe",28,28,28],"T":["s",33,33,33],"R":["t",35,35,35],"M":["f",43],"m":["c",22,22,22],"r":["f",45],"G":["c",14,14,14],"P":["c",27,26,26],"p":["c",27,26,26],"Y":["c",25,23,24],"y":["c",25,23,24],"i":["f",44],"a":["c",11,9,9],"k":["f",46],"W":["b",33,33,33],"H":["c",13,10,12],"I":["c",25,23,24],"J":["c",25,23,24],"l":["f",42],"q":["s",33,33,33],"x":["f",41],"j":["f",39],"1":["f",29],"Q":["c",37,37,37],"V":["c",17,17,17]},"g":{"S":[33,33],"Z":[33,33],"U":[33,33],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[34,34],"N":[32,32],"c":[1,0],"z":[28,28],"g":[28,28],"T":[33,33],"R":[35,35],"M":[31,31],"m":[22,22],"r":[45,45],"G":[14,14],"P":[26,26],"p":[26,26],"Y":[25,24],"y":[25,24],"a":[11,9],"W":[33,33],"H":[13,10],"I":[25,24],"J":[25,24],"l":[16,15],"q":[33,33],"j":[3,2],"1":[30,30],"Q":[37,37],"f":[36,36],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","V":"lava_bucket"}};
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
   function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
@@ -1149,7 +1407,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     return order.map(function (m) { return { mat: m, n: c[m].n, fill: c[m].fill, ch: c[m].ch }; });
   }
   /* Lexikon-Kennung zum Material, damit die Sammelliste das passende Originalbild zeigt */
-  var EXTRA_LEX = { 'Schere': 'shears', 'Wassereimer': 'water_bucket', 'Schwert': 'iron_sword', 'Wasserflaschen': 'potion:water' };
+  var EXTRA_LEX = { 'Schere': 'shears', 'Wassereimer': 'water_bucket', 'Schwert': 'iron_sword', 'Wasserflaschen': 'potion:water', 'Hacke': 'iron_hoe', 'Eier': 'egg', 'Eimer': 'bucket' };
   function matLex(m) { for (var ch in BLOCKS) if (BLOCKS[ch].mat === m && BTX.x && BTX.x[ch]) return BTX.x[ch]; return null; }
   function matIcon(ch) { return BTX.m && BTX.m[ch] ? '<i class="bi" data-tx="' + ch + '"></i>' : ''; }
   function stacks(m, n) {

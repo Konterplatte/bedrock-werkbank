@@ -358,7 +358,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <div>
           <p class="eyebrow">Minecraft Bedrock Edition 26.60</p>
           <h1>Bedrock-Werkbank</h1>
-          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu fünf Baupläne Block für Block und praktische Werkzeuge. Funktioniert komplett ohne Internet.</p>
+          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu acht Baupläne Block für Block und praktische Werkzeuge. Funktioniert ohne Internet.</p>
           <form class="hsearch" id="hsearch" role="search">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l4.5 4.5"/></svg>
             <input type="search" id="hq" enterkeyhint="search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Ressource suchen, z. B. Reparatur" aria-label="Ressource suchen">
@@ -549,7 +549,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 1.4.1</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 1.5</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -563,11 +563,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.4.1 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 1.5 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
-    <p>Ressourcen-Lexikon, die Baupläne für Eisenfarm, Handelsstation, Kaktusfarm, XP-Farm und Zuckerrohrfarm und die Werkzeuge in einer App. Alles läuft ohne Internet. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <p>Ressourcen-Lexikon, acht Baupläne von der Eisenfarm bis zur Lava aus Tropfstein und die Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
     <div class="exe-only">
       <h3>Tastatur</h3>
       <dl class="keys">
@@ -595,10 +595,10 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5}];
+  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
-  var APPVER = '1.4.1';
+  var APPVER = '1.5';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -767,6 +767,7 @@ var BWTEX = (function () {
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
             glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B', end: '#DCD9A6',
             mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C', paper: '#EEE6D2', anvil: '#5A616B',
+            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E',
             grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
   function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
   var SCENES = {
@@ -777,6 +778,12 @@ var BWTEX = (function () {
     xpfarm: [].concat(box(0, 0, 0, 4, 4, K.stone), box(0, 0, 1, 4, 4, K.water, .35), box(1, 1, 1.35, 2, 2, K.stone, 1), box(1, 1, 2.35, 2, 2, K.stone, 1), box(1, 1, 3.35, 2, 2, K.stone, 1), box(0, 0, 4.35, 4, 4, K.end, .5), [[1.5, 1.5, 4.85, K.purple, .45]]),
     zuckerrohr: [].concat(box(0, 0, 0, 4, 1, K.mud), box(0, 1, 0, 4, 1, K.water, .7), box(0, 2, 0, 4, 1, K.mud),
       box(0, 0, 1, 4, 1, K.cane), box(0, 0, 2, 4, 1, K.cane), box(0, 2, 1, 4, 1, K.cane), box(0, 3, 1, 4, 1, K.stone), box(0, 3, 2, 4, 1, K.piston), box(0, 3, 3, 4, 1, K.dark, .9)),
+    kuerbis: [].concat(box(0, 0, 0, 4, 1, K.mud), box(0, 1, 0, 4, 1, K.farmland), box(0, 2, 0, 4, 1, K.mud), box(0, 3, 0, 4, 1, K.stone), box(0, 3, 1, 4, 1, K.piston),
+      [[0, 1, 1, K.cane, .35], [1, 1, 1, K.cane, .35], [2, 1, 1, K.cane, .35], [3, 1, 1, K.cane, .35], [0, 0, 1, K.pumpkin], [2, 2, 1, K.melon], [3, 0, 1, K.pumpkin]]),
+    huehner: [[0, 0, 0, K.stone], [1, 0, 0, K.wood], [2, 0, 0, K.wood], [0, 0, 1, K.dark], [1, 0, 1, K.stone, .5], [2, 0, 1, K.glass], [1, 1, 1, K.glass],
+      [0, 0, 2, K.dark, .9], [1, 0, 2, K.lava], [2, 0, 2, K.glass], [1, 1, 2, K.glass], [0, 0, 2.9, K.chicken, .7], [0, 1, 2.9, K.glass, .9]],
+    lava: [].concat(box(0, 0, 0, 4, 1, K.anvil, .8), [[0, 0, 1.35, K.drip, .65], [1, 0, 1.35, K.drip, .65], [2, 0, 1.35, K.drip, .65], [3, 0, 1.35, K.drip, .65]],
+      box(0, 0, 2, 4, 1, K.stone), box(0, 0, 3, 4, 1, K.lava, .8)),
     lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
     hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
       [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],
@@ -1205,9 +1212,9 @@ var BWTEX = (function () {
   }
 
   /* Was ist neu */
-  var NEWS = ['Korrektur: Lederrüstung erscheint jetzt braun wie im Spiel, der Feuerwerksstern wieder vollständig',
-              'Sammelliste: Material aus den Bauplänen zeigt jetzt ebenfalls das Originalbild',
-              'Aus Version 1.4: Originalbilder aus Mojangs Resource Pack in Lexikon, Bauplänen, Startseite und Sammelliste. Einmal geladen, gehen sie auch ohne Internet'];
+  var NEWS = ['Drei neue Baupläne: Kürbis- und Melonenfarm mit Ernte per Knopfdruck, Hühnerfarm mit Kochautomat und Lava aus Tropfstein',
+              'Handelsstation: neue Anleitung, wie du beim Bibliothekar gezielt Zauberbücher bekommst',
+              'Aus Version 1.4: Originalbilder aus Mojangs Resource Pack, einmal geladen gehen sie auch ohne Internet'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;
