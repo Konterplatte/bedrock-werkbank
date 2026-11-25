@@ -33,7 +33,7 @@
   --f-body: 'IBM Plex Sans', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
     --paper: #09131F; --sheet: #101F33; --ink: #E6EEF8; --ink-soft: #9DB2CC; --line: #25405F;
     --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --tint: #17304F;
@@ -43,6 +43,16 @@
     --ok: #5FD38A; --ok-soft: #12362A;
   }
 }
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #09131F; --sheet: #101F33; --ink: #E6EEF8; --ink-soft: #9DB2CC; --line: #25405F;
+    --accent: #74B4FF; --on-accent: #06121F; --mark: #FF9B61; --tint: #17304F;
+    --band: #0D1C30; --band-soft: #9DB2CC; --band-line: rgba(255, 255, 255, .05); --band-edge: rgba(255, 255, 255, .08);
+    --pic: linear-gradient(160deg, #14283F, #0E1D30); --glass: rgba(8, 18, 31, .84); --glass-edge: rgba(255, 255, 255, .12);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25); --lift: 0 2px 4px rgba(0, 0, 0, .35), 0 16px 36px rgba(0, 0, 0, .4);
+    --ok: #5FD38A; --ok-soft: #12362A;
+  }
+:root[data-theme="light"] { color-scheme: light; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
 body { margin: 0; height: 100vh; height: 100dvh; display: grid; grid-template-columns: 100px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr);
@@ -123,7 +133,7 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .fact { min-width: 0; }
 .fact small { display: block; font-size: .78rem; color: var(--ink-soft); letter-spacing: .02em; }
 .fact b { display: block; font-size: 1.08rem; font-weight: 600; line-height: 1.15; overflow-wrap: anywhere; }
-.lexcard { flex-direction: row; align-items: stretch; }
+.lexcard { flex-direction: row; align-items: stretch; width: 100%; }
 .lexcard .ppic { width: 34%; height: 220px; border-bottom: 0; border-right: 1px solid var(--line); }
 .lexcard .ppic svg { max-height: 170px; }
 .lexcard .pbody { justify-content: center; flex: 1; }
@@ -150,6 +160,11 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .thead { display: flex; gap: 14px; align-items: center; }
 .ticon { width: 64px; height: 64px; flex: none; border-radius: 14px; background: var(--pic); padding: 6px; }
 .ticon svg { width: 100%; height: 100%; display: block; }
+.ticon .qt, .tlink .qt { width: 100%; height: 100%; display: flex; }
+.tlink .qt { width: 40px; height: 40px; flex: none; }
+.ppic { position: relative; }
+.pout { position: absolute; top: 10px; right: 10px; width: 42px; height: 42px; border-radius: 12px; background: var(--sheet); border: 1px solid var(--line); box-shadow: var(--shadow); display: grid; place-items: center; }
+.pout .qt { width: 30px; height: 30px; }
 .thead p { margin: 4px 0 0; color: var(--ink-soft); }
 .seg { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; gap: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); }
 .seg button { appearance: none; min-height: 44px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft); font-weight: 600; font-size: 1rem; cursor: pointer; padding: 4px 8px; }
@@ -187,12 +202,17 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .thero .hero-in { grid-template-columns: minmax(0, 1fr); padding-bottom: clamp(20px, 3vw, 30px); }
 .thero h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); }
 .thero .lead { margin-bottom: 0; }
-.tabsbar { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
-.tabsbar::-webkit-scrollbar { display: none; }
-.tabsbar button { appearance: none; flex: 1 0 auto; min-height: 44px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft);
-  font: 600 1.05rem var(--f-display); letter-spacing: .02em; padding: 4px 14px; cursor: pointer; white-space: nowrap; }
+.tabsbar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); }
+.tabsbar button { appearance: none; min-width: 0; min-height: 50px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft); display: flex; align-items: center; justify-content: center; gap: 9px;
+  font: 600 1.05rem var(--f-display); letter-spacing: .02em; padding: 4px 8px; cursor: pointer; white-space: nowrap; }
 .tabsbar button[aria-selected="true"] { background: var(--sheet); color: var(--ink); box-shadow: 0 1px 4px rgba(19, 38, 63, .16); }
+.tabsbar .tbi { display: inline-flex; }
+.tabsbar .qt { width: 26px; height: 26px; }
+.tabsbar .ts { display: none; }
 .tpanel { display: flex; flex-direction: column; gap: 18px; }
+.pgrid { display: flex; flex-direction: column; gap: 14px; }
+.pgrid > div { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+@media (min-width: 1000px) { .pgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; align-items: start; } }
 .twocol { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
 .thead2 { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .tcount { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
@@ -229,7 +249,8 @@ textarea.inp { height: auto; padding: 10px 12px; font: .85rem/1.4 ui-monospace, 
 .oitem .otop b { font: 700 1.25rem/1.1 var(--f-display); }
 .dim { font-size: .8rem; font-weight: 600; border-radius: 999px; padding: 2px 9px; background: var(--tint); color: var(--ink-soft); }
 .dim.nether { background: #F6DCD3; color: #8A2A12; } .dim.end { background: #ECE7C9; color: #5D5520; }
-@media (prefers-color-scheme: dark) { .dim.nether { background: #4A2117; color: #FFB79E; } .dim.end { background: #3C3A22; color: #E6E0A6; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dim.nether { background: #4A2117; color: #FFB79E; } :root:not([data-theme="light"]) .dim.end { background: #3C3A22; color: #E6E0A6; } }
+:root[data-theme="dark"] .dim.nether { background: #4A2117; color: #FFB79E; } :root[data-theme="dark"] .dim.end { background: #3C3A22; color: #E6E0A6; }
 .oxyz { font-variant-numeric: tabular-nums; font-weight: 600; }
 .oconv, .onote { color: var(--ink-soft); font-size: .9rem; }
 .oitem .tacts .btn { height: 38px; padding: 0 12px; font-size: .95rem; }
@@ -244,7 +265,8 @@ textarea.inp { height: auto; padding: 10px 12px; font: .85rem/1.4 ui-monospace, 
 .erow select { height: 38px; border-radius: 9px; border: 1px solid var(--line); background: var(--sheet); padding: 0 4px; }
 .aout { display: flex; flex-direction: column; gap: 10px; }
 .asum { border-radius: 14px; background: var(--band); color: var(--band-ink); padding: 12px 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.asum span { display: block; font-size: .8rem; color: var(--band-soft); letter-spacing: .04em; }
+.asum > div { display: flex; flex-direction: column; justify-content: space-between; gap: 2px; min-width: 0; }
+.asum span { display: block; font-size: .8rem; color: var(--band-soft); letter-spacing: .04em; line-height: 1.25; }
 .asum b { display: block; font: 700 1.7rem/1.1 var(--f-display); font-variant-numeric: tabular-nums; }
 .asteps { list-style: none; margin: 0; padding: 0; counter-reset: st; display: flex; flex-direction: column; gap: 8px; }
 .asteps li { counter-increment: st; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; }
@@ -253,13 +275,50 @@ textarea.inp { height: auto; padding: 10px 12px; font: .85rem/1.4 ui-monospace, 
 .asteps .acost { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .asteps small { display: block; color: var(--ink-soft); }
 .warn { border-radius: 12px; padding: 10px 12px; background: #FDE7DC; color: #7A2A0C; }
-@media (prefers-color-scheme: dark) { .warn { background: #4A2117; color: #FFCDB8; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .warn { background: #4A2117; color: #FFCDB8; } }
+:root[data-theme="dark"] .warn { background: #4A2117; color: #FFCDB8; }
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 40; display: flex; align-items: center; gap: 12px;
   max-width: calc(100vw - 24px); padding: 10px 10px 10px 16px; border-radius: 14px; background: var(--band); color: var(--band-ink); box-shadow: var(--lift); transition: opacity .2s, transform .2s; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .toast .btn { height: 38px; flex: none; }
 @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
 .newslist { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+
+/* Hintergründe (H1 bis H5): Originalbilder aus Mojangs Repository, erst nach dem Laden sichtbar */
+.hero { position: relative; isolation: isolate; overflow: hidden; }
+.pano { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .7s ease; image-rendering: auto; }
+.pano.ok { opacity: 1; }
+.pano .still { position: absolute; inset: 0; background-position: 40% 45%; background-size: cover; background-repeat: no-repeat; }
+.pano::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 20, 36, .2) 0%, rgba(8, 20, 36, .5) 42%, rgba(8, 20, 36, .9) 100%); }
+.pano.ok ~ .hero-in h1, .pano.ok ~ .hero-in .lead, .pano.ok ~ .hero-in .eyebrow { text-shadow: 0 2px 14px rgba(0, 0, 0, .55); }
+.pano.ok ~ .hero-in .lead { color: #DCE7F4; }
+/* Bewegt: die vier Seiten des Panoramas als Band nebeneinander, das langsam vorbeizieht (läuft nahtlos im Kreis) */
+.pano .belt { position: absolute; top: 0; left: 0; height: 100%; display: flex; will-change: transform; }
+.pano .belt i { flex: none; width: var(--s, 1200px); height: 100%; background-size: 100% auto; background-position: center; background-repeat: no-repeat; }
+@media (prefers-reduced-motion: no-preference) {
+  .pano .belt { animation: panobelt 140s linear infinite; }
+  .startview.off .pano .belt { animation-play-state: paused; }
+  @keyframes panobelt { to { transform: translateX(calc(var(--s, 1200px) * -4)); } }
+  svg.build .cb { animation: blk .5s cubic-bezier(.2, .9, .3, 1.2) both; animation-delay: calc(var(--i) * 26ms + 150ms); }
+  @keyframes blk { from { opacity: 0; transform: translateY(-22px); } }
+}
+@media (min-width: 721px) {
+  .pano::after { background: linear-gradient(90deg, rgba(8, 20, 36, .84) 0%, rgba(8, 20, 36, .55) 46%, rgba(8, 20, 36, .12) 100%), linear-gradient(180deg, transparent 55%, rgba(8, 20, 36, .55)); }
+}
+html:not([data-bg="classic"]) .thero.tex { background-image: linear-gradient(180deg, rgba(16, 10, 4, .48), rgba(16, 10, 4, .8)), var(--tex-wood); background-size: auto, 64px 64px; image-rendering: pixelated; }
+html.bgtex.tex-page .startview { background-image: linear-gradient(color-mix(in srgb, var(--paper) 90%, transparent), color-mix(in srgb, var(--paper) 90%, transparent)), var(--tex-page);
+  background-size: auto, 64px 64px; image-rendering: pixelated; }
+.prefs { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+.prefs h3 { margin: 0; }
+.prow { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 10px; align-items: center; }
+.plabel { font-weight: 600; color: var(--ink-soft); font-size: .95rem; }
+.prefs .seg { background: var(--sheet); }
+.prefs .seg button { min-height: 40px; font-size: .98rem; }
+.prefs .seg button[aria-checked="true"] { background: var(--accent); color: var(--on-accent); }
+.pchk { display: flex; align-items: center; gap: 10px; font-weight: 600; min-height: 40px; cursor: pointer; }
+.pchk input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); flex: none; }
+.prefs .small { margin: 0; }
+@media (max-width: 520px) { .prow { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
 
 /* Info-Fenster */
 dialog { border: 1px solid var(--line); border-radius: 20px; padding: 0; background: var(--sheet); color: var(--ink); width: min(690px, calc(100vw - 28px)); max-height: calc(100dvh - 28px);
@@ -303,22 +362,38 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   .navbtn[aria-current="page"] { background: rgba(255, 255, 255, .18); }
   .navbtn[aria-current="page"]::before { display: none; }
   .hero-in { grid-template-columns: minmax(0, 1fr); }
-  .hero-pic { min-height: 0; height: 190px; order: -1; margin: -6px 0 -4px; }
+  .hero-pic { min-height: 0; height: 168px; order: -1; margin: -6px 0 -4px; }
   .lead { margin-bottom: 18px; }
   .hsearch { height: 56px; }
   .hsearch .btn { display: none; }
   .sv { padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)); gap: 26px; }
-  .plans { grid-template-columns: minmax(0, 1fr); }
+  .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .pcard .ppic { height: 104px; padding: 10px; }
+  .pcard .pbody { padding: 10px 12px 12px; gap: 4px; }
+  .pcard .ptitle { font-size: 1.22rem; flex-direction: column; align-items: flex-start; gap: 3px; }
+  .pcard .ptitle span { font-size: .8rem; }
+  .pcard .facts { display: none; }
+  .pout { top: 7px; right: 7px; width: 34px; height: 34px; border-radius: 10px; }
+  .pout .qt { width: 24px; height: 24px; }
+  .thero .hero-in { padding: 18px 16px 18px; }
+  .thero h1 { font-size: 2.2rem; }
+  .thero .lead { display: none; }
+  .tabsbar button { flex-direction: column; gap: 2px; min-height: 60px; padding: 6px 2px 5px; font-size: .95rem; }
+  .tabsbar .qt { width: 24px; height: 24px; }
+  .tabsbar .tl { display: none; }
+  .tabsbar .ts { display: inline; }
   .tools { grid-template-columns: minmax(0, 1fr); }
   .pres .xyz b { font-size: 1.45rem; }
-  .tiles { grid-template-columns: minmax(0, 1fr); }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ttile { min-height: 64px; gap: 9px; padding: 8px 10px 8px 8px; }
+  .ttile .ticon { width: 44px; height: 44px; padding: 4px; }
+  .ttile b { font-size: 1.1rem; }
+  .ttile small { font-size: .8rem; line-height: 1.3; }
   .frow { grid-template-columns: minmax(0, 1fr) 84px; }
   .frow .btn { grid-column: 1 / -1; }
   .asum b { font-size: 1.4rem; }
   .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
-  .ppic { height: 150px; }
-  .lexcard { flex-direction: column; }
-  .lexcard .ppic { width: auto; min-height: 150px; height: 150px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .lexcard .ppic { display: none; }
 }
 </style>
 </head>
@@ -354,6 +429,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <main class="stage">
   <section class="startview on" id="v-start" aria-label="Start" tabindex="-1">
     <div class="hero">
+      <div class="pano" id="pano" aria-hidden="true"></div>
       <div class="hero-in">
         <div>
           <p class="eyebrow">Minecraft Bedrock Edition 26.60</p>
@@ -373,10 +449,6 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <p><b>So wird daraus eine App:</b> In Safari unten auf <b>Teilen</b> tippen, dann <b>Zum Home-Bildschirm</b>. Danach startet sie im Vollbild und läuft ohne Internet.</p>
         <button type="button" class="btn" id="installok">Okay</button>
       </div>
-      <section aria-labelledby="h-plans">
-        <h2 id="h-plans">Baupläne</h2>
-        <div class="plans" id="plans"></div>
-      </section>
       <section aria-labelledby="h-lex">
         <h2 id="h-lex">Ressourcen-Lexikon</h2>
         <button type="button" class="lexcard" data-go="lexikon">
@@ -417,6 +489,10 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
           </div>
         </div>
       </section>
+      <section aria-labelledby="h-plans">
+        <h2 id="h-plans">Baupläne</h2>
+        <div class="plans" id="plans"></div>
+      </section>
       <div class="install web-only" id="windl" hidden>
         <p><b>Auch für Windows 10 und 11:</b> dieselbe App als eigenes Programm. ZIP herunterladen, entpacken, <b>Bedrock-Werkbank.exe</b> starten.</p>
         <a class="btn primary dl" href="download/Bedrock-Werkbank-Windows.zip" download>Herunterladen</a>
@@ -425,7 +501,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     </div>
   </section>
   <section class="startview off" id="v-tools" aria-label="Werkzeuge" tabindex="-1">
-    <div class="hero thero">
+    <div class="hero thero" id="thero">
       <div class="hero-in">
         <div>
           <p class="eyebrow">Bedrock-Werkbank</p>
@@ -436,11 +512,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     </div>
     <div class="sv">
       <div class="tabsbar" role="tablist" aria-label="Werkzeug wählen">
-        <button type="button" role="tab" id="tab-liste" aria-controls="tp-liste" data-tool="liste">Sammelliste</button>
-        <button type="button" role="tab" id="tab-orte" aria-controls="tp-orte" data-tool="orte">Koordinaten</button>
-        <button type="button" role="tab" id="tab-amboss" aria-controls="tp-amboss" data-tool="amboss">Amboss</button>
-        <button type="button" role="tab" id="tab-brauen" aria-controls="tp-brauen" data-tool="brauen">Brauen</button>
-        <button type="button" role="tab" id="tab-portal" aria-controls="tp-portal" data-tool="portal">Portal</button>
+        <button type="button" role="tab" id="tab-liste" aria-controls="tp-liste" data-tool="liste"><span class="tbi" id="tb-liste" aria-hidden="true"></span><span class="tl">Sammelliste</span><span class="ts" aria-hidden="true">Liste</span></button>
+        <button type="button" role="tab" id="tab-orte" aria-controls="tp-orte" data-tool="orte"><span class="tbi" id="tb-orte" aria-hidden="true"></span><span class="tl">Koordinaten</span><span class="ts" aria-hidden="true">Orte</span></button>
+        <button type="button" role="tab" id="tab-amboss" aria-controls="tp-amboss" data-tool="amboss"><span class="tbi" id="tb-amboss" aria-hidden="true"></span><span class="tl">Amboss</span><span class="ts" aria-hidden="true">Amboss</span></button>
+        <button type="button" role="tab" id="tab-brauen" aria-controls="tp-brauen" data-tool="brauen"><span class="tbi" id="tb-brauen" aria-hidden="true"></span><span class="tl">Brauen</span><span class="ts" aria-hidden="true">Brauen</span></button>
+        <button type="button" role="tab" id="tab-portal" aria-controls="tp-portal" data-tool="portal"><span class="tbi" id="tb-portal" aria-hidden="true"></span><span class="tl">Portal</span><span class="ts" aria-hidden="true">Portal</span></button>
       </div>
 
       <div class="tpanel" id="tp-liste" role="tabpanel" aria-labelledby="tab-liste">
@@ -519,18 +595,22 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
               <p>Der kürzeste Weg von der Wasserflasche zum Wunschtrank, mit allen Zutaten. Nach Mojangs Braurezepten der Bedrock Edition.</p>
             </div>
           </div>
-          <div class="twocol">
-            <label class="fl">Trank <select class="inp" id="b-target"></select></label>
-            <label class="fl">Wie viele Flaschen <select class="inp" id="b-n">
-              <option value="3">3</option><option value="6">6</option><option value="9">9</option><option value="12">12</option><option value="18">18</option><option value="27">27</option><option value="36">36</option>
-            </select></label>
+          <div class="pgrid">
+            <div>
+              <div class="twocol">
+                <label class="fl">Trank <select class="inp" id="b-target"></select></label>
+                <label class="fl">Wie viele Flaschen <select class="inp" id="b-n">
+                  <option value="3">3</option><option value="6">6</option><option value="9">9</option><option value="12">12</option><option value="18">18</option><option value="27">27</option><option value="36">36</option>
+                </select></label>
+              </div>
+              <div class="seg three" role="radiogroup" aria-label="Form" id="b-form">
+                <button type="button" role="radio" aria-checked="true" data-f="p">Zum Trinken</button>
+                <button type="button" role="radio" aria-checked="false" data-f="s">Wurftrank</button>
+                <button type="button" role="radio" aria-checked="false" data-f="l">Verweiltrank</button>
+              </div>
+            </div>
+            <div class="aout" id="b-out" aria-live="polite"></div>
           </div>
-          <div class="seg three" role="radiogroup" aria-label="Form" id="b-form">
-            <button type="button" role="radio" aria-checked="true" data-f="p">Zum Trinken</button>
-            <button type="button" role="radio" aria-checked="false" data-f="s">Wurftrank</button>
-            <button type="button" role="radio" aria-checked="false" data-f="l">Verweiltrank</button>
-          </div>
-          <div class="aout" id="b-out" aria-live="polite"></div>
           <p class="fine">Ein Braustand braut bis zu 3 Flaschen auf einmal und verbraucht dabei 1 Zutat. 1 Lohenstaub reicht als Brennstoff für 20 Brauvorgänge. Glasflaschen füllst du an einer Wasserquelle oder einem Kessel.</p>
         </div>
       </div>
@@ -544,21 +624,27 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
                 <p>Wo das zweite Portal hin muss, damit beide Portale miteinander verbunden sind.</p>
               </div>
             </div>
-            <div class="seg" role="radiogroup" aria-label="Richtung">
-              <button type="button" role="radio" aria-checked="true" data-dir="nether">Oberwelt → Nether</button>
-              <button type="button" role="radio" aria-checked="false" data-dir="ober">Nether → Oberwelt</button>
+            <div class="pgrid">
+              <div>
+                <div class="seg" role="radiogroup" aria-label="Richtung">
+                  <button type="button" role="radio" aria-checked="true" data-dir="nether">Oberwelt → Nether</button>
+                  <button type="button" role="radio" aria-checked="false" data-dir="ober">Nether → Oberwelt</button>
+                </div>
+                <p class="fine" id="pfrom"></p>
+                <div class="coords">
+                  <label>X <input type="number" id="px" step="1" autocomplete="off" placeholder="0" aria-describedby="pfrom"></label>
+                  <label>Y <input type="number" id="py" step="1" autocomplete="off" placeholder="64" aria-describedby="pfrom"></label>
+                  <label>Z <input type="number" id="pz" step="1" autocomplete="off" placeholder="0" aria-describedby="pfrom"></label>
+                </div>
+              </div>
+              <div>
+                <div class="pres" aria-live="polite">
+                  <small id="pto"></small>
+                  <div class="xyz"><div><span>X</span><b id="rx">0</b></div><div><span>Y</span><b id="ry">64</b></div><div><span>Z</span><b id="rz">0</b></div></div>
+                </div>
+                <div class="tacts"><button type="button" class="btn" id="psave">Als Ort speichern</button></div>
+              </div>
             </div>
-            <p class="fine" id="pfrom"></p>
-            <div class="coords">
-              <label>X <input type="number" id="px" step="1" autocomplete="off" placeholder="0" aria-describedby="pfrom"></label>
-              <label>Y <input type="number" id="py" step="1" autocomplete="off" placeholder="64" aria-describedby="pfrom"></label>
-              <label>Z <input type="number" id="pz" step="1" autocomplete="off" placeholder="0" aria-describedby="pfrom"></label>
-            </div>
-            <div class="pres" aria-live="polite">
-              <small id="pto"></small>
-              <div class="xyz"><div><span>X</span><b id="rx">0</b></div><div><span>Y</span><b id="ry">64</b></div><div><span>Z</span><b id="rz">0</b></div></div>
-            </div>
-            <div class="tacts"><button type="button" class="btn" id="psave">Als Ort speichern</button></div>
             <p class="fine">Im Nether zählt jeder Block wie acht Blöcke in der Oberwelt. X und Z werden deshalb durch 8 geteilt und abgerundet, auf dem Rückweg mal 8 genommen. Die Höhe Y bleibt gleich. Steht in der Nähe schon ein anderes Portal, verbindet das Spiel womöglich mit diesem, also das zweite Portal genau an diese Stelle bauen. Deine Koordinaten zeigt das Spiel, wenn du in den Welteinstellungen <b>Koordinaten anzeigen</b> einschaltest.</p>
           </div>
       </div>
@@ -581,7 +667,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 1.7</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 1.8</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -595,11 +681,30 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.7 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 1.8 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
     <p>Ressourcen-Lexikon, zehn Baupläne von der Eisenfarm bis zur Gürteltierfarm und die Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <section class="prefs" aria-labelledby="prefs-h">
+      <h3 id="prefs-h">Darstellung</h3>
+      <div class="prow"><span class="plabel" id="pl-theme">Design</span>
+        <div class="seg three" role="radiogroup" aria-labelledby="pl-theme" id="set-theme">
+          <button type="button" role="radio" aria-checked="true" data-v="system">System</button>
+          <button type="button" role="radio" aria-checked="false" data-v="light">Hell</button>
+          <button type="button" role="radio" aria-checked="false" data-v="dark">Dunkel</button>
+        </div>
+      </div>
+      <div class="prow"><span class="plabel" id="pl-bg">Hintergrund</span>
+        <div class="seg three" role="radiogroup" aria-labelledby="pl-bg" id="set-bg">
+          <button type="button" role="radio" aria-checked="false" data-v="classic">Klassisch</button>
+          <button type="button" role="radio" aria-checked="true" data-v="mc">Minecraft</button>
+          <button type="button" role="radio" aria-checked="false" data-v="move">Bewegt</button>
+        </div>
+      </div>
+      <label class="pchk"><input type="checkbox" id="set-tex"> Blocktextur hinter den Inhalten</label>
+      <p class="small">Minecraft: Titelbild auf der Startseite (hell ein Herbstwald, dunkel die Uralte Stadt), Bücherregal im Lexikon, Holz bei den Werkzeugen. Bewegt: Das Titelbild zieht langsam vorbei wie im Titelbildschirm des Spiels, außer wenn am Gerät „Bewegung reduzieren“ an ist. Die Bilder kommen aus Mojangs Repository und werden beim ersten Mal geladen: das Titelbild mit etwa 0,6 MB, bewegt mit 2 bis 3,7 MB.</p>
+    </section>
     <div class="exe-only">
       <h3>Tastatur</h3>
       <dl class="keys">
@@ -627,11 +732,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},{"id":"spawner","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3}];
+  var PLANS = [{"id":"eisenfarm","out":"iron_ingot","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","out":"emerald","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","out":"cactus","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","out":"ender_pearl","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","out":"sugar_cane","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","out":"pumpkin","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","out":"cooked_chicken","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","out":"lava_bucket","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},{"id":"spawner","out":"experience_bottle","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","out":"armadillo_scute","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
   var BREW = {"e":[["potion:awkward","blaze_powder","potion:strength"],["potion:awkward","breeze_rod","potion:wind_charged"],["potion:awkward","fermented_spider_eye","potion:weakness"],["potion:awkward","ghast_tear","potion:regeneration"],["potion:awkward","golden_carrot","potion:nightvision"],["potion:awkward","magma_cream","potion:fire_resistance"],["potion:awkward","phantom_membrane","potion:slow_falling"],["potion:awkward","pufferfish","potion:water_breathing"],["potion:awkward","rabbit_foot","potion:leaping"],["potion:awkward","slime","potion:oozing"],["potion:awkward","glistering_melon_slice","potion:healing"],["potion:awkward","spider_eye","potion:poison"],["potion:awkward","stone","potion:infested"],["potion:awkward","sugar","potion:swiftness"],["potion:awkward","turtle_helmet","potion:turtle_master"],["potion:awkward","web","potion:weaving"],["potion:fire_resistance","redstone","potion:long_fire_resistance"],["potion:harming","glowstone_dust","potion:strong_harming"],["potion:healing","fermented_spider_eye","potion:harming"],["potion:healing","glowstone_dust","potion:strong_healing"],["potion:invisibility","redstone","potion:long_invisibility"],["potion:leaping","fermented_spider_eye","potion:slowness"],["potion:leaping","glowstone_dust","potion:strong_leaping"],["potion:leaping","redstone","potion:long_leaping"],["potion:long_leaping","fermented_spider_eye","potion:long_slowness"],["potion:long_mundane","fermented_spider_eye","potion:long_weakness"],["potion:long_poison","fermented_spider_eye","potion:harming"],["potion:long_strength","fermented_spider_eye","potion:long_weakness"],["potion:long_nightvision","fermented_spider_eye","potion:long_invisibility"],["potion:long_swiftness","fermented_spider_eye","potion:long_slowness"],["potion:mundane","fermented_spider_eye","potion:weakness"],["potion:nightvision","fermented_spider_eye","potion:invisibility"],["potion:nightvision","redstone","potion:long_nightvision"],["potion:poison","fermented_spider_eye","potion:harming"],["potion:poison","glowstone_dust","potion:strong_poison"],["potion:poison","redstone","potion:long_poison"],["potion:regeneration","glowstone_dust","potion:strong_regeneration"],["potion:regeneration","redstone","potion:long_regeneration"],["potion:slow_falling","redstone","potion:long_slow_falling"],["potion:slowness","glowstone_dust","potion:strong_slowness"],["potion:slowness","redstone","potion:long_slowness"],["potion:strength","fermented_spider_eye","potion:weakness"],["potion:strength","glowstone_dust","potion:strong_strength"],["potion:strength","redstone","potion:long_strength"],["potion:strong_healing","fermented_spider_eye","potion:strong_harming"],["potion:strong_poison","fermented_spider_eye","potion:strong_harming"],["potion:strong_strength","fermented_spider_eye","potion:weakness"],["potion:swiftness","fermented_spider_eye","potion:slowness"],["potion:swiftness","glowstone_dust","potion:strong_swiftness"],["potion:swiftness","redstone","potion:long_swiftness"],["potion:thick","fermented_spider_eye","potion:weakness"],["potion:turtle_master","glowstone_dust","potion:strong_turtle_master"],["potion:turtle_master","redstone","potion:long_turtle_master"],["potion:water","blaze_powder","potion:mundane"],["potion:water_breathing","redstone","potion:long_water_breathing"],["potion:water","breeze_rod","potion:mundane"],["potion:water","fermented_spider_eye","potion:weakness"],["potion:water","ghast_tear","potion:mundane"],["potion:water","glowstone_dust","potion:thick"],["potion:water","magma_cream","potion:mundane"],["potion:water","nether_wart","potion:awkward"],["potion:water","rabbit_foot","potion:mundane"],["potion:water","redstone","potion:mundane"],["potion:water","slime","potion:mundane"],["potion:water","glistering_melon_slice","potion:mundane"],["potion:water","spider_eye","potion:mundane"],["potion:water","stone","potion:mundane"],["potion:water","sugar","potion:mundane"],["potion:water","web","potion:mundane"],["potion:weakness","redstone","potion:long_weakness"],["potion:water","redstone","potion:long_mundane"]],"n":{"potion:awkward":"Seltsamer Trank","blaze_powder":"Lohenstaub","potion:strength":"Trank der Stärke","breeze_rod":"Böenrute","potion:wind_charged":"Trank des Windladens","fermented_spider_eye":"Fermentiertes Spinnenauge","potion:weakness":"Trank der Schwäche","ghast_tear":"Ghast-Träne","potion:regeneration":"Trank der Regeneration","golden_carrot":"Goldene Karotte","potion:nightvision":"Trank der Nachtsicht","magma_cream":"Magmacreme","potion:fire_resistance":"Trank der Feuerresistenz","phantom_membrane":"Phantomhaut","potion:slow_falling":"Trank des sanften Falls","pufferfish":"Kugelfisch","potion:water_breathing":"Trank der Unterwasseratmung","rabbit_foot":"Hasenpfote","potion:leaping":"Trank der Sprungkraft","slime":"Schleimblock","potion:oozing":"Trank des Sickerns","glistering_melon_slice":"Funkelnde Melonenscheibe","potion:healing":"Trank der Heilung","spider_eye":"Spinnenauge","potion:poison":"Trank der Vergiftung","stone":"Stein","potion:infested":"Trank der Verseuchung","sugar":"Zucker","potion:swiftness":"Trank der Schnelligkeit","turtle_helmet":"Schildkrötenpanzer","potion:turtle_master":"Trank des Schildkrötenmeisters","web":"Spinnennetz","potion:weaving":"Trank des Webens","redstone":"Redstone-Staub","potion:long_fire_resistance":"Trank der Feuerresistenz (verlängert)","potion:harming":"Trank des Schadens","glowstone_dust":"Leuchtstein-Staub","potion:strong_harming":"Trank des Schadens (Stufe II)","potion:strong_healing":"Trank der Heilung (Stufe II)","potion:invisibility":"Trank der Unsichtbarkeit","potion:long_invisibility":"Trank der Unsichtbarkeit (verlängert)","potion:slowness":"Trank der Langsamkeit","potion:strong_leaping":"Trank der Sprungkraft (Stufe II)","potion:long_leaping":"Trank der Sprungkraft (verlängert)","potion:long_slowness":"Trank der Langsamkeit (verlängert)","potion:long_mundane":"Gewöhnlicher Trank (verlängert)","potion:long_weakness":"Trank der Schwäche (verlängert)","potion:long_poison":"Trank der Vergiftung (verlängert)","potion:long_strength":"Trank der Stärke (verlängert)","potion:long_nightvision":"Trank der Nachtsicht (verlängert)","potion:long_swiftness":"Trank der Schnelligkeit (verlängert)","potion:mundane":"Gewöhnlicher Trank","potion:strong_poison":"Trank der Vergiftung (Stufe II)","potion:strong_regeneration":"Trank der Regeneration (Stufe II)","potion:long_regeneration":"Trank der Regeneration (verlängert)","potion:long_slow_falling":"Trank des sanften Falls (verlängert)","potion:strong_slowness":"Trank der Langsamkeit (Stufe IV)","potion:strong_strength":"Trank der Stärke (Stufe II)","potion:strong_swiftness":"Trank der Schnelligkeit (Stufe II)","potion:thick":"Dickflüssiger Trank","potion:strong_turtle_master":"Trank des Schildkrötenmeisters (Stufe II)","potion:long_turtle_master":"Trank des Schildkrötenmeisters (verlängert)","potion:water":"Wasserflasche","potion:long_water_breathing":"Trank der Unterwasseratmung (verlängert)","nether_wart":"Netherwarze","glass_bottle":"Glasflasche","gunpowder":"Schwarzpulver","dragon_breath":"Drachenatem","brewing_stand":"Braustand"},"f":{"potion:awkward":["Seltsamer Wurftrank","Seltsamer Verweiltrank"],"potion:strength":["Wurftrank der Stärke","Verweiltrank der Stärke"],"potion:wind_charged":["Wurftrank des Windladens","Verweiltrank des Windladens"],"potion:weakness":["Wurftrank der Schwäche","Verweiltrank der Schwäche"],"potion:regeneration":["Wurftrank der Regeneration","Verweiltrank der Regeneration"],"potion:nightvision":["Wurftrank der Nachtsicht","Verweiltrank der Nachtsicht"],"potion:fire_resistance":["Wurftrank der Feuerresistenz","Verweiltrank der Feuerresistenz"],"potion:slow_falling":["Wurftrank des sanften Falls","Verweiltrank des sanften Falls"],"potion:water_breathing":["Wurftrank der Unterwasseratmung","Verweiltrank der Unterwasseratmung"],"potion:leaping":["Wurftrank der Sprungkraft","Verweiltrank der Sprungkraft"],"potion:oozing":["Wurftrank des Sickerns","Verweiltrank des Sickerns"],"potion:healing":["Wurftrank der Heilung","Verweiltrank der Heilung"],"potion:poison":["Wurftrank der Vergiftung","Verweiltrank der Vergiftung"],"potion:infested":["Wurftrank der Verseuchung","Verweiltrank der Verseuchung"],"potion:swiftness":["Wurftrank der Schnelligkeit","Verweiltrank der Schnelligkeit"],"potion:turtle_master":["Wurftrank des Schildkrötenmeisters","Verweiltrank des Schildkrötenmeisters"],"potion:weaving":["Wurftrank des Webens","Verweiltrank des Webens"],"potion:long_fire_resistance":["Wurftrank der Feuerresistenz (verlängert)","Verweiltrank der Feuerresistenz (verlängert)"],"potion:harming":["Wurftrank des Schadens","Verweiltrank des Schadens"],"potion:strong_harming":["Wurftrank des Schadens (Stufe II)","Verweiltrank des Schadens (Stufe II)"],"potion:strong_healing":["Wurftrank der Heilung (Stufe II)","Verweiltrank der Heilung (Stufe II)"],"potion:invisibility":["Wurftrank der Unsichtbarkeit","Verweiltrank der Unsichtbarkeit"],"potion:long_invisibility":["Wurftrank der Unsichtbarkeit (verlängert)","Verweiltrank der Unsichtbarkeit (verlängert)"],"potion:slowness":["Wurftrank der Langsamkeit","Verweiltrank der Langsamkeit"],"potion:strong_leaping":["Wurftrank der Sprungkraft (Stufe II)","Verweiltrank der Sprungkraft (Stufe II)"],"potion:long_leaping":["Wurftrank der Sprungkraft (verlängert)","Verweiltrank der Sprungkraft (verlängert)"],"potion:long_slowness":["Wurftrank der Langsamkeit (verlängert)","Verweiltrank der Langsamkeit (verlängert)"],"potion:long_mundane":["Gewöhnlicher Wurftrank (verlängert)","Gewöhnlicher Verweiltrank (verlängert)"],"potion:long_weakness":["Wurftrank der Schwäche (verlängert)","Verweiltrank der Schwäche (verlängert)"],"potion:long_poison":["Wurftrank der Vergiftung (verlängert)","Verweiltrank der Vergiftung (verlängert)"],"potion:long_strength":["Wurftrank der Stärke (verlängert)","Verweiltrank der Stärke (verlängert)"],"potion:long_nightvision":["Wurftrank der Nachtsicht (verlängert)","Verweiltrank der Nachtsicht (verlängert)"],"potion:long_swiftness":["Wurftrank der Schnelligkeit (verlängert)","Verweiltrank der Schnelligkeit (verlängert)"],"potion:mundane":["Gewöhnlicher Wurftrank","Gewöhnlicher Verweiltrank"],"potion:strong_poison":["Wurftrank der Vergiftung (Stufe II)","Verweiltrank der Vergiftung (Stufe II)"],"potion:strong_regeneration":["Wurftrank der Regeneration (Stufe II)","Verweiltrank der Regeneration (Stufe II)"],"potion:long_regeneration":["Wurftrank der Regeneration (verlängert)","Verweiltrank der Regeneration (verlängert)"],"potion:long_slow_falling":["Wurftrank des sanften Falls (verlängert)","Verweiltrank des sanften Falls (verlängert)"],"potion:strong_slowness":["Wurftrank der Langsamkeit (Stufe IV)","Verweiltrank der Langsamkeit (Stufe IV)"],"potion:strong_strength":["Wurftrank der Stärke (Stufe II)","Verweiltrank der Stärke (Stufe II)"],"potion:strong_swiftness":["Wurftrank der Schnelligkeit (Stufe II)","Verweiltrank der Schnelligkeit (Stufe II)"],"potion:thick":["Dickflüssiger Wurftrank","Dickflüssiger Verweiltrank"],"potion:strong_turtle_master":["Wurftrank des Schildkrötenmeisters (Stufe II)","Verweiltrank des Schildkrötenmeisters (Stufe II)"],"potion:long_turtle_master":["Wurftrank des Schildkrötenmeisters (verlängert)","Verweiltrank des Schildkrötenmeisters (verlängert)"],"potion:water":["Werfbare Wasserflasche","Verweilende Wasserflasche"],"potion:long_water_breathing":["Wurftrank der Unterwasseratmung (verlängert)","Verweiltrank der Unterwasseratmung (verlängert)"]}};
-  var APPVER = '1.7';
+  var APPVER = '1.8';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -719,11 +824,19 @@ var BWTEX = (function () {
     }).then(function (im) { return dataUrl(col === null ? im : mask(im, col)); }));
   }
   function fail(el) { el.classList.remove('tx'); el.classList.add('txfail'); var s = el.querySelector('svg.txi'); if (s) s.remove(); }
+  /* Solange das Original lädt, bleibt das farbige Plättchen sichtbar; das Bild liegt unsichtbar darüber und erscheint erst fertig geladen */
+  var seen = {};
   function paint(el) {
     var sp = spec(el.getAttribute('data-tx')); if (!sp) return;
-    el.insertAdjacentHTML('afterbegin', svg(sp)); el.classList.add('tx');
-    [].forEach.call(el.querySelectorAll('svg.txi image[data-p]'), function (im) {
-      url(im.getAttribute('data-p')).then(function (u) { im.setAttribute('href', u); }, function () { fail(el); });
+    el.insertAdjacentHTML('afterbegin', svg(sp));
+    var s = el.querySelector('svg.txi'), ims = [].slice.call(s.querySelectorAll('image[data-p]')), left = 0;
+    function done() { s.style.opacity = ''; el.classList.add('tx'); }
+    ims.forEach(function (im) { if (!seen[im.getAttribute('data-p')]) left++; });
+    if (!left) done(); else s.style.opacity = '0';
+    ims.forEach(function (im) {
+      var p = im.getAttribute('data-p');
+      if (!seen[p]) im.addEventListener('load', function () { seen[p] = true; if (--left === 0) done(); }, { once: true });
+      url(p).then(function (u) { im.setAttribute('href', u); }, function () { fail(el); });
     });
   }
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
@@ -777,24 +890,32 @@ var BWTEX = (function () {
   function load(k) { try { return localStorage.getItem('bw.' + k); } catch (e) { return null; } }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
-  /* ---------- Isometrische Blöcke (eigene Zeichnung) ---------- */
+  /* ---------- Isometrische Blöcke (eigene Zeichnung, gemeinsam mit den Bauplänen) ---------- */
+/* Eigene isometrische Blockszenen (keine Spielgrafik), gemeinsam für Startseite, Werkzeuge und den Kopf der Baupläne. */
+var BWISO = (function () {
+  'use strict';
   function mix(hex, t) {
     var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255, to = t > 0 ? 255 : 0, k = Math.abs(t);
     function c(v) { return Math.round(v + (to - v) * k); }
     return 'rgb(' + c(r) + ',' + c(g) + ',' + c(b) + ')';
   }
-  function iso(cubes) {
-    var C = 0.8660254, polys = [], minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+  // build: jeder Würfel als eigene Gruppe mit Reihenfolge (--i), damit sich das Bild Block für Block aufbauen kann
+  function iso(cubes, build) {
+    var C = 0.8660254, groups = [], minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
     function P(x, y, z) { var p = [(x - y) * C * 20, (x + y) * 10 - z * 20]; minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]); return p; }
     cubes.slice().sort(function (a, b) { return (a[0] + a[1]) - (b[0] + b[1]) || a[2] - b[2] || a[0] - b[0]; }).forEach(function (c) {
       var x = c[0], y = c[1], z = c[2], col = c[3], h = c[4] || 1, cs = typeof col === 'string' ? [mix(col, .22), mix(col, -.08), mix(col, -.28)] : col;
-      polys.push([[P(x, y + 1, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[1]]);
-      polys.push([[P(x + 1, y, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x + 1, y, z + h)], cs[2]]);
-      polys.push([[P(x, y, z + h), P(x + 1, y, z + h), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[0]]);
+      groups.push([[[P(x, y + 1, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[1]],
+                   [[P(x + 1, y, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x + 1, y, z + h)], cs[2]],
+                   [[P(x, y, z + h), P(x + 1, y, z + h), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[0]]]);
     });
     var pad = 4, s = '<svg viewBox="' + (minX - pad).toFixed(1) + ' ' + (minY - pad).toFixed(1) + ' ' + (maxX - minX + 2 * pad).toFixed(1) + ' ' + (maxY - minY + 2 * pad).toFixed(1) +
-      '" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
-    polys.forEach(function (p) { s += '<polygon points="' + p[0].map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ') + '" fill="' + p[1] + '" stroke="rgba(10,20,35,.22)" stroke-width=".6" stroke-linejoin="round"/>'; });
+      '" preserveAspectRatio="xMidYMid meet" aria-hidden="true"' + (build ? ' class="build"' : '') + '>';
+    groups.forEach(function (g, i) {
+      if (build) s += '<g class="cb" style="--i:' + i + '">';
+      g.forEach(function (p) { s += '<polygon points="' + p[0].map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ') + '" fill="' + p[1] + '" stroke="rgba(10,20,35,.22)" stroke-width=".6" stroke-linejoin="round"/>'; });
+      if (build) s += '</g>';
+    });
     return s + '</svg>';
   }
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
@@ -827,11 +948,17 @@ var BWTEX = (function () {
       [[0, 4, 1, K.wood], [1, 4, 1, K.hay], [2, 4, 1, K.stone], [3, 3, 1, K.emerald, .6], [4, 3, 1, K.purple, .6], [5, 4, 1, K.copper, .5]])
   };
 
+  return { mix: mix, iso: iso, K: K, box: box, SCENES: SCENES };
+})();
+
+  var iso = BWISO.iso, K = BWISO.K, box = BWISO.box, SCENES = BWISO.SCENES;
+
   /* ---------- Startseite ---------- */
-  $('heropic').innerHTML = iso(SCENES.hero);
+  $('heropic').innerHTML = iso(SCENES.hero, true);
   $('lexpic').innerHTML = iso(SCENES.lexikon);
   $('plans').innerHTML = PLANS.map(function (p) {
-    return '<button type="button" class="pcard" data-go="' + esc(p.id) + '"><div class="ppic">' + iso(SCENES[p.id] || SCENES.eisenfarm) + '</div><div class="pbody">' +
+    return '<button type="button" class="pcard" data-go="' + esc(p.id) + '"><div class="ppic">' + iso(SCENES[p.id] || SCENES.eisenfarm) +
+      (p.out ? '<span class="pout" title="Ertrag">' + qt(p.out, '#8D96A3') + '</span>' : '') + '</div><div class="pbody">' +
       '<div class="ptitle">' + esc(p.title) + '<span>' + p.layers + ' Ebenen</span></div><div class="facts">' +
       p.specs.map(function (f) { return '<div class="fact"><small>' + esc(f[0]) + '</small><b>' + esc(f[1]) + '</b></div>'; }).join('') + '</div></div></button>';
   }).join('');
@@ -841,20 +968,26 @@ var BWTEX = (function () {
     return list.map(function (e) { return '<button type="button" class="qchip" data-item="' + esc(e[0]) + '">' + qt(e[0], e[2] || '#0B5CAD') + '<span>' + esc(e[1]) + '</span></button>'; }).join('');
   }
   $('popular').innerHTML = chipsFor(POPULAR);
-  $('ti-liste').innerHTML = iso([[0, 0, 0, K.paper, .25], [0, 0, .25, K.paper, .25], [0.15, 0.1, .5, K.stone, .5]]);
-  $('ti-orte').innerHTML = iso([[0, 0, 0, K.grass], [1, 0, 0, K.grass], [0.5, 0.5, 1, K.copper, .5]]);
-  $('ti-brauen').innerHTML = $('brewpic').innerHTML = iso([[0, 0, 0, K.stone, .3], [1, 0, 0, K.stone, .3], [0, 0, .3, '#C94DCB', .7], [1, 0, .3, '#4C8FE3', .7], [0.5, 1, 0, K.stone, .3], [0.5, 1, .3, '#E5591A', .7]]);
-  $('ti-amboss').innerHTML = iso([[0, 0, 0, K.anvil, .4], [0.25, 0, .4, K.anvil, .4], [0, 0, .8, K.anvil, .5]]);
-  $('icon-orte').innerHTML = iso([[0, 0, 0, K.wood, .8], [1.2, 0, 0, K.stone], [1.2, 0, 1, K.end, .5]]);
-  $('icon-berufe').innerHTML = iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]);
+  // Werkzeuge mit Originalbildern (S1); die eigene Zeichnung bleibt als Ersatz, bis das Bild geladen ist
+  function tq(id, art) { return '<span class="qt" data-tx="' + esc(id) + '">' + art + '</span>'; }
+  var ART = {
+    liste: ['writable_book', iso([[0, 0, 0, K.paper, .25], [0, 0, .25, K.paper, .25], [0.15, 0.1, .5, K.stone, .5]])],
+    orte: ['compass', iso([[0, 0, 0, K.grass], [1, 0, 0, K.grass], [0.5, 0.5, 1, K.copper, .5]])],
+    amboss: ['anvil', iso([[0, 0, 0, K.anvil, .4], [0.25, 0, .4, K.anvil, .4], [0, 0, .8, K.anvil, .5]])],
+    brauen: ['brewing_stand', iso([[0, 0, 0, K.stone, .3], [1, 0, 0, K.stone, .3], [0, 0, .3, '#C94DCB', .7], [1, 0, .3, '#4C8FE3', .7], [0.5, 1, 0, K.stone, .3], [0.5, 1, .3, '#E5591A', .7]])]
+  };
+  ['liste', 'orte', 'amboss', 'brauen'].forEach(function (t) { $('ti-' + t).innerHTML = $('tb-' + t).innerHTML = tq(ART[t][0], ART[t][1]); });
+  $('brewpic').innerHTML = tq(ART.brauen[0], ART.brauen[1]);
+  $('icon-orte').innerHTML = tq('chest', iso([[0, 0, 0, K.wood, .8], [1.2, 0, 0, K.stone], [1.2, 0, 1, K.end, .5]]));
+  $('icon-berufe').innerHTML = tq('emerald', iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]));
 
   /* ---------- Nether-Portal-Rechner ---------- */
   var OBS = ['#3B2D57', '#2A2040', '#1D1630'], PUR = ['#B88BFF', '#8F5BEA', '#7444CC'];
   (function () {
     var c = [];
     for (var x = 0; x < 4; x++) for (var z = 0; z < 5; z++) c.push([x, 0, z, (x === 0 || x === 3 || z === 0 || z === 4) ? OBS : PUR]);
-    $('portalpic').innerHTML = $('ti-portal').innerHTML = iso(c);
-    $('anvilpic').innerHTML = iso([[0, 0, 0, K.anvil, .4], [0.25, 0, .4, K.anvil, .4], [0, 0, .8, K.anvil, .5]]);
+    $('portalpic').innerHTML = $('ti-portal').innerHTML = $('tb-portal').innerHTML = tq('obsidian', iso(c));
+    $('anvilpic').innerHTML = tq(ART.amboss[0], ART.amboss[1]);
   })();
   var portal = { dir: 'nether', x: '', y: '', z: '' };
   try { var ps = JSON.parse(load('portal') || 'null'); if (ps && (ps.dir === 'nether' || ps.dir === 'ober')) portal = ps; } catch (e) {}
@@ -1278,7 +1411,7 @@ var BWTEX = (function () {
     $('b-target').value = bState.t; $('b-n').value = String(bState.n);
     [].forEach.call($('b-form').querySelectorAll('[data-f]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-f') === bState.f)); });
     var P = brewPlan(bState.t, bState.f, +bState.n);
-    $('b-out').innerHTML = '<div class="asum"><div><span>Ergebnis</span><b>' + P.bottles + ' Flaschen</b></div><div><span>Brauvorgänge</span><b>' + P.ops + '</b></div><div><span>Lohenstaub zum Heizen</span><b>' + P.fuel + '</b></div></div>' +
+    $('b-out').innerHTML = '<div class="asum"><div><span>Ergebnis</span><b>' + P.bottles + ' Flaschen</b></div><div><span>Brauvorgänge</span><b>' + P.ops + '</b></div><div><span>Lohenstaub</span><b>' + P.fuel + '</b></div></div>' +
       '<ol class="asteps">' + P.rows.map(function (r) {
         return '<li><span>' + esc(P.bottles + ' × ' + r.a) + ' <b>+</b> ' + esc(P.batches + ' × ' + (BREW.n[r.r] || r.r)) + '<small>ergibt ' + esc(r.b) + (P.batches > 1 ? ', in ' + P.batches + ' Durchgängen zu je 3 Flaschen' : '') + '</small></span></li>';
       }).join('') + '</ol>' +
@@ -1328,11 +1461,12 @@ var BWTEX = (function () {
   }
 
   /* Was ist neu */
-  var NEWS = ['Neues Werkzeug Brau-Planer: Trank, Menge und Form wählen, du bekommst jeden Brauschritt und alle Zutaten samt Lohenstaub',
-              'Favoriten: Im Lexikon markierst du Einträge mit dem Stern, sie stehen dann oben auf der Startseite',
-              'Amboss-Rechner mit Vorlagen: ein Tippen setzt alle passenden Verzauberungen, auch Varianten wie Behutsamkeit statt Glück',
-              'Neuer Bauplan: Gürteltierfarm für Hornschilde, etwa für Wolfsrüstung',
-              'Aus Version 1.6: Spawner-XP-Farm für Zombie- und Skelett-Spawner'];
+  var NEWS = ['Neue Hintergründe: das Titelbild aus dem Spiel auf der Startseite, Bücherregal im Lexikon, Holz bei den Werkzeugen. Unter Info wählst du Klassisch, Minecraft oder Bewegt',
+              'Design-Schalter unter Info: System, Hell oder Dunkel',
+              'Werkzeuge und Baupläne mit Originalbildern, alle fünf Werkzeug-Reiter passen jetzt aufs iPhone',
+              'Baupläne: neue Auswahl mit dem Bild des Ertrags, auf dem iPhone zum Aufklappen',
+              'Startseite auf dem iPhone kompakter: Suche, Werkzeuge und Baupläne sind schneller erreichbar',
+              'Aus Version 1.7: Brau-Planer, Favoriten, Amboss-Vorlagen und die Gürteltierfarm'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;
@@ -1343,6 +1477,83 @@ var BWTEX = (function () {
   }
   $('news-ok').addEventListener('click', function () { $('news').close(); });
   $('news').addEventListener('close', focusView);
+
+  /* ---------- Darstellung: Design und Hintergrund (Bilder aus Mojangs Repository, erst nach dem Laden sichtbar) ---------- */
+  var PANO = { day: ['ui/panorama_0.png', 'ui/panorama_1.png', 'ui/panorama_2.png', 'ui/panorama_3.png'],
+               dark: ['ui/panorama_alternate_0.png', 'ui/panorama_alternate_1.png', 'ui/panorama_alternate_2.png', 'ui/panorama_alternate_3.png'] };
+  var look = { theme: 'system', bg: 'mc', tex: false };
+  (function () {
+    var t = load('theme'), b = load('bg');
+    if (t === 'light' || t === 'dark') look.theme = t;
+    if (b === 'classic' || b === 'move') look.bg = b;
+    look.tex = load('bgtex') === '1';
+  })();
+  var darkMQ = window.matchMedia('(prefers-color-scheme: dark)'), calmMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function isDark() { return look.theme === 'dark' || (look.theme === 'system' && darkMQ.matches); }
+  var pics = {};
+  function pic(p) {
+    if (!pics[p]) pics[p] = new Promise(function (res, rej) {
+      var im = new Image(), u = window.BW_TEX + p;
+      im.onload = function () { res('url("' + u + '")'); };
+      im.onerror = function () { delete pics[p]; rej(new Error(p)); };
+      im.src = u;
+    });
+    return pics[p];
+  }
+  var panoKey = '', pano = $('pano');
+  function sizePano() { var r = pano.getBoundingClientRect(); if (r.width) pano.style.setProperty('--s', Math.ceil(Math.max(r.height, r.width * .6)) + 'px'); }
+  if (window.ResizeObserver) new ResizeObserver(sizePano).observe(pano); else window.addEventListener('resize', sizePano);
+  function still(u, key) { if (panoKey !== key) return; pano.innerHTML = '<div class="still"></div>'; pano.firstChild.style.backgroundImage = u; pano.classList.add('ok'); }
+  function drawPano() {
+    var mode = look.bg === 'move' && calmMQ.matches ? 'mc' : look.bg, set = isDark() ? PANO.dark : PANO.day, key = mode + '|' + set[0];
+    if (key === panoKey) return;
+    panoKey = key; pano.classList.remove('ok'); pano.innerHTML = '';
+    if (mode === 'classic') return;
+    if (mode === 'mc') { pic(set[1]).then(function (u) { still(u, key); }, function () {}); return; }
+    Promise.all(set.map(pic)).then(function (us) {
+      if (panoKey !== key) return;
+      pano.innerHTML = '<div class="belt">' + new Array(9).join('<i></i>') + '</div>';
+      [].forEach.call(pano.querySelectorAll('.belt i'), function (el, i) { el.style.backgroundImage = us[i % 4]; });
+      sizePano(); pano.classList.add('ok');
+    }, function () { pic(set[1]).then(function (u) { still(u, key); }, function () {}); });
+  }
+  function texVar(p, name, el, cls) {
+    pic(p).then(function (u) { el.style.setProperty(name, u); el.classList.add(cls); }, function () {});
+  }
+  function applyLook() {
+    var root = document.documentElement;
+    if (look.theme === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', look.theme);
+    root.setAttribute('data-bg', look.bg);
+    root.classList.toggle('bgtex', look.tex);
+    var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute('content', isDark() ? '#0D1C30' : '#13263F');
+    drawPano();
+    if (look.bg !== 'classic') texVar('blocks/planks_big_oak.png', '--tex-wood', $('thero'), 'tex');
+    if (look.tex) texVar('blocks/stone.png', '--tex-page', root, 'tex-page');
+    ['lex', 'bau'].forEach(function (k) { if (ready[k]) { try { var w = frames[k].contentWindow; if (w.BW_LOOK) w.BW_LOOK(); } catch (e) {} } });
+    [['set-theme', look.theme], ['set-bg', look.bg]].forEach(function (g) {
+      [].forEach.call($(g[0]).querySelectorAll('button'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-v') === g[1])); });
+    });
+    $('set-tex').checked = look.tex;
+  }
+  function setLook(k, v) {
+    look[k] = v;
+    save(k === 'tex' ? 'bgtex' : k, k === 'tex' ? (v ? '1' : '0') : v);
+    applyLook();
+  }
+  [['set-theme', 'theme'], ['set-bg', 'bg']].forEach(function (g) {
+    var el = $(g[0]);
+    el.addEventListener('click', function (e) { var b = e.target.closest('button[data-v]'); if (b) setLook(g[1], b.getAttribute('data-v')); });
+    el.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      var bs = [].slice.call(el.querySelectorAll('button')), i = bs.findIndex(function (b) { return b.getAttribute('aria-checked') === 'true'; });
+      i = (i + (e.key === 'ArrowRight' ? 1 : bs.length - 1)) % bs.length; setLook(g[1], bs[i].getAttribute('data-v')); bs[i].focus();
+    });
+  });
+  $('set-tex').addEventListener('change', function () { setLook('tex', this.checked); });
+  function onSystemChange() { if (look.theme === 'system') applyLook(); }
+  if (darkMQ.addEventListener) { darkMQ.addEventListener('change', onSystemChange); calmMQ.addEventListener('change', function () { panoKey = ''; drawPano(); }); }
+  applyLook();
 
   /* ---------- Links nach außen ---------- */
   function openExternal(url) {
@@ -1380,6 +1591,7 @@ var BWTEX = (function () {
       d.addEventListener('keydown', onKey, true);
       w.addEventListener('hashchange', function () { onFrameHash(key, w.location.hash); });
       if (key === 'bau' && w.location.hash !== '#' + lastPlan) w.location.hash = lastPlan;
+      try { if (w.BW_LOOK) w.BW_LOOK(); } catch (e) {}
       if (key === 'lex') { lexNames(); if (cur && cur.id === 'start') renderRecent(); }
       if (cur && cur.frame === key) focusView();
     });

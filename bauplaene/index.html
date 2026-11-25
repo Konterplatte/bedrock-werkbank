@@ -95,11 +95,33 @@ a { color: var(--accent); }
 .eyebrow { font-size: .95rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); margin: 0 0 4px; }
 .lead { color: var(--ink-soft); margin-top: 8px; max-width: 62ch; }
 
-.tabs { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; overflow-y: hidden; background: var(--sheet); scrollbar-width: none; }
-.tabs::-webkit-scrollbar { display: none; }
-.tabs a { flex: 1 0 auto; display: flex; align-items: center; justify-content: center; text-align: center; padding: 12px 14px; font-weight: 600; font-size: 1.1rem; line-height: 1.15; letter-spacing: 0; white-space: nowrap; color: var(--ink-soft); text-decoration: none; }
-.tabs a + a { border-left: 1px solid var(--line); }
+/* Plan-Auswahl: alle Pläne als Raster mit dem Bild ihres Ertrags; schmal als aufklappbare Liste */
+.picker { display: flex; flex-direction: column; gap: 8px; }
+.pickbtn { display: none; }
+.tabs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 4px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); }
+.tabs a { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 50px; padding: 7px 10px 7px 8px; border-radius: 6px; font-weight: 600; font-size: 1.08rem; line-height: 1.1; color: var(--ink-soft); text-decoration: none; }
+.tabs a span:last-child { min-width: 0; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
+.tabs a:hover { background: var(--paper); color: var(--ink); }
 .tabs a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+.pi { position: relative; width: 30px; height: 30px; flex: none; display: inline-flex; border-radius: 8px; background: var(--paper); }
+.tabs a[aria-current="page"] .pi { background: rgba(255, 255, 255, .9); }
+.pi > svg { width: 100%; height: 100%; display: block; }
+.pi .txi { position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); }
+.pi.tx > :not(.txi) { display: none; }
+@media (max-width: 700px) {
+  .pickbtn { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 58px; padding: 8px 14px 8px 10px; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--sheet); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+  .pickbtn .pi { width: 38px; height: 38px; }
+  .pickbtn .pn { flex: 1; min-width: 0; }
+  .pickbtn small { display: block; font: 600 .8rem var(--f-display); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+  .pickbtn b { display: block; font: 600 1.22rem/1.1 var(--f-display); }
+  .pchev { flex: none; color: var(--accent); font: 600 1.02rem var(--f-display); white-space: nowrap; }
+  .pchev::after { content: ' ▾'; }
+  .pickbtn[aria-expanded="true"] .pchev::after { content: ' ▴'; }
+  .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tabs a { font-size: 1rem; min-height: 54px; }
+  .picker:not(.open) .tabs { display: none; }
+}
 
 .specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin: 0; }
 .specs div { background: var(--sheet); padding: 8px 12px; }
@@ -176,6 +198,44 @@ td.hint { color: var(--ink-soft); }
 .foot { font-size: .85rem; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 12px; max-width: 65ch; }
 [hidden] { display: none !important; }
 </style>
+<style id="app-look">
+/* Darstellung aus der App (Design-Schalter, Hintergründe) */
+:root[data-theme="light"] { color-scheme: light; }
+html.app:not([data-bg="classic"]).tex-shelf .band { background-image: linear-gradient(180deg, rgba(10, 18, 30, .6), rgba(10, 18, 30, .88)), var(--tex-shelf);
+  background-size: auto, 64px 64px; image-rendering: pixelated; }
+html.app.bgtex.tex-page body { background-image: linear-gradient(color-mix(in srgb, var(--paper) 90%, transparent), color-mix(in srgb, var(--paper) 90%, transparent)), var(--tex-page);
+  background-size: auto, 64px 64px; image-rendering: pixelated; }
+</style>
+<script>
+/* Darstellung aus den Einstellungen der App: Design (System/Hell/Dunkel), Hintergrund und Textur hinter den Inhalten.
+   Die Bilder kommen zur Laufzeit aus Mojangs Repository (im Programm über dessen Zwischenspeicher) und erscheinen erst fertig geladen. */
+(function () {
+  'use strict';
+  var r = document.documentElement, got = {};
+  function base() { if (window.BWTEX && window.BWTEX.base) return window.BWTEX.base; try { return window.parent.BW_TEX || ''; } catch (e) { return ''; } }
+  function tex(p, name) {
+    var cls = name.slice(2);
+    if (got[p]) { r.style.setProperty(name, got[p]); r.classList.add(cls); return; }
+    var b = base(); if (!b) return;
+    var im = new Image();
+    im.onload = function () { got[p] = 'url("' + b + p + '")'; r.style.setProperty(name, got[p]); r.classList.add(cls); };
+    im.src = b + p;
+  }
+  function apply() {
+    var t, bg, x;
+    try { t = localStorage.getItem('bw.theme'); bg = localStorage.getItem('bw.bg'); x = localStorage.getItem('bw.bgtex'); } catch (e) {}
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t); else r.removeAttribute('data-theme');
+    bg = bg === 'classic' || bg === 'move' ? bg : 'mc';
+    r.setAttribute('data-bg', bg);
+    if (bg !== 'classic') tex('blocks/bookshelf.png', '--tex-shelf');
+    r.classList.toggle('bgtex', x === '1');
+    if (x === '1') tex('blocks/stone.png', '--tex-page');
+  }
+  window.BW_LOOK = apply;
+  window.addEventListener('storage', function (e) { if (!e.key || /^bw\.(theme|bg|bgtex)$/.test(e.key)) apply(); });
+  apply();
+})();
+</script>
 <style id="app-style">
 /* Programm-Ansicht: Kopfband wie im Lexikon, breites Fenster zweispaltig (Grundriss links, Schnitt und Anleitung rechts). */
 :root {
@@ -202,9 +262,10 @@ html.app .wrap > header { margin: 0 calc(50% - 50vw) 2px; padding: 24px calc(50v
 html.app .eyebrow { color: #8CC2FF; font-weight: 600; letter-spacing: .12em; margin-bottom: 6px; }
 html.app h1 { font-size: 2.7rem; line-height: 1; font-weight: 700; }
 html.app .lead { color: var(--band-soft); margin-top: 10px; }
-html.app .tabs { display: flex; margin: 14px 0 0; border-radius: 14px; border: 1px solid var(--line); background: var(--sheet); box-shadow: var(--shadow); padding: 4px; gap: 4px; }
-html.app .tabs a { border-radius: 10px; min-height: 44px; }
-html.app .tabs a + a { border-left: 0; }
+html.app .picker { margin: 14px 0 0; }
+html.app .tabs { border-radius: 14px; border: 1px solid var(--line); background: var(--sheet); box-shadow: var(--shadow); padding: 5px; gap: 4px; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); }
+html.app .tabs a { border-radius: 10px; }
+html.app .pickbtn { border-radius: 14px; box-shadow: var(--shadow); }
 html.app .wrap > header { position: relative; }
 html.app .hpic { display: none; }
 @media (min-width: 900px) {
@@ -215,7 +276,10 @@ html.app .hpic { display: none; }
 }
 /* Schmal (iPhone): eigene Plan-Auswahl, Platz für die schwebende Tab-Leiste */
 @media (max-width: 720px) {
-  html.app .tabs { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); }
+  html.app .wrap > header { padding: 16px calc(50vw - 50%) 18px; }
+  html.app h1 { font-size: 2.2rem; }
+  html.app .lead { margin-top: 6px; font-size: .95rem; }
+  html.app .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   html.app body::after { content: ""; display: block; height: calc(104px + env(safe-area-inset-bottom, 0px)); }
 }
 html.app .specs { border-radius: var(--r); box-shadow: var(--shadow); }
@@ -255,7 +319,10 @@ html.app .foot { max-width: none; }
   <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
 </header>
 
-<nav class="tabs" id="tabs" aria-label="Bauplan wählen"></nav>
+<div class="picker" id="picker">
+  <button type="button" class="pickbtn" id="pickbtn" aria-expanded="false" aria-controls="tabs"></button>
+  <nav class="tabs" id="tabs" aria-label="Bauplan wählen"></nav>
+</div>
 
 <dl class="specs" id="specs"></dl>
 
@@ -796,11 +863,19 @@ var BWTEX = (function () {
     }).then(function (im) { return dataUrl(col === null ? im : mask(im, col)); }));
   }
   function fail(el) { el.classList.remove('tx'); el.classList.add('txfail'); var s = el.querySelector('svg.txi'); if (s) s.remove(); }
+  /* Solange das Original lädt, bleibt das farbige Plättchen sichtbar; das Bild liegt unsichtbar darüber und erscheint erst fertig geladen */
+  var seen = {};
   function paint(el) {
     var sp = spec(el.getAttribute('data-tx')); if (!sp) return;
-    el.insertAdjacentHTML('afterbegin', svg(sp)); el.classList.add('tx');
-    [].forEach.call(el.querySelectorAll('svg.txi image[data-p]'), function (im) {
-      url(im.getAttribute('data-p')).then(function (u) { im.setAttribute('href', u); }, function () { fail(el); });
+    el.insertAdjacentHTML('afterbegin', svg(sp));
+    var s = el.querySelector('svg.txi'), ims = [].slice.call(s.querySelectorAll('image[data-p]')), left = 0;
+    function done() { s.style.opacity = ''; el.classList.add('tx'); }
+    ims.forEach(function (im) { if (!seen[im.getAttribute('data-p')]) left++; });
+    if (!left) done(); else s.style.opacity = '0';
+    ims.forEach(function (im) {
+      var p = im.getAttribute('data-p');
+      if (!seen[p]) im.addEventListener('load', function () { seen[p] = true; if (--left === 0) done(); }, { once: true });
+      url(p).then(function (u) { im.setAttribute('href', u); }, function () { fail(el); });
     });
   }
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
@@ -1006,7 +1081,7 @@ var PLANS = (function () {
       text: 'Lege 7 × 10 Laubblöcke als Dach. Kein fester Block darf oben offen liegen.' });
 
     return {
-      id: 'eisenfarm', title: 'Eisenfarm', w: W, d: W, yMin: 1, yMax: 15, sliceZ: 9, ground: true,
+      id: 'eisenfarm', out: 'iron_ingot', title: 'Eisenfarm', w: W, d: W, yMin: 1, yMax: 15, sliceZ: 9, ground: true,
       guides: [[1, 1, 18, 18], [9, 9, 10, 10]],
             specs: [['Grundfläche', '20 × 20 Blöcke'], ['Höhe', '15 Blöcke ab Boden'], ['Dorfbewohner', '10, ausbaubar auf 20'], ['Betten', '20']],
       extras: [['Dorfbewohner', '10', '2 reichen für den Start, den Rest züchtest du in der Kammer'],
@@ -1057,7 +1132,7 @@ var PLANS = (function () {
       text: 'Lege 11 × 11 feste Blöcke als Dach.' });
 
     return {
-      id: 'handelsstation', title: 'Handelsstation', w: W, d: W, yMin: 0, yMax: 4, sliceZ: 1, ground: false,
+      id: 'handelsstation', out: 'emerald', title: 'Handelsstation', w: W, d: W, yMin: 0, yMax: 4, sliceZ: 1, ground: false,
       guides: [],
       specs: [['Grundfläche', '11 × 11 Blöcke'], ['Höhe', '5 Lagen, innen 3 hoch'], ['Plätze', '10 Dorfbewohner'], ['Betten', '10']],
       extras: [['Dorfbewohner', '10', 'einzeln hineinbringen'],
@@ -1126,7 +1201,7 @@ var PLANS = (function () {
       text: 'Letzte Mauerlage und 4 Trägerreihen als Deckel. Daran hängen die Zäune der zweiten Etage. Für eine dritte Etage baust du hier mit Sand weiter.' });
 
     return {
-      id: 'kaktusfarm', title: 'Kaktusfarm', w: W, d: W, yMin: 1, yMax: 11, sliceX: 2, ground: true,
+      id: 'kaktusfarm', out: 'cactus', title: 'Kaktusfarm', w: W, d: W, yMin: 1, yMax: 11, sliceX: 2, ground: true,
       guides: [],
       specs: [['Grundfläche', '11 × 11 Blöcke'], ['Höhe', '11 Blöcke ab Boden'], ['Kakteen', '32 in 2 Etagen'], ['Redstone', 'keins']],
       extras: [['Wassereimer', '1', 'für die 6 Quellen immer wieder auffüllen'],
@@ -1184,7 +1259,7 @@ var PLANS = (function () {
       text: 'Eine Schiene mit Lore auf der Säule, darin eine Endermilbe mit Namensschild. Endermen greifen jede Endermilbe an, die sie im Umkreis von 64 Blöcken sehen. Auf dem Weg zu ihr treten sie auf die Falltüren.' });
 
     return {
-      id: 'xpfarm', title: 'XP-Farm', w: W, d: W, yMin: 1, yMax: 45, sliceZ: 8, ground: false,
+      id: 'xpfarm', out: 'ender_pearl', title: 'XP-Farm', w: W, d: W, yMin: 1, yMax: 45, sliceZ: 8, ground: false,
       guides: [[3, 3, 13, 13], [7, 7, 9, 9]],
       specs: [['Ort', 'Das End, 128 Blöcke Abstand'], ['Grundfläche', '17 × 17 Blöcke'], ['Fallhöhe', '41 Blöcke'], ['Erfahrung', '5 pro Enderman']],
       extras: [['Brücke zur Hauptinsel', 'etwa 128 Blöcke', 'die ersten 16 Blöcke ab der Farm als Tunnel mit Wasserdach'],
@@ -1232,7 +1307,7 @@ var PLANS = (function () {
       text: 'Setze auf jeden Kolben einen Beobachter. Sein Gesicht schaut zum Zuckerrohr, der rote Punkt nach außen. Ein Beobachter schaut beim Setzen in deine Blickrichtung: Stell dich außen so hin, dass deine Füße auf Höhe der Kolben stehen, und schau waagerecht zum Zuckerrohr. Zeigt einer nach oben oder unten, bau ihn ab und setz ihn neu. Streue auf die äußeren Blöcke je eine Linie Redstone-Staub. Wächst ein Zuckerrohr auf 3 Blöcke, meldet es der Beobachter, und alle Kolben der Reihe schlagen zu.' });
 
     return {
-      id: 'zuckerrohr', title: 'Zuckerrohrfarm', w: W, d: D, yMin: 1, yMax: 5, sliceX: 4, ground: true,
+      id: 'zuckerrohr', out: 'sugar_cane', title: 'Zuckerrohrfarm', w: W, d: D, yMin: 1, yMax: 5, sliceX: 4, ground: true,
       guides: [],
       specs: [['Grundfläche', '11 × 7 Blöcke'], ['Höhe', '5 Blöcke'], ['Zuckerrohr', '16 Pflanzen'], ['Ertrag', 'rund 50 pro Stunde']],
       extras: [['Wasserflaschen', '16', 'zum Herstellen des Schlamms: Flasche auf Erde leeren'],
@@ -1268,7 +1343,7 @@ var PLANS = (function () {
       text: 'Streue Redstone-Staub auf die äußeren Blockreihen und die Querreihe im Westen, so entsteht ein U. Setze den Steinknopf ganz im Westen oben auf den einzelnen Block neben dem Staub. Ein Druck auf den Knopf, und alle 16 Kolben fahren einmal aus. Sie zerschlagen jede Frucht, die gerade da ist, und die Trichter bringen alles in die Kiste.' });
 
     return {
-      id: 'kuerbis', title: 'Kürbis- und Melonenfarm', w: W, d: D, yMin: 1, yMax: 4, sliceX: 5, ground: true,
+      id: 'kuerbis', out: 'pumpkin', title: 'Kürbis- und Melonenfarm', w: W, d: D, yMin: 1, yMax: 4, sliceX: 5, ground: true,
       guides: [],
       specs: [['Grundfläche', '13 × 7 Blöcke'], ['Höhe', '4 Blöcke'], ['Stiele', '8 Pflanzen'], ['Ertrag', 'bis 8 Früchte je Knopfdruck']],
       extras: [['Wasserflaschen', '16', 'für den Schlamm: Flasche auf Erde leeren'], ['Wassereimer', '1', 'für die 2 Quellen'],
@@ -1309,7 +1384,7 @@ var PLANS = (function () {
       text: 'Schließe den Pferch mit einem Glasblock, sobald genug Hühner darin sind. Ein Huhn ist 0,8 Blöcke hoch und passt unter den Deckel.' });
 
     return {
-      id: 'huehner', title: 'Hühnerfarm mit Kochautomat', w: W, d: D, yMin: 1, yMax: 6, sliceZ: 1, ground: true,
+      id: 'huehner', out: 'cooked_chicken', title: 'Hühnerfarm mit Kochautomat', w: W, d: D, yMin: 1, yMax: 6, sliceZ: 1, ground: true,
       guides: [],
       specs: [['Grundfläche', '5 × 3 Blöcke'], ['Höhe', '6 Blöcke'], ['Hühner', '4 bis 8 im Pferch'], ['Ertrag', 'rund 1 Brathähnchen je Huhn und Stunde']],
       extras: [['Eier', '32', 'in den Pferch werfen, bis 4 bis 8 Küken geschlüpft sind']],
@@ -1344,7 +1419,7 @@ var PLANS = (function () {
       text: 'Decke die Lava mit 8 × 3 festen Blöcken ab. So fällt niemand hinein, und kein Feuer springt über.' });
 
     return {
-      id: 'lava', title: 'Lava aus Tropfstein', w: W, d: D, yMin: 1, yMax: 5, sliceX: 3, ground: true,
+      id: 'lava', out: 'lava_bucket', title: 'Lava aus Tropfstein', w: W, d: D, yMin: 1, yMax: 5, sliceX: 3, ground: true,
       guides: [],
       specs: [['Grundfläche', '8 × 3 Blöcke'], ['Höhe', '5 Blöcke'], ['Kessel', '6'], ['Ertrag', 'etwa 1 Eimer je Kessel alle 20 Minuten']],
       extras: [['Eimer', '1', 'zum Abschöpfen der Kessel']],
@@ -1397,7 +1472,7 @@ var PLANS = (function () {
       text: 'Schließe den Raum mit einer Decke. Oft ist sie im Untergrund schon da. Im Raum darf kein Licht sein: Nimm am Ende alle Fackeln heraus, die du beim Bauen gesetzt hast.' });
 
     return {
-      id: 'spawner', title: 'Spawner-XP-Farm', w: W, d: D, yMin: 1, yMax: 7, sliceX: 5, ground: false,
+      id: 'spawner', out: 'experience_bottle', title: 'Spawner-XP-Farm', w: W, d: D, yMin: 1, yMax: 7, sliceX: 5, ground: false,
       guides: [],
       specs: [['Raum', '9 × 9 um den Spawner'], ['Tiefe', '4 Lagen unter dem Spawner'], ['Spawner', 'Zombie oder Skelett'], ['XP', 'je Mob mindestens 5']],
       extras: [['Wassereimer', '1', 'für die 9 Quellen immer wieder auffüllen'], ['Schwert', '1', 'am besten Diamant mit Schärfe'],
@@ -1426,7 +1501,7 @@ var PLANS = (function () {
       text: 'Setze eine zweite Lage aus 18 Glasblöcken darauf. Ein Dach brauchst du nicht: Über 2 Blöcke springt kein Gürteltier, und von oben kannst du sie füttern. Bring jetzt 2 Gürteltiere an der Leine her, stell dich auf die Wand und zieh sie über das Glas in den Pferch. Dann klickst du sie an, und die Leine löst sich.' });
 
     return {
-      id: 'guerteltier', title: 'Gürteltierfarm für Hornschilde', w: W, d: D, yMin: 1, yMax: 3, sliceZ: 1, ground: true,
+      id: 'guerteltier', out: 'armadillo_scute', title: 'Gürteltierfarm für Hornschilde', w: W, d: D, yMin: 1, yMax: 3, sliceZ: 1, ground: true,
       guides: [],
       specs: [['Grundfläche', '10 × 3 Blöcke'], ['Höhe', '3 Blöcke'], ['Gürteltiere', '6, eines je Feld'], ['Ertrag', 'rund 8 Hornschilde je Gürteltier und Stunde']],
       extras: [['Leine', '1', 'um die ersten 2 Gürteltiere herzuholen'], ['Spinnenaugen', '8', 'zum Züchten im Pferch, 2 je Jungtier'],
@@ -1445,7 +1520,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 <script>
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
-  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/cauldron.png","items/door_wood.png","items/egg.png","items/hopper.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",34,34,34],"Z":["c",34,34,34],"U":["c",34,34,34],"L":["c",18,18,18],"X":["f",49],"t":["f",44],"n":["f",44],"e":["f",44],"s":["f",44],"K":["c",6,4,5],"B":["f",40],"b":["f",40],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",42],"d":["f",42],"F":["f",35],"N":["c",33,33,33],"c":["c",1,0,0],"z":["fe",29,29,29],"g":["fe",29,29,29],"T":["s",34,34,34],"R":["t",36,36,36],"M":["f",45],"m":["c",23,23,23],"r":["f",47],"G":["c",14,14,14],"P":["c",28,27,27],"p":["c",28,27,27],"Y":["c",26,24,25],"y":["c",26,24,25],"i":["f",46],"a":["c",11,9,9],"k":["f",48],"W":["b",34,34,34],"H":["c",13,10,12],"I":["c",26,24,25],"J":["c",26,24,25],"l":["f",44],"q":["s",34,34,34],"x":["f",43],"j":["f",41],"1":["f",30],"3":["c",22,22,22],"2":["f",39],"Q":["c",38,38,38],"V":["c",17,17,17]},"g":{"S":[34,34],"Z":[34,34],"U":[34,34],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[35,35],"N":[33,33],"c":[1,0],"z":[29,29],"g":[29,29],"T":[34,34],"R":[36,36],"M":[32,32],"m":[23,23],"r":[47,47],"G":[14,14],"P":[27,27],"p":[27,27],"Y":[26,25],"y":[26,25],"a":[11,9],"W":[34,34],"H":[13,10],"I":[26,25],"J":[26,25],"l":[16,15],"q":[34,34],"j":[3,2],"1":[31,31],"3":[22,22],"Q":[38,38],"f":[37,37],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","V":"lava_bucket"}};
+  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/pumpkin_face_off.png","blocks/pumpkin_side.png","blocks/pumpkin_top.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/bucket_lava.png","items/cauldron.png","items/chicken_cooked.png","items/door_wood.png","items/egg.png","items/emerald.png","items/ender_pearl.png","items/experience_bottle.png","items/hopper.png","items/iron_ingot.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",37,37,37],"Z":["c",37,37,37],"U":["c",37,37,37],"L":["c",18,18,18],"X":["f",58],"t":["f",52],"n":["f",52],"e":["f",52],"s":["f",52],"K":["c",6,4,5],"B":["f",43],"b":["f",43],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",47],"d":["f",47],"F":["f",38],"N":["c",36,36,36],"c":["c",1,0,0],"z":["fe",29,29,29],"g":["fe",29,29,29],"T":["s",37,37,37],"R":["t",39,39,39],"M":["f",54],"m":["c",23,23,23],"r":["f",56],"G":["c",14,14,14],"P":["c",28,27,27],"p":["c",28,27,27],"Y":["c",26,24,25],"y":["c",26,24,25],"i":["f",55],"a":["c",11,9,9],"k":["f",57],"W":["b",37,37,37],"H":["c",13,10,12],"I":["c",26,24,25],"J":["c",26,24,25],"l":["f",52],"q":["s",37,37,37],"x":["f",48],"j":["f",45],"1":["f",30],"3":["c",22,22,22],"2":["f",42],"Q":["c",41,41,41],"V":["c",17,17,17],"iron_ingot":["f",53],"emerald":["f",49],"cactus":["c",1,0,0],"ender_pearl":["f",50],"sugar_cane":["f",56],"pumpkin":["c",34,32,33],"cooked_chicken":["f",46],"lava_bucket":["f",44],"experience_bottle":["f",51],"armadillo_scute":["f",42]},"g":{"S":[37,37],"Z":[37,37],"U":[37,37],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[38,38],"N":[36,36],"c":[1,0],"z":[29,29],"g":[29,29],"T":[37,37],"R":[39,39],"M":[35,35],"m":[23,23],"r":[56,56],"G":[14,14],"P":[27,27],"p":[27,27],"Y":[26,25],"y":[26,25],"a":[11,9],"W":[37,37],"H":[13,10],"I":[26,25],"J":[26,25],"l":[16,15],"q":[37,37],"j":[3,2],"1":[31,31],"3":[22,22],"Q":[41,41],"f":[40,40],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","V":"lava_bucket"}};
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
   function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
@@ -1571,6 +1646,10 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   var EXTRA_LEX = { 'Schere': 'shears', 'Wassereimer': 'water_bucket', 'Schwert': 'iron_sword', 'Wasserflaschen': 'potion:water', 'Hacke': 'iron_hoe', 'Eier': 'egg', 'Eimer': 'bucket',
                     'Leine': 'lead', 'Spinnenaugen': 'spider_eye', 'Namensschilder': 'name_tag' };
   function matLex(m) { for (var ch in BLOCKS) if (BLOCKS[ch].mat === m && BTX.x && BTX.x[ch]) return BTX.x[ch]; return null; }
+  // Bild des Ertrags (Originalbild, sonst ein farbiges Plättchen)
+  function outIcon(q) {
+    return '<span class="pi"' + (q.out && BTX.m && BTX.m[q.out] ? ' data-tx="' + esc(q.out) + '"' : '') + ' aria-hidden="true"><svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="2.5" fill="currentColor" opacity=".35"/></svg></span>';
+  }
   function matIcon(ch) { return BTX.m && BTX.m[ch] ? '<i class="bi" data-tx="' + ch + '"></i>' : ''; }
   function stacks(m, n) {
     if ((m !== 'stone' && m !== 'leaf' && m !== 'sand') || n < 64) return '';
@@ -1581,11 +1660,10 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   function renderPlanStatic() {
     var p = PLANS[st.plan];
     $('tabs').innerHTML = PLANS.map(function (q, i) {
-      return '<a href="#' + q.id + '"' + (i === st.plan ? ' aria-current="page"' : '') + '>' + esc(q.title) + '</a>';
+      return '<a href="#' + q.id + '"' + (i === st.plan ? ' aria-current="page"' : '') + '>' + outIcon(q) + '<span>' + esc(q.title) + '</span></a>';
     }).join('');
+    $('pickbtn').innerHTML = outIcon(p) + '<span class="pn"><small>Bauplan</small><b>' + esc(p.title) + '</b></span><span class="pchev">Wechseln</span>';
     PLANS.forEach(function (q, i) { $('notes-' + q.id).hidden = i !== st.plan; });
-    var act = $('tabs').querySelector('[aria-current="page"]'), tb = $('tabs');
-    if (act && tb.scrollWidth > tb.clientWidth) tb.scrollLeft = act.offsetLeft - (tb.clientWidth - act.offsetWidth) / 2;
     $('specs').innerHTML = p.specs.map(function (s) { return '<div><dt>' + esc(s[0]) + '</dt><dd>' + esc(s[1]) + '</dd></div>'; }).join('');
     $('steps').innerHTML = p.layers.map(function (l, i) {
       return '<li><button type="button" data-i="' + i + '" aria-label="Ebene ' + (i + 1) + ', ' + esc(l.name) + '">' + (i + 1) + '</button></li>';
@@ -1717,10 +1795,72 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     if (e.key === 'ArrowRight') go(st.layer[st.plan] + 1);
   });
   window.addEventListener('hashchange', route);
+  function setPicker(open) { $('picker').classList.toggle('open', open); $('pickbtn').setAttribute('aria-expanded', String(open)); }
+  $('pickbtn').addEventListener('click', function () { setPicker(!$('picker').classList.contains('open')); });
+  $('tabs').addEventListener('click', function (e) { if (e.target.closest('a')) setPicker(false); });
   route();
 })();
 </script>
 <script>
+/* Eigene isometrische Blockszenen (keine Spielgrafik), gemeinsam für Startseite, Werkzeuge und den Kopf der Baupläne. */
+var BWISO = (function () {
+  'use strict';
+  function mix(hex, t) {
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255, to = t > 0 ? 255 : 0, k = Math.abs(t);
+    function c(v) { return Math.round(v + (to - v) * k); }
+    return 'rgb(' + c(r) + ',' + c(g) + ',' + c(b) + ')';
+  }
+  // build: jeder Würfel als eigene Gruppe mit Reihenfolge (--i), damit sich das Bild Block für Block aufbauen kann
+  function iso(cubes, build) {
+    var C = 0.8660254, groups = [], minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+    function P(x, y, z) { var p = [(x - y) * C * 20, (x + y) * 10 - z * 20]; minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]); return p; }
+    cubes.slice().sort(function (a, b) { return (a[0] + a[1]) - (b[0] + b[1]) || a[2] - b[2] || a[0] - b[0]; }).forEach(function (c) {
+      var x = c[0], y = c[1], z = c[2], col = c[3], h = c[4] || 1, cs = typeof col === 'string' ? [mix(col, .22), mix(col, -.08), mix(col, -.28)] : col;
+      groups.push([[[P(x, y + 1, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[1]],
+                   [[P(x + 1, y, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x + 1, y, z + h)], cs[2]],
+                   [[P(x, y, z + h), P(x + 1, y, z + h), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[0]]]);
+    });
+    var pad = 4, s = '<svg viewBox="' + (minX - pad).toFixed(1) + ' ' + (minY - pad).toFixed(1) + ' ' + (maxX - minX + 2 * pad).toFixed(1) + ' ' + (maxY - minY + 2 * pad).toFixed(1) +
+      '" preserveAspectRatio="xMidYMid meet" aria-hidden="true"' + (build ? ' class="build"' : '') + '>';
+    groups.forEach(function (g, i) {
+      if (build) s += '<g class="cb" style="--i:' + i + '">';
+      g.forEach(function (p) { s += '<polygon points="' + p[0].map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ') + '" fill="' + p[1] + '" stroke="rgba(10,20,35,.22)" stroke-width=".6" stroke-linejoin="round"/>'; });
+      if (build) s += '</g>';
+    });
+    return s + '</svg>';
+  }
+  var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
+            glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B', end: '#DCD9A6',
+            mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C', paper: '#EEE6D2', anvil: '#5A616B',
+            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E', armadillo: '#B07A6C',
+            grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
+  function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
+  var SCENES = {
+    eisenfarm: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .5), [[1, 1, 1.5, K.lava, .7], [3, 2, 0, K.iron], [3, 1, 0, K.dark, .7]]),
+    handelsstation: [].concat(box(0, 0, 0, 4, 1, K.glass), box(0, 0, 1, 4, 1, K.glass), [[0, 1, 0, K.wood], [1, 1, 0, K.stone], [2, 1, 0, K.hay], [3, 1, 0, K.copper], [3, 2, 0, K.emerald, .55]]),
+    kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
+      [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]]),
+    xpfarm: [].concat(box(0, 0, 0, 4, 4, K.stone), box(0, 0, 1, 4, 4, K.water, .35), box(1, 1, 1.35, 2, 2, K.stone, 1), box(1, 1, 2.35, 2, 2, K.stone, 1), box(1, 1, 3.35, 2, 2, K.stone, 1), box(0, 0, 4.35, 4, 4, K.end, .5), [[1.5, 1.5, 4.85, K.purple, .45]]),
+    zuckerrohr: [].concat(box(0, 0, 0, 4, 1, K.mud), box(0, 1, 0, 4, 1, K.water, .7), box(0, 2, 0, 4, 1, K.mud),
+      box(0, 0, 1, 4, 1, K.cane), box(0, 0, 2, 4, 1, K.cane), box(0, 2, 1, 4, 1, K.cane), box(0, 3, 1, 4, 1, K.stone), box(0, 3, 2, 4, 1, K.piston), box(0, 3, 3, 4, 1, K.dark, .9)),
+    kuerbis: [].concat(box(0, 0, 0, 4, 1, K.mud), box(0, 1, 0, 4, 1, K.farmland), box(0, 2, 0, 4, 1, K.mud), box(0, 3, 0, 4, 1, K.stone), box(0, 3, 1, 4, 1, K.piston),
+      [[0, 1, 1, K.cane, .35], [1, 1, 1, K.cane, .35], [2, 1, 1, K.cane, .35], [3, 1, 1, K.cane, .35], [0, 0, 1, K.pumpkin], [2, 2, 1, K.melon], [3, 0, 1, K.pumpkin]]),
+    huehner: [[0, 0, 0, K.stone], [1, 0, 0, K.wood], [2, 0, 0, K.wood], [0, 0, 1, K.dark], [1, 0, 1, K.stone, .5], [2, 0, 1, K.glass], [1, 1, 1, K.glass],
+      [0, 0, 2, K.dark, .9], [1, 0, 2, K.lava], [2, 0, 2, K.glass], [1, 1, 2, K.glass], [0, 0, 2.9, K.chicken, .7], [0, 1, 2.9, K.glass, .9]],
+    lava: [].concat(box(0, 0, 0, 4, 1, K.anvil, .8), [[0, 0, 1.35, K.drip, .65], [1, 0, 1.35, K.drip, .65], [2, 0, 1.35, K.drip, .65], [3, 0, 1.35, K.drip, .65]],
+      box(0, 0, 2, 4, 1, K.stone), box(0, 0, 3, 4, 1, K.lava, .8)),
+    spawner: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .3), [[1, 1, 1.3, K.dark, .9], [0, 3, 0, K.dark, .7], [1, 3, 0, K.dark, .7], [2, 3, 0, K.dark, .7],
+      [0, 4, 0, K.stone, .5], [1, 4, 0, K.stone, .5], [2, 4, 0, K.stone, .5]]),
+    guerteltier: [].concat(box(0, 0, 0, 4, 1, K.stone, .7), box(0, 0, .7, 4, 1, K.glass), box(0, 0, 1.7, 4, 1, K.glass), box(0, 1, 0, 4, 1, K.dark, .7),
+      [[0.15, 1.15, .7, K.armadillo, .55], [1.15, 1.15, .7, K.armadillo, .55], [2.15, 1.15, .7, K.armadillo, .55], [3.15, 1.15, .7, K.armadillo, .55], [4, 1, 0, K.wood, .9]]),
+    lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
+    hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
+      [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],
+      [[0, 4, 1, K.wood], [1, 4, 1, K.hay], [2, 4, 1, K.stone], [3, 3, 1, K.emerald, .6], [4, 3, 1, K.purple, .6], [5, 4, 1, K.copper, .5]])
+  };
+
+  return { mix: mix, iso: iso, K: K, box: box, SCENES: SCENES };
+})();
 (function () {
   'use strict';
   // Programm-Ansicht: Abschnitte unter dem Zeichenblatt in zwei Spalten ordnen, Überschrift folgt dem gewählten Plan.
@@ -1744,38 +1884,8 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     var a = document.querySelector('#tabs a[aria-current="page"]');
     if (a && h1) { h1.textContent = a.textContent; document.title = 'Bauplan ' + a.textContent; }
   }
-  // Eigene isometrische Zeichnung je Bauplan im Kopfband (keine Spielgrafik)
-  var C = 0.8660254;
-  function mix(hex, t) {
-    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255, to = t > 0 ? 255 : 0, k = Math.abs(t);
-    function c(v) { return Math.round(v + (to - v) * k); }
-    return 'rgb(' + c(r) + ',' + c(g) + ',' + c(b) + ')';
-  }
-  function iso(cubes) {
-    var polys = [], a = [1e9, 1e9, -1e9, -1e9];
-    function P(x, y, z) { var p = [(x - y) * C * 20, (x + y) * 10 - z * 20]; a[0] = Math.min(a[0], p[0]); a[2] = Math.max(a[2], p[0]); a[1] = Math.min(a[1], p[1]); a[3] = Math.max(a[3], p[1]); return p; }
-    cubes.slice().sort(function (p, q) { return (p[0] + p[1]) - (q[0] + q[1]) || p[2] - q[2] || p[0] - q[0]; }).forEach(function (c) {
-      var x = c[0], y = c[1], z = c[2], h = c[4] || 1, cs = [mix(c[3], .22), mix(c[3], -.08), mix(c[3], -.28)];
-      polys.push([[P(x, y + 1, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[1]]);
-      polys.push([[P(x + 1, y, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x + 1, y, z + h)], cs[2]]);
-      polys.push([[P(x, y, z + h), P(x + 1, y, z + h), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], cs[0]]);
-    });
-    var s = '<svg viewBox="' + (a[0] - 4).toFixed(1) + ' ' + (a[1] - 4).toFixed(1) + ' ' + (a[2] - a[0] + 8).toFixed(1) + ' ' + (a[3] - a[1] + 8).toFixed(1) + '" aria-hidden="true">';
-    polys.forEach(function (p) { s += '<polygon points="' + p[0].map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' ') + '" fill="' + p[1] + '" stroke="rgba(10,20,35,.22)" stroke-width=".6" stroke-linejoin="round"/>'; });
-    return s + '</svg>';
-  }
-  var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
-            glass: '#BCE0F2', dark: '#3A4350', hay: '#E2B93B', copper: '#D9824A', end: '#DCD9A6', purple: '#7B4BC2', mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C' };
-  function box(x0, y0, z, w, d, col, h) { var r = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) r.push([x, y, z, col, h]); return r; }
-  var SCENES = {
-    eisenfarm: [].concat(box(0, 0, 0, 3, 3, K.stone), box(0, 0, 1, 3, 3, K.water, .5), [[1, 1, 1.5, K.lava, .7], [3, 2, 0, K.iron], [3, 1, 0, K.dark, .7]]),
-    handelsstation: [].concat(box(0, 0, 0, 4, 1, K.glass), box(0, 0, 1, 4, 1, K.glass), [[0, 1, 0, K.wood], [1, 1, 0, K.stone], [2, 1, 0, K.hay], [3, 1, 0, K.copper], [3, 2, 0, K.emerald, .55]]),
-    kaktusfarm: [].concat(box(0, 0, 0, 3, 3, K.sand), [[0, 0, 1, K.cactus], [0, 0, 2, K.cactus], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [0, 2, 1, K.cactus], [0, 2, 2, K.cactus],
-      [2, 2, 1, K.cactus], [2, 2, 2, K.cactus], [1, 3, 0, K.dark, .7]]),
-    zuckerrohr: [].concat(box(0, 0, 0, 4, 1, K.mud), box(0, 1, 0, 4, 1, K.water, .7), box(0, 2, 0, 4, 1, K.mud),
-      box(0, 0, 1, 4, 1, K.cane), box(0, 0, 2, 4, 1, K.cane), box(0, 2, 1, 4, 1, K.cane), box(0, 3, 1, 4, 1, K.stone), box(0, 3, 2, 4, 1, K.piston), box(0, 3, 3, 4, 1, K.dark, .9)),
-    xpfarm: [].concat(box(0, 0, 0, 4, 4, K.stone), box(0, 0, 1, 4, 4, K.water, .35), box(1, 1, 1.35, 2, 2, K.stone, 1), box(1, 1, 2.35, 2, 2, K.stone, 1), box(1, 1, 3.35, 2, 2, K.stone, 1), box(0, 0, 4.35, 4, 4, K.end, .5), [[1.5, 1.5, 4.85, K.purple, .45]])
-  };
+  // Eigene isometrische Zeichnung je Bauplan im Kopfband (keine Spielgrafik), dieselben Szenen wie auf der Startseite
+  var iso = BWISO.iso, SCENES = BWISO.SCENES;
   var hdr = document.querySelector('.wrap > header'), pic = document.createElement('div');
   pic.className = 'hpic'; pic.setAttribute('aria-hidden', 'true');
   if (hdr) hdr.appendChild(pic);

@@ -19,6 +19,7 @@ Dieselbe App als eigenes Programm für Windows 10 und 11: [Bedrock-Werkbank-Wind
 ## Inhalt
 
 - `index.html`: Startseite, Navigation und Werkzeuge (Sammelliste, Koordinaten-Notizbuch, Brau-Planer, Amboss-Planer mit Vorlagen, Nether-Portal-Rechner, Favoriten, Datenübertragung)
+- Darstellung unter Info: Design System/Hell/Dunkel und Hintergrund Klassisch, Minecraft (Titelbild aus dem Spiel, Bücherregal, Holz) oder Bewegt; die Bilder dafür werden wie alle Originalbilder erst auf dem Gerät aus Mojangs Repository geladen
 - `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen, mit Rohstoffrechner, Fundorten, Dorfbewohner-Berufen und Steckbriefen für 62 Mobs
 - `bauplaene/`: zehn Baupläne Block für Block, von der Eisenfarm und den XP-Farmen (Endermen im End, Zombie- oder Skelett-Spawner) bis zur Kürbisfarm, der Hühnerfarm mit Kochautomat, Lava aus Tropfstein und der Gürteltierfarm; fertige Ebenen lassen sich abhaken
 - `sw.js`, `manifest.webmanifest`, `icons/`: Offline-Betrieb und App-Symbol
