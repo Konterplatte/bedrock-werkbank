@@ -154,6 +154,21 @@ a { color: var(--accent); }
 .isoctl button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .plan.iso { display: flex; justify-content: center; }
 .plan.iso svg { max-height: 72vh; }
+/* Alle Seiten: Blickrichtung, Schnitt */
+.elevctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; width: 100%; }
+.dseg { display: inline-grid; grid-template-columns: repeat(6, auto); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--paper); }
+.dseg button { appearance: none; border: 0; background: transparent; color: var(--ink-soft); font: 600 .95rem var(--f-display, inherit); padding: 8px 11px; min-height: 40px; cursor: pointer; }
+.dseg button + button { border-left: 1px solid var(--line); }
+.dseg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.ecut { display: inline-flex; gap: 6px; align-items: center; }
+.ecut button { appearance: none; border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); color: var(--ink); font: 600 .98rem var(--f-display, inherit); padding: 8px 12px; min-height: 40px; min-width: 40px; cursor: pointer; }
+.ecut button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.ecut button:disabled { opacity: .4; cursor: default; }
+.ecut b { font-variant-numeric: tabular-nums; min-width: 7.5em; text-align: center; font-weight: 600; }
+.plan.elev { display: flex; justify-content: center; }
+.plan.elev svg { max-height: 78vh; }
+@media (max-width: 700px) { .plan.elev svg { max-height: none; } }
+@media (max-width: 560px) { .dseg { grid-template-columns: repeat(3, 1fr); width: 100%; } .dseg button:nth-child(4) { border-left: 0; } .dseg button:nth-child(n+4) { border-top: 1px solid var(--line); } }
 .toolrow { display: flex; flex-wrap: wrap; gap: 8px; }
 /* Größe, Test-Haken, Vergleich, Editor */
 .sizer, .tested { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); }
@@ -438,10 +453,15 @@ html.cmp .below, html.edit .below { display: none; }
   <ol class="steps" id="steps" aria-label="Ebenen"></ol>
   <div class="progress"><span class="pworld" id="pworld" hidden></span><span class="ptext" id="ptext" aria-live="polite"></span><button type="button" id="preset">Zurücksetzen</button><div class="pbar" aria-hidden="true"><i id="pbar"></i></div></div>
   <div class="viewbar">
-    <div class="vseg" role="group" aria-label="Ansicht"><button type="button" data-v="grid" aria-pressed="true">Ebene von oben</button><button type="button" data-v="iso" aria-pressed="false">3D</button></div>
+    <div class="vseg" role="group" aria-label="Ansicht"><button type="button" data-v="grid" aria-pressed="true">Ebene von oben</button><button type="button" data-v="elev" aria-pressed="false">Alle Seiten</button><button type="button" data-v="iso" aria-pressed="false">3D</button></div>
     <div class="isoctl" id="isoctl" hidden><button type="button" id="isorot" aria-label="Ansicht drehen">Drehen ⟳</button><button type="button" id="isoall" aria-pressed="false">Ganze Farm</button></div>
+    <div class="elevctl" id="elevctl" hidden>
+      <div class="dseg" id="dseg" role="group" aria-label="Blickrichtung"><button type="button" data-d="vorne">Vorne</button><button type="button" data-d="hinten">Hinten</button><button type="button" data-d="links">Links</button><button type="button" data-d="rechts">Rechts</button><button type="button" data-d="oben">Oben</button><button type="button" data-d="unten">Unten</button></div>
+      <div class="ecut"><button type="button" id="ecut" aria-pressed="false">Schnitt</button><span class="ecut" id="ecutnav" hidden><button type="button" id="ecm" aria-label="Schnitt eins zurück">−</button><b id="ecv" aria-live="polite"></b><button type="button" id="ecp" aria-label="Schnitt eins weiter">+</button></span></div>
+    </div>
   </div>
   <div class="plan" id="plan"></div>
+  <p class="caption" id="elevcap" hidden></p>
   <div class="probe proberow"><span id="probe" aria-live="polite"></span><button type="button" class="texbtn" id="texbtn" aria-pressed="true">Originalbilder</button></div>
   <div>
     <p class="sub">In dieser Ebene setzen</p>
@@ -1782,7 +1802,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   }
   function yText(l) { return l.y[0] === l.y[1] ? 'Y' + l.y[0] : 'Y' + l.y[0] + ' bis Y' + l.y[1]; }
 
-  function cell(ch, px, py, G, opacity, view) {
+  function cell(ch, px, py, G, opacity, view, gly) {
     var b = BLOCKS[ch], U = G.U, s = '', gt = view && texOn && BTX.g && BTX.g[ch];
     if (!b) return s;
     if (b.open) {
@@ -1792,11 +1812,12 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
       if (gt) s += '<image data-p="' + BTX.p[gt[view === 'side' ? 1 : 0]] + '" x="' + px + '" y="' + py + '" width="' + U + '" height="' + U + '" preserveAspectRatio="xMinYMin slice"' + (opacity != null ? ' opacity="' + opacity.toFixed(2) + '"' : '') + '/>';
     }
     // Mit Originalbild sind reine Materialkürzel überflüssig; Richtungen und Hinweise bleiben stehen
-    if (b.glyph && !(gt && /^(Gl|Ko|Sc|Z|Fa|La|K|ψ|\+|F)$/.test(b.glyph))) {
-      var fs = b.glyph.length > 1 ? G.fsGly * .8 : G.fsGly;
+    var gl = gly != null ? gly : b.glyph;
+    if (gl && !(gt && /^(Gl|Ko|Sc|Z|Fa|La|K|ψ|\+|F)$/.test(gl))) {
+      var fs = gl.length > 2 ? G.fsGly * .68 : gl.length > 1 ? G.fsGly * .8 : G.fsGly;
       var col = b.open ? 'var(--mark)' : (b.dark ? '#fff' : (b.ink ? 'var(--accent)' : '#13263F'));
       if (gt) { col = '#fff'; s += '<rect x="' + (px + U * .14) + '" y="' + (py + U * .24) + '" width="' + (U * .72) + '" height="' + (U * .52) + '" rx="' + (U * .14) + '" fill="#0A1626" fill-opacity=".62"/>'; }
-      s += '<text x="' + (px + U / 2) + '" y="' + (py + U / 2) + '" dy=".36em" text-anchor="middle" font-size="' + fs + '" fill="' + col + '">' + b.glyph + '</text>';
+      s += '<text x="' + (px + U / 2) + '" y="' + (py + U / 2) + '" dy=".36em" text-anchor="middle" font-size="' + fs + '" fill="' + col + '">' + gl + '</text>';
     }
     return s;
   }
@@ -1915,10 +1936,139 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     var pad = 6, vb = (minX - pad).toFixed(1) + ' ' + (minY - pad).toFixed(1) + ' ' + (maxX - minX + 2 * pad).toFixed(1) + ' ' + (maxY - minY + 2 * pad).toFixed(1);
     return '<svg viewBox="' + vb + '" role="img" aria-label="3D-Ansicht ' + esc(p.title) + ', Blick von ' + VIEWN[r] + (all ? ', ganze Farm' : ', bis Ebene ' + (cur + 1)) + '">' + base + body + '</svg>';
   }
+  /* ---------- Alle Seiten: die ganze Farm von vorne, hinten, links, rechts, oben und unten ----------
+     Vorne heißt von Süden mit Blick nach Norden (Norden ist im Grundriss oben). l/r: Himmelsrichtung am linken/rechten Rand,
+     to/aw: Richtung auf den Betrachter zu / von ihm weg. */
+  var EDIRS = {
+    vorne: { n: 'Vorne', t: 'Von vorne (Süden), Blick nach Norden', l: 'W', r: 'O', to: 'S', aw: 'N' },
+    hinten: { n: 'Hinten', t: 'Von hinten (Norden), Blick nach Süden', l: 'O', r: 'W', to: 'N', aw: 'S' },
+    links: { n: 'Links', t: 'Von links (Westen), Blick nach Osten', l: 'N', r: 'S', to: 'W', aw: 'O' },
+    rechts: { n: 'Rechts', t: 'Von rechts (Osten), Blick nach Westen', l: 'S', r: 'N', to: 'O', aw: 'W' },
+    oben: { n: 'Oben', t: 'Von oben auf die ganze Farm, Norden ist oben', l: 'W', r: 'O', top: true },
+    unten: { n: 'Unten', t: 'Von unten, Norden ist oben, deshalb liegt Osten links', l: 'O', r: 'W', top: true }
+  };
+  var CNAME = { N: 'Norden', O: 'Osten', S: 'Süden', W: 'Westen' };
+  // Wohin ein Block zeigt: Himmelsrichtung oder U für nach unten (aus den Blocknamen)
+  var BDIR = { '6': 'N', '7': 'U', t: 'U', n: 'N', e: 'O', s: 'S', P: 'S', p: 'N', Y: 'S', y: 'N', H: 'O', I: 'O', J: 'W', l: 'U' };
+  function eGlyph(ch, dir) {
+    var d = BDIR[ch], D = EDIRS[dir]; if (!d) return null;
+    var a = D.top ? (d === 'U' ? (dir === 'oben' ? '⊗' : '⊙') : d === 'N' ? '↑' : d === 'S' ? '↓' : d === D.r ? '→' : '←')
+      : (d === 'U' ? '↓' : d === D.r ? '→' : d === D.l ? '←' : d === D.to ? '⊙' : '⊗');
+    var g = BLOCKS[ch].glyph || '';
+    return /[↑↓←→]/.test(g) ? g.replace(/[↑↓←→]/, a) : g + a;
+  }
+  // Höhe Y → Raster und Index der Ebene
+  function vox(p) {
+    if (p._vox) return p._vox;
+    var v = {}; p.layers.forEach(function (l, i) { for (var y = l.y[0]; y <= l.y[1]; y++) v[y] = { g: l.grid, i: i }; });
+    return (p._vox = v);
+  }
+  function opaque(ch) { return !SHAPE[ch] && !SEE[ch]; }
+  // Teilblöcke (Stufen, Fackeln, Zäune …): sichtbare Fläche in Blockanteilen [waagrecht von, bis, senkrecht von, bis]
+  function eShape(ch, dir) {
+    var s = SHAPE[ch]; if (!s) return null;
+    var sx = s[0], sz = s[1], bw = s[3], bd = s[4], h0 = s[2], h1 = s[2] + s[5];
+    if (dir === 'vorne') return [sx, sx + bw, 1 - h1, 1 - h0];
+    if (dir === 'hinten') return [1 - sx - bw, 1 - sx, 1 - h1, 1 - h0];
+    if (dir === 'links') return [sz, sz + bd, 1 - h1, 1 - h0];
+    if (dir === 'rechts') return [1 - sz - bd, 1 - sz, 1 - h1, 1 - h0];
+    if (dir === 'oben') return [sx, sx + bw, sz, sz + bd];
+    return [1 - sx - bw, 1 - sx, sz, sz + bd];
+  }
+  function eCols(p, dir) { return EDIRS[dir].top || dir === 'vorne' || dir === 'hinten' ? p.w : p.d; }
+  function drawElev(p, cur, dir, print) {
+    var D = EDIRS[dir], side = !D.top, ns = dir === 'vorne' || dir === 'hinten', cols = eCols(p, dir), depthN = ns ? p.d : p.w;
+    var rowsN = side ? p.yMax - p.yMin + 1 : p.d, G = geom({ w: cols }), U = G.U, M = G.M, gh = side && p.ground ? 3 : 0, foot = 7, H = M + rowsN * U + gh + foot;
+    var cutOn = side && st.ecut && !print, V = vox(p), hits = {}, s, u, k;
+    function at(uu, kk) { return dir === 'vorne' ? [uu, p.d - 1 - kk] : dir === 'hinten' ? [p.w - 1 - uu, kk] : dir === 'links' ? [kk, uu] : [p.w - 1 - kk, p.d - 1 - uu]; }
+    s = '<svg viewBox="0 0 ' + G.W + ' ' + H + '" role="img" aria-label="' + esc(p.title) + ': ' + esc(D.t) + (cutOn ? ', Schnitt' : '') + '">' + frame(G, cols, rowsN);
+    for (u = 0; u < cols; u++) {
+      var lab = side ? (ns ? at(u, 0)[0] : at(u, 0)[1]) : (dir === 'oben' ? u : p.w - 1 - u);
+      s += '<text x="' + (M + u * U + U / 2) + '" y="' + (M - 1.8) + '" text-anchor="middle" font-size="' + G.fsLab + '" fill="var(--ink-soft)">' + (lab + 1) + '</text>';
+    }
+    for (var r = 0; r < rowsN; r++) s += '<text x="' + (M - 1.6) + '" y="' + (M + r * U + U / 2) + '" dy=".36em" text-anchor="end" font-size="' + G.fsLab + '" fill="var(--ink-soft)">' + (side ? p.yMax - r : r + 1) + '</text>';
+    function put(uu, vv, list) {
+      if (!list.length) return;
+      var px = M + uu * U, py = M + vv * U, g = '<g class="ep" data-u="' + uu + '" data-v="' + vv + '" data-c="' + esc(list[0][0]) + '">';
+      for (var i = list.length - 1; i >= 0; i--) {
+        var e = list[i], ch = e[0], dep = e[1], sh = eShape(ch, dir), op = SEE[ch] || null, b = BLOCKS[ch], sh2 = dep ? Math.min(.4, dep * .05).toFixed(2) : 0;
+        if (sh) {
+          var rx = px + sh[0] * U, ry = py + sh[2] * U, rw = Math.max(.6, (sh[1] - sh[0]) * U), rh = Math.max(.6, (sh[3] - sh[2]) * U);
+          g += '<rect x="' + rx.toFixed(2) + '" y="' + ry.toFixed(2) + '" width="' + rw.toFixed(2) + '" height="' + rh.toFixed(2) + '" fill="' + b.fill + '"' + (op ? ' fill-opacity="' + op + '"' : '') + ' stroke="var(--sheet)" stroke-width=".3"/>';
+          if (sh2) g += '<rect x="' + rx.toFixed(2) + '" y="' + ry.toFixed(2) + '" width="' + rw.toFixed(2) + '" height="' + rh.toFixed(2) + '" fill="#0A1626" fill-opacity="' + sh2 + '"/>';
+        } else {
+          g += cell(ch, px, py, G, op, print ? null : (side ? 'side' : 'top'), eGlyph(ch, dir));
+          if (sh2) g += '<rect x="' + px + '" y="' + py + '" width="' + U + '" height="' + U + '" fill="#0A1626" fill-opacity="' + sh2 + '"/>';
+        }
+      }
+      s += g + '</g>';
+      hits[uu + ',' + vv] = list[0];
+    }
+    if (side) {
+      var ck = ns ? Math.min(p.d - 1, st.ecz) : Math.min(p.w - 1, st.ecx);
+      for (var y = p.yMax; y >= p.yMin; y--) {
+        var L = V[y]; if (!L) continue;
+        for (u = 0; u < cols; u++) {
+          var list = [];
+          for (k = 0; k < depthN; k++) {
+            var c = at(u, k); if (cutOn && (ns ? c[1] : c[0]) !== ck) continue;
+            var ch = L.g[c[1]].charAt(c[0]); if (AIR[ch] || !BLOCKS[ch]) continue;
+            list.push([ch, cutOn ? 0 : k, c[0], y, c[1]]); if (opaque(ch)) break;
+          }
+          put(u, p.yMax - y, list);
+        }
+      }
+      if (p.ground) s += '<rect x="' + M + '" y="' + (M + rowsN * U) + '" width="' + cols * U + '" height="' + gh + '" fill="var(--ink-soft)" fill-opacity=".45"/>';
+    } else {
+      for (var z = 0; z < p.d; z++) for (u = 0; u < cols; u++) {
+        var x = dir === 'oben' ? u : p.w - 1 - u, lst = [], dd = 0;
+        for (var yy = dir === 'oben' ? p.yMax : p.yMin; dir === 'oben' ? yy >= p.yMin : yy <= p.yMax; yy += dir === 'oben' ? -1 : 1, dd++) {
+          var LL = V[yy]; if (!LL) continue;
+          var c2 = LL.g[z].charAt(x); if (AIR[c2] || !BLOCKS[c2]) continue;
+          lst.push([c2, dd, x, yy, z]); if (opaque(c2)) break;
+        }
+        put(u, z, lst);
+      }
+    }
+    s += border(G, cols, rowsN);
+    if (side && !print) {
+      var cy = p.layers[cur].y, top = M + (p.yMax - cy[1]) * U, hh = (cy[1] - cy[0] + 1) * U;
+      s += '<rect x="' + (M - .6) + '" y="' + (top - .6) + '" width="' + (cols * U + 1.2) + '" height="' + (hh + 1.2) + '" fill="none" stroke="var(--mark)" stroke-width="1" stroke-dasharray="2.2 1.4"/>';
+    }
+    if (st.esel && !print) s += '<rect x="' + (M + st.esel[0] * U) + '" y="' + (M + st.esel[1] * U) + '" width="' + U + '" height="' + U + '" fill="none" stroke="var(--mark)" stroke-width="1.2"/>';
+    var fy = M + rowsN * U + gh + foot - 1.6;
+    s += '<text x="' + M + '" y="' + fy + '" font-size="' + G.fsLab + '" fill="var(--ink-soft)">◀ ' + CNAME[D.l] + '</text><text x="' + (M + cols * U) + '" y="' + fy + '" text-anchor="end" font-size="' + G.fsLab + '" fill="var(--ink-soft)">' + CNAME[D.r] + ' ▶</text>';
+    if (!print) st.ehits = hits;
+    return s + '</svg>';
+  }
+  function elevCtl(p) {
+    var D = EDIRS[st.edir], side = !D.top, ns = st.edir === 'vorne' || st.edir === 'hinten';
+    [].forEach.call($('dseg').querySelectorAll('[data-d]'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-d') === st.edir)); });
+    $('ecut').hidden = !side; $('ecut').setAttribute('aria-pressed', String(!!st.ecut)); $('ecutnav').hidden = !(side && st.ecut);
+    var n = ns ? p.d : p.w, v = Math.min(n - 1, ns ? st.ecz : st.ecx);
+    $('ecv').textContent = (ns ? 'Reihe ' : 'Spalte ') + (v + 1) + ' von ' + n; $('ecm').disabled = v <= 0; $('ecp').disabled = v >= n - 1;
+    $('elevcap').textContent = D.t + '. ' + (side && st.ecut ? 'Schnitt: nur ' + (ns ? 'Reihe ' : 'Spalte ') + (v + 1) + ' aus der Ebene von oben, nichts davor oder dahinter. ' : 'Weiter hinten liegende Blöcke sind dunkler. ') +
+      (side ? 'Oben stehen die ' + (ns ? 'Spalten' : 'Reihen') + ' aus der Ebene von oben, links die Höhe Y. ' : 'Oben stehen die Spalten, links die Reihen. ') +
+      'Pfeile zeigen die Richtung aus deinem Blick: → ← zur Seite, ⊙ auf dich zu, ⊗ von dir weg, ↓ nach unten.' + (side ? ' Gestrichelt ist die aktuelle Ebene.' : '') + ' Tippe einen Block an, dann springt die Ebene zu ihm.';
+  }
+  function elevClick(e) {
+    var p = PLANS[st.plan], svg = $('plan').querySelector('svg'), m = svg && svg.getScreenCTM(); if (!m) return;
+    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; pt = pt.matrixTransform(m.inverse());
+    var D = EDIRS[st.edir], G = geom({ w: eCols(p, st.edir) }), u = Math.floor((pt.x - G.M) / G.U), v = Math.floor((pt.y - G.M) / G.U), hb = st.ehits && st.ehits[u + ',' + v];
+    if (hb) {
+      st.esel = [u, v]; st.einfo = 'Spalte ' + (hb[2] + 1) + ', Reihe ' + (hb[4] + 1) + ', Höhe Y' + hb[3] + ': ' + bname(p, hb[0]);
+      var li = vox(p)[hb[3]].i; if (li !== st.layer[st.plan]) go(li); else renderLayer();
+      return;
+    }
+    if (!D.top && u >= 0 && u < eCols(p, st.edir) && v >= 0) { var L = vox(p)[p.yMax - v]; if (L) { st.esel = null; st.einfo = ''; go(L.i); } }
+  }
+  function elevReset(p) { st.esel = null; st.einfo = ''; st.ecz = p.sliceZ != null ? p.sliceZ : Math.floor(p.d / 2); st.ecx = p.sliceX != null ? p.sliceX : Math.floor(p.w / 2); }
+
   function setView(v) {
-    st.view = v === 'iso' ? 'iso' : 'grid'; try { window.localStorage.setItem('bp.view', st.view); } catch (e) {}
+    st.view = v === 'iso' || v === 'elev' ? v : 'grid'; try { window.localStorage.setItem('bp.view', st.view); } catch (e) {}
     [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === st.view)); });
     $('isoctl').hidden = st.view !== 'iso'; $('isoall').setAttribute('aria-pressed', String(!!st.isoAll));
+    $('elevctl').hidden = st.view !== 'elev';
     renderLayer();
   }
 
@@ -1966,7 +2116,10 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
       s += '<section class="pl"><h2>Ebene ' + (i + 1) + ' von ' + p.layers.length + ': ' + esc(l.name) + ' · ' + yText(l) + '</h2>' + solve(drawPlan(p, l, true)) +
         '<p><b>Setzen:</b> ' + (c.length ? c.map(function (k) { return k.n + ' × ' + esc(MATERIALS[k.mat]); }).join(', ') : 'nichts') + '</p><p>' + esc(l.text) + '</p></section>';
     });
-    s += '<p class="pmeta">Norden ist oben. Bedrock-Werkbank, Bauplan ' + esc(p.title) + '.</p>';
+    ['vorne', 'hinten', 'links', 'rechts', 'oben', 'unten'].forEach(function (d) {
+      s += '<section class="pl"><h2>Ganze Farm: ' + esc(EDIRS[d].t) + '</h2>' + solve(drawElev(p, 0, d, true)) + '</section>';
+    });
+    s += '<p class="pmeta">Norden ist oben. Bei den Ansichten der ganzen Farm sind weiter hinten liegende Blöcke dunkler. Bedrock-Werkbank, Bauplan ' + esc(p.title) + '.</p>';
     if (prev) root.setAttribute('data-theme', prev); else root.removeAttribute('data-theme');
     return s;
   }
@@ -2153,7 +2306,10 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     var wn = worldName(); $('pworld').hidden = !wn; $('pworld').textContent = wn ? 'Welt: ' + wn : '';
     syncBuild();
     if (st.view === 'iso') { $('plan').className = 'plan iso'; $('plan').innerHTML = drawIso(p, i); }
+    else if (st.view === 'elev') { $('plan').className = 'plan elev'; $('plan').innerHTML = drawElev(p, i, st.edir); elevCtl(p); }
     else { $('plan').className = 'plan'; $('plan').innerHTML = drawPlan(p, l); }
+    $('elevcap').hidden = st.view !== 'elev';
+    document.querySelector('.sheet .side').hidden = st.view === 'elev';
     $('side').innerHTML = drawSide(p, l);
     if (window.BWTEX) { BWTEX.fill($('plan')); BWTEX.fill($('side')); }
     var c = counts(l);
@@ -2165,6 +2321,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   }
   function probe() {
     var p = PLANS[st.plan], l = p.layers[st.layer[st.plan]];
+    if (st.view === 'elev') { $('probe').textContent = st.einfo || 'Tippe einen Block an, um zu sehen, was er ist und in welcher Ebene er liegt.'; return; }
     if (!st.sel) { $('probe').textContent = 'Tippe ein Kästchen an, um den Block zu sehen.'; return; }
     var ch = l.grid[st.sel[1]].charAt(st.sel[0]);
     $('probe').textContent = 'Spalte ' + (st.sel[0] + 1) + ', Reihe ' + (st.sel[1] + 1) + ': ' + (ch === '.' ? 'leer' : bname(p, ch));
@@ -2190,7 +2347,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     var want = 0, m = /^#([a-z]+)(?:\/(\d+))?$/.exec(location.hash), lay = null;
     PLANS.forEach(function (q, i) { if (m && m[1] === q.id) want = i; });
     if (m && m[2] && +m[2] >= 1 && +m[2] <= PLANS[want].layers.length) lay = +m[2] - 1;
-    st.plan = want; st.sel = null;
+    st.plan = want; st.sel = null; elevReset(PLANS[want]);
     if (lay != null) st.layer[want] = lay;
     renderPlanStatic(); renderLayer();
   }
@@ -2235,6 +2392,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   $('steps').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) go(+b.getAttribute('data-i')); });
   $('plan').addEventListener('click', function (e) {
     if (st.view === 'iso') return;
+    if (st.view === 'elev') { elevClick(e); return; }
     var p = PLANS[st.plan], c = hit(e, this, p, p.d, 0);
     st.sel = c; $('plan').innerHTML = drawPlan(p, p.layers[st.layer[st.plan]]); if (window.BWTEX) BWTEX.fill($('plan')); probe();
   });
@@ -2250,7 +2408,22 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     if (e.key === 'ArrowRight') go(st.layer[st.plan] + 1);
   });
   window.addEventListener('hashchange', route);
-  st.view = (function () { try { return window.localStorage.getItem('bp.view') === 'iso' ? 'iso' : 'grid'; } catch (e) { return 'grid'; } })();
+  st.view = (function () { try { var v = window.localStorage.getItem('bp.view'); return v === 'iso' || v === 'elev' ? v : 'grid'; } catch (e) { return 'grid'; } })();
+  st.edir = (function () { try { var d = window.localStorage.getItem('bp.edir'); return EDIRS[d] ? d : 'vorne'; } catch (e) { return 'vorne'; } })();
+  st.ecut = false; elevReset(PLANS[0]);
+  $('elevctl').hidden = st.view !== 'elev';
+  $('dseg').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-d]'); if (!b) return;
+    st.edir = b.getAttribute('data-d'); st.esel = null; st.einfo = ''; try { window.localStorage.setItem('bp.edir', st.edir); } catch (er) {}
+    renderLayer();
+  });
+  $('ecut').addEventListener('click', function () { st.ecut = !st.ecut; st.esel = null; st.einfo = ''; renderLayer(); });
+  function ecStep(d) {
+    var p = PLANS[st.plan], ns = st.edir === 'vorne' || st.edir === 'hinten', n = ns ? p.d : p.w, k = ns ? 'ecz' : 'ecx';
+    st[k] = Math.max(0, Math.min(n - 1, Math.min(n - 1, st[k]) + d)); st.esel = null; st.einfo = ''; renderLayer();
+  }
+  $('ecm').addEventListener('click', function () { ecStep(-1); });
+  $('ecp').addEventListener('click', function () { ecStep(1); });
   [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.addEventListener('click', function () { setView(b.getAttribute('data-v')); }); });
   $('isoctl').hidden = st.view !== 'iso';
   [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === st.view)); });

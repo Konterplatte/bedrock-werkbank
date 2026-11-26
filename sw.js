@@ -1,6 +1,6 @@
 // Bedrock-Werkbank als Web-App: speichert alle Dateien beim ersten Besuch, danach läuft sie ohne Internet.
 'use strict';
-const VERSION = "bw-9a820cde1c63";
+const VERSION = "bw-a53f6e184ccc";
 const FILES = [
  "./",
  "lexikon/",
