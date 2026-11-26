@@ -152,8 +152,14 @@ a { color: var(--accent); }
 .isoctl { display: inline-flex; gap: 6px; }
 .isoctl button, .toolrow button { border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); color: var(--ink); }
 .isoctl button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-.plan.iso { display: flex; justify-content: center; }
-.plan.iso svg { max-height: 72vh; }
+.plan.iso { display: flex; justify-content: center; touch-action: none; -webkit-user-select: none; user-select: none; cursor: grab; }
+.plan.iso:active { cursor: grabbing; }
+.plan.iso svg { width: 100%; height: auto; aspect-ratio: 1 / 1; max-height: 66vh; }
+/* Anzeige über der 3D-Zeichnung: von wo du gerade schaust */
+.isohud { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.isohud svg { width: 44px; height: 44px; flex: none; }
+.isohud b { display: block; font: 600 1rem/1.25 var(--f-display, inherit); color: var(--ink); }
+.isohud small { display: block; color: var(--ink-soft); font-size: .82rem; }
 /* Alle Seiten: Blickrichtung, Schnitt */
 .elevctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; width: 100%; }
 .dseg { display: inline-grid; grid-template-columns: repeat(6, auto); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--paper); }
@@ -454,12 +460,13 @@ html.cmp .below, html.edit .below { display: none; }
   <div class="progress"><span class="pworld" id="pworld" hidden></span><span class="ptext" id="ptext" aria-live="polite"></span><button type="button" id="preset">Zurücksetzen</button><div class="pbar" aria-hidden="true"><i id="pbar"></i></div></div>
   <div class="viewbar">
     <div class="vseg" role="group" aria-label="Ansicht"><button type="button" data-v="grid" aria-pressed="true">Ebene von oben</button><button type="button" data-v="elev" aria-pressed="false">Alle Seiten</button><button type="button" data-v="iso" aria-pressed="false">3D</button></div>
-    <div class="isoctl" id="isoctl" hidden><button type="button" id="isorot" aria-label="Ansicht drehen">Drehen ⟳</button><button type="button" id="isoall" aria-pressed="false">Ganze Farm</button></div>
+    <div class="isoctl" id="isoctl" hidden><button type="button" id="isorot" aria-label="Ansicht um 90 Grad drehen">Drehen ⟳</button><button type="button" id="isoall" aria-pressed="false">Ganze Farm</button><button type="button" id="isoreset">Zurücksetzen</button></div>
     <div class="elevctl" id="elevctl" hidden>
       <div class="dseg" id="dseg" role="group" aria-label="Blickrichtung"><button type="button" data-d="vorne">Vorne</button><button type="button" data-d="hinten">Hinten</button><button type="button" data-d="links">Links</button><button type="button" data-d="rechts">Rechts</button><button type="button" data-d="oben">Oben</button><button type="button" data-d="unten">Unten</button></div>
       <div class="ecut"><button type="button" id="ecut" aria-pressed="false">Schnitt</button><span class="ecut" id="ecutnav" hidden><button type="button" id="ecm" aria-label="Schnitt eins zurück">−</button><b id="ecv" aria-live="polite"></b><button type="button" id="ecp" aria-label="Schnitt eins weiter">+</button></span></div>
     </div>
   </div>
+  <div class="isohud" id="isohud" hidden aria-live="polite"></div>
   <div class="plan" id="plan"></div>
   <p class="caption" id="elevcap" hidden></p>
   <div class="probe proberow"><span id="probe" aria-live="polite"></span><button type="button" class="texbtn" id="texbtn" aria-pressed="true">Originalbilder</button></div>
@@ -1904,37 +1911,94 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     M: [.12, .12, 0, .76, .76, .55], j: [.05, .05, 0, .9, .9, .92], B: [0, 0, 0, 1, 1, .56], b: [0, 0, 0, 1, 1, .56], D: [0, .42, 0, 1, .16, 1], d: [0, .42, 0, 1, .16, 1],
     C: [.04, .04, 0, .92, .92, .92], c: [.06, .06, 0, .88, .88, 1] };
   var SEE = { G: .42, Q: .55, f: .4 };
-  var VIEWN = ['Südosten', 'Nordosten', 'Nordwesten', 'Südwesten'];
-  function drawIso(p, cur) {
-    var r = st.rot || 0, W = r % 2 ? p.d : p.w, Dd = r % 2 ? p.w : p.d, all = !!st.isoAll, occ = {}, list = [];
-    function rot(x, z) { return r === 0 ? [x, z] : r === 1 ? [p.d - 1 - z, x] : r === 2 ? [p.w - 1 - x, p.d - 1 - z] : [z, p.w - 1 - x]; }
+  /* Frei drehbare 3D-Ansicht. Kamera: b = Himmelsrichtung, aus der du schaust (Grad, Norden 0, Osten 90),
+     e = Höhe über dem Boden (Grad, −89 von unten bis 89 von oben), z = Zoom, px/py = Verschiebung. */
+  var CAM0 = { b: 135, e: 30, z: 1, px: 0, py: 0 };
+  var BEAR = ['Norden', 'Nordosten', 'Osten', 'Südosten', 'Süden', 'Südwesten', 'Westen', 'Nordwesten'];
+  var SIDE8 = ['hinten', 'hinten rechts', 'rechts', 'vorne rechts', 'vorne', 'vorne links', 'links', 'hinten links'];
+  function nb(b) { return ((b % 360) + 360) % 360; }
+  function camText(c) {
+    var i = Math.round(nb(c.b) / 45) % 8, e = Math.round(c.e);
+    var h = e >= 75 ? 'von oben' : e >= 25 ? 'schräg von oben' : e > -25 ? 'von der Seite' : e > -75 ? 'schräg von unten' : 'von unten';
+    return 'Blick von ' + BEAR[i] + ' (' + SIDE8[i] + '), ' + h + ' (' + e + '°)';
+  }
+  // Licht von oben und leicht von Südosten: jede Seite behält beim Drehen ihre Helligkeit
+  var FACEMIX = { t: [84, '#fff'], u: [58, '#000'], s: [100, ''], n: [82, '#000'], o: [72, '#000'], w: [88, '#000'] };
+  var colMemo = {};
+  function faceCol(ch, k) {
+    var key = ch + k; if (colMemo[key]) return colMemo[key];
+    var f = BLOCKS[ch].fill, m = FACEMIX[k];
+    return (colMemo[key] = m[0] === 100 ? f : 'color-mix(in srgb, ' + f + ' ' + m[0] + '%, ' + m[1] + ')');
+  }
+  // Blöcke und ihre Außenflächen; Flächen zwischen zwei vollen Blöcken sieht man nie und fallen weg
+  function isoGeo(p, cur, all) {
+    var key = cur + '|' + all; if (p._iso && p._iso.key === key) return p._iso;
+    var occ = {}, list = [], faces = [];
     p.layers.forEach(function (l, li) {
       if (!all && li > cur) return;
       for (var y = l.y[0]; y <= l.y[1]; y++) for (var z = 0; z < p.d; z++) for (var x = 0; x < p.w; x++) {
         var ch = l.grid[z].charAt(x); if (AIR[ch] || !BLOCKS[ch]) continue;
-        var q = rot(x, z), h = y - p.yMin, e = { x: q[0], z: q[1], h: h, ch: ch, cur: li === cur };
-        occ[q[0] + ',' + q[1] + ',' + h] = ch; list.push(e);
+        var h = y - p.yMin; occ[x + ',' + z + ',' + h] = ch; list.push({ x: x, z: z, h: h, y: y, ch: ch, cur: li === cur });
       }
     });
     function solid(x, z, h) { var c = occ[x + ',' + z + ',' + h]; return c && !SHAPE[c] && !SEE[c]; }
-    list.sort(function (a, b) { return (a.x + a.z) - (b.x + b.z) || a.h - b.h || a.x - b.x; });
-    var C = 0.8660254, U = 10, pts = [], minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
-    function P(x, z, h) { var px = (x - z) * C * U, py = (x + z) * U / 2 - h * U; if (px < minX) minX = px; if (px > maxX) maxX = px; if (py < minY) minY = py; if (py > maxY) maxY = py; return px.toFixed(1) + ',' + py.toFixed(1); }
-    var body = '';
-    list.forEach(function (e) {
-      var sh = SHAPE[e.ch], b = BLOCKS[e.ch], x0 = e.x, z0 = e.z, h0 = e.h, w = 1, d = 1, hh = 1;
+    list.forEach(function (e, bi) {
+      var sh = SHAPE[e.ch], x0 = e.x, z0 = e.z, h0 = e.h, w = 1, d = 1, hh = 1, full = !sh;
       if (sh) { x0 += sh[0]; z0 += sh[1]; h0 += sh[2]; w = sh[3]; d = sh[4]; hh = sh[5]; }
-      var x1 = x0 + w, z1 = z0 + d, h1 = h0 + hh, op = SEE[e.ch] ? ' fill-opacity="' + SEE[e.ch] + '"' : '';
-      var full = !sh, stroke = e.cur ? ' stroke="var(--mark)" stroke-width=".9"' : ' stroke="rgba(10,20,35,.28)" stroke-width=".4"';
-      var top = 'color-mix(in srgb, ' + b.fill + ' 84%, #fff)', south = b.fill, east = 'color-mix(in srgb, ' + b.fill + ' 72%, #000)';
-      if (!(full && solid(e.x, e.z + 1, e.h))) body += '<polygon points="' + P(x0, z1, h0) + ' ' + P(x1, z1, h0) + ' ' + P(x1, z1, h1) + ' ' + P(x0, z1, h1) + '" style="fill:' + south + '"' + op + stroke + '/>';
-      if (!(full && solid(e.x + 1, e.z, e.h))) body += '<polygon points="' + P(x1, z0, h0) + ' ' + P(x1, z1, h0) + ' ' + P(x1, z1, h1) + ' ' + P(x1, z0, h1) + '" style="fill:' + east + '"' + op + stroke + '/>';
-      if (!(full && solid(e.x, e.z, e.h + 1))) body += '<polygon points="' + P(x0, z0, h1) + ' ' + P(x1, z0, h1) + ' ' + P(x1, z1, h1) + ' ' + P(x0, z1, h1) + '" style="fill:' + top + '"' + op + stroke + '/>';
+      var x1 = x0 + w, z1 = z0 + d, h1 = h0 + hh, c = [(x0 + x1) / 2, (h0 + h1) / 2, (z0 + z1) / 2];
+      [['t', [0, 1, 0], [[x0, h1, z0], [x1, h1, z0], [x1, h1, z1], [x0, h1, z1]], solid(e.x, e.z, e.h + 1)],
+       ['u', [0, -1, 0], [[x0, h0, z0], [x1, h0, z0], [x1, h0, z1], [x0, h0, z1]], solid(e.x, e.z, e.h - 1)],
+       ['s', [0, 0, 1], [[x0, h0, z1], [x1, h0, z1], [x1, h1, z1], [x0, h1, z1]], solid(e.x, e.z + 1, e.h)],
+       ['n', [0, 0, -1], [[x0, h0, z0], [x1, h0, z0], [x1, h1, z0], [x0, h1, z0]], solid(e.x, e.z - 1, e.h)],
+       ['o', [1, 0, 0], [[x1, h0, z0], [x1, h0, z1], [x1, h1, z1], [x1, h1, z0]], solid(e.x + 1, e.z, e.h)],
+       ['w', [-1, 0, 0], [[x0, h0, z0], [x0, h0, z1], [x0, h1, z1], [x0, h1, z0]], solid(e.x - 1, e.z, e.h)]]
+        .forEach(function (f) { if (!(full && f[3])) faces.push({ k: f[0], n: f[1], v: f[2], c: c, b: bi }); });
     });
-    // Bodenplatte als Orientierung
-    var base = '<polygon points="' + P(0, 0, 0) + ' ' + P(W, 0, 0) + ' ' + P(W, Dd, 0) + ' ' + P(0, Dd, 0) + '" fill="var(--paper)" stroke="var(--line)" stroke-width=".6"/>';
-    var pad = 6, vb = (minX - pad).toFixed(1) + ' ' + (minY - pad).toFixed(1) + ' ' + (maxX - minX + 2 * pad).toFixed(1) + ' ' + (maxY - minY + 2 * pad).toFixed(1);
-    return '<svg viewBox="' + vb + '" role="img" aria-label="3D-Ansicht ' + esc(p.title) + ', Blick von ' + VIEWN[r] + (all ? ', ganze Farm' : ', bis Ebene ' + (cur + 1)) + '">' + base + body + '</svg>';
+    return (p._iso = { key: key, list: list, faces: faces });
+  }
+  function camVec(c) {
+    var b = c.b * Math.PI / 180, e = c.e * Math.PI / 180, cb = Math.cos(b), sb = Math.sin(b), ce = Math.cos(e), se = Math.sin(e);
+    // V: von der Farm zum Betrachter; R: Bildschirm rechts; Up: Bildschirm oben (Achsen x Osten, h oben, z Süden)
+    return { V: [ce * sb, se, -ce * cb], R: [-cb, 0, -sb], Up: [-se * sb, ce, se * cb] };
+  }
+  function isoBox(p, c) {
+    var H = p.yMax - p.yMin + 1, half = (Math.sqrt(p.w * p.w + p.d * p.d + H * H) / 2 + .6) * 10 / c.z;
+    return [-half + c.px, -half + c.py, 2 * half, 2 * half];
+  }
+  function drawIso(p, cur) {
+    var all = !!st.isoAll, G = isoGeo(p, cur, all), c = st.cam, A = camVec(c), V = A.V, R = A.R, Up = A.Up, U = 10;
+    var cx = p.w / 2, cy = (p.yMax - p.yMin + 1) / 2, cz = p.d / 2;
+    function P(q) { var x = q[0] - cx, y = q[1] - cy, z = q[2] - cz; return ((x * R[0] + z * R[2]) * U).toFixed(1) + ',' + (-(x * Up[0] + y * Up[1] + z * Up[2]) * U).toFixed(1); }
+    var vis = [];
+    G.faces.forEach(function (f) {
+      if (f.n[0] * V[0] + f.n[1] * V[1] + f.n[2] * V[2] <= 1e-6) return;
+      f.d = (f.c[0] - cx) * V[0] + (f.c[1] - cy) * V[1] + (f.c[2] - cz) * V[2]; vis.push(f);
+    });
+    vis.sort(function (a, b) { return a.d - b.d || a.b - b.b; });   // hinten zuerst, vorne zuletzt
+    var body = '';
+    vis.forEach(function (f) {
+      var e = G.list[f.b], op = SEE[e.ch] ? ' fill-opacity="' + SEE[e.ch] + '"' : '';
+      body += '<polygon data-f="' + f.k + '" data-b="' + f.b + '" points="' + P(f.v[0]) + ' ' + P(f.v[1]) + ' ' + P(f.v[2]) + ' ' + P(f.v[3]) + '" style="fill:' + faceCol(e.ch, f.k) + '"' + op +
+        (e.cur ? ' stroke="var(--mark)" stroke-width=".9"' : ' stroke="rgba(10,20,35,.28)" stroke-width=".4"') + '/>';
+    });
+    // Bodenplatte: von oben als Fläche darunter, von unten nur als Umriss darüber
+    var g = [[0, 0, 0], [p.w, 0, 0], [p.w, 0, p.d], [0, 0, p.d]].map(P).join(' ');
+    var base = c.e > 0 ? '<polygon points="' + g + '" fill="var(--paper)" stroke="var(--line)" stroke-width=".6"/>' : '';
+    var over = c.e > 0 ? '' : '<polygon points="' + g + '" fill="none" stroke="var(--ink-soft)" stroke-width=".6" stroke-dasharray="2 1.6"/>';
+    return '<svg viewBox="' + isoBox(p, c).map(function (v) { return v.toFixed(1); }).join(' ') + '" role="img" aria-label="3D-Ansicht ' + esc(p.title) + ', ' + camText(c) +
+      (all ? ', ganze Farm' : ', bis Ebene ' + (cur + 1)) + '">' + base + body + over + '</svg>';
+  }
+  // Kompass über der Zeichnung: Norden oben, der Punkt zeigt, wo du stehst
+  function isoHud() {
+    var c = st.cam, b = nb(c.b) * Math.PI / 180, r = 15, vx = 22 + r * Math.sin(b), vy = 22 - r * Math.cos(b);
+    var touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    $('isohud').innerHTML = '<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19.5" fill="var(--sheet)" stroke="var(--line)"/>' +
+      '<text x="22" y="8.2" text-anchor="middle" font-size="6.4" fill="var(--mark)">N</text><text x="38" y="24.2" text-anchor="middle" font-size="5.6" fill="var(--ink-soft)">O</text>' +
+      '<text x="22" y="40.4" text-anchor="middle" font-size="5.6" fill="var(--ink-soft)">S</text><text x="6" y="24.2" text-anchor="middle" font-size="5.6" fill="var(--ink-soft)">W</text>' +
+      '<rect x="18" y="18" width="8" height="8" rx="1" fill="var(--accent)" fill-opacity=".35" stroke="var(--accent)" stroke-width=".8"/>' +
+      '<line x1="' + vx.toFixed(1) + '" y1="' + vy.toFixed(1) + '" x2="22" y2="22" stroke="var(--mark)" stroke-width="1.2" stroke-dasharray="1.6 1.2"/>' +
+      '<circle id="isoeye" data-b="' + Math.round(nb(c.b)) + '" cx="' + vx.toFixed(1) + '" cy="' + vy.toFixed(1) + '" r="3.6" fill="var(--mark)"/></svg>' +
+      '<span><b id="isotxt">' + camText(c) + '</b><small>' + (touch ? 'Mit einem Finger drehen und kippen, mit zwei Fingern zoomen und verschieben.' : 'Ziehen dreht und kippt, das Mausrad zoomt, mit Umschalt verschiebst du.') + '</small></span>';
   }
   /* ---------- Alle Seiten: die ganze Farm von vorne, hinten, links, rechts, oben und unten ----------
      Vorne heißt von Süden mit Blick nach Norden (Norden ist im Grundriss oben). l/r: Himmelsrichtung am linken/rechten Rand,
@@ -2068,7 +2132,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     st.view = v === 'iso' || v === 'elev' ? v : 'grid'; try { window.localStorage.setItem('bp.view', st.view); } catch (e) {}
     [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === st.view)); });
     $('isoctl').hidden = st.view !== 'iso'; $('isoall').setAttribute('aria-pressed', String(!!st.isoAll));
-    $('elevctl').hidden = st.view !== 'elev';
+    $('elevctl').hidden = st.view !== 'elev'; st.isoinfo = '';
     renderLayer();
   }
 
@@ -2305,7 +2369,8 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     save(wk('bp.layer.' + p.id), i);
     var wn = worldName(); $('pworld').hidden = !wn; $('pworld').textContent = wn ? 'Welt: ' + wn : '';
     syncBuild();
-    if (st.view === 'iso') { $('plan').className = 'plan iso'; $('plan').innerHTML = drawIso(p, i); }
+    $('isohud').hidden = st.view !== 'iso';
+    if (st.view === 'iso') { $('plan').className = 'plan iso'; $('plan').innerHTML = drawIso(p, i); isoHud(); }
     else if (st.view === 'elev') { $('plan').className = 'plan elev'; $('plan').innerHTML = drawElev(p, i, st.edir); elevCtl(p); }
     else { $('plan').className = 'plan'; $('plan').innerHTML = drawPlan(p, l); }
     $('elevcap').hidden = st.view !== 'elev';
@@ -2322,6 +2387,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   function probe() {
     var p = PLANS[st.plan], l = p.layers[st.layer[st.plan]];
     if (st.view === 'elev') { $('probe').textContent = st.einfo || 'Tippe einen Block an, um zu sehen, was er ist und in welcher Ebene er liegt.'; return; }
+    if (st.view === 'iso') { $('probe').textContent = st.isoinfo || 'Tippe einen Block an, um zu sehen, was er ist.'; return; }
     if (!st.sel) { $('probe').textContent = 'Tippe ein Kästchen an, um den Block zu sehen.'; return; }
     var ch = l.grid[st.sel[1]].charAt(st.sel[0]);
     $('probe').textContent = 'Spalte ' + (st.sel[0] + 1) + ', Reihe ' + (st.sel[1] + 1) + ': ' + (ch === '.' ? 'leer' : bname(p, ch));
@@ -2427,8 +2493,77 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.addEventListener('click', function () { setView(b.getAttribute('data-v')); }); });
   $('isoctl').hidden = st.view !== 'iso';
   [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === st.view)); });
-  $('isorot').addEventListener('click', function () { st.rot = ((st.rot || 0) + 1) % 4; renderLayer(); });
-  $('isoall').addEventListener('click', function () { st.isoAll = !st.isoAll; this.setAttribute('aria-pressed', String(st.isoAll)); renderLayer(); });
+  /* 3D: ziehen dreht und kippt, zwei Finger oder Mausrad zoomen, Umschalt + ziehen oder zwei Finger verschieben */
+  st.cam = (function () { var c = load('bp.cam'); return c && isFinite(c.b) && isFinite(c.e) ? { b: nb(c.b), e: Math.max(-89, Math.min(89, c.e)), z: 1, px: 0, py: 0 } : { b: CAM0.b, e: CAM0.e, z: 1, px: 0, py: 0 }; })();
+  var isoPts = {}, isoDrag = null, isoRaf = 0, isoAnim = 0;
+  function isoFrame() { isoRaf = 0; if (st.view !== 'iso') return; var p = PLANS[st.plan]; $('plan').innerHTML = drawIso(p, st.layer[st.plan]); isoHud(); }
+  function isoSched() { if (!isoRaf) isoRaf = requestAnimationFrame(isoFrame); }
+  function isoKeep() { save('bp.cam', { b: Math.round(st.cam.b * 10) / 10, e: Math.round(st.cam.e * 10) / 10 }); }
+  function unitsPerPx() { var s = $('plan').querySelector('svg'); if (!s) return 1; var r = s.getBoundingClientRect(), vb = isoBox(PLANS[st.plan], st.cam); return vb[2] / Math.max(1, Math.min(r.width, r.height)); }
+  function clampE(e) { return Math.max(-89, Math.min(89, e)); }
+  function isoPick(el) {
+    var bi = el && el.getAttribute && el.getAttribute('data-b'); if (bi == null || !el.hasAttribute('data-f')) return;
+    var p = PLANS[st.plan], g = isoGeo(p, st.layer[st.plan], !!st.isoAll), e = g.list[+bi]; if (!e) return;
+    st.isoinfo = 'Spalte ' + (e.x + 1) + ', Reihe ' + (e.z + 1) + ', Höhe Y' + e.y + ': ' + bname(p, e.ch); probe();
+  }
+  $('plan').addEventListener('pointerdown', function (e) {
+    if (st.view !== 'iso') return;
+    cancelAnimationFrame(isoAnim);
+    if (e.isPrimary) isoPts = {};   // neue Geste: liegengebliebene Finger vergessen
+    isoPts[e.pointerId] = { x: e.clientX, y: e.clientY };
+    try { this.setPointerCapture(e.pointerId); } catch (er) {}
+    var ids = Object.keys(isoPts);
+    if (ids.length === 1) isoDrag = { m: 'rot', x: e.clientX, y: e.clientY, b: st.cam.b, e: st.cam.e, px: st.cam.px, py: st.cam.py, pan: e.shiftKey, moved: 0, el: e.target };
+    else if (ids.length === 2) {
+      var a = isoPts[ids[0]], c = isoPts[ids[1]];
+      isoDrag = { m: 'pinch', d0: Math.max(10, Math.hypot(a.x - c.x, a.y - c.y)), z0: st.cam.z, mx: (a.x + c.x) / 2, my: (a.y + c.y) / 2, px: st.cam.px, py: st.cam.py, k: unitsPerPx(), moved: 99 };
+    }
+    e.preventDefault();
+  });
+  $('plan').addEventListener('pointermove', function (e) {
+    if (!isoDrag || !isoPts[e.pointerId]) return;
+    isoPts[e.pointerId] = { x: e.clientX, y: e.clientY };
+    var ids = Object.keys(isoPts);
+    if (isoDrag.m === 'rot' && ids.length === 1) {
+      var dx = e.clientX - isoDrag.x, dy = e.clientY - isoDrag.y; isoDrag.moved = Math.max(isoDrag.moved, Math.abs(dx) + Math.abs(dy));
+      if (isoDrag.pan) { var k = unitsPerPx(); st.cam.px = isoDrag.px - dx * k; st.cam.py = isoDrag.py - dy * k; }
+      else { st.cam.b = nb(isoDrag.b + dx * .45); st.cam.e = clampE(isoDrag.e + dy * .45); }
+      isoSched();
+    } else if (isoDrag.m === 'pinch' && ids.length >= 2) {
+      var a = isoPts[ids[0]], c = isoPts[ids[1]], d = Math.hypot(a.x - c.x, a.y - c.y);
+      st.cam.z = Math.max(.5, Math.min(6, isoDrag.z0 * d / isoDrag.d0));
+      st.cam.px = isoDrag.px - ((a.x + c.x) / 2 - isoDrag.mx) * isoDrag.k; st.cam.py = isoDrag.py - ((a.y + c.y) / 2 - isoDrag.my) * isoDrag.k;
+      isoSched();
+    }
+  });
+  function isoUp(e) {
+    if (!isoPts[e.pointerId]) return;
+    delete isoPts[e.pointerId];
+    if (isoDrag && isoDrag.m === 'rot' && isoDrag.moved < 6 && e.type === 'pointerup') isoPick(isoDrag.el);
+    var ids = Object.keys(isoPts);
+    if (!ids.length) { isoDrag = null; isoKeep(); }
+    else if (isoDrag && isoDrag.m === 'pinch') { var q = isoPts[ids[0]]; isoDrag = { m: 'rot', x: q.x, y: q.y, b: st.cam.b, e: st.cam.e, moved: 99 }; }
+  }
+  ['pointerup', 'pointercancel'].forEach(function (k) { $('plan').addEventListener(k, isoUp); });
+  $('plan').addEventListener('wheel', function (e) {
+    if (st.view !== 'iso') return;
+    e.preventDefault(); st.cam.z = Math.max(.5, Math.min(6, st.cam.z * Math.exp(-e.deltaY * .0015))); isoSched();
+  }, { passive: false });
+  // Weich auf eine Zielansicht drehen (bei „Bewegung reduzieren“ sofort)
+  function isoTo(b, e2, z, px, py) {
+    cancelAnimationFrame(isoAnim);
+    var s = { b: st.cam.b, e: st.cam.e, z: st.cam.z, px: st.cam.px, py: st.cam.py }, db = ((b - s.b + 540) % 360) - 180, t0 = performance.now();
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    (function step(now) {
+      var k = calm ? 1 : Math.min(1, (now - t0) / 320), q = 1 - Math.pow(1 - k, 3);
+      st.cam = { b: nb(s.b + db * q), e: s.e + (e2 - s.e) * q, z: s.z + (z - s.z) * q, px: s.px + (px - s.px) * q, py: s.py + (py - s.py) * q };
+      isoFrame();
+      if (k < 1) isoAnim = requestAnimationFrame(step); else isoKeep();
+    })(t0);
+  }
+  $('isorot').addEventListener('click', function () { isoTo(Math.round((st.cam.b - 90) / 45) * 45, st.cam.e, st.cam.z, st.cam.px, st.cam.py); });
+  $('isoreset').addEventListener('click', function () { st.isoinfo = ''; probe(); isoTo(CAM0.b, CAM0.e, 1, 0, 0); });
+  $('isoall').addEventListener('click', function () { st.isoAll = !st.isoAll; st.isoinfo = ''; this.setAttribute('aria-pressed', String(st.isoAll)); renderLayer(); });
   $('bmbtn').addEventListener('click', function () { setBuild(true); });
   $('editbtn').addEventListener('click', function () { location.hash = '#editor/' + PLANS[st.plan].id; });
   function resize(dir) {
