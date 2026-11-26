@@ -202,7 +202,7 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .thero .hero-in { grid-template-columns: minmax(0, 1fr); padding-bottom: clamp(20px, 3vw, 30px); }
 .thero h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); }
 .thero .lead { margin-bottom: 0; }
-.tabsbar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); }
+.tabsbar { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); }
 .tabsbar button { appearance: none; min-width: 0; min-height: 50px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft); display: flex; align-items: center; justify-content: center; gap: 9px;
   font: 600 1.05rem var(--f-display); letter-spacing: .02em; padding: 4px 8px; cursor: pointer; white-space: nowrap; }
 .tabsbar button[aria-selected="true"] { background: var(--sheet); color: var(--ink); box-shadow: 0 1px 4px rgba(19, 38, 63, .16); }
@@ -381,6 +381,35 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; overflow-y: auto; }
 .dfoot { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px)); }
 
+/* 2.0: Getestet-Marke, Links unter den Bauplänen, Erfahrung, Zeit, Vorab-Laden, Hilfe */
+.ptest { position: absolute; left: 8px; bottom: 8px; padding: 2px 9px; border-radius: 999px; background: var(--ok); color: #fff; font-size: .78rem; font-weight: 600; }
+.plinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.plinks small { color: var(--ink-soft); font-weight: 500; margin-left: 6px; }
+.coords.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.xbar { height: 10px; border-radius: 999px; background: var(--tint); overflow: hidden; border: 1px solid var(--line); }
+.xbar i { display: block; height: 100%; width: 0; background: var(--ok); transition: width .2s ease; }
+.xlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.xlist li { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.xlist .qt { width: 30px; height: 30px; flex: none; }
+.xlist b { font-variant-numeric: tabular-nums; }
+.zgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.zbox { display: flex; flex-direction: column; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); min-width: 0; }
+.zbox h3 { margin: 0; font: 700 1.25rem/1.1 var(--f-display); }
+.zbox .asum b { font-size: 1.35rem; }
+.zin { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 8px; }
+.asum.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tpl { display: flex; flex-direction: column; gap: 6px; }
+.tprog { display: flex; flex-direction: column; gap: 6px; }
+.tprog .xbar i { background: var(--accent); }
+.help details { border-top: 1px solid var(--line); padding: 9px 0; }
+.help details:last-child { border-bottom: 1px solid var(--line); }
+.help summary { cursor: pointer; font-weight: 600; }
+.help p, .help ul { margin: 6px 0 0; font-size: .95rem; }
+.help ul { padding-left: 20px; }
+.help li + li { margin-top: 3px; }
+@media (max-width: 1000px) { .zgrid { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 721px) and (max-width: 1240px) { .tabsbar .tl { display: none; } .tabsbar .ts { display: inline; } }
+
 /* Mittelbreit */
 @media (max-width: 1100px) {
   .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -417,7 +446,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   .thero .hero-in { padding: 18px 16px 18px; }
   .thero h1 { font-size: 2.2rem; }
   .thero .lead { display: none; }
-  .tabsbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tabsbar { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .tabsbar button { flex-direction: column; gap: 2px; min-height: 58px; padding: 6px 2px 5px; font-size: .95rem; }
   .tabsbar .qt { width: 24px; height: 24px; }
   .tabsbar .tl { display: none; }
@@ -521,6 +550,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
             <button type="button" class="ttile" data-tool="brauen"><span class="ticon" id="ti-brauen" aria-hidden="true"></span><span><b>Brau-Planer</b><small>Weg und Zutaten für jeden Trank</small></span></button>
             <button type="button" class="ttile" data-tool="portal"><span class="ticon" id="ti-portal" aria-hidden="true"></span><span><b>Nether-Portal</b><small>Gegenportal berechnen</small></span></button>
             <button type="button" class="ttile" data-tool="kreis"><span class="ticon" id="ti-kreis" aria-hidden="true"></span><span><b>Kreise und Kuppeln</b><small>Runde Bauten Block für Block</small></span></button>
+            <button type="button" class="ttile" data-tool="xp"><span class="ticon" id="ti-xp" aria-hidden="true"></span><span><b>Erfahrung</b><small>Level und Punkte umrechnen</small></span></button>
+            <button type="button" class="ttile" data-tool="zeit"><span class="ticon" id="ti-zeit" aria-hidden="true"></span><span><b>Zeit und Redstone</b><small>Ticks, Trichter-Uhr und Öfen</small></span></button>
           </div>
           <div class="tcard">
             <div class="ptitle">Übersichten im Lexikon</div>
@@ -536,11 +567,13 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       <section aria-labelledby="h-plans">
         <h2 id="h-plans">Baupläne</h2>
         <div class="plans" id="plans"></div>
+        <div class="plinks" id="plinks"></div>
       </section>
       <div class="install web-only" id="windl" hidden>
         <p><b>Auch für Windows 10 und 11:</b> dieselbe App als eigenes Programm. ZIP herunterladen, entpacken, <b>Bedrock-Werkbank.exe</b> starten.</p>
         <a class="btn primary dl" href="download/Bedrock-Werkbank-Windows.zip" download>Herunterladen</a>
       </div>
+      <div class="tacts"><button type="button" class="btn" id="helpbtn">Hilfe und Tipps</button></div>
       <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Originalbilder sind nicht in der App enthalten: Sie werden beim Anzeigen aus Mojangs Repository bedrock-samples auf dein Gerät geladen und nur dort gespeichert. NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
     </div>
   </section>
@@ -550,7 +583,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <div>
           <p class="eyebrow">Bedrock-Werkbank</p>
           <h1>Werkzeuge</h1>
-          <p class="lead">Sammelliste, Koordinaten, Amboss-Planer, Brau-Planer, Portal- und Kreis-Rechner. Gespeichert wird alles nur auf diesem Gerät, auf Wunsch getrennt nach Welten.</p>
+          <p class="lead">Sammelliste, Koordinaten, Amboss- und Brau-Planer, Portal, Kreise, Erfahrung sowie Zeit und Redstone. Gespeichert wird alles nur auf diesem Gerät, auf Wunsch getrennt nach Welten.</p>
         </div>
       </div>
     </div>
@@ -571,6 +604,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <button type="button" role="tab" id="tab-brauen" aria-controls="tp-brauen" data-tool="brauen"><span class="tbi" id="tb-brauen" aria-hidden="true"></span><span class="tl">Brauen</span><span class="ts" aria-hidden="true">Brauen</span></button>
         <button type="button" role="tab" id="tab-portal" aria-controls="tp-portal" data-tool="portal"><span class="tbi" id="tb-portal" aria-hidden="true"></span><span class="tl">Portal</span><span class="ts" aria-hidden="true">Portal</span></button>
         <button type="button" role="tab" id="tab-kreis" aria-controls="tp-kreis" data-tool="kreis"><span class="tbi" id="tb-kreis" aria-hidden="true"></span><span class="tl">Kreise</span><span class="ts" aria-hidden="true">Kreise</span></button>
+        <button type="button" role="tab" id="tab-xp" aria-controls="tp-xp" data-tool="xp"><span class="tbi" id="tb-xp" aria-hidden="true"></span><span class="tl">Erfahrung</span><span class="ts" aria-hidden="true">XP</span></button>
+        <button type="button" role="tab" id="tab-zeit" aria-controls="tp-zeit" data-tool="zeit"><span class="tbi" id="tb-zeit" aria-hidden="true"></span><span class="tl">Zeit</span><span class="ts" aria-hidden="true">Zeit</span></button>
       </div>
 
       <div class="tpanel" id="tp-liste" role="tabpanel" aria-labelledby="tab-liste">
@@ -583,6 +618,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
             <input class="inp" id="l-n" type="number" min="1" max="99999" value="1" inputmode="numeric" aria-label="Anzahl">
             <button type="submit" class="btn primary">Hinzufügen</button>
           </form>
+          <div class="tpl"><p class="fl" style="margin:0">Packlisten-Vorlagen: antippen, dann steht alles auf der Liste</p><div class="qchips" id="l-tpl"></div></div>
           <div class="tacts">
             <button type="button" class="btn" id="l-clean">Erledigte entfernen</button>
             <button type="button" class="btn" id="l-copy">Als Text kopieren</button>
@@ -742,9 +778,78 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         </div>
       </div>
 
+      <div class="tpanel" id="tp-xp" role="tabpanel" aria-labelledby="tab-xp" hidden>
+        <div class="tcard">
+          <div class="thead">
+            <div class="ticon" id="xppic" aria-hidden="true"></div>
+            <div><div class="ptitle">Erfahrungs-Rechner</div><p class="fine" style="margin:2px 0 0">Wie viele Erfahrungspunkte du bis zu einem Level brauchst und wie viel deine Punkte wert sind.</p></div>
+          </div>
+          <div class="pgrid">
+            <div>
+              <div class="seg" role="radiogroup" aria-label="Rechnung" id="x-mode">
+                <button type="button" role="radio" aria-checked="true" data-m="lv">Level → Punkte</button>
+                <button type="button" role="radio" aria-checked="false" data-m="pt">Punkte → Level</button>
+              </div>
+              <div id="x-lv" class="aout">
+                <div class="coords two">
+                  <label>Dein Level <input type="number" id="x-from" min="0" max="10000" step="1" inputmode="numeric"></label>
+                  <label>Ziel-Level <input type="number" id="x-to" min="0" max="10000" step="1" inputmode="numeric"></label>
+                </div>
+                <div class="qchips" id="x-quick"></div>
+              </div>
+              <div id="x-pt" hidden>
+                <div class="coords two"><label>Erfahrungspunkte <input type="number" id="x-pts" min="0" max="100000000" step="1" inputmode="numeric"></label></div>
+              </div>
+            </div>
+            <div class="aout" id="x-out" aria-live="polite"></div>
+          </div>
+          <p class="fine" id="x-fine"></p>
+        </div>
+      </div>
+
+      <div class="tpanel" id="tp-zeit" role="tabpanel" aria-labelledby="tab-zeit" hidden>
+        <div class="tcard">
+          <div class="thead">
+            <div class="ticon" id="zeitpic" aria-hidden="true"></div>
+            <div><div class="ptitle">Zeit und Redstone</div><p class="fine" style="margin:2px 0 0">Zeiten in Ticks umrechnen, Trichter-Uhren einstellen und ausrechnen, wie lange deine Öfen brauchen und wie viel Brennstoff.</p></div>
+          </div>
+          <div class="zgrid">
+            <section class="zbox" aria-labelledby="z-h1">
+              <h3 id="z-h1">Umrechnen</h3>
+              <label class="fl">Dauer <span class="zin"><input class="inp" type="number" id="z-val" min="0" step="any" inputmode="decimal" aria-label="Dauer"><select class="inp" id="z-unit" aria-label="Einheit"><option value="s">Sekunden</option><option value="min">Minuten</option><option value="gt">Spielticks</option><option value="rt">Redstone-Ticks</option></select></span></label>
+              <ul class="xlist" id="z-conv" aria-live="polite"></ul>
+            </section>
+            <section class="zbox" aria-labelledby="z-h2">
+              <h3 id="z-h2">Trichter-Uhr</h3>
+              <label class="fl">Gewünschter Takt in Sekunden <input class="inp" type="number" id="z-clock" min="1" max="100000" step="any" inputmode="decimal"></label>
+              <ul class="xlist" id="z-hop" aria-live="polite"></ul>
+              <p class="fine">Zwei Trichter zeigen ineinander, ein Komparator liest einen davon aus. Ein Trichter schiebt alle 0,4 Sekunden einen Gegenstand weiter. Nimm Gegenstände, die sich zu 64 stapeln, etwa Bruchstein.</p>
+            </section>
+            <section class="zbox" aria-labelledby="z-h3">
+              <h3 id="z-h3">Öfen und Brennstoff</h3>
+              <div class="coords two">
+                <label>Gegenstände <input type="number" id="z-items" min="1" max="100000" step="1" inputmode="numeric"></label>
+                <label>Öfen <input type="number" id="z-fur" min="1" max="64" step="1" inputmode="numeric"></label>
+              </div>
+              <div class="seg" role="radiogroup" aria-label="Ofenart" id="z-kind">
+                <button type="button" role="radio" aria-checked="true" data-k="f">Ofen</button>
+                <button type="button" role="radio" aria-checked="false" data-k="b">Schmelz-/Räucherofen</button>
+              </div>
+              <div class="asum two" id="z-sum" aria-live="polite"></div>
+              <ul class="xlist" id="z-fuel"></ul>
+              <div class="tacts"><button type="button" class="btn" id="z-coal">Kohle auf die Sammelliste</button><button type="button" class="btn" id="z-plan">Bauplan Schmelzanlage</button></div>
+            </section>
+          </div>
+          <p class="fine">Das Spiel rechnet in Spielticks: 20 pro Sekunde. Ein Redstone-Tick sind 2 Spielticks, also 0,1 Sekunden; ein Verstärker verzögert je nach Stufe 1 bis 4 davon. Ein ganzer Tag im Spiel dauert 20 Minuten. Ein Ofen braucht 10 Sekunden je Gegenstand, Schmelz- und Räucherofen 5 Sekunden. Dort brennt der Brennstoff doppelt so schnell, er reicht also für gleich viele Gegenstände.</p>
+        </div>
+      </div>
+
       <div class="tcard" id="sync">
-        <div class="ptitle">Daten übertragen</div>
-        <p class="fine" style="margin:0">Sammelliste, Orte, Favoriten und Baufortschritt vom iPhone auf den PC mitnehmen oder umgekehrt: hier kopieren, auf dem anderen Gerät einfügen, zum Beispiel über eine Nachricht an dich selbst.</p>
+        <div class="ptitle">Daten sichern und übertragen</div>
+        <p class="fine" style="margin:0"><b>Sicherung als Datei:</b> alles auf einmal, also Welten, Sammellisten, Orte, Favoriten, Baufortschritt, eigene Baupläne und Einstellungen. Am iPhone in „Dateien“ ablegen, am PC landet sie im Download-Ordner. Laden ersetzt die Daten auf diesem Gerät.</p>
+        <div class="tacts"><button type="button" class="btn primary" id="s-file">Sicherung als Datei</button><button type="button" class="btn" id="s-load">Sicherung laden</button><input type="file" id="s-fileinp" accept=".json,application/json" hidden></div>
+        <div class="tacts" id="s-frow" hidden><button type="button" class="btn primary" id="s-fapply">Sicherung übernehmen</button><button type="button" class="btn" id="s-fcancel">Abbrechen</button></div>
+        <p class="fine" style="margin:0"><b>Schnell als Text:</b> Sammelliste, Orte, Favoriten und Baufortschritt der gewählten Welt kopieren und auf dem anderen Gerät einfügen, zum Beispiel über eine Nachricht an dich selbst.</p>
         <div class="tacts"><button type="button" class="btn" id="s-export">Daten kopieren</button><button type="button" class="btn" id="s-import">Daten einfügen</button></div>
         <textarea class="inp" id="s-text" rows="4" spellcheck="false" aria-label="Daten" hidden></textarea>
         <div class="tacts" id="s-row" hidden><button type="button" class="btn primary" id="s-apply">Übernehmen</button></div>
@@ -761,7 +866,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 1.9</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 2.0</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -775,11 +880,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.9 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 2.0 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
-    <p>Ressourcen-Lexikon, elf Baupläne von der Eisenfarm bis zur Schmelzanlage und die Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <p>Ressourcen-Lexikon, elf Baupläne von der Eisenfarm bis zur Schmelzanlage, eigene Baupläne und acht Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
     <section class="prefs" aria-labelledby="prefs-h">
       <h3 id="prefs-h">Darstellung</h3>
       <div class="prow"><span class="plabel" id="pl-theme">Design</span>
@@ -798,6 +903,59 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       </div>
       <label class="pchk"><input type="checkbox" id="set-tex"> Blocktextur hinter den Inhalten</label>
       <p class="small">Minecraft: Titelbild auf der Startseite (hell ein Herbstwald, dunkel die Uralte Stadt), Bücherregal im Lexikon, Holz bei den Werkzeugen. Bewegt: Das Titelbild zieht langsam vorbei wie im Titelbildschirm des Spiels, außer wenn am Gerät „Bewegung reduzieren“ an ist. Die Bilder kommen aus Mojangs Repository und werden beim ersten Mal geladen: das Titelbild mit etwa 0,6 MB, bewegt mit 2 bis 3,7 MB.</p>
+    </section>
+    <section class="prefs" aria-labelledby="off-h">
+      <h3 id="off-h">Originalbilder vorab laden</h3>
+      <p class="small">Normalerweise lädt die App ein Bild erst, wenn du es zum ersten Mal siehst. Hier holst du alle auf einmal, etwa vor einer Fahrt ohne Netz. Das sind gut 1.400 kleine Bilder, zusammen nur wenige MB.</p>
+      <div class="tacts"><button type="button" class="btn" id="tex-all">Alle Bilder jetzt laden</button></div>
+      <div class="tprog" id="tex-prog" hidden><div class="xbar"><i id="tex-bar"></i></div></div>
+      <p class="small" id="tex-msg" aria-live="polite"></p>
+    </section>
+    <section class="help" id="help" aria-labelledby="help-h">
+      <h3 id="help-h">Hilfe</h3>
+      <details><summary>Erste Schritte</summary>
+        <p>Auf der Startseite suchst du über alles: Ressourcen, Mobs, Baupläne und Werkzeuge. Unten oder links wechselst du zwischen Start, Lexikon, Baupläne und Werkzeuge. Zweimal auf einen Bereich tippen springt ganz nach oben.</p>
+        <p class="web-only">Am iPhone in Safari auf Teilen und dann „Zum Home-Bildschirm“ tippen: Dann startet die Werkbank wie eine App und läuft ohne Internet.</p>
+      </details>
+      <details><summary>Lexikon</summary>
+        <ul><li>Eine Ressource antippen: woraus sie entsteht, wo du sie findest und wofür du sie brauchst.</li>
+          <li>Der Rohstoffrechner zählt alles bis zu den Grundstoffen und schickt es auf die Sammelliste.</li>
+          <li>Mit dem Stern merkst du dir Favoriten, sie stehen dann auf der Startseite.</li>
+          <li>Übersichten: Fundorte, Dorfbewohner, Handel und Mobs. Der Filter „Neu in 2026“ zeigt, was mit den Versionen von 2026 dazukam.</li></ul>
+      </details>
+      <details><summary>Baupläne</summary>
+        <ul><li>Jede Ebene von unten nach oben, ein Kästchen ist ein Block, Norden ist oben. Ein Kästchen antippen zeigt, welcher Block hingehört.</li>
+          <li>„Ebene fertig“ hakt ab, der Fortschritt bleibt gespeichert. „3D“ zeigt die ganze Farm.</li>
+          <li>Bau-Modus: große Knöpfe zum Weiterschalten, der Bildschirm bleibt an. Drucken oder als PDF gibt alle Ebenen aufs Papier.</li>
+          <li>Lavafarm, Gürteltierfarm und Schmelzanlage stellst du mit − und + größer oder kleiner, Material und Ertrag rechnen mit.</li>
+          <li>„Im Spiel getestet“ abhaken und eine Notiz dazuschreiben, der Haken erscheint auch in der Liste und auf der Startseite.</li>
+          <li>„Alle vergleichen“ stellt Ertrag, Größe und Material aller Pläne nebeneinander.</li></ul>
+      </details>
+      <details><summary>Eigener Bauplan</summary>
+        <ul><li>Unter Baupläne auf „Eigener Bauplan“ tippen, Namen, Breite und Tiefe eingeben.</li>
+          <li>Unten einen Block wählen, dann Kästchen antippen oder mit dem Finger darüberziehen. „Leeren“ radiert.</li>
+          <li>„+ Ebene darüber“ legt eine neue Ebene an, „Ebene kopieren“ übernimmt die aktuelle. Die Ebene darunter siehst du blass.</li>
+          <li>Nach dem Speichern steht der Plan unter „Eigene Baupläne“ und funktioniert wie die anderen. Mit „Bearbeiten“ änderst du ihn später.</li></ul>
+      </details>
+      <details><summary>Werkzeuge</summary>
+        <ul><li><b>Sammelliste:</b> abhaken, eigene Einträge, Packlisten-Vorlagen.</li>
+          <li><b>Koordinaten:</b> Orte speichern, mit deinem Standort zeigt der Wegweiser Entfernung und Richtung. Orte lassen sich als Link teilen.</li>
+          <li><b>Amboss:</b> günstigste Reihenfolge für Zauberbücher. <b>Brauen:</b> Weg und Zutaten zum Wunschtrank.</li>
+          <li><b>Portal:</b> Gegenportal im Nether oder in der Oberwelt. <b>Kreise:</b> runde Bauten Ebene für Ebene.</li>
+          <li><b>Erfahrung:</b> Punkte bis zum Ziel-Level und was beim Tod bleibt. <b>Zeit:</b> Ticks, Verstärker, Trichter-Uhr und Brennstoff für Öfen.</li></ul>
+      </details>
+      <details><summary>Welten</summary>
+        <p>Unter Werkzeuge legst du weitere Welten an. Sammelliste, Orte, dein Standort und der Baufortschritt gelten dann je Welt. Favoriten, eigene Baupläne und Einstellungen gelten überall.</p>
+      </details>
+      <details><summary>Daten sichern und übertragen</summary>
+        <p>Unter Werkzeuge ganz unten: „Sicherung als Datei“ speichert alles, „Sicherung laden“ holt es auf diesem oder einem anderen Gerät zurück. Für schnell zwischendurch gibt es „Daten kopieren“ als Text.</p>
+        <p class="web-only">In Safari kann iOS die Daten einer Website löschen, die du länger nicht öffnest. Auf dem Home-Bildschirm ist die Werkbank davor geschützt. Eine Sicherung ab und zu schadet trotzdem nicht.</p>
+      </details>
+      <details><summary>Wenn etwas nicht klappt</summary>
+        <ul><li>Bilder fehlen: Die Originalbilder brauchen beim ersten Mal Internet. Online gehen und den Bereich neu öffnen, oder oben alle vorab laden.</li>
+          <li class="web-only">Neue Version: Unten erscheint „Neu laden“. Antippen, dann ist sie da.</li>
+          <li>Daten scheinen weg: Prüfe unter Werkzeuge, ob die richtige Welt gewählt ist.</li></ul>
+      </details>
     </section>
     <div class="exe-only">
       <h3>Tastatur</h3>
@@ -826,11 +984,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","out":"iron_ingot","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","out":"emerald","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","out":"cactus","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","out":"ender_pearl","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","out":"sugar_cane","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","out":"pumpkin","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","out":"cooked_chicken","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","out":"lava_bucket","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},{"id":"spawner","out":"experience_bottle","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","out":"armadillo_scute","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},{"id":"ofen","out":"furnace","title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4}];
+  var PLANS = [{"id":"eisenfarm","out":"iron_ingot","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","out":"emerald","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","out":"cactus","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","out":"ender_pearl","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","out":"sugar_cane","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","out":"pumpkin","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","out":"cooked_chicken","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","out":"lava_bucket","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"size":6,"sizes":{"2":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","4 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","2"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"3":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","3"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"4":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","4"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"5":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","7 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","5"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"6":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"7":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","9 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","7"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"8":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","8"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"9":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","11 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","9"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"10":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","12 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","10"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"11":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","13 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","11"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"12":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","14 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","12"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5}}},{"id":"spawner","out":"experience_bottle","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","out":"armadillo_scute","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"size":6,"sizes":{"3":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","7 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","3, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"4":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","4, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"5":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","9 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","5, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"6":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"7":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","11 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","7, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"8":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","12 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","8, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"9":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","13 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","9, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"10":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","14 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","10, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"11":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","15 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","11, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"12":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","16 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","12, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3}}},{"id":"ofen","out":"furnace","title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4,"size":4,"sizes":{"2":{"title":"Schmelzanlage mit 2 Öfen","specs":[["Grundfläche","4 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","2"],["Tempo","12 Gegenstände pro Minute"]],"layers":4},"4":{"title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4},"6":{"title":"Schmelzanlage mit 6 Öfen","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","6"],["Tempo","36 Gegenstände pro Minute"]],"layers":4},"8":{"title":"Schmelzanlage mit 8 Öfen","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","8"],["Tempo","48 Gegenstände pro Minute"]],"layers":4}}}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
   var BREW = {"e":[["potion:awkward","blaze_powder","potion:strength"],["potion:awkward","breeze_rod","potion:wind_charged"],["potion:awkward","fermented_spider_eye","potion:weakness"],["potion:awkward","ghast_tear","potion:regeneration"],["potion:awkward","golden_carrot","potion:nightvision"],["potion:awkward","magma_cream","potion:fire_resistance"],["potion:awkward","phantom_membrane","potion:slow_falling"],["potion:awkward","pufferfish","potion:water_breathing"],["potion:awkward","rabbit_foot","potion:leaping"],["potion:awkward","slime","potion:oozing"],["potion:awkward","glistering_melon_slice","potion:healing"],["potion:awkward","spider_eye","potion:poison"],["potion:awkward","stone","potion:infested"],["potion:awkward","sugar","potion:swiftness"],["potion:awkward","turtle_helmet","potion:turtle_master"],["potion:awkward","web","potion:weaving"],["potion:fire_resistance","redstone","potion:long_fire_resistance"],["potion:harming","glowstone_dust","potion:strong_harming"],["potion:healing","fermented_spider_eye","potion:harming"],["potion:healing","glowstone_dust","potion:strong_healing"],["potion:invisibility","redstone","potion:long_invisibility"],["potion:leaping","fermented_spider_eye","potion:slowness"],["potion:leaping","glowstone_dust","potion:strong_leaping"],["potion:leaping","redstone","potion:long_leaping"],["potion:long_leaping","fermented_spider_eye","potion:long_slowness"],["potion:long_mundane","fermented_spider_eye","potion:long_weakness"],["potion:long_poison","fermented_spider_eye","potion:harming"],["potion:long_strength","fermented_spider_eye","potion:long_weakness"],["potion:long_nightvision","fermented_spider_eye","potion:long_invisibility"],["potion:long_swiftness","fermented_spider_eye","potion:long_slowness"],["potion:mundane","fermented_spider_eye","potion:weakness"],["potion:nightvision","fermented_spider_eye","potion:invisibility"],["potion:nightvision","redstone","potion:long_nightvision"],["potion:poison","fermented_spider_eye","potion:harming"],["potion:poison","glowstone_dust","potion:strong_poison"],["potion:poison","redstone","potion:long_poison"],["potion:regeneration","glowstone_dust","potion:strong_regeneration"],["potion:regeneration","redstone","potion:long_regeneration"],["potion:slow_falling","redstone","potion:long_slow_falling"],["potion:slowness","glowstone_dust","potion:strong_slowness"],["potion:slowness","redstone","potion:long_slowness"],["potion:strength","fermented_spider_eye","potion:weakness"],["potion:strength","glowstone_dust","potion:strong_strength"],["potion:strength","redstone","potion:long_strength"],["potion:strong_healing","fermented_spider_eye","potion:strong_harming"],["potion:strong_poison","fermented_spider_eye","potion:strong_harming"],["potion:strong_strength","fermented_spider_eye","potion:weakness"],["potion:swiftness","fermented_spider_eye","potion:slowness"],["potion:swiftness","glowstone_dust","potion:strong_swiftness"],["potion:swiftness","redstone","potion:long_swiftness"],["potion:thick","fermented_spider_eye","potion:weakness"],["potion:turtle_master","glowstone_dust","potion:strong_turtle_master"],["potion:turtle_master","redstone","potion:long_turtle_master"],["potion:water","blaze_powder","potion:mundane"],["potion:water_breathing","redstone","potion:long_water_breathing"],["potion:water","breeze_rod","potion:mundane"],["potion:water","fermented_spider_eye","potion:weakness"],["potion:water","ghast_tear","potion:mundane"],["potion:water","glowstone_dust","potion:thick"],["potion:water","magma_cream","potion:mundane"],["potion:water","nether_wart","potion:awkward"],["potion:water","rabbit_foot","potion:mundane"],["potion:water","redstone","potion:mundane"],["potion:water","slime","potion:mundane"],["potion:water","glistering_melon_slice","potion:mundane"],["potion:water","spider_eye","potion:mundane"],["potion:water","stone","potion:mundane"],["potion:water","sugar","potion:mundane"],["potion:water","web","potion:mundane"],["potion:weakness","redstone","potion:long_weakness"],["potion:water","redstone","potion:long_mundane"]],"n":{"potion:awkward":"Seltsamer Trank","blaze_powder":"Lohenstaub","potion:strength":"Trank der Stärke","breeze_rod":"Böenrute","potion:wind_charged":"Trank des Windladens","fermented_spider_eye":"Fermentiertes Spinnenauge","potion:weakness":"Trank der Schwäche","ghast_tear":"Ghast-Träne","potion:regeneration":"Trank der Regeneration","golden_carrot":"Goldene Karotte","potion:nightvision":"Trank der Nachtsicht","magma_cream":"Magmacreme","potion:fire_resistance":"Trank der Feuerresistenz","phantom_membrane":"Phantomhaut","potion:slow_falling":"Trank des sanften Falls","pufferfish":"Kugelfisch","potion:water_breathing":"Trank der Unterwasseratmung","rabbit_foot":"Hasenpfote","potion:leaping":"Trank der Sprungkraft","slime":"Schleimblock","potion:oozing":"Trank des Sickerns","glistering_melon_slice":"Funkelnde Melonenscheibe","potion:healing":"Trank der Heilung","spider_eye":"Spinnenauge","potion:poison":"Trank der Vergiftung","stone":"Stein","potion:infested":"Trank der Verseuchung","sugar":"Zucker","potion:swiftness":"Trank der Schnelligkeit","turtle_helmet":"Schildkrötenpanzer","potion:turtle_master":"Trank des Schildkrötenmeisters","web":"Spinnennetz","potion:weaving":"Trank des Webens","redstone":"Redstone-Staub","potion:long_fire_resistance":"Trank der Feuerresistenz (verlängert)","potion:harming":"Trank des Schadens","glowstone_dust":"Leuchtstein-Staub","potion:strong_harming":"Trank des Schadens (Stufe II)","potion:strong_healing":"Trank der Heilung (Stufe II)","potion:invisibility":"Trank der Unsichtbarkeit","potion:long_invisibility":"Trank der Unsichtbarkeit (verlängert)","potion:slowness":"Trank der Langsamkeit","potion:strong_leaping":"Trank der Sprungkraft (Stufe II)","potion:long_leaping":"Trank der Sprungkraft (verlängert)","potion:long_slowness":"Trank der Langsamkeit (verlängert)","potion:long_mundane":"Gewöhnlicher Trank (verlängert)","potion:long_weakness":"Trank der Schwäche (verlängert)","potion:long_poison":"Trank der Vergiftung (verlängert)","potion:long_strength":"Trank der Stärke (verlängert)","potion:long_nightvision":"Trank der Nachtsicht (verlängert)","potion:long_swiftness":"Trank der Schnelligkeit (verlängert)","potion:mundane":"Gewöhnlicher Trank","potion:strong_poison":"Trank der Vergiftung (Stufe II)","potion:strong_regeneration":"Trank der Regeneration (Stufe II)","potion:long_regeneration":"Trank der Regeneration (verlängert)","potion:long_slow_falling":"Trank des sanften Falls (verlängert)","potion:strong_slowness":"Trank der Langsamkeit (Stufe IV)","potion:strong_strength":"Trank der Stärke (Stufe II)","potion:strong_swiftness":"Trank der Schnelligkeit (Stufe II)","potion:thick":"Dickflüssiger Trank","potion:strong_turtle_master":"Trank des Schildkrötenmeisters (Stufe II)","potion:long_turtle_master":"Trank des Schildkrötenmeisters (verlängert)","potion:water":"Wasserflasche","potion:long_water_breathing":"Trank der Unterwasseratmung (verlängert)","nether_wart":"Netherwarze","glass_bottle":"Glasflasche","gunpowder":"Schwarzpulver","dragon_breath":"Drachenatem","brewing_stand":"Braustand"},"f":{"potion:awkward":["Seltsamer Wurftrank","Seltsamer Verweiltrank"],"potion:strength":["Wurftrank der Stärke","Verweiltrank der Stärke"],"potion:wind_charged":["Wurftrank des Windladens","Verweiltrank des Windladens"],"potion:weakness":["Wurftrank der Schwäche","Verweiltrank der Schwäche"],"potion:regeneration":["Wurftrank der Regeneration","Verweiltrank der Regeneration"],"potion:nightvision":["Wurftrank der Nachtsicht","Verweiltrank der Nachtsicht"],"potion:fire_resistance":["Wurftrank der Feuerresistenz","Verweiltrank der Feuerresistenz"],"potion:slow_falling":["Wurftrank des sanften Falls","Verweiltrank des sanften Falls"],"potion:water_breathing":["Wurftrank der Unterwasseratmung","Verweiltrank der Unterwasseratmung"],"potion:leaping":["Wurftrank der Sprungkraft","Verweiltrank der Sprungkraft"],"potion:oozing":["Wurftrank des Sickerns","Verweiltrank des Sickerns"],"potion:healing":["Wurftrank der Heilung","Verweiltrank der Heilung"],"potion:poison":["Wurftrank der Vergiftung","Verweiltrank der Vergiftung"],"potion:infested":["Wurftrank der Verseuchung","Verweiltrank der Verseuchung"],"potion:swiftness":["Wurftrank der Schnelligkeit","Verweiltrank der Schnelligkeit"],"potion:turtle_master":["Wurftrank des Schildkrötenmeisters","Verweiltrank des Schildkrötenmeisters"],"potion:weaving":["Wurftrank des Webens","Verweiltrank des Webens"],"potion:long_fire_resistance":["Wurftrank der Feuerresistenz (verlängert)","Verweiltrank der Feuerresistenz (verlängert)"],"potion:harming":["Wurftrank des Schadens","Verweiltrank des Schadens"],"potion:strong_harming":["Wurftrank des Schadens (Stufe II)","Verweiltrank des Schadens (Stufe II)"],"potion:strong_healing":["Wurftrank der Heilung (Stufe II)","Verweiltrank der Heilung (Stufe II)"],"potion:invisibility":["Wurftrank der Unsichtbarkeit","Verweiltrank der Unsichtbarkeit"],"potion:long_invisibility":["Wurftrank der Unsichtbarkeit (verlängert)","Verweiltrank der Unsichtbarkeit (verlängert)"],"potion:slowness":["Wurftrank der Langsamkeit","Verweiltrank der Langsamkeit"],"potion:strong_leaping":["Wurftrank der Sprungkraft (Stufe II)","Verweiltrank der Sprungkraft (Stufe II)"],"potion:long_leaping":["Wurftrank der Sprungkraft (verlängert)","Verweiltrank der Sprungkraft (verlängert)"],"potion:long_slowness":["Wurftrank der Langsamkeit (verlängert)","Verweiltrank der Langsamkeit (verlängert)"],"potion:long_mundane":["Gewöhnlicher Wurftrank (verlängert)","Gewöhnlicher Verweiltrank (verlängert)"],"potion:long_weakness":["Wurftrank der Schwäche (verlängert)","Verweiltrank der Schwäche (verlängert)"],"potion:long_poison":["Wurftrank der Vergiftung (verlängert)","Verweiltrank der Vergiftung (verlängert)"],"potion:long_strength":["Wurftrank der Stärke (verlängert)","Verweiltrank der Stärke (verlängert)"],"potion:long_nightvision":["Wurftrank der Nachtsicht (verlängert)","Verweiltrank der Nachtsicht (verlängert)"],"potion:long_swiftness":["Wurftrank der Schnelligkeit (verlängert)","Verweiltrank der Schnelligkeit (verlängert)"],"potion:mundane":["Gewöhnlicher Wurftrank","Gewöhnlicher Verweiltrank"],"potion:strong_poison":["Wurftrank der Vergiftung (Stufe II)","Verweiltrank der Vergiftung (Stufe II)"],"potion:strong_regeneration":["Wurftrank der Regeneration (Stufe II)","Verweiltrank der Regeneration (Stufe II)"],"potion:long_regeneration":["Wurftrank der Regeneration (verlängert)","Verweiltrank der Regeneration (verlängert)"],"potion:long_slow_falling":["Wurftrank des sanften Falls (verlängert)","Verweiltrank des sanften Falls (verlängert)"],"potion:strong_slowness":["Wurftrank der Langsamkeit (Stufe IV)","Verweiltrank der Langsamkeit (Stufe IV)"],"potion:strong_strength":["Wurftrank der Stärke (Stufe II)","Verweiltrank der Stärke (Stufe II)"],"potion:strong_swiftness":["Wurftrank der Schnelligkeit (Stufe II)","Verweiltrank der Schnelligkeit (Stufe II)"],"potion:thick":["Dickflüssiger Wurftrank","Dickflüssiger Verweiltrank"],"potion:strong_turtle_master":["Wurftrank des Schildkrötenmeisters (Stufe II)","Verweiltrank des Schildkrötenmeisters (Stufe II)"],"potion:long_turtle_master":["Wurftrank des Schildkrötenmeisters (verlängert)","Verweiltrank des Schildkrötenmeisters (verlängert)"],"potion:water":["Werfbare Wasserflasche","Verweilende Wasserflasche"],"potion:long_water_breathing":["Wurftrank der Unterwasseratmung (verlängert)","Verweiltrank der Unterwasseratmung (verlängert)"]}};
-  var APPVER = '1.9';
+  var APPVER = '2.0';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -967,7 +1125,8 @@ var BWTEX = (function () {
 })();
 
   var VIEWS = [{ id: 'start', frame: null, el: 'v-start', title: 'Start' }, { id: 'lexikon', frame: 'lex', title: 'Ressourcen-Lexikon' }]
-    .concat(PLANS.map(function (p) { return { id: p.id, frame: 'bau', title: 'Bauplan ' + p.title }; }))
+    .concat(PLANS.map(function (p) { return { id: p.id, frame: 'bau', title: 'Bauplan ' + p.title, plan: p }; }))
+    .concat([{ id: 'vergleich', frame: 'bau', title: 'Baupläne im Vergleich' }, { id: 'editor', frame: 'bau', title: 'Eigener Bauplan' }])
     .concat([{ id: 'werkzeuge', frame: null, el: 'v-tools', title: 'Werkzeuge' }]);
   var KEYS = ['start', 'lexikon', 'bau', 'werkzeuge'];
   var PATHS = { lex: 'lexikon/', bau: 'bauplaene/' };
@@ -979,6 +1138,23 @@ var BWTEX = (function () {
   var info = $('info');
   var byId = {}, cur = null, lastPlan = 'eisenfarm';
   VIEWS.forEach(function (v) { byId[v.id] = v; });
+  var IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  // Eigene Baupläne liegen im Bauplan-Speicher (bp.own); ihre Ansichten entstehen bei Bedarf
+  function ownPlans() {
+    // gleiche Prüfung wie im Bauplan: Maße, Ebenen und nur Blöcke aus der Editor-Palette
+    function ok(o) {
+      return o && /^eigen[a-z]{4,12}$/.test(o.id) && typeof o.name === 'string' && o.w >= 3 && o.w <= 32 && o.d >= 3 && o.d <= 32 && Array.isArray(o.layers) && o.layers.length >= 1 && o.layers.length <= 40 &&
+        o.layers.every(function (l) { return l && Array.isArray(l.grid) && l.grid.length === o.d && l.grid.every(function (r) { return typeof r === 'string' && r.length === o.w && /^[.SGNLamQVKtesniWPpYyH4jCABDFzTqRcrko]*$/.test(r); }); });
+    }
+    try { var a = JSON.parse(localStorage.getItem('bp.own') || '[]'); return Array.isArray(a) ? a.filter(ok) : []; } catch (e) { return []; }
+  }
+  function bauView(id) {
+    if (byId[id] && !/^eigen/.test(id)) return byId[id];
+    if (!/^eigen[a-z]{4,12}$/.test(id || '')) return null;
+    var o = ownPlans().filter(function (x) { return x.id === id; })[0]; if (!o) return null;
+    return (byId[id] = { id: id, frame: 'bau', title: 'Bauplan ' + (o.name || 'Eigener Bauplan') });
+  }
+  function planTest(id) { try { var v = JSON.parse(localStorage.getItem('bp.test.' + id)); return v && v.ok ? v : null; } catch (e) { return null; } }
 
   function save(k, v) { try { localStorage.setItem('bw.' + k, v); } catch (e) {} }
   function load(k) { try { return localStorage.getItem('bw.' + k); } catch (e) { return null; } }
@@ -1052,11 +1228,20 @@ var BWISO = (function () {
   /* ---------- Startseite ---------- */
   $('heropic').innerHTML = iso(SCENES.hero, true);
   $('lexpic').innerHTML = iso(SCENES.lexikon);
+  // Pläne mit einstellbarer Größe: Titel und Kennzahlen der eingestellten Größe (im Bauplan gespeichert unter bp.size.<id>)
+  function planNow(p) {
+    if (!p.sizes) return p;
+    var n = null; try { n = JSON.parse(localStorage.getItem('bp.size.' + p.id)); } catch (e) {}
+    return p.sizes[n] || p;
+  }
+  function planBody(p) {
+    var q = planNow(p);
+    return '<div class="ptitle">' + esc(q.title) + '<span>' + q.layers + ' Ebenen</span></div><div class="facts">' +
+      q.specs.map(function (f) { return '<div class="fact"><small>' + esc(f[0]) + '</small><b>' + esc(f[1]) + '</b></div>'; }).join('') + '</div>';
+  }
   $('plans').innerHTML = PLANS.map(function (p) {
     return '<button type="button" class="pcard" data-go="' + esc(p.id) + '"><div class="ppic">' + iso(SCENES[p.id] || SCENES.eisenfarm) +
-      (p.out ? '<span class="pout" title="Ertrag">' + qt(p.out, '#8D96A3') + '</span>' : '') + '</div><div class="pbody">' +
-      '<div class="ptitle">' + esc(p.title) + '<span>' + p.layers + ' Ebenen</span></div><div class="facts">' +
-      p.specs.map(function (f) { return '<div class="fact"><small>' + esc(f[0]) + '</small><b>' + esc(f[1]) + '</b></div>'; }).join('') + '</div></div></button>';
+      (p.out ? '<span class="pout" title="Ertrag">' + qt(p.out, '#8D96A3') + '</span>' : '') + '<span class="ptest" hidden>✓ getestet</span></div><div class="pbody">' + planBody(p) + '</div></button>';
   }).join('');
   function chipIcon(col) { return iso([[0, 0, 0, col]]); }
   function qt(id, col) { return '<span class="qt"' + (id ? ' data-tx="' + esc(id) + '"' : '') + '>' + chipIcon(col) + '</span>'; }
@@ -1078,6 +1263,8 @@ var BWISO = (function () {
   $('icon-berufe').innerHTML = tq('bell', iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]));
   $('icon-handel').innerHTML = tq('emerald', iso([[0, 0, 0, K.emerald, .6], [0.2, 0.2, .6, K.emerald, .6]]));
   $('icon-mobs').innerHTML = tq('rotten_flesh', iso([[0, 0, 0, '#5E8F4A'], [0, 0, 1, '#4E7A3D', .8]]));
+  $('ti-xp').innerHTML = $('tb-xp').innerHTML = $('xppic').innerHTML = tq('experience_bottle', iso([[0.5, 0.5, 0, '#57C74A', .55], [0.5, 0.5, .55, '#8DE36B', .45]]));
+  $('ti-zeit').innerHTML = $('tb-zeit').innerHTML = $('zeitpic').innerHTML = tq('repeater', iso([[0, 0, 0, K.stone, .25], [1, 0, 0, K.stone, .25], [0.2, 0.3, .25, '#C8342B', .4], [1.2, 0.3, .25, '#C8342B', .4]]));
   $('ti-kreis').innerHTML = $('tb-kreis').innerHTML = $('circlepic').innerHTML = tq('stone_bricks', iso([[1, 0, 0, K.stone], [0, 1, 0, K.stone], [2, 1, 0, K.stone], [1, 2, 0, K.stone], [1, 0, 1, K.stone, .5], [0, 1, 1, K.stone, .5], [2, 1, 1, K.stone, .5], [1, 2, 1, K.stone, .5]]));
 
   /* ---------- Nether-Portal-Rechner ---------- */
@@ -1124,7 +1311,7 @@ var BWISO = (function () {
   });
 
   // Zuletzt angesehen: Einträge aus dem Lexikon (Namen stehen in dessen Daten)
-  var names = null, texReady = false;
+  var names = null, texReady = false, texPaths = [];
   var mobNames = [];
   function lexNames() {
     if (names) return names;
@@ -1133,7 +1320,7 @@ var BWISO = (function () {
       names = {};
       Object.keys(D.items).forEach(function (id) { var it = D.items[id]; names[slug(id)] = [it[0] + (it[3] ? ' (' + it[3] + ')' : ''), D.cats[it[2]], id, it[1] || '']; });
       mobNames = []; (D.labels || []).forEach(function (l, n) { if (l[0] === 'mob' && D.mobs && D.mobs[n]) mobNames.push([l[1], 'ort-' + n]); });
-      if (D.tex && !texReady) { texReady = true; BWTEX.init(D.tex.p, D.tex.m); }
+      if (D.tex && !texReady) { texReady = true; texPaths = D.tex.p || []; BWTEX.init(D.tex.p, D.tex.m); }
     } catch (e) { names = null; }
     return names;
   }
@@ -1163,9 +1350,23 @@ var BWISO = (function () {
     if (!cur.frame) { try { $(cur.el).focus({ preventScroll: true }); } catch (e) {} return; }
     try { frames[cur.frame].contentWindow.focus(); } catch (e) {}
   }
+  /* Lexikon und Baupläne laden erst nach der Startseite (oder sofort, wenn sie gebraucht werden) */
+  var pendingLex = '', pendingSearch = null;
+  function loadFrame(key, hash) {
+    var f = frames[key]; if (f.getAttribute('src')) return false;
+    f.src = PATHS[key] + (hash != null ? hash : key === 'lex' ? lexHash : '#' + lastPlan);
+    return true;
+  }
+  function idle(fn, ms) { if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: ms || 2000 }); else setTimeout(fn, 200); }
+  function whenReady(key) {
+    loadFrame(key);
+    return new Promise(function (res, rej) { var t0 = Date.now(); (function poll() { if (ready[key]) res(); else if (Date.now() - t0 > 30000) rej(new Error(key)); else setTimeout(poll, 120); })(); });
+  }
   function show(id, fromFrame) {
     if (id === 'bau') id = lastPlan;
-    var v = byId[id]; if (!v) return;
+    var v = byId[id] || bauView(id); if (!v) return;
+    if (v.plan && v.plan.sizes) v.title = 'Bauplan ' + planNow(v.plan).title;
+    if (v.frame) loadFrame(v.frame, v.frame === 'bau' ? '#' + (pendingBau || id) : null);
     cur = v;
     [startEl, toolsEl, frames.lex, frames.bau].forEach(function (el) {
       var on = v.frame ? el === frames[v.frame] : el.id === v.el;
@@ -1176,7 +1377,7 @@ var BWISO = (function () {
       if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
     });
     if (v.frame === 'bau') {
-      lastPlan = id; save('plan', id);
+      lastPlan = id; if (id !== 'editor') save('plan', id);
       if (!fromFrame && ready.bau) { try { var w = frames.bau.contentWindow; if (w.location.hash.split('/')[0] !== '#' + id) w.location.hash = id; } catch (e) {} }
     }
     if (id === 'start') { renderRecent(); renderTiles(); }
@@ -1186,17 +1387,20 @@ var BWISO = (function () {
   }
   function onFrameHash(key, hash) {
     if (key === 'lex') { var s = hash.slice(1); if (/^[a-z0-9-]+$/.test(s)) { save('lex', hash); remember(s); } return; }
-    var id = hash.slice(1).split('/')[0];
-    if (!byId[id] || byId[id].frame !== 'bau') return;
-    lastPlan = id; save('plan', id);
-    if (cur && cur.frame === 'bau' && cur.id !== id) show(id, true);
+    var id = hash.slice(1).split('/')[0], v = bauView(id);
+    if (!v || v.frame !== 'bau') return;
+    lastPlan = id; if (id !== 'editor') save('plan', id);
+    if (v.plan && v.plan.sizes) v.title = 'Bauplan ' + planNow(v.plan).title;
+    if (cur && cur.frame === 'bau' && cur.id !== id) show(id, true); else if (cur && cur.id === id) setTitle(v.title);
   }
   function openItem(s) {
+    if (!ready.lex) { pendingLex = s; loadFrame('lex', '#' + s); show('lexikon'); return; }
     show('lexikon');
     try { frames.lex.contentWindow.location.hash = s; } catch (e) {}
   }
   function openSearch(q) {
     show('lexikon');
+    if (!ready.lex) { pendingSearch = q; return; }
     try {
       var w = frames.lex.contentWindow, d = frames.lex.contentDocument, box = d.getElementById('q');
       if (w.location.hash && w.location.hash !== '#') w.location.hash = '';
@@ -1212,7 +1416,7 @@ var BWISO = (function () {
   function dur(sec) { var m = Math.floor(sec / 60), r = sec % 60; return m ? m + (m === 1 ? ' Minute' : ' Minuten') + (r ? ' ' + r + ' Sekunden' : '') : sec + ' Sekunden'; }
   function plural(n, a, b) { return fmtN(n) + ' ' + (n === 1 ? a : b); }
   var tool = load('tool') || 'liste';
-  var TOOLS = ['liste', 'orte', 'amboss', 'brauen', 'portal', 'kreis'];
+  var TOOLS = ['liste', 'orte', 'amboss', 'brauen', 'portal', 'kreis', 'xp', 'zeit'];
   if (TOOLS.indexOf(tool) < 0) tool = 'liste';
   function openTool(t) { tool = t; save('tool', t); show('werkzeuge'); }
   function renderTools() {
@@ -1226,6 +1430,8 @@ var BWISO = (function () {
     if (tool === 'orte') renderPlaces();
     if (tool === 'amboss') renderAnvil();
     if (tool === 'brauen') renderBrew();
+    if (tool === 'xp') renderXP();
+    if (tool === 'zeit') renderZeit();
   }
   toolsEl.querySelector('.tabsbar').addEventListener('click', function (e) {
     var b = e.target.closest('[data-tool]'); if (!b) return; tool = b.getAttribute('data-tool'); save('tool', tool); renderTools();
@@ -1349,6 +1555,25 @@ var BWISO = (function () {
   $('l-copy').addEventListener('click', function () {
     var t = 'Sammelliste\n' + list.filter(function (e) { return !e.d; }).map(function (e) { return '- ' + fmtN(e.n) + ' × ' + e.t; }).join('\n');
     copyText(t, function (ok) { $('l-msg').textContent = ok ? 'Die offenen Einträge sind kopiert.' : 'Kopieren hat nicht geklappt.'; setTimeout(function () { $('l-msg').textContent = ''; }, 4000); });
+  });
+
+  /* Packlisten-Vorlagen: Lexikon-Kennungen und Anzahl, die Namen kommen aus dem Lexikon */
+  var PACK = [
+    ['nether', 'Nether-Ausflug', 'obsidian', [['obsidian', 10], ['flint_and_steel', 1], ['golden_helmet', 1], ['potion:fire_resistance', 2], ['iron_pickaxe', 1], ['cobblestone', 64], ['cooked_beef', 16], ['torch', 32]]],
+    ['end', 'Enderdrache', 'ender_eye', [['ender_eye', 12], ['bow', 1], ['arrow', 128], ['iron_sword', 1], ['ender_pearl', 16], ['water_bucket', 1], ['carved_pumpkin', 1], ['golden_apple', 4], ['potion:slow_falling', 2], ['cobblestone', 64], ['cooked_beef', 32]]],
+    ['hoehle', 'Höhlen und Bergbau', 'iron_pickaxe', [['torch', 64], ['iron_pickaxe', 2], ['iron_shovel', 1], ['shield', 1], ['water_bucket', 1], ['ladder', 16], ['crafting_table', 1], ['furnace', 1], ['bread', 16]]],
+    ['meer', 'Meer und Schiffswracks', 'oak_boat', [['oak_boat', 1], ['potion:water_breathing', 3], ['potion:nightvision', 2], ['compass', 1], ['empty_map', 1], ['iron_shovel', 1], ['cooked_beef', 16]]],
+    ['start', 'Erste Nacht', 'crafting_table', [['crafting_table', 1], ['furnace', 1], ['chest', 2], ['white_bed', 1], ['torch', 16], ['stone_pickaxe', 1], ['oak_log', 16], ['bread', 8]]]
+  ];
+  $('l-tpl').innerHTML = PACK.map(function (pk) { return '<button type="button" class="qchip" data-pack="' + pk[0] + '">' + qt(pk[2], '#8D96A3') + '<span>' + esc(pk[1]) + '</span></button>'; }).join('');
+  $('l-tpl').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pack]'); if (!b) return;
+    var pk = PACK.filter(function (x) { return x[0] === b.getAttribute('data-pack'); })[0];
+    whenReady('lex').catch(function () {}).then(function () {
+      var n = lexNames() || {};
+      window.bwList.add(pk[3].map(function (e2) { var s = n[slug(e2[0])]; return { k: e2[0], t: s ? s[0] : e2[0], n: e2[1] }; }), 'Vorlage ' + pk[1]);
+      renderList();
+    });
   });
 
   /* Koordinaten: [{id, name, dim, x, y, z, note}] */
@@ -1690,6 +1915,105 @@ var BWISO = (function () {
     window.bwList.add([{ k: 'own:' + label.toLowerCase(), t: label, n: cState.tot }], names[cState.f] + ' Ø ' + cState.d);
   });
 
+  /* ---------- Erfahrungs-Rechner ---------- */
+  function xpNext(L) { return L <= 15 ? 2 * L + 7 : L <= 30 ? 5 * L - 38 : 9 * L - 158; }
+  function xpTot(L) { return L <= 16 ? L * L + 6 * L : L <= 31 ? 2.5 * L * L - 40.5 * L + 360 : 4.5 * L * L - 162.5 * L + 2220; }
+  function xpLevel(P) { var L = 0; while (L < 30000 && P >= xpNext(L)) { P -= xpNext(L); L++; } return [L, P]; }
+  function clampInt(v, a, b, d) { v = Math.round(+v); return isFinite(v) && v >= a ? Math.min(v, b) : d; }
+  var xState = loadJSON('xp', null);
+  if (!xState || typeof xState !== 'object') xState = {};
+  xState = { m: xState.m === 'pt' ? 'pt' : 'lv', from: clampInt(xState.from, 0, 10000, 0), to: clampInt(xState.to, 0, 10000, 30), pts: clampInt(xState.pts, 0, 100000000, 1395) };
+  $('x-from').value = xState.from; $('x-to').value = xState.to; $('x-pts').value = xState.pts;
+  $('x-quick').innerHTML = [[30, 'Zaubertisch'], [39, 'Amboss'], [50, ''], [100, '']].map(function (q) { return '<button type="button" class="qchip" data-to="' + q[0] + '"><span>Ziel ' + q[0] + (q[1] ? ' · ' + q[1] : '') + '</span></button>'; }).join('');
+  $('x-fine').textContent = 'Bis Level 16 kostet jedes Level 2 × Level + 7 Punkte, bis Level 31 dann 5 × Level − 38 und danach 9 × Level − 158: von 0 auf 1 sind es 7 Punkte, von 30 auf 31 schon 112. ' +
+    'Der Zaubertisch nimmt für die stärkste Verzauberung immer nur 3 Level, egal wie hoch du bist. Bei Level 30 sind das ' + fmtN(xpTot(30) - xpTot(27)) + ' Punkte, bei Level 50 schon ' + fmtN(xpTot(50) - xpTot(47)) + '. Ausgeben lohnt sich also, sobald du 30 hast. Gleiche Werte in Bedrock und Java.';
+  function renderXP() {
+    [].forEach.call($('x-mode').querySelectorAll('[data-m]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-m') === xState.m)); });
+    $('x-lv').hidden = xState.m !== 'lv'; $('x-pt').hidden = xState.m !== 'pt';
+    var s = '';
+    if (xState.m === 'lv') {
+      var a = xState.from, b = xState.to, need = xpTot(b) - xpTot(a), drop = Math.min(7 * a, 100), back = xpLevel(drop);
+      if (need >= 0) {
+        s = '<div class="asum"><div><span>Punkte von ' + a + ' bis ' + b + '</span><b>' + fmtN(need) + '</b></div><div><span>Erfahrungs­fläschchen</span><b>≈ ' + fmtN(Math.ceil(need / 7)) + '</b></div><div><span>Mobs mit 5 Punkten</span><b>' + fmtN(Math.ceil(need / 5)) + '</b></div></div>' +
+          '<ul class="xlist"><li>' + qt('experience_bottle', '#57C74A') + '<span>Ein Erfahrungsfläschchen bringt 3 bis 11 Punkte, im Schnitt 7.</span></li>' +
+          '<li>' + qt('rotten_flesh', '#5E8F4A') + '<span>5 Punkte geben zum Beispiel Zombies, Skelette, Creeper und Endermen.</span></li>' +
+          '<li>' + qt('enchanted_book:mending', '#7B4BC2') + '<span>Mit Reparatur werden aus diesen Punkten bis zu <b>' + fmtN(need * 2) + '</b> Haltbarkeit (2 je Punkt).</span></li>';
+      } else {
+        s = '<div class="asum"><div><span>Du gibst aus</span><b>' + fmtN(-need) + '</b></div><div><span>Level</span><b>' + a + ' → ' + b + '</b></div><div><span>Wert in Fläschchen</span><b>≈ ' + fmtN(Math.round(-need / 7)) + '</b></div></div><ul class="xlist">';
+      }
+      s += '<li>' + qt('bone', '#E8E4D4') + '<span>Stirbst du mit Level ' + a + ', fallen nur <b>' + fmtN(drop) + '</b> Punkte zu Boden (7 je Level, höchstens 100). Damit kommst du von 0 wieder auf Level ' + back[0] + ', der Rest ist verloren.</span></li></ul>';
+    } else {
+      var r = xpLevel(xState.pts), nx = xpNext(r[0]);
+      s = '<div class="asum"><div><span>Level</span><b>' + fmtN(r[0]) + '</b></div><div><span>Im Balken</span><b>' + fmtN(r[1]) + ' / ' + fmtN(nx) + '</b></div><div><span>Bis Level ' + fmtN(r[0] + 1) + '</span><b>' + fmtN(nx - r[1]) + '</b></div></div>' +
+        '<div class="xbar" role="img" aria-label="' + Math.round(100 * r[1] / nx) + ' Prozent bis zum nächsten Level"><i style="width:' + (100 * r[1] / nx).toFixed(1) + '%"></i></div>' +
+        '<ul class="xlist"><li>' + qt('experience_bottle', '#57C74A') + '<span>Das sind ungefähr <b>' + fmtN(Math.round(xState.pts / 7)) + '</b> Erfahrungsfläschchen.</span></li></ul>';
+    }
+    $('x-out').innerHTML = s;
+    saveJSON('xp', xState);
+  }
+  $('x-mode').addEventListener('click', function (e) { var b = e.target.closest('[data-m]'); if (!b) return; xState.m = b.getAttribute('data-m'); renderXP(); });
+  [['x-from', 'from', 10000], ['x-to', 'to', 10000], ['x-pts', 'pts', 100000000]].forEach(function (f) {
+    $(f[0]).addEventListener('input', function () { if (this.value === '') return; xState[f[1]] = clampInt(this.value, 0, f[2], 0); renderXP(); });
+    $(f[0]).addEventListener('change', function () { this.value = xState[f[1]]; });
+  });
+  $('x-quick').addEventListener('click', function (e) { var b = e.target.closest('[data-to]'); if (!b) return; xState.to = +b.getAttribute('data-to'); $('x-to').value = xState.to; renderXP(); });
+
+  /* ---------- Zeit und Redstone ---------- */
+  function dec(n, d) { return Number(n).toLocaleString('de-DE', { maximumFractionDigits: d == null ? 2 : d }); }
+  function durS(sec) {
+    sec = Math.round(sec); var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    return h ? h + ' Std.' + (m ? ' ' + m + ' Min.' : '') : m ? m + ' Min.' + (s ? ' ' + s + ' Sek.' : '') : s + ' Sek.';
+  }
+  var zState = loadJSON('zeit', null); if (!zState || typeof zState !== 'object') zState = {};
+  var ZU = { s: 1, min: 60, gt: 0.05, rt: 0.1 };
+  zState = { v: isFinite(+zState.v) && +zState.v >= 0 ? +zState.v : 1, u: ZU[zState.u] ? zState.u : 's', clock: isFinite(+zState.clock) && +zState.clock > 0 ? +zState.clock : 60,
+    items: clampInt(zState.items, 1, 100000, 64), fur: clampInt(zState.fur, 1, 64, 1), k: zState.k === 'b' ? 'b' : 'f' };
+  $('z-val').value = zState.v; $('z-unit').value = zState.u; $('z-clock').value = zState.clock; $('z-items').value = zState.items; $('z-fur').value = zState.fur;
+  var zCoal = 0;
+  function renderZeit() {
+    // Umrechnen
+    var sec = zState.v * ZU[zState.u], gt = sec * 20, rt = sec * 10, R = Math.round(rt), li = [];
+    li.push('<li><span><b>' + dec(sec) + '</b> ' + (sec === 1 ? 'Sekunde' : 'Sekunden') + ' · <b>' + dec(gt) + '</b> ' + (gt === 1 ? 'Spieltick' : 'Spielticks') + ' · <b>' + dec(rt) + '</b> ' + (rt === 1 ? 'Redstone-Tick' : 'Redstone-Ticks') + '</span></li>');
+    if (R >= 1 && Math.abs(rt - R) < 1e-6) {
+      if (R <= 400) { var n4 = Math.floor(R / 4), rest = R % 4, parts = [];
+        if (n4) parts.push(n4 + ' × Stufe 4'); if (rest) parts.push('1 × Stufe ' + rest);
+        li.push('<li>' + qt('repeater', '#C8342B') + '<span>Verstärker: <b>' + parts.join(' + ') + '</b> (' + plural(n4 + (rest ? 1 : 0), 'Verstärker', 'Verstärker') + ')</span></li>');
+      } else li.push('<li>' + qt('hopper', '#4A4F57') + '<span>So lange Pausen baust du besser mit einer Trichter-Uhr als mit ' + fmtN(Math.ceil(R / 4)) + ' Verstärkern.</span></li>');
+    } else if (sec > 0) li.push('<li>' + qt('repeater', '#C8342B') + '<span>Verstärker schaffen nur ganze Redstone-Ticks, also Schritte von 0,1 Sekunden.</span></li>');
+    var im = sec * 1.2;
+    if (im >= 1) { var d = Math.floor(im / 1440), h = Math.floor(im % 1440 / 60), m = Math.round(im % 60); if (m === 60) { h++; m = 0; }
+      li.push('<li>' + qt('clock', '#D9A93A') + '<span>Im Spiel vergehen dabei ' + (d ? plural(d, 'Tag', 'Tage') + ' ' : '') + (h ? h + ' Std. ' : '') + (m || (!d && !h) ? m + ' Min.' : '') + ' Spielzeit.</span></li>'); }
+    $('z-conv').innerHTML = li.join('');
+    // Trichter-Uhr
+    var P = zState.clock, N = Math.max(1, Math.round(P / 0.8)), over = N > 320; if (over) N = 320;
+    var st = Math.floor(N / 64), r1 = N % 64;
+    $('z-hop').innerHTML = '<li>' + qt('hopper', '#4A4F57') + '<span>Lege <b>' + fmtN(N) + '</b> ' + (N === 1 ? 'Gegenstand' : 'Gegenstände') + ' in einen der beiden Trichter' + (st ? ' (' + plural(st, 'Stapel', 'Stapel') + (r1 ? ' und ' + r1 + ' einzelne' : '') + ')' : '') + '.</span></li>' +
+      '<li><span>Ein ganzer Durchlauf dauert dann etwa <b>' + dec(N * 0.8, 1) + ' Sekunden</b>, jede Richtung die Hälfte.</span></li>' +
+      (over ? '<li><span>Mehr als 320 Gegenstände passen nicht in einen Trichter, mehr als etwa 256 Sekunden geht so nicht. Für einmal am Tag eignet sich ein Tageslichtsensor.</span></li>' : '');
+    // Öfen
+    var Nn = zState.items, F = zState.fur, tt = zState.k === 'f' ? 10 : 5, per = Math.ceil(Nn / F), base = Math.floor(Nn / F), extra = Nn % F;
+    function fuel(cap) { return extra * Math.ceil((base + 1) / cap - 1e-9) + (F - extra) * Math.ceil(base / cap - 1e-9); }
+    zCoal = fuel(8);
+    [].forEach.call($('z-kind').querySelectorAll('[data-k]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-k') === zState.k)); });
+    $('z-sum').innerHTML = '<div><span>Dauer</span><b>' + durS(per * tt) + '</b></div><div><span>Fertig pro Minute</span><b>' + fmtN(Math.min(Nn, F * 60 / tt)) + '</b></div>';
+    $('z-fuel').innerHTML = [['coal', 'Kohle oder Holzkohle', 8, 'je 8'], ['coal_block', 'Kohleblöcke', 80, 'je 80'], ['dried_kelp_block', 'Getrocknete Seetangblöcke', 20, 'je 20'], ['lava_bucket', 'Lavaeimer', 100, 'je 100, der Eimer bleibt'], ['oak_planks', 'Bretter', 1.5, 'je 1,5']]
+      .map(function (f) { return '<li>' + qt(f[0], '#8D96A3') + '<span><b>' + fmtN(fuel(f[2])) + '</b> ' + f[1] + ' <small class="small">(' + f[3] + ')</small></span></li>'; }).join('') +
+      (F > 1 ? '<li><span class="small">Gerechnet je Ofen: Jeder bekommt ' + fmtN(base) + (extra ? ' bis ' + fmtN(base + 1) : '') + ' Gegenstände, angebrochener Brennstoff lässt sich nicht teilen.</span></li>' : '');
+    saveJSON('zeit', zState);
+  }
+  function zNum(id, key, ok) { $(id).addEventListener('input', function () { var v = +this.value; if (this.value !== '' && ok(v)) { zState[key] = v; renderZeit(); } }); $(id).addEventListener('change', function () { this.value = zState[key]; }); }
+  zNum('z-val', 'v', function (v) { return isFinite(v) && v >= 0 && v <= 1e7; });
+  zNum('z-clock', 'clock', function (v) { return isFinite(v) && v > 0 && v <= 1e5; });
+  zNum('z-items', 'items', function (v) { return v >= 1 && v <= 100000 && v === Math.round(v); });
+  zNum('z-fur', 'fur', function (v) { return v >= 1 && v <= 64 && v === Math.round(v); });
+  $('z-unit').addEventListener('change', function () { zState.u = this.value; renderZeit(); });
+  $('z-kind').addEventListener('click', function (e) { var b = e.target.closest('[data-k]'); if (!b) return; zState.k = b.getAttribute('data-k'); renderZeit(); });
+  $('z-coal').addEventListener('click', function () {
+    whenReady('lex').catch(function () {}).then(function () { var n = lexNames() || {}, s = n[slug('coal')];
+      window.bwList.add([{ k: 'coal', t: s ? s[0] : 'Kohle', n: zCoal }], 'Öfen: ' + fmtN(zState.items) + ' Gegenstände'); });
+  });
+  $('z-plan').addEventListener('click', function () { show('ofen'); });
+
   /* Daten übertragen */
   function bauKeys() { return PLANS.map(function (p) { return p.id; }); }
   $('s-export').addEventListener('click', function () {
@@ -1714,20 +2038,118 @@ var BWISO = (function () {
     });
   });
 
+  /* Sicherung als Datei: alle eigenen Speicher-Einträge der Werkbank (bw.*) und der Baupläne (bp.*) */
+  var SKIP = { 'bw.seen': 1, 'bw.installok': 1 };
+  function allData() { var o = {}, n = 0; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (/^(bw|bp)\./.test(k) && !SKIP[k]) { o[k] = localStorage.getItem(k); n++; } } } catch (e) {} return [o, n]; }
+  $('s-file').addEventListener('click', function () {
+    var d = allData(), day = new Date().toISOString().slice(0, 10), name = 'bedrock-werkbank-sicherung-' + day + '.json';
+    var json = JSON.stringify({ app: 'bedrock-werkbank', art: 'sicherung', v: 2, version: APPVER, datum: new Date().toISOString(), daten: d[0] }, null, 1);
+    var blob = new Blob([json], { type: 'application/json' });
+    function download() {
+      var a = document.createElement('a'), u = URL.createObjectURL(blob); a.href = u; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+      $('s-msg').textContent = 'Gespeichert als ' + name + ' (' + plural(d[1], 'Eintrag', 'Einträge') + ').';
+    }
+    if (IOS && PLATFORM === 'web' && navigator.canShare && window.File) {
+      var f = new File([blob], name, { type: 'application/json' });
+      if (navigator.canShare({ files: [f] })) {
+        navigator.share({ files: [f], title: 'Bedrock-Werkbank Sicherung' }).then(function () { $('s-msg').textContent = 'Sicherung weitergegeben. Tipp: In „Dateien“ sichern.'; },
+          function (err) { if (!err || err.name !== 'AbortError') download(); });
+        return;
+      }
+    }
+    download();
+  });
+  var restore = null;
+  $('s-load').addEventListener('click', function () { $('s-fileinp').value = ''; $('s-fileinp').click(); });
+  $('s-fileinp').addEventListener('change', function () {
+    var file = this.files && this.files[0]; if (!file) return;
+    if (file.size > 8e6) { $('s-msg').textContent = 'Die Datei ist zu groß für eine Sicherung der Werkbank.'; return; }
+    var rd = new FileReader();
+    rd.onload = function () {
+      var d = null; try { d = JSON.parse(String(rd.result)); } catch (e) {}
+      var ok = d && d.app === 'bedrock-werkbank' && d.art === 'sicherung' && d.daten && typeof d.daten === 'object' && !Array.isArray(d.daten);
+      var keys = ok ? Object.keys(d.daten) : [];
+      ok = ok && keys.length > 0 && keys.length < 5000 && keys.every(function (k) { return /^(bw|bp)\.[A-Za-z0-9_.:\-]{1,120}$/.test(k) && !SKIP[k] && typeof d.daten[k] === 'string' && d.daten[k].length < 2e6; });
+      if (!ok) { restore = null; $('s-frow').hidden = true; $('s-msg').textContent = 'Das ist keine Sicherung der Bedrock-Werkbank.'; return; }
+      restore = d.daten;
+      var when = typeof d.datum === 'string' ? new Date(d.datum) : null;
+      $('s-msg').textContent = 'Sicherung ' + (when && !isNaN(when) ? 'vom ' + when.toLocaleDateString('de-DE') + ' ' : '') + 'mit ' + plural(keys.length, 'Eintrag', 'Einträgen') + '. Übernehmen ersetzt alle Daten auf diesem Gerät.';
+      $('s-frow').hidden = false;
+    };
+    rd.onerror = function () { $('s-msg').textContent = 'Die Datei ließ sich nicht lesen.'; };
+    rd.readAsText(file);
+  });
+  $('s-fcancel').addEventListener('click', function () { restore = null; $('s-frow').hidden = true; $('s-msg').textContent = ''; });
+  $('s-fapply').addEventListener('click', function () {
+    if (!restore) return;
+    arm(this, 'Wirklich alles ersetzen?', function () {
+      try {
+        var old = []; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (/^(bw|bp)\./.test(k) && !SKIP[k]) old.push(k); }
+        old.forEach(function (k) { localStorage.removeItem(k); });
+        Object.keys(restore).forEach(function (k) { localStorage.setItem(k, restore[k]); });
+      } catch (e) { $('s-msg').textContent = 'Übernehmen hat nicht geklappt: ' + e.message; return; }
+      $('s-msg').textContent = 'Übernommen. Die Werkbank startet neu …';
+      setTimeout(function () { location.reload(); }, 400);
+    });
+  });
+
+  /* Alle Originalbilder vorab laden: landen im Zwischenspeicher (Web-App) bzw. im Bilderordner des Programms */
+  var texRun = null;
+  function texList() {
+    var set = {}, out = [];
+    function add(p) { var f = String(p).split('#')[0]; if (/^(blocks|items)\/[A-Za-z0-9_\/.\-]+\.(png|tga)$/.test(f) && !set[f]) { set[f] = 1; out.push(f); } }
+    texPaths.forEach(add);
+    try { (frames.bau.contentWindow.BW_TEXP || []).forEach(add); } catch (e) {}
+    return out;
+  }
+  function mb(b) { return dec(b / 1048576, 1) + ' MB'; }
+  function texInfo() { var d = load('texall'); $('tex-msg').textContent = texRun ? $('tex-msg').textContent : d ? 'Zuletzt alle geladen am ' + new Date(d).toLocaleDateString('de-DE') + '.' : ''; }
+  $('tex-all').addEventListener('click', function () {
+    if (texRun) { texRun.stop = true; return; }
+    var btn = this; btn.disabled = true; $('tex-prog').hidden = false; $('tex-bar').style.width = '0'; $('tex-msg').textContent = 'Bereite vor …';
+    Promise.all([whenReady('lex'), whenReady('bau')]).then(function () {
+      lexNames();
+      var files = texList(), i = 0, ok = 0, bad = 0, bytes = 0, run = texRun = { stop: false };
+      btn.disabled = false; btn.textContent = 'Anhalten';
+      function upd() { $('tex-bar').style.width = (100 * (ok + bad) / files.length).toFixed(1) + '%'; $('tex-msg').textContent = fmtN(ok + bad) + ' von ' + fmtN(files.length) + ' Bildern · ' + mb(bytes); }
+      function next() {
+        if (run.stop || i >= files.length) return Promise.resolve();
+        var f = files[i++];
+        return fetch(window.BW_TEX + f, PLATFORM === 'exe' ? {} : { mode: 'cors', credentials: 'omit' })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.blob(); })
+          .then(function (b) { bytes += b.size; ok++; }, function () { bad++; })
+          .then(function () { upd(); return next(); });
+      }
+      var w = []; for (var k = 0; k < 6; k++) w.push(next());
+      return Promise.all(w).then(function () {
+        texRun = null; btn.textContent = 'Alle Bilder jetzt laden';
+        if (run.stop) { $('tex-msg').textContent = 'Angehalten nach ' + fmtN(ok) + ' von ' + fmtN(files.length) + ' Bildern. Nochmal tippen lädt den Rest schnell nach.'; return; }
+        if (bad) { $('tex-msg').textContent = fmtN(ok) + ' Bilder geladen (' + mb(bytes) + '), ' + fmtN(bad) + ' nicht erreichbar. Mit Internet nochmal versuchen.'; return; }
+        save('texall', new Date().toISOString().slice(0, 10));
+        $('tex-msg').textContent = 'Fertig: alle ' + fmtN(ok) + ' Bilder (' + mb(bytes) + ') sind auf diesem Gerät.';
+      });
+    }).catch(function () { texRun = null; btn.disabled = false; btn.textContent = 'Alle Bilder jetzt laden'; $('tex-msg').textContent = 'Lexikon oder Baupläne ließen sich nicht laden.'; });
+  });
+
   function renderTiles() {
+    [].forEach.call(document.querySelectorAll('#plans .pcard'), function (c) { var b = c.querySelector('.ptest'); if (b) b.hidden = !planTest(c.getAttribute('data-go')); });
+    PLANS.forEach(function (p) { if (p.sizes) { var c = document.querySelector('#plans .pcard[data-go="' + p.id + '"] .pbody'); if (c) c.innerHTML = planBody(p); } });
+    $('plinks').innerHTML = '<button type="button" class="btn" data-go="vergleich">Alle Baupläne vergleichen</button><button type="button" class="btn" data-go="editor">+ Eigenen Bauplan erstellen</button>' +
+      ownPlans().map(function (o) { return '<button type="button" class="btn" data-go="' + esc(o.id) + '">' + (planTest(o.id) ? '✓ ' : '') + esc(o.name) + '<small>eigener Plan</small></button>'; }).join('');
     var open = list.filter(function (e) { return !e.d; }).length;
     $('ts-liste').textContent = list.length ? open + ' offen, ' + (list.length - open) + ' erledigt' : 'Rohstoffe zum Abhaken';
     $('ts-orte').textContent = places.length ? plural(places.length, 'Ort', 'Orte') + ' gespeichert' : 'Basis, Dörfer, Portale merken';
   }
 
   /* Was ist neu */
-  var NEWS = ['Baupläne: 3D-Ansicht der ganzen Farm, Bau-Modus mit großen Knöpfen (der Bildschirm bleibt an) und Drucken oder als PDF',
-              'Neuer Bauplan: Schmelzanlage mit 4 Öfen, die Zutaten, Brennstoff und Ergebnis über Trichter versorgt',
-              'Neues Werkzeug: Kreise und Kuppeln, Block für Block und Ebene für Ebene',
-              'Koordinaten mit Wegweiser: Entfernung und Richtung zu jedem Ort, Orte als Link teilen',
-              'Mehrere Welten: Sammelliste, Orte und Baufortschritt je Welt getrennt',
-              'Suche über alles auf der Startseite, im Lexikon die neuen Übersichten Handel und Mobs und die Markierung „Neu in 2026“',
-              'Aus Version 1.8: Hintergründe und Design-Schalter unter Info'];
+  var NEWS = ['Eigene Baupläne: Ebene für Ebene zeichnen, speichern und wie die anderen Pläne nutzen, mit 3D, Bau-Modus und Drucken',
+              'Baupläne: alle im Vergleich, „Im Spiel getestet“ mit Notiz, Lavafarm, Gürteltierfarm und Schmelzanlage in der Größe einstellbar',
+              'Neue Werkzeuge: Erfahrungs-Rechner sowie Zeit und Redstone mit Ticks, Verstärkern, Trichter-Uhr und Brennstoff für Öfen',
+              'Sammelliste: Packlisten-Vorlagen für Nether, Enderdrache, Höhlen, Meer und die erste Nacht',
+              'Sicherung als Datei: alle Daten speichern und auf diesem oder einem anderen Gerät zurückholen',
+              'Unter Info: alle Originalbilder vorab laden und eine Hilfe zu allen Funktionen',
+              'Schnellerer Start: Lexikon und Baupläne laden erst, wenn die Startseite steht'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;
@@ -1851,14 +2273,23 @@ var BWISO = (function () {
       d.addEventListener('auxclick', extClick, true);
       d.addEventListener('keydown', onKey, true);
       w.addEventListener('hashchange', function () { onFrameHash(key, w.location.hash); });
-      if (key === 'bau' && w.location.hash.split('/')[0] !== '#' + lastPlan) w.location.hash = lastPlan;
+      if (key === 'bau') { pendingBau = ''; if (w.location.hash.split('/')[0] !== '#' + lastPlan) w.location.hash = lastPlan; }
       try { if (w.BW_LOOK) w.BW_LOOK(); } catch (e) {}
-      if (key === 'lex') { lexNames(); if (cur && cur.id === 'start') renderRecent(); }
+      if (key === 'lex') {
+        lexNames(); if (cur && cur.id === 'start') renderRecent();
+        if (pendingLex) { if (w.location.hash !== '#' + pendingLex) w.location.hash = pendingLex; pendingLex = ''; }
+        if (pendingSearch != null) { var q0 = pendingSearch; pendingSearch = null; openSearch(q0); }
+        idle(function () { loadFrame('bau'); }, 4000);
+      }
       if (cur && cur.frame === key) focusView();
     });
   }
 
-  function openInfo() { if (!info.open) info.showModal(); }
+  function openInfo() { if (!info.open) { texInfo(); info.showModal(); } }
+  $('helpbtn').addEventListener('click', function () {
+    openInfo(); var h = $('help'), d = h.querySelector('details'); if (d) d.open = true;
+    setTimeout(function () { h.scrollIntoView({ block: 'start' }); }, 30);
+  });
   $('infobtn').addEventListener('click', openInfo);
   $('closebtn').addEventListener('click', function () { info.close(); });
   info.addEventListener('click', function (e) { if (e.target === info) info.close(); });
@@ -1913,7 +2344,8 @@ var BWISO = (function () {
   function fold(t) { return String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss'); }
   var TOOLWORDS = { liste: ['Sammelliste', 'liste einkauf rohstoffe material sammeln'], orte: ['Koordinaten', 'orte koordinaten wegweiser basis entfernung richtung teilen'],
     amboss: ['Amboss-Planer', 'amboss verzaubern verzauberung reparatur zauberbuch'], brauen: ['Brau-Planer', 'brauen trank tränke braustand lohenstaub'],
-    portal: ['Nether-Portal', 'portal nether gegenportal umrechnen'], kreis: ['Kreise und Kuppeln', 'kreis kuppel kugel rund turm scheibe zylinder'] };
+    portal: ['Nether-Portal', 'portal nether gegenportal umrechnen'], kreis: ['Kreise und Kuppeln', 'kreis kuppel kugel rund turm scheibe zylinder'],
+    xp: ['Erfahrungs-Rechner', 'erfahrung xp level punkte erfahrungsflaschchen reparatur zaubertisch'], zeit: ['Zeit und Redstone', 'zeit ticks tick redstone verstarker uhr trichteruhr ofen schmelzen kohle brennstoff'] };
   var OVERVIEW = [['Fundorte', 'orte', 'fundorte truhen beute loot schatz'], ['Dorfbewohner', 'berufe', 'dorfbewohner berufe handel'], ['Handel', 'handel', 'handel smaragd smaragde verkaufen kaufen'], ['Mobs', 'mobs', 'mobs monster tiere lebenspunkte']];
   function hit(q, hay) { var h = fold(hay), i = h.indexOf(q); return i < 0 ? 99 : i === 0 ? 0 : /[\s\-(]/.test(h.charAt(i - 1)) ? 1 : 2; }
   var suggT = null;
@@ -1921,8 +2353,12 @@ var BWISO = (function () {
   function sugg() {
     var q = fold($('hq').value.trim()); if (q.length < 2) { hideSugg(); return; }
     var out = [], n = lexNames() || {};
-    var pl = PLANS.map(function (p) { var o = p.out && n[slug(p.out)] ? n[slug(p.out)][0] : ''; return [Math.min(hit(q, p.title), hit(q, o) + 1), p]; }).filter(function (x) { return x[0] < 99; }).sort(function (a, b) { return a[0] - b[0]; }).slice(0, 4);
-    if (pl.length) out.push('<p class="sg">Baupläne</p>' + pl.map(function (x) { return '<button type="button" data-go="' + esc(x[1].id) + '">' + (x[1].out ? qt(x[1].out, '#8D96A3') : '<span class="sgi">B</span>') + '<span>' + esc(x[1].title) + '</span><small>' + x[1].layers + ' Ebenen</small></button>'; }).join(''));
+    var pl = PLANS.map(function (p) { var o = p.out && n[slug(p.out)] ? n[slug(p.out)][0] : ''; return [Math.min(hit(q, planNow(p).title), hit(q, o) + 1), p]; }).filter(function (x) { return x[0] < 99; }).sort(function (a, b) { return a[0] - b[0]; }).slice(0, 4);
+    var ex = [['Alle Baupläne vergleichen', 'vergleich', 'vergleich vergleichen tabelle ertrag uebersicht', 'Übersicht'], ['Eigenen Bauplan erstellen', 'editor', 'eigen eigener editor erstellen zeichnen entwerfen bauplan', 'Editor']]
+      .concat(ownPlans().map(function (o) { return [o.name, o.id, 'eigener bauplan', 'Eigener Plan']; }))
+      .map(function (e) { return [Math.min(hit(q, e[0]), hit(q, e[2]) + 1), e]; }).filter(function (x) { return x[0] < 99; }).slice(0, 3);
+    if (pl.length || ex.length) out.push('<p class="sg">Baupläne</p>' + pl.map(function (x) { var q = planNow(x[1]); return '<button type="button" data-go="' + esc(x[1].id) + '">' + (x[1].out ? qt(x[1].out, '#8D96A3') : '<span class="sgi">B</span>') + '<span>' + esc(q.title) + '</span><small>' + q.layers + ' Ebenen</small></button>'; }).join('') +
+      ex.map(function (x) { return '<button type="button" data-go="' + esc(x[1][1]) + '"><span class="sgi">B</span><span>' + esc(x[1][0]) + '</span><small>' + x[1][3] + '</small></button>'; }).join(''));
     var tl = Object.keys(TOOLWORDS).map(function (t) { return [Math.min(hit(q, TOOLWORDS[t][0]), hit(q, TOOLWORDS[t][1]) + 1), t]; }).filter(function (x) { return x[0] < 99; }).sort(function (a, b) { return a[0] - b[0]; }).slice(0, 3);
     var ov = OVERVIEW.map(function (o) { return [Math.min(hit(q, o[0]), hit(q, o[2]) + 1), o]; }).filter(function (x) { return x[0] < 99; });
     if (tl.length || ov.length) out.push('<p class="sg">Werkzeuge und Übersichten</p>' + tl.map(function (x) { return '<button type="button" data-tool="' + x[1] + '"><span class="sgi">W</span><span>' + esc(TOOLWORDS[x[1]][0]) + '</span><small>Werkzeug</small></button>'; }).join('') +
@@ -1937,6 +2373,7 @@ var BWISO = (function () {
     $('hsugg').hidden = false;
   }
   $('hq').addEventListener('input', function () { clearTimeout(suggT); suggT = setTimeout(sugg, 80); });
+  $('hq').addEventListener('focus', function () { loadFrame('lex'); });
   $('hq').addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { hideSugg(); return; }
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
@@ -1970,7 +2407,7 @@ var BWISO = (function () {
       toast('Geteilter Ort „' + (q.name || 'ohne Namen') + '“ steht im Formular. Prüfen und speichern.');
     } else if ((m = /^#bau=([a-z]+)(?:\/(\d+))?$/.exec(h)) && byId[m[1]] && byId[m[1]].frame === 'bau') {
       lastPlan = m[1]; save('plan', m[1]); pendingBau = m[1] + (m[2] ? '/' + m[2] : '');
-      if (ready.bau) { try { frames.bau.contentWindow.location.hash = pendingBau; } catch (e) {} show(lastPlan, true); pendingBau = ''; }
+      if (ready.bau) { try { frames.bau.contentWindow.location.hash = pendingBau; } catch (e) {} show(lastPlan, true); pendingBau = ''; } else show(lastPlan);
     }
   }
   window.addEventListener('hashchange', incoming);
@@ -1978,6 +2415,7 @@ var BWISO = (function () {
 
   /* ---------- Bau-Modus und Druck aus dem Bauplan ---------- */
   window.bwBuild = function (on) { document.documentElement.classList.toggle('bmode', !!on); };
+  window.bwPlanChanged = function () { if (cur && cur.plan && cur.plan.sizes) { cur.title = 'Bauplan ' + planNow(cur.plan).title; setTitle(cur.title); } };
   var wakeLock = null, wakeWanted = false;
   window.bwWake = function (on) {
     wakeWanted = !!on;
@@ -2011,15 +2449,17 @@ var BWISO = (function () {
   }
 
   // Start: immer die Startseite, Lexikon und Bauplan merken sich ihren Stand
-  lastPlan = byId[load('plan')] && byId[load('plan')].frame === 'bau' ? load('plan') : 'eisenfarm';
+  var lp = load('plan'), lpv = lp ? bauView(lp) : null;
+  lastPlan = lpv && lpv.frame === 'bau' && lp !== 'editor' ? lp : 'eisenfarm';
   var lexHash = load('lex'); if (!/^#[a-z0-9-]+$/.test(lexHash || '')) lexHash = '';
   wire('lex'); wire('bau');
   show('start', true);
   maybeNews();
   incoming();
-  frames.lex.src = PATHS.lex + lexHash;
-  frames.bau.src = PATHS.bau + '#' + (pendingBau || lastPlan);
   if (pendingBau) show(lastPlan);
+  // Lexikon erst laden, wenn die Startseite steht und der Browser Luft hat; die Baupläne folgen danach
+  function later() { idle(function () { loadFrame('lex'); }, 1500); }
+  if (document.readyState === 'complete') later(); else window.addEventListener('load', later);
 })();
 </script>
 </body>

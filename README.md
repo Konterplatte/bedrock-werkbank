@@ -1,6 +1,6 @@
 # Bedrock-Werkbank
 
-Ressourcen-Lexikon, elf Baupläne (von der Eisenfarm bis zur Schmelzanlage) und Werkzeuge für **Minecraft Bedrock Edition 26.60** als Web-App fürs iPhone. Nach dem ersten Öffnen läuft sie ohne Internet; die Originalbilder brauchen beim ersten Ansehen einmal eine Verbindung.
+Ressourcen-Lexikon, elf Baupläne (von der Eisenfarm bis zur Schmelzanlage), eigene Baupläne und acht Werkzeuge für **Minecraft Bedrock Edition 26.60** als Web-App fürs iPhone. Nach dem ersten Öffnen läuft sie ohne Internet; die Originalbilder brauchen beim ersten Ansehen einmal eine Verbindung.
 
 **App öffnen:** https://konterplatte.github.io/bedrock-werkbank/
 
@@ -10,7 +10,7 @@ Ressourcen-Lexikon, elf Baupläne (von der Eisenfarm bis zur Schmelzanlage) und 
 2. Unten auf **Teilen** tippen, dann **Zum Home-Bildschirm**.
 3. Die App startet danach im Vollbild wie jede andere App.
 
-Neue Versionen lädt die App von selbst, sobald sie online geöffnet wird.
+Neue Versionen lädt die App von selbst, sobald sie online geöffnet wird. Unter Info lassen sich alle Originalbilder vorab laden, dann zeigt sie auch ohne Netz überall die Bilder aus dem Spiel. Dort steht auch eine Hilfe zu allen Funktionen.
 
 ## Windows-Programm
 
@@ -18,10 +18,10 @@ Dieselbe App als eigenes Programm für Windows 10 und 11: [Bedrock-Werkbank-Wind
 
 ## Inhalt
 
-- `index.html`: Startseite mit Suche über alles, Navigation und Werkzeuge (Sammelliste, Koordinaten-Notizbuch mit Wegweiser und Teilen-Links, Brau-Planer, Amboss-Planer mit Vorlagen, Nether-Portal-Rechner, Kreis- und Kuppel-Rechner, mehrere Welten, Favoriten, Datenübertragung)
+- `index.html`: Startseite mit Suche über alles, Navigation und Werkzeuge (Sammelliste mit Packlisten-Vorlagen, Koordinaten-Notizbuch mit Wegweiser und Teilen-Links, Brau-Planer, Amboss-Planer mit Vorlagen, Nether-Portal-Rechner, Kreis- und Kuppel-Rechner, Erfahrungs-Rechner, Zeit und Redstone mit Trichter-Uhr und Ofen-Brennstoff, mehrere Welten, Favoriten, Sicherung als Datei und Datenübertragung)
 - Darstellung unter Info: Design System/Hell/Dunkel und Hintergrund Klassisch, Minecraft (Titelbild aus dem Spiel, Bücherregal, Holz) oder Bewegt; die Bilder dafür werden wie alle Originalbilder erst auf dem Gerät aus Mojangs Repository geladen
 - `lexikon/`: Ressourcen-Lexikon mit 1.880 Einträgen, darunter alle 42 Verzauberungen, mit Rohstoffrechner, Fundorten, Dorfbewohner-Berufen und Steckbriefen für 62 Mobs
-- `bauplaene/`: elf Baupläne Block für Block, von der Eisenfarm und den XP-Farmen (Endermen im End, Zombie- oder Skelett-Spawner) bis zur Kürbisfarm, der Hühnerfarm mit Kochautomat, Lava aus Tropfstein, der Gürteltierfarm und der Schmelzanlage; mit 3D-Ansicht, Bau-Modus und Druck, fertige Ebenen lassen sich abhaken
+- `bauplaene/`: elf Baupläne Block für Block, von der Eisenfarm und den XP-Farmen (Endermen im End, Zombie- oder Skelett-Spawner) bis zur Kürbisfarm, der Hühnerfarm mit Kochautomat, Lava aus Tropfstein, der Gürteltierfarm und der Schmelzanlage; mit 3D-Ansicht, Bau-Modus und Druck, fertige Ebenen lassen sich abhaken. Lava-, Gürteltierfarm und Schmelzanlage sind in der Größe einstellbar, alle Pläne lassen sich vergleichen und als „im Spiel getestet“ markieren. Mit dem Editor zeichnest du eigene Baupläne Ebene für Ebene
 - `sw.js`, `manifest.webmanifest`, `icons/`: Offline-Betrieb und App-Symbol
 - `lizenzen.txt`: Lizenzen der Schriften und Herkunft der Bilder
 

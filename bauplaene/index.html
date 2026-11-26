@@ -155,6 +155,55 @@ a { color: var(--accent); }
 .plan.iso { display: flex; justify-content: center; }
 .plan.iso svg { max-height: 72vh; }
 .toolrow { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Größe, Test-Haken, Vergleich, Editor */
+.sizer, .tested { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); }
+.sizer .szl { font-weight: 600; }
+.sizer b { min-width: 2.2ch; text-align: center; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.sizer button { width: 44px; height: 40px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); font-size: 1.3rem; cursor: pointer; }
+.sizer button:disabled { opacity: .4; cursor: default; }
+.sizer small, .tested small { color: var(--ink-soft); }
+.tested label { display: flex; align-items: center; gap: 8px; font-weight: 600; min-height: 40px; cursor: pointer; }
+.tested input[type="checkbox"] { width: 22px; height: 22px; margin: 0; accent-color: var(--ok); }
+.tested input[type="text"] { flex: 1 1 220px; min-width: 0; min-height: 40px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; font: inherit; background: var(--paper); color: var(--ink); }
+.tabs .tok { margin-left: auto; padding-left: 6px; color: var(--ok); font-weight: 700; }
+.tabs a[aria-current="page"] .tok { color: var(--on-accent); }
+.tabs a.extra { border: 1px dashed var(--line); }
+.tabs .grp { grid-column: 1 / -1; font: 600 .78rem var(--f-display, inherit); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); padding: 8px 6px 2px; }
+html.cmp .specs, html.cmp .sheet, html.cmp section:not(#compare), html.cmp .sizer, html.cmp .tested,
+html.edit .specs, html.edit .sheet, html.edit section:not(#editor), html.edit .sizer, html.edit .tested { display: none !important; }
+#compare, #editor { display: flex; flex-direction: column; gap: 12px; }
+#compare[hidden], #editor[hidden] { display: none; }
+.cmpt { width: 100%; border-collapse: collapse; table-layout: auto; }
+.cmpt th, .cmpt td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.cmpt th { font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.cmpt td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cmpt td.wide { width: 17em; }
+.cmpt a { display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 600; text-decoration: none; }
+@media (max-width: 700px) {
+  .cmpt thead { display: none; }
+  .cmpt tr { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .cmpt td, .cmpt td.wide { border: 0; padding: 0; width: auto; }
+  .cmpt td:first-child, .cmpt td.wide { grid-column: 1 / -1; }
+  .cmpt td[data-l]::before { content: attr(data-l) ': '; color: var(--ink-soft); font-size: .82rem; }
+}
+.edrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.edrow label { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.edin { min-height: 42px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; font: inherit; background: var(--sheet); color: var(--ink); }
+.edin.num { width: 74px; }
+.edin.grow { flex: 1 1 220px; min-width: 0; }
+textarea.edin { width: 100%; min-height: 76px; padding: 8px 10px; resize: vertical; }
+.edbtn { min-height: 42px; border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); color: var(--ink); font: 600 .98rem var(--f-display, inherit); padding: 0 12px; cursor: pointer; }
+.edbtn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.edbtn[data-armed] { border-color: var(--mark); color: var(--mark); }
+.edbtn:disabled { opacity: .45; cursor: default; }
+#editor > .edin { flex: none; width: 100%; }
+.edpal { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px; }
+@media (max-width: 640px) { .edpal { display: grid; grid-auto-flow: column; grid-template-rows: repeat(3, auto); justify-content: start; overflow-x: auto; overscroll-behavior-x: contain; padding-bottom: 6px; } .edpal button { white-space: nowrap; } }
+.edpal button { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--sheet); color: var(--ink); font: inherit; font-size: .9rem; padding: 0 10px 0 6px; cursor: pointer; }
+.edpal button[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.edpal .sw { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(0, 0, 0, .15); flex: none; display: inline-grid; place-items: center; font-size: .7rem; color: #fff; }
+.edgrid { touch-action: none; -webkit-user-select: none; user-select: none; cursor: crosshair; border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); padding: 6px; }
+.edgrid svg { width: 100%; height: auto; display: block; max-height: 70vh; }
 /* Bau-Modus: nur das Nötigste, große Knöpfe unten, Bildschirm bleibt an */
 .bmbar { display: none; }
 html.bmode .wrap > header, html.bmode .picker, html.bmode .specs, html.bmode section:not(.sheet), html.bmode .side, html.bmode .probe, html.bmode #done, html.bmode .toolrow, html.bmode .foot { display: none !important; }
@@ -339,6 +388,10 @@ html.app .foot { max-width: none; }
   html.app .eyebrow, html.app .lead { color: #333; }
   html.app .card, html.app .sheet, html.app .specs { box-shadow: none; }
 }
+
+/* 2.0: Vergleich und Editor nehmen die ganze Breite ein, die Spalten darunter entfallen */
+html.cmp .below, html.edit .below { display: none; }
+#compare, #editor { border: 1px solid var(--line); border-radius: var(--r, 14px); background: var(--sheet); padding: 16px; }
 </style>
 </head>
 <body>
@@ -356,6 +409,22 @@ html.app .foot { max-width: none; }
 </div>
 
 <dl class="specs" id="specs"></dl>
+<div class="sizer" id="sizer" hidden><span class="szl" id="sz-label"></span><button type="button" id="sz-minus" aria-label="Kleiner">−</button><b id="sz-val" aria-live="polite"></b><button type="button" id="sz-plus" aria-label="Größer">+</button><small id="sz-rate"></small></div>
+<div class="tested" id="tested"><label><input type="checkbox" id="t-ok"> Im Spiel getestet</label><input type="text" id="t-note" maxlength="140" placeholder="Notiz, z. B. klappt, aber 2 Trichter mehr nötig" aria-label="Notiz zum Test"></div>
+<section id="compare" hidden></section>
+<section id="editor" hidden>
+  <h2 id="ed-title">Eigener Bauplan</h2>
+  <div class="edrow"><input class="edin grow" id="ed-name" maxlength="40" placeholder="Name, z. B. Mein Lagerhaus" aria-label="Name des Bauplans">
+    <label>Breite <input class="edin num" id="ed-w" type="number" min="3" max="32" inputmode="numeric"></label><label>Tiefe <input class="edin num" id="ed-d" type="number" min="3" max="32" inputmode="numeric"></label></div>
+  <div class="edrow"><button type="button" class="edbtn" id="ed-lprev" aria-label="Ebene tiefer">‹</button><b id="ed-lname" aria-live="polite"></b><button type="button" class="edbtn" id="ed-lnext" aria-label="Ebene höher">›</button>
+    <button type="button" class="edbtn" id="ed-ladd">+ Ebene darüber</button><button type="button" class="edbtn" id="ed-lcopy">Ebene kopieren</button><button type="button" class="edbtn" id="ed-ldel">Ebene löschen</button></div>
+  <input class="edin grow" id="ed-ltitle" maxlength="40" placeholder="Name der Ebene, z. B. Boden" aria-label="Name der Ebene">
+  <p style="margin:0;color:var(--ink-soft)">Block wählen, dann Kästchen antippen oder darüberziehen. Blass siehst du die Ebene darunter.</p>
+  <div class="edpal" id="ed-pal" role="group" aria-label="Blöcke"></div>
+  <div class="edgrid" id="ed-grid"></div>
+  <textarea class="edin" id="ed-ltext" maxlength="600" placeholder="Anleitung für diese Ebene (freiwillig)" aria-label="Anleitung für diese Ebene"></textarea>
+  <div class="edrow"><button type="button" class="edbtn primary" id="ed-save">Speichern</button><button type="button" class="edbtn" id="ed-cancel">Abbrechen</button><button type="button" class="edbtn" id="ed-del">Bauplan löschen</button><span id="ed-msg" aria-live="polite"></span></div>
+</section>
 
 <section class="sheet" aria-label="Ebenenansicht">
   <div class="layerbar">
@@ -380,7 +449,7 @@ html.app .foot { max-width: none; }
   </div>
   <p class="instruction" id="instruction"></p>
   <button type="button" class="donebtn" id="done" aria-pressed="false"></button>
-  <div class="toolrow"><button type="button" id="bmbtn">Bau-Modus</button><button type="button" id="printbtn">Drucken oder als PDF</button><button type="button" id="sharebtn" hidden>Ebene teilen</button></div>
+  <div class="toolrow"><button type="button" id="editbtn" hidden>Bearbeiten</button><button type="button" id="bmbtn">Bau-Modus</button><button type="button" id="printbtn">Drucken oder als PDF</button><button type="button" id="sharebtn" hidden>Ebene teilen</button></div>
   <div class="side">
     <p class="sub">Schnitt von der Seite</p>
     <div id="side"></div>
@@ -1476,33 +1545,35 @@ var PLANS = (function () {
   }
 
   /* ---------- Lava aus Tropfstein: 8 x 3, Y1 bis Y5 ---------- */
-  function lava() {
-    var W = 8, D = 3, L = [], g;
+  function lava(n) {
+    n = n || 6;
+    var W = n + 2, D = 3, L = [], g;
 
-    g = mk(W, D); rect(g, 1, 1, 6, 1, 'j'); g[1][0] = 'S'; g[1][7] = 'S';
+    g = mk(W, D); rect(g, 1, 1, n, 1, 'j'); g[1][0] = 'S'; g[1][W - 1] = 'S';
     L.push({ y: [1, 1], name: 'Kessel', grid: rows(g),
-      text: 'Stelle 6 Kessel in eine Reihe, an beiden Enden einen festen Block als Säule. Vorn und hinten bleibt alles frei, damit du mit dem Eimer an jeden Kessel kommst. Setze die Kessel erst, wenn die Tropfsteine darüber hängen, dann siehst du genau, wohin sie gehören.' });
+      text: 'Stelle ' + n + ' Kessel in eine Reihe, an beiden Enden einen festen Block als Säule. Vorn und hinten bleibt alles frei, damit du mit dem Eimer an jeden Kessel kommst. Setze die Kessel erst, wenn die Tropfsteine darüber hängen, dann siehst du genau, wohin sie gehören.' });
 
-    g = mk(W, D); rect(g, 1, 1, 6, 1, '1'); g[1][0] = 'S'; g[1][7] = 'S';
+    g = mk(W, D); rect(g, 1, 1, n, 1, '1'); g[1][0] = 'S'; g[1][W - 1] = 'S';
     L.push({ y: [2, 2], name: 'Tropfstein', grid: rows(g),
       text: 'Hänge unter jeden Block der nächsten Lage einen spitzen Tropfstein: Klicke dazu die Unterseite des Blocks an. Je Kessel genau ein Tropfstein, seine Spitze zeigt direkt auf den Kessel.' });
 
-    g = mk(W, D); rect(g, 0, 0, 7, 2, 'S');
+    g = mk(W, D); rect(g, 0, 0, W - 1, 2, 'S');
     L.push({ y: [3, 3], name: 'Tragende Lage', grid: rows(g),
-      text: 'Lege 8 × 3 feste Blöcke, gestützt von den beiden Säulen. Nimm Stein oder Bruchstein, nichts Brennbares. Baue diese Lage zuerst und hänge dann die Tropfsteine darunter.' });
+      text: 'Lege ' + W + ' × 3 feste Blöcke, gestützt von den beiden Säulen. Nimm Stein oder Bruchstein, nichts Brennbares. Baue diese Lage zuerst und hänge dann die Tropfsteine darunter.' });
 
-    g = mk(W, D); ring(g, 0, 0, 7, 2, 'S'); rect(g, 1, 1, 6, 1, 'V');
+    g = mk(W, D); ring(g, 0, 0, W - 1, 2, 'S'); rect(g, 1, 1, n, 1, 'V');
     L.push({ y: [4, 4], name: 'Lava', grid: rows(g),
-      text: 'Ziehe einen Rand aus 18 festen Blöcken hoch und gieße 6 Eimer Lava hinein, je einen genau über jeden Tropfstein. Es müssen Quellen sein, fließende Lava tropft nicht.' });
+      text: 'Ziehe einen Rand aus ' + (2 * W + 2) + ' festen Blöcken hoch und gieße ' + n + ' Eimer Lava hinein, je einen genau über jeden Tropfstein. Es müssen Quellen sein, fließende Lava tropft nicht.' });
 
-    g = mk(W, D); rect(g, 0, 0, 7, 2, 'S');
+    g = mk(W, D); rect(g, 0, 0, W - 1, 2, 'S');
     L.push({ y: [5, 5], name: 'Deckel', grid: rows(g),
-      text: 'Decke die Lava mit 8 × 3 festen Blöcken ab. So fällt niemand hinein, und kein Feuer springt über.' });
+      text: 'Decke die Lava mit ' + W + ' × 3 festen Blöcken ab. So fällt niemand hinein, und kein Feuer springt über.' });
 
     return {
-      id: 'lava', out: 'lava_bucket', title: 'Lava aus Tropfstein', w: W, d: D, yMin: 1, yMax: 5, sliceX: 3, ground: true,
+      id: 'lava', out: 'lava_bucket', outName: 'Lava', title: 'Lava aus Tropfstein', w: W, d: D, yMin: 1, yMax: 5, sliceX: Math.min(3, n), ground: true,
+      size: { n: n, min: 2, max: 12, step: 1, label: 'Kessel' }, rate: 'etwa ' + (3 * n) + ' Eimer pro Stunde (3 je Kessel)',
       guides: [],
-      specs: [['Grundfläche', '8 × 3 Blöcke'], ['Höhe', '5 Blöcke'], ['Kessel', '6'], ['Ertrag', 'etwa 1 Eimer je Kessel alle 20 Minuten']],
+      specs: [['Grundfläche', W + ' × 3 Blöcke'], ['Höhe', '5 Blöcke'], ['Kessel', String(n)], ['Ertrag', 'etwa 1 Eimer je Kessel alle 20 Minuten']],
       extras: [['Eimer', '1', 'zum Abschöpfen der Kessel']],
       hints: { cauldron: '7 Eisenbarren je Kessel', dripstone: 'aus Tropfsteinhöhlen, mit der Spitzhacke', lava: 'ein Eimer je Quelle', stone: 'nichts Brennbares' },
       layers: L
@@ -1565,64 +1636,77 @@ var PLANS = (function () {
   }
 
   /* ---------- Gürteltierfarm: 10 x 3, Y1 bis Y3 ---------- */
-  function armadillo() {
-    var W = 10, D = 3, L = [], g;
-    function wall(g) { rect(g, 0, 0, 7, 0, 'G'); rect(g, 0, 2, 7, 2, 'G'); g[1][0] = 'G'; g[1][7] = 'G'; }
+  function armadillo(n) {
+    n = n || 6;
+    var W = n + 4, D = 3, E = n + 1, L = [], g;          // E: Ostwand über dem letzten Trichter
+    function wall(g) { rect(g, 0, 0, E, 0, 'G'); rect(g, 0, 2, E, 2, 'G'); g[1][0] = 'G'; g[1][E] = 'G'; }
 
-    g = mk(W, D); rect(g, 0, 0, 7, 0, 'S'); rect(g, 0, 2, 7, 2, 'S'); g[1][0] = 'S'; rect(g, 1, 1, 7, 1, 'e'); g[1][8] = 'K'; g[1][9] = 'K';
-    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[8, 1, 9, 1]],
-      text: 'Stelle die Doppelkiste auf und lege westlich davon eine Reihe aus 7 Trichtern, die nach Osten zeigen: Setze den ersten schleichend an die Kiste und jeden weiteren an den vorigen. Daneben im Norden und Süden je 8 feste Blöcke und einer am Westende. Sie tragen später das Glas.' });
+    g = mk(W, D); rect(g, 0, 0, E, 0, 'S'); rect(g, 0, 2, E, 2, 'S'); g[1][0] = 'S'; rect(g, 1, 1, E, 1, 'e'); g[1][E + 1] = 'K'; g[1][E + 2] = 'K';
+    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[E + 1, 1, E + 2, 1]],
+      text: 'Stelle die Doppelkiste auf und lege westlich davon eine Reihe aus ' + (n + 1) + ' Trichtern, die nach Osten zeigen: Setze den ersten schleichend an die Kiste und jeden weiteren an den vorigen. Daneben im Norden und Süden je ' + (n + 2) + ' feste Blöcke und einer am Westende. Sie tragen später das Glas.' });
 
-    g = mk(W, D); wall(g); rect(g, 1, 1, 6, 1, '2');
+    g = mk(W, D); wall(g); rect(g, 1, 1, n, 1, '2');
     L.push({ y: [2, 2], name: 'Pferch', grid: rows(g),
-      text: 'Ziehe aus 18 Glasblöcken eine Wand um die ersten 6 Trichter. Der siebte liegt unter der Ostwand und leitet nur weiter. Über der Kiste bleibt alles frei, sonst lässt sie sich schlecht öffnen. Hier stehen später die Gürteltiere, mit den Füßen auf den Trichtern.' });
+      text: 'Ziehe aus ' + (2 * n + 6) + ' Glasblöcken eine Wand um die ersten ' + n + ' Trichter. Der letzte liegt unter der Ostwand und leitet nur weiter. Über der Kiste bleibt alles frei, sonst lässt sie sich schlecht öffnen. Hier stehen später die Gürteltiere, mit den Füßen auf den Trichtern.' });
 
-    g = mk(W, D); wall(g); rect(g, 1, 1, 6, 1, 'o');
+    g = mk(W, D); wall(g); rect(g, 1, 1, n, 1, 'o');
     L.push({ y: [3, 3], name: 'Wand, zweite Lage', grid: rows(g),
-      text: 'Setze eine zweite Lage aus 18 Glasblöcken darauf. Ein Dach brauchst du nicht: Über 2 Blöcke springt kein Gürteltier, und von oben kannst du sie füttern. Bring jetzt 2 Gürteltiere an der Leine her, stell dich auf die Wand und zieh sie über das Glas in den Pferch. Dann klickst du sie an, und die Leine löst sich.' });
+      text: 'Setze eine zweite Lage aus ' + (2 * n + 6) + ' Glasblöcken darauf. Ein Dach brauchst du nicht: Über 2 Blöcke springt kein Gürteltier, und von oben kannst du sie füttern. Bring jetzt 2 Gürteltiere an der Leine her, stell dich auf die Wand und zieh sie über das Glas in den Pferch. Dann klickst du sie an, und die Leine löst sich.' });
 
     return {
-      id: 'guerteltier', out: 'armadillo_scute', title: 'Gürteltierfarm für Hornschilde', w: W, d: D, yMin: 1, yMax: 3, sliceZ: 1, ground: true,
+      id: 'guerteltier', out: 'armadillo_scute', outName: 'Hornschilde', title: 'Gürteltierfarm für Hornschilde', w: W, d: D, yMin: 1, yMax: 3, sliceZ: 1, ground: true,
+      size: { n: n, min: 3, max: 12, step: 1, label: 'Felder' }, rate: 'rund ' + (8 * n) + ' pro Stunde (8 je Gürteltier)',
       guides: [],
-      specs: [['Grundfläche', '10 × 3 Blöcke'], ['Höhe', '3 Blöcke'], ['Gürteltiere', '6, eines je Feld'], ['Ertrag', 'rund 8 Hornschilde je Gürteltier und Stunde']],
-      extras: [['Leine', '1', 'um die ersten 2 Gürteltiere herzuholen'], ['Spinnenaugen', '8', 'zum Züchten im Pferch, 2 je Jungtier'],
-               ['Namensschilder', 'bis zu 6', 'nur falls dir Gürteltiere verschwinden']],
+      specs: [['Grundfläche', W + ' × 3 Blöcke'], ['Höhe', '3 Blöcke'], ['Gürteltiere', n + ', eines je Feld'], ['Ertrag', 'rund 8 Hornschilde je Gürteltier und Stunde']],
+      extras: [['Leine', '1', 'um die ersten 2 Gürteltiere herzuholen'], ['Spinnenaugen', String(2 * (n - 2)), 'zum Züchten im Pferch, 2 je Jungtier'],
+               ['Namensschilder', 'bis zu ' + n, 'nur falls dir Gürteltiere verschwinden']],
       hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', glass: 'Sand im Ofen schmelzen', chest: 'ergibt eine Doppelkiste', stone: 'beliebige feste Blöcke' },
       layers: L
     };
   }
 
   /* ---------- Schmelzanlage: 6 x 3, Y1 bis Y4 ---------- */
-  function smelter() {
-    var W = 6, D = 3, L = [], g;
+  function smelter(n) {
+    n = n || 4;
+    var W = n + 2, D = 3, L = [], g, pairs = [];
+    for (var i = 0; i < n; i += 2) pairs.push(i);
 
-    g = mk(W, D); rect(g, 0, 1, 3, 1, 'e'); g[1][4] = 'K'; g[1][5] = 'K';
-    L.push({ y: [1, 1], name: 'Ausgabe', grid: rows(g), pairs: [[4, 1, 5, 1]],
-      text: 'Stelle die Doppelkiste für die fertigen Sachen auf. Westlich davon kommt eine Reihe aus 4 Trichtern, die nach Osten zeigen: Setze den ersten schleichend an die Kiste und jeden weiteren an den vorigen. Diese Trichter holen später das Fertige unten aus den Öfen. Auf die Kiste kommt nichts, damit sie sich öffnen lässt.' });
+    g = mk(W, D); rect(g, 0, 1, n - 1, 1, 'e'); g[1][n] = 'K'; g[1][n + 1] = 'K';
+    L.push({ y: [1, 1], name: 'Ausgabe', grid: rows(g), pairs: [[n, 1, n + 1, 1]],
+      text: 'Stelle die Doppelkiste für die fertigen Sachen auf. Westlich davon kommt eine Reihe aus ' + n + ' Trichtern, die nach Osten zeigen: Setze den ersten schleichend an die Kiste und jeden weiteren an den vorigen. Diese Trichter holen später das Fertige unten aus den Öfen. Auf die Kiste kommt nichts, damit sie sich öffnen lässt.' });
 
-    g = mk(W, D); rect(g, 0, 1, 3, 1, '4'); rect(g, 0, 2, 3, 2, '6');
+    g = mk(W, D); rect(g, 0, 1, n - 1, 1, '4'); rect(g, 0, 2, n - 1, 2, '6');
     L.push({ y: [2, 2], name: 'Öfen und Brennstoff', grid: rows(g),
-      text: 'Setze 4 Öfen auf die Trichter, die Vorderseite nach Süden zu dir. Hinter jeden Ofen kommt ein Trichter, der nach Norden zeigt: Setze ihn schleichend an die Rückseite des Ofens. Was in einem Trichter von hinten oder von der Seite in den Ofen fällt, landet im Brennstofffach.' });
+      text: 'Setze ' + n + ' Öfen auf die Trichter, die Vorderseite nach Süden zu dir. Hinter jeden Ofen kommt ein Trichter, der nach Norden zeigt: Setze ihn schleichend an die Rückseite des Ofens. Was in einem Trichter von hinten oder von der Seite in den Ofen fällt, landet im Brennstofffach.' });
 
-    g = mk(W, D); rect(g, 0, 1, 3, 1, '7'); rect(g, 0, 2, 3, 2, 'K');
-    L.push({ y: [3, 3], name: 'Zutaten-Trichter und Brennstoff-Kisten', grid: rows(g), pairs: [[0, 2, 1, 2], [2, 2, 3, 2]],
-      text: 'Setze auf jeden Ofen einen Trichter: schleichend oben auf den Ofen klicken, dann zeigt er nach unten. Was von oben kommt, landet im Zutatenfach. Auf die 4 Brennstoff-Trichter hinten kommen 2 Doppelkisten. Ein Trichter unter einer Doppelkiste zieht aus der ganzen Kiste, so verteilt sich der Brennstoff auf alle Öfen.' });
+    g = mk(W, D); rect(g, 0, 1, n - 1, 1, '7'); rect(g, 0, 2, n - 1, 2, 'K');
+    L.push({ y: [3, 3], name: 'Zutaten-Trichter und Brennstoff-Kisten', grid: rows(g), pairs: pairs.map(function (x) { return [x, 2, x + 1, 2]; }),
+      text: 'Setze auf jeden Ofen einen Trichter: schleichend oben auf den Ofen klicken, dann zeigt er nach unten. Was von oben kommt, landet im Zutatenfach. Auf die ' + n + ' Brennstoff-Trichter hinten kommen ' + (n / 2) + (n === 2 ? ' Doppelkiste' : ' Doppelkisten') + '. Ein Trichter unter einer Doppelkiste zieht aus der ganzen Kiste, so verteilt sich der Brennstoff auf die Öfen darunter.' });
 
-    g = mk(W, D); rect(g, 0, 1, 3, 1, 'K');
-    L.push({ y: [4, 4], name: 'Zutaten-Kisten', grid: rows(g), pairs: [[0, 1, 1, 1], [2, 1, 3, 1]],
-      text: 'Stelle 2 Doppelkisten auf die Zutaten-Trichter. Hier legst du Erz, Sand oder rohes Essen hinein, in die hinteren Kisten Kohle. Jede Doppelkiste versorgt die beiden Öfen darunter.' });
+    g = mk(W, D); rect(g, 0, 1, n - 1, 1, 'K');
+    L.push({ y: [4, 4], name: 'Zutaten-Kisten', grid: rows(g), pairs: pairs.map(function (x) { return [x, 1, x + 1, 1]; }),
+      text: 'Stelle ' + (n / 2) + (n === 2 ? ' Doppelkiste' : ' Doppelkisten') + ' auf die Zutaten-Trichter. Hier legst du Erz, Sand oder rohes Essen hinein, in die hinteren Kisten Kohle. Jede Doppelkiste versorgt die beiden Öfen darunter.' });
 
     return {
-      id: 'ofen', out: 'furnace', title: 'Schmelzanlage mit 4 Öfen', w: W, d: D, yMin: 1, yMax: 4, sliceX: 1, ground: true,
+      id: 'ofen', out: 'furnace', outName: 'Geschmolzenes', title: 'Schmelzanlage mit ' + n + ' Öfen', w: W, d: D, yMin: 1, yMax: 4, sliceX: 1, ground: true,
+      size: { n: n, min: 2, max: 8, step: 2, label: 'Öfen' }, rate: (6 * n) + ' Gegenstände pro Minute (6 je Ofen)',
       guides: [],
-      specs: [['Grundfläche', '6 × 3 Blöcke'], ['Höhe', '4 Blöcke'], ['Öfen', '4'], ['Tempo', '24 Gegenstände pro Minute']],
+      specs: [['Grundfläche', W + ' × 3 Blöcke'], ['Höhe', '4 Blöcke'], ['Öfen', String(n)], ['Tempo', (6 * n) + ' Gegenstände pro Minute']],
       extras: [['Kohle oder Holzkohle', 'nach Bedarf', '1 Stück reicht für 8 Gegenstände']],
-      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', furnace: '8 Bruchstein je Ofen', chest: 'ergibt 5 Doppelkisten' },
+      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', furnace: '8 Bruchstein je Ofen', chest: 'ergibt ' + (n + 1) + ' Doppelkisten' },
       layers: L
     };
   }
 
-  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner(), armadillo(), smelter()];
+  var list = [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner(), armadillo(), smelter()];
+  var RATE = {
+    eisenfarm: ['Eisen', 'hängt von den Golem-Spawns ab'], handelsstation: ['Handel', '10 Dorfbewohner'], kaktusfarm: ['Kakteen', 'rund 100 pro Stunde'],
+    xpfarm: ['Erfahrung', '5 je Enderman'], zuckerrohr: ['Zuckerrohr', 'rund 50 pro Stunde'], kuerbis: ['Kürbisse und Melonen', 'bis 8 je Knopfdruck, etwa alle 30 Minuten'],
+    huehner: ['Brathähnchen', 'rund 1 je Huhn und Stunde'], spawner: ['Erfahrung', 'mindestens 5 je Mob']
+  };
+  list.forEach(function (p) { if (RATE[p.id]) { p.outName = RATE[p.id][0]; p.rate = RATE[p.id][1]; } });
+  list.build = { lava: lava, guerteltier: armadillo, ofen: smelter };
+  return list;
 })();
 
 if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
@@ -1632,6 +1716,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
   var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_front_off.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/pumpkin_face_off.png","blocks/pumpkin_side.png","blocks/pumpkin_top.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/bucket_lava.png","items/cauldron.png","items/chicken_cooked.png","items/door_wood.png","items/egg.png","items/emerald.png","items/ender_pearl.png","items/experience_bottle.png","items/hopper.png","items/iron_ingot.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",38,38,38],"Z":["c",38,38,38],"U":["c",38,38,38],"L":["c",19,19,19],"X":["f",59],"t":["f",53],"n":["f",53],"e":["f",53],"s":["f",53],"K":["c",6,4,5],"B":["f",44],"b":["f",44],"C":["c",8,7,7],"A":["c",22,21,20],"D":["f",48],"d":["f",48],"F":["f",39],"N":["c",37,37,37],"c":["c",1,0,0],"z":["fe",30,30,30],"g":["fe",30,30,30],"T":["s",38,38,38],"R":["t",40,40,40],"M":["f",55],"m":["c",24,24,24],"r":["f",57],"G":["c",15,15,15],"P":["c",29,28,28],"p":["c",29,28,28],"Y":["c",27,25,26],"y":["c",27,25,26],"i":["f",56],"a":["c",11,9,9],"k":["f",58],"W":["b",38,38,38],"H":["c",14,10,13],"I":["c",27,25,26],"J":["c",27,25,26],"l":["f",53],"q":["s",38,38,38],"x":["f",49],"j":["f",46],"1":["f",31],"3":["c",23,23,23],"2":["f",43],"4":["c",14,12,13],"6":["f",53],"7":["f",53],"Q":["c",42,42,42],"V":["c",18,18,18],"iron_ingot":["f",54],"emerald":["f",50],"cactus":["c",1,0,0],"ender_pearl":["f",51],"sugar_cane":["f",57],"pumpkin":["c",35,33,34],"cooked_chicken":["f",47],"lava_bucket":["f",45],"experience_bottle":["f",52],"armadillo_scute":["f",43],"furnace":["c",14,12,13]},"g":{"S":[38,38],"Z":[38,38],"U":[38,38],"L":[19,19],"t":[17,16],"n":[17,16],"e":[17,16],"s":[17,16],"K":[6,4],"C":[8,7],"F":[39,39],"N":[37,37],"c":[1,0],"z":[30,30],"g":[30,30],"T":[38,38],"R":[40,40],"M":[36,36],"m":[24,24],"r":[57,57],"G":[15,15],"P":[28,28],"p":[28,28],"Y":[27,26],"y":[27,26],"a":[11,9],"W":[38,38],"H":[14,10],"I":[27,26],"J":[27,26],"l":[17,16],"q":[38,38],"j":[3,2],"1":[32,32],"3":[23,23],"4":[14,12],"6":[53,53],"7":[53,53],"Q":[42,42],"f":[41,41],"V":[18,18]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","4":"furnace","6":"hopper","7":"hopper","V":"lava_bucket"}};
+  window.BW_TEXP = BTX.p || [];   // für „Alle Bilder vorab laden“ in der App
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
   function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
@@ -1651,6 +1736,41 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
       st.layer[i] = typeof l === 'number' && l >= 0 && l < q.layers.length ? l : 0;
     });
   }
+  /* Größe anpassbarer Pläne (gespeichert je Plan) */
+  var BUILD = PLANS.build || {};
+  function applySize(i, n) {
+    var q = PLANS[i]; if (!q || !q.size || !BUILD[q.id]) return;
+    var z = q.size; n = Math.round(+n); if (!(n >= z.min && n <= z.max) || (n - z.min) % z.step) return;
+    PLANS[i] = BUILD[q.id](n);
+  }
+  PLANS.forEach(function (q, i) { if (q.size) applySize(i, load('bp.size.' + q.id)); });
+
+  /* Eigene Baupläne: gespeichert unter bp.own, erscheinen wie die anderen Pläne */
+  var EDPAL = [['S', 'Fester Block'], ['G', 'Glas'], ['N', 'Sand'], ['L', 'Laub'], ['a', 'Ackerboden'], ['m', 'Schlamm'], ['Q', 'Wasserquelle'], ['V', 'Lava'],
+    ['K', 'Kiste'], ['t', 'Trichter nach unten'], ['e', 'Trichter nach Osten (→)'], ['s', 'Trichter nach Süden (↓)'], ['n', 'Trichter nach Norden (↑)'],
+    ['i', 'Redstone-Staub'], ['W', 'Knopf'], ['P', 'Kolben nach Süden'], ['p', 'Kolben nach Norden'], ['Y', 'Beobachter nach Süden'], ['y', 'Beobachter nach Norden'],
+    ['H', 'Spender'], ['4', 'Ofen'], ['j', 'Kessel'], ['C', 'Komposter'], ['A', 'Arbeitsblock'], ['B', 'Bett'], ['D', 'Tür'], ['F', 'Fackel'], ['z', 'Zaun'],
+    ['T', 'Obere Stufe'], ['q', 'Untere Stufe'], ['R', 'Falltür'], ['c', 'Kaktus'], ['r', 'Zuckerrohr'], ['k', 'Kürbis- oder Melonenstiel'], ['o', 'Luft, frei lassen']];
+  var EDNAMES = {}; EDPAL.forEach(function (e) { EDNAMES[e[0]] = e[1]; });
+  function bname(p, ch) { return (p && p.names && p.names[ch]) || BLOCKS[ch].name; }
+  function validOwn(o) {
+    return o && /^eigen[a-z]{4,12}$/.test(o.id) && typeof o.name === 'string' && o.w >= 3 && o.w <= 32 && o.d >= 3 && o.d <= 32 && Array.isArray(o.layers) && o.layers.length >= 1 && o.layers.length <= 40 &&
+      o.layers.every(function (l) { return l && Array.isArray(l.grid) && l.grid.length === o.d && l.grid.every(function (r) { return typeof r === 'string' && r.length === o.w && /^[.A-Za-z0-9]*$/.test(r) && [].every.call(r, function (c) { return c === '.' || EDNAMES[c]; }); }); });
+  }
+  function ownList() { var a = load('bp.own'); return Array.isArray(a) ? a.filter(validOwn) : []; }
+  function ownPlan(o) {
+    var n = o.layers.length;
+    return { id: o.id, own: true, title: o.name || 'Eigener Bauplan', w: o.w, d: o.d, yMin: 1, yMax: n, sliceZ: Math.floor(o.d / 2), ground: true, guides: [], names: EDNAMES,
+      specs: [['Grundfläche', o.w + ' × ' + o.d + ' Blöcke'], ['Höhe', n + (n === 1 ? ' Block' : ' Blöcke')], ['Ebenen', String(n)], ['Art', 'Eigener Bauplan']],
+      extras: [], hints: {}, layers: o.layers.map(function (l, i) { return { y: [i + 1, i + 1], name: l.name || 'Ebene ' + (i + 1), grid: l.grid.slice(), text: l.text || '' }; }) };
+  }
+  function syncOwn() {
+    for (var i = PLANS.length - 1; i >= 0; i--) if (PLANS[i].own) PLANS.splice(i, 1);
+    ownList().forEach(function (o) { PLANS.push(ownPlan(o)); });
+    while (st.layer.length < PLANS.length) st.layer.push(0);
+    st.layer.length = PLANS.length;
+  }
+  syncOwn();
   loadState();
   function doneList(p) { return Object.keys(st.done[p.id]).map(Number).sort(function (a, b) { return a - b; }); }
   function storeDone(p) { save(wk('bp.done.' + p.id), doneList(p)); }
@@ -1840,7 +1960,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
       p.extras.map(function (e) { return '<tr><td>' + esc(e[0]) + '</td><td>' + esc(e[1]) + '</td><td>' + esc(e[2]) + '</td></tr>'; }).join('') + '</table>';
     var seen = {}, keys = [];
     p.layers.forEach(function (l) { l.grid.forEach(function (r) { for (var i = 0; i < r.length; i++) { var ch = r.charAt(i); if (ch !== '.' && !seen[ch]) { seen[ch] = 1; keys.push(ch); } } }); });
-    s += '<h2>Legende</h2><ul class="leg">' + keys.map(function (ch) { var b = BLOCKS[ch]; return '<li>' + esc(b.glyph || ch) + ' = ' + esc(b.name) + '</li>'; }).join('') + '</ul>';
+    s += '<h2>Legende</h2><ul class="leg">' + keys.map(function (ch) { var b = BLOCKS[ch]; return '<li>' + esc(b.glyph || ch) + ' = ' + esc(bname(p, ch)) + '</li>'; }).join('') + '</ul>';
     p.layers.forEach(function (l, i) {
       var c = counts(l);
       s += '<section class="pl"><h2>Ebene ' + (i + 1) + ' von ' + p.layers.length + ': ' + esc(l.name) + ' · ' + yText(l) + '</h2>' + solve(drawPlan(p, l, true)) +
@@ -1859,6 +1979,81 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     window.print();
   }
 
+  /* ---------- Alle Baupläne im Vergleich ---------- */
+  function renderCompare() {
+    var rows = PLANS.map(function (q) {
+      var tot = 0, hop = 0;
+      q.layers.forEach(function (l) { var rp = l.y[1] - l.y[0] + 1; counts(l).forEach(function (c) { if (c.mat === 'source' || c.mat === 'lava') return; tot += c.n * rp; if (c.mat === 'hopper') hop += c.n * rp; }); });
+      var tt = load('bp.test.' + q.id) || {};
+      return '<tr><td><a href="#' + q.id + '">' + outIcon(q) + '<span>' + esc(q.title) + '</span></a></td><td data-l="Liefert">' + esc(q.outName || (q.own ? 'eigener Plan' : '–')) + '</td>' +
+        '<td class="wide" data-l="Ertrag">' + esc(q.rate || '–') + '</td><td class="num" data-l="Fläche">' + q.w + ' × ' + q.d + '</td><td class="num" data-l="Höhe">' + (q.yMax - q.yMin + 1) + '</td>' +
+        '<td class="num" data-l="Ebenen">' + q.layers.length + '</td><td class="num" data-l="Blöcke">' + tot + '</td><td class="num" data-l="Trichter">' + (hop || '–') + '</td>' +
+        '<td data-l="Getestet">' + (tt.ok ? '✓ ja' : 'nein') + '</td></tr>';
+    });
+    $('compare').innerHTML = '<h2>Alle Baupläne im Vergleich</h2><p style="margin:0;color:var(--ink-soft)">Was jede Farm liefert, wie groß sie ist und wie viel du setzen musst. Bei anpassbaren Plänen gilt die eingestellte Größe.</p>' +
+      '<div class="tablewrap"><table class="cmpt"><thead><tr><th>Bauplan</th><th>Liefert</th><th>Ertrag</th><th>Fläche</th><th>Höhe</th><th>Ebenen</th><th>Blöcke</th><th>Trichter</th><th>Getestet</th></tr></thead><tbody>' + rows.join('') + '</tbody></table></div>' +
+      '<p class="caption">Den Ertrag nennt die Tabelle nur, wo der Bauplan ihn selbst angibt. Blöcke zählt alles, was du setzt, ohne Wasser und Lava. „Getestet“ hakst du in jedem Bauplan selbst ab.</p>';
+  }
+
+  /* ---------- Editor für eigene Baupläne ---------- */
+  var ed = null, edPaint = false, armDel = null;
+  function blankGrid(w, d) { var g = []; for (var z = 0; z < d; z++) g.push(new Array(w + 1).join('.')); return g; }
+  function openEditor(id) {
+    var o = id ? ownList().filter(function (x) { return x.id === id; })[0] : null;
+    if (o) ed = { id: o.id, name: o.name, w: o.w, d: o.d, layers: o.layers.map(function (l) { return { name: l.name || '', text: l.text || '', grid: l.grid.slice() }; }), cur: 0, pen: ed && ed.pen || 'S', isNew: false };
+    else ed = { id: '', name: '', w: 9, d: 9, layers: [{ name: 'Boden', text: '', grid: blankGrid(9, 9) }], cur: 0, pen: ed && ed.pen || 'S', isNew: true };
+    $('ed-title').textContent = o ? 'Bauplan bearbeiten' : 'Neuer eigener Bauplan';
+    $('ed-name').value = ed.name; $('ed-w').value = ed.w; $('ed-d').value = ed.d; $('ed-del').hidden = !o; $('ed-msg').textContent = '';
+    $('ed-pal').innerHTML = EDPAL.concat([['.', 'Leeren']]).map(function (e) {
+      var b = BLOCKS[e[0]], sw = b ? '<span class="sw" style="background:' + b.fill + '">' + (b.glyph && b.glyph.length <= 2 ? esc(b.glyph) : '') + '</span>' : '<span class="sw" style="background:var(--sheet)">×</span>';
+      return '<button type="button" data-ch="' + e[0] + '" aria-pressed="' + (e[0] === ed.pen) + '">' + sw + esc(e[1]) + '</button>';
+    }).join('');
+    renderEd();
+  }
+  function renderEd() {
+    var L = ed.layers[ed.cur], below = ed.cur > 0 ? ed.layers[ed.cur - 1] : null, P = { w: ed.w, d: ed.d }, G = geom(P), U = G.U, M = G.M, H = M + ed.d * U + 1, s, x, z;
+    $('ed-lname').textContent = 'Ebene ' + (ed.cur + 1) + ' von ' + ed.layers.length;
+    $('ed-lprev').disabled = ed.cur === 0; $('ed-lnext').disabled = ed.cur === ed.layers.length - 1; $('ed-ldel').disabled = ed.layers.length < 2;
+    $('ed-ltitle').value = L.name; $('ed-ltext').value = L.text;
+    s = '<svg viewBox="0 0 ' + G.W + ' ' + H + '" role="img" aria-label="Ebene ' + (ed.cur + 1) + ' bearbeiten">' + frame(G, ed.w, ed.d) + colLabels(G, ed.w);
+    for (z = 0; z < ed.d; z++) s += '<text x="' + (M - 1.6) + '" y="' + (M + z * U + U / 2) + '" dy=".36em" text-anchor="end" font-size="' + G.fsLab + '" fill="var(--ink-soft)">' + (z + 1) + '</text>';
+    if (below) for (z = 0; z < ed.d; z++) for (x = 0; x < ed.w; x++) { var cb = below.grid[z].charAt(x); if (cb !== '.' && BLOCKS[cb]) s += '<rect x="' + (M + x * U) + '" y="' + (M + z * U) + '" width="' + U + '" height="' + U + '" fill="' + BLOCKS[cb].fill + '" fill-opacity=".22"/>'; }
+    for (z = 0; z < ed.d; z++) for (x = 0; x < ed.w; x++) { var ch = L.grid[z].charAt(x); if (ch !== '.') s += cell(ch, M + x * U, M + z * U, G, null, null); }
+    $('ed-grid').innerHTML = s + border(G, ed.w, ed.d) + '</svg>';
+  }
+  function edCell(e) {
+    var svg = $('ed-grid').querySelector('svg'), m = svg && svg.getScreenCTM(); if (!m) return null;
+    // Über die Bildschirm-Matrix umrechnen: stimmt auch, wenn die Zeichnung in der Höhe begrenzt und mittig verkleinert ist
+    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; pt = pt.matrixTransform(m.inverse());
+    var G = geom({ w: ed.w }), x = Math.floor((pt.x - G.M) / G.U), z = Math.floor((pt.y - G.M) / G.U);
+    return x >= 0 && z >= 0 && x < ed.w && z < ed.d ? [x, z] : null;
+  }
+  function edPaintAt(e) {
+    var c = edCell(e); if (!c) return;
+    var row = ed.layers[ed.cur].grid[c[1]];
+    if (row.charAt(c[0]) === ed.pen) return;
+    ed.layers[ed.cur].grid[c[1]] = row.slice(0, c[0]) + ed.pen + row.slice(c[0] + 1);
+    renderEd();
+  }
+  function edResize() {
+    var w = Math.max(3, Math.min(32, Math.round(+$('ed-w').value) || ed.w)), d = Math.max(3, Math.min(32, Math.round(+$('ed-d').value) || ed.d));
+    if (w === ed.w && d === ed.d) return;
+    ed.layers.forEach(function (l) {
+      var g = l.grid.slice(0, d).map(function (r) { return (r + new Array(w + 1).join('.')).slice(0, w); });
+      while (g.length < d) g.push(new Array(w + 1).join('.'));
+      l.grid = g;
+    });
+    ed.w = w; ed.d = d; renderEd();
+  }
+  function edSave() {
+    ed.name = $('ed-name').value.trim().slice(0, 40) || 'Mein Bauplan';
+    if (!ed.layers.some(function (l) { return l.grid.some(function (r) { return /[^.]/.test(r); }); })) { $('ed-msg').textContent = 'Setze zuerst mindestens einen Block.'; return; }
+    if (!ed.id) { var a = 'abcdefghijklmnopqrstuvwxyz', id = 'eigen'; for (var i = 0; i < 6; i++) id += a.charAt(Math.floor(Math.random() * 26)); ed.id = id; }
+    var o = { id: ed.id, name: ed.name, w: ed.w, d: ed.d, layers: ed.layers.map(function (l) { return { name: l.name.trim().slice(0, 40), text: l.text.trim().slice(0, 600), grid: l.grid.slice() }; }) };
+    var list = ownList().filter(function (x) { return x.id !== o.id; }); list.push(o); save('bp.own', list);
+    syncOwn(); loadState(); location.hash = '#' + o.id;
+  }
+
   function counts(l) {
     var c = {}, order = [];
     l.grid.forEach(function (r) {
@@ -1873,6 +2068,17 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   var EXTRA_LEX = { 'Schere': 'shears', 'Wassereimer': 'water_bucket', 'Schwert': 'iron_sword', 'Wasserflaschen': 'potion:water', 'Hacke': 'iron_hoe', 'Eier': 'egg', 'Eimer': 'bucket',
                     'Leine': 'lead', 'Spinnenaugen': 'spider_eye', 'Namensschilder': 'name_tag' };
   function matLex(m) { for (var ch in BLOCKS) if (BLOCKS[ch].mat === m && BTX.x && BTX.x[ch]) return BTX.x[ch]; return null; }
+  function renderTabs(curIdx, extra) {
+    var s = '', own = false;
+    PLANS.forEach(function (q, i) {
+      if (q.own && !own) { own = true; s += '<p class="grp">Eigene Baupläne</p>'; }
+      var tt = load('bp.test.' + q.id);
+      s += '<a href="#' + q.id + '"' + (i === curIdx && !extra ? ' aria-current="page"' : '') + '>' + outIcon(q) + '<span>' + esc(q.title) + '</span>' + (tt && tt.ok ? '<span class="tok" title="Im Spiel getestet">✓</span>' : '') + '</a>';
+    });
+    s += '<a class="extra" href="#vergleich"' + (extra === 'cmp' ? ' aria-current="page"' : '') + '><span class="pi" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 4h10M3 8h10M3 12h10" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span>Alle vergleichen</span></a>';
+    s += '<a class="extra" href="#editor"' + (extra === 'edit' ? ' aria-current="page"' : '') + '><span class="pi" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span><span>Eigener Bauplan</span></a>';
+    $('tabs').innerHTML = s;
+  }
   // Bild des Ertrags (Originalbild, sonst ein farbiges Plättchen)
   function outIcon(q) {
     return '<span class="pi"' + (q.out && BTX.m && BTX.m[q.out] ? ' data-tx="' + esc(q.out) + '"' : '') + ' aria-hidden="true"><svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="2.5" fill="currentColor" opacity=".35"/></svg></span>';
@@ -1886,11 +2092,16 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 
   function renderPlanStatic() {
     var p = PLANS[st.plan];
-    $('tabs').innerHTML = PLANS.map(function (q, i) {
-      return '<a href="#' + q.id + '"' + (i === st.plan ? ' aria-current="page"' : '') + '>' + outIcon(q) + '<span>' + esc(q.title) + '</span></a>';
-    }).join('');
+    renderTabs(st.plan);
     $('pickbtn').innerHTML = outIcon(p) + '<span class="pn"><small>Bauplan</small><b>' + esc(p.title) + '</b></span><span class="pchev">Wechseln</span>';
-    PLANS.forEach(function (q, i) { $('notes-' + q.id).hidden = i !== st.plan; });
+    PLANS.forEach(function (q, i) { var ne = $('notes-' + q.id); if (ne) ne.hidden = i !== st.plan; });
+    // Größe
+    $('sizer').hidden = !p.size;
+    if (p.size) { $('sz-label').textContent = p.size.label; $('sz-val').textContent = p.size.n; $('sz-minus').disabled = p.size.n <= p.size.min; $('sz-plus').disabled = p.size.n >= p.size.max; $('sz-rate').textContent = p.rate ? 'Ertrag: ' + p.rate : ''; }
+    // Im Spiel getestet
+    var tt = load('bp.test.' + p.id) || {}; $('t-ok').checked = !!tt.ok; $('t-note').value = typeof tt.note === 'string' ? tt.note : '';
+    $('editbtn').hidden = !p.own;
+    var hh = host(); $('sharebtn').hidden = !(hh && hh.bwShare) || !!p.own;
     $('specs').innerHTML = p.specs.map(function (s) { return '<div><dt>' + esc(s[0]) + '</dt><dd>' + esc(s[1]) + '</dd></div>'; }).join('');
     $('steps').innerHTML = p.layers.map(function (l, i) {
       return '<li><button type="button" data-i="' + i + '" aria-label="Ebene ' + (i + 1) + ', ' + esc(l.name) + '">' + (i + 1) + '</button></li>';
@@ -1901,7 +2112,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     var LG = { U: 10, fsGly: 5.6 };
     $('legend').innerHTML = keys.map(function (ch) {
       var fb = '<svg viewBox="-1 -1 12 12" aria-hidden="true"><rect x="-.5" y="-.5" width="11" height="11" fill="var(--sheet)" stroke="var(--line)" stroke-width=".6"/>' + cell(ch, 0, 0, LG, null) + '</svg>';
-      return '<li>' + (BTX.m && BTX.m[ch] ? '<i class="bi" data-tx="' + ch + '">' + fb + '</i>' : fb) + '<span>' + esc(BLOCKS[ch].name) + '</span></li>';
+      return '<li>' + (BTX.m && BTX.m[ch] ? '<i class="bi" data-tx="' + ch + '">' + fb + '</i>' : fb) + '<span>' + esc(bname(p, ch)) + '</span></li>';
     }).join('') + (p.guides.length ? '<li><svg viewBox="-1 -1 12 12" aria-hidden="true"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="var(--accent)" stroke-width=".9" stroke-dasharray="2.4 1.8"/></svg><span>Hilfslinie: Innenkante der Plattform und Loch</span></li>' : '');
 
     var tot = {}, order = [];
@@ -1956,7 +2167,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     var p = PLANS[st.plan], l = p.layers[st.layer[st.plan]];
     if (!st.sel) { $('probe').textContent = 'Tippe ein Kästchen an, um den Block zu sehen.'; return; }
     var ch = l.grid[st.sel[1]].charAt(st.sel[0]);
-    $('probe').textContent = 'Spalte ' + (st.sel[0] + 1) + ', Reihe ' + (st.sel[1] + 1) + ': ' + (ch === '.' ? 'leer' : BLOCKS[ch].name);
+    $('probe').textContent = 'Spalte ' + (st.sel[0] + 1) + ', Reihe ' + (st.sel[1] + 1) + ': ' + (ch === '.' ? 'leer' : bname(p, ch));
   }
   function go(i) {
     var p = PLANS[st.plan];
@@ -1965,6 +2176,17 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   }
   function route() {
     disarm();
+    var h = location.hash, em = /^#editor(?:\/([a-z]+))?$/.exec(h), cmp = h === '#vergleich';
+    document.documentElement.classList.toggle('cmp', cmp); document.documentElement.classList.toggle('edit', !!em);
+    $('compare').hidden = !cmp; $('editor').hidden = !em;
+    if (cmp || em) {
+      if (st.build) setBuild(false);
+      renderTabs(-1, cmp ? 'cmp' : 'edit');
+      $('pickbtn').innerHTML = '<span class="pi" aria-hidden="true"></span><span class="pn"><small>Bauplan</small><b>' + (cmp ? 'Alle vergleichen' : 'Eigener Bauplan') + '</b></span><span class="pchev">Wechseln</span>';
+      if (cmp) renderCompare(); else openEditor(em[1]);
+      window.scrollTo(0, 0);
+      return;
+    }
     var want = 0, m = /^#([a-z]+)(?:\/(\d+))?$/.exec(location.hash), lay = null;
     PLANS.forEach(function (q, i) { if (m && m[1] === q.id) want = i; });
     if (m && m[2] && +m[2] >= 1 && +m[2] <= PLANS[want].layers.length) lay = +m[2] - 1;
@@ -2035,13 +2257,54 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   $('isorot').addEventListener('click', function () { st.rot = ((st.rot || 0) + 1) % 4; renderLayer(); });
   $('isoall').addEventListener('click', function () { st.isoAll = !st.isoAll; this.setAttribute('aria-pressed', String(st.isoAll)); renderLayer(); });
   $('bmbtn').addEventListener('click', function () { setBuild(true); });
+  $('editbtn').addEventListener('click', function () { location.hash = '#editor/' + PLANS[st.plan].id; });
+  function resize(dir) {
+    var i = st.plan, q = PLANS[i]; if (!q.size) return;
+    applySize(i, q.size.n + dir * q.size.step);
+    save('bp.size.' + q.id, PLANS[i].size.n);
+    renderPlanStatic(); renderLayer();
+    // Kopfzeile der App und Fenstertitel nachziehen (Titel hängt bei der Schmelzanlage von der Größe ab)
+    try { window.dispatchEvent(new Event('bwplan')); var hh = host(); if (hh && hh.bwPlanChanged) hh.bwPlanChanged(); } catch (e) {}
+  }
+  $('sz-minus').addEventListener('click', function () { resize(-1); });
+  $('sz-plus').addEventListener('click', function () { resize(1); });
+  function storeTest() {
+    var p = PLANS[st.plan], v = { ok: $('t-ok').checked, note: $('t-note').value.trim().slice(0, 140) };
+    if (v.ok || v.note) save('bp.test.' + p.id, v); else { try { window.localStorage.removeItem('bp.test.' + p.id); } catch (e) {} }
+    renderTabs(st.plan);
+  }
+  $('t-ok').addEventListener('change', storeTest);
+  $('t-note').addEventListener('change', storeTest);
+  // Editor
+  $('ed-pal').addEventListener('click', function (e) { var b = e.target.closest('[data-ch]'); if (!b) return; ed.pen = b.getAttribute('data-ch'); [].forEach.call(this.querySelectorAll('[data-ch]'), function (x) { x.setAttribute('aria-pressed', String(x === b)); }); });
+  $('ed-grid').addEventListener('pointerdown', function (e) { edPaint = true; try { this.setPointerCapture(e.pointerId); } catch (er) {} edPaintAt(e); e.preventDefault(); });
+  $('ed-grid').addEventListener('pointermove', function (e) { if (edPaint) edPaintAt(e); });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (k) { $('ed-grid').addEventListener(k, function () { edPaint = false; }); });
+  $('ed-w').addEventListener('change', edResize); $('ed-d').addEventListener('change', edResize);
+  $('ed-name').addEventListener('input', function () { ed.name = this.value; });
+  $('ed-ltitle').addEventListener('input', function () { ed.layers[ed.cur].name = this.value; });
+  $('ed-ltext').addEventListener('input', function () { ed.layers[ed.cur].text = this.value; });
+  $('ed-lprev').addEventListener('click', function () { ed.cur = Math.max(0, ed.cur - 1); renderEd(); });
+  $('ed-lnext').addEventListener('click', function () { ed.cur = Math.min(ed.layers.length - 1, ed.cur + 1); renderEd(); });
+  $('ed-ladd').addEventListener('click', function () { if (ed.layers.length >= 40) return; ed.layers.splice(ed.cur + 1, 0, { name: '', text: '', grid: blankGrid(ed.w, ed.d) }); ed.cur++; renderEd(); });
+  $('ed-lcopy').addEventListener('click', function () { if (ed.layers.length >= 40) return; var L = ed.layers[ed.cur]; ed.layers.splice(ed.cur + 1, 0, { name: L.name, text: L.text, grid: L.grid.slice() }); ed.cur++; renderEd(); });
+  $('ed-ldel').addEventListener('click', function () { if (ed.layers.length < 2) return; ed.layers.splice(ed.cur, 1); ed.cur = Math.max(0, ed.cur - 1); renderEd(); });
+  $('ed-save').addEventListener('click', edSave);
+  $('ed-cancel').addEventListener('click', function () { location.hash = ed && ed.id ? '#' + ed.id : '#' + PLANS[0].id; });
+  $('ed-del').addEventListener('click', function () {
+    var b = this;
+    if (!b.hasAttribute('data-armed')) { b.setAttribute('data-armed', ''); b.textContent = 'Wirklich löschen?'; clearTimeout(armDel); armDel = setTimeout(function () { b.removeAttribute('data-armed'); b.textContent = 'Bauplan löschen'; }, 4000); return; }
+    b.removeAttribute('data-armed'); b.textContent = 'Bauplan löschen';
+    save('bp.own', ownList().filter(function (x) { return x.id !== ed.id; }));
+    try { window.localStorage.removeItem('bp.test.' + ed.id); ['bp.done.', 'bp.layer.'].forEach(function (k) { window.localStorage.removeItem(k + ed.id); window.localStorage.removeItem(wk(k + ed.id)); }); } catch (e) {}
+    syncOwn(); loadState(); location.hash = '#' + PLANS[0].id;
+  });
   $('bm-exit').addEventListener('click', function () { setBuild(false); });
   $('bm-prev').addEventListener('click', function () { go(st.layer[st.plan] - 1); });
   $('bm-next').addEventListener('click', function () { go(st.layer[st.plan] + 1); });
   $('bm-done').addEventListener('click', function () { $('done').click(); });
   $('printbtn').addEventListener('click', doPrint);
   // Teilen (in der App): Link zu dieser Ebene
-  (function () { var h = host(); if (h && h.bwShare) $('sharebtn').hidden = false; })();
   $('sharebtn').addEventListener('click', function () {
     var p = PLANS[st.plan], i = st.layer[st.plan], h = host();
     if (h && h.bwShare) h.bwShare('bau=' + p.id + '/' + (i + 1), 'Bauplan ' + p.title + ', Ebene ' + (i + 1) + ': ' + p.layers[i].name);
@@ -2125,7 +2388,7 @@ var BWISO = (function () {
   if (setbox) setbox.className = 'setbox';
   var below = document.createElement('div'), left = document.createElement('div'), right = document.createElement('div');
   below.className = 'below'; below.appendChild(left); below.appendChild(right);
-  var secs = Array.prototype.slice.call(wrap.querySelectorAll(':scope > section:not(.sheet)'));
+  var secs = Array.prototype.slice.call(wrap.querySelectorAll(':scope > section:not(.sheet):not(#compare):not(#editor)'));
   sheet.after(below);
   secs.forEach(function (s) {
     if (s.classList.contains('notes')) {
@@ -2137,15 +2400,16 @@ var BWISO = (function () {
   if (eb) eb.textContent = 'Bauplan · Minecraft Bedrock Edition';
   function sync() {
     var a = document.querySelector('#tabs a[aria-current="page"]');
-    if (a && h1) { h1.textContent = a.textContent; document.title = 'Bauplan ' + a.textContent; }
+    if (a && h1) { var n = (a.querySelector('.pi + span') || a).textContent; h1.textContent = n; document.title = 'Bauplan ' + n; }
   }
   // Eigene isometrische Zeichnung je Bauplan im Kopfband (keine Spielgrafik), dieselben Szenen wie auf der Startseite
   var iso = BWISO.iso, SCENES = BWISO.SCENES;
   var hdr = document.querySelector('.wrap > header'), pic = document.createElement('div');
   pic.className = 'hpic'; pic.setAttribute('aria-hidden', 'true');
   if (hdr) hdr.appendChild(pic);
-  function drawPic() { var id = (location.hash || '#eisenfarm').slice(1); pic.innerHTML = iso(SCENES[id] || SCENES.eisenfarm); }
+  function drawPic() { var id = (location.hash || '#eisenfarm').slice(1).split('/')[0]; pic.innerHTML = SCENES[id] ? iso(SCENES[id]) : ''; }
   window.addEventListener('hashchange', function () { sync(); drawPic(); });
+  window.addEventListener('bwplan', sync);   // Größe geändert: Titel kann sich ändern
   sync(); drawPic();
 })();
 </script>
