@@ -59,6 +59,7 @@
   --b-drip: #A88A6E;
   --b-spawner: #24303D;
   --b-armadillo: #B07A6C;
+  --b-furnace: #77726C;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -68,7 +69,7 @@
     --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
     --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
     --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C; --b-armadillo: #9C6E62;
+    --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C; --b-armadillo: #9C6E62; --b-furnace: #8A847D;
   }
 }
 :root[data-theme="dark"] {
@@ -78,7 +79,7 @@
   --b-stone: #7F8A99; --b-leaf: #4FA857; --b-source: #3F8BEA; --b-flow: #2F5F92; --b-lava: #F2702C;
   --b-sign: #D9B673; --b-hopper: #5B6472; --b-chest: #B5722A; --b-bed: #D44A4A; --b-bedfoot: #8E4A48;
   --b-compost: #8C6B2C; --b-work: #9A6BBD; --b-door: #8A5A2B; --b-torch: #F5CB45; --b-air: #1B3657;
-  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C; --b-armadillo: #9C6E62;
+  --b-open: #4A2A17; --b-hole: #050C16; --b-sand: #CDBB7C; --b-cactus: #3FA35F; --b-fence: #C08A48; --b-slab: #9AA6B6; --b-trap: #A97A45; --b-mite: #8E5FD0; --b-mud: #6E5C4F; --b-cane: #8CCB66; --b-glass: #3D6E8C; --b-piston: #B79A69; --b-observer: #6A7380; --b-dust: #E0413C; --b-farmland: #9A6A3E; --b-stem: #82BE4B; --b-button: #7F8A99; --b-dispenser: #7D8694; --b-chicken: #D9D4C6; --b-cauldron: #5A616C; --b-drip: #B99A7C; --b-spawner: #3A4A5C; --b-armadillo: #9C6E62; --b-furnace: #8A847D;
 }
 
 * { box-sizing: border-box; }
@@ -142,6 +143,36 @@ a { color: var(--accent); }
 .steps button[aria-current="step"] { background: var(--mark); border-color: var(--mark); color: #fff; }
 .steps button[aria-current="step"][data-done] { box-shadow: inset 0 -4px 0 var(--ok); }
 .progress { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; }
+.progress .pworld { grid-column: 1 / -1; font-size: .82rem; color: var(--accent); font-weight: 600; }
+/* Ansicht: Ebene von oben oder 3D (eigene isometrische Zeichnung aus allen Ebenen) */
+.viewbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.vseg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--paper); }
+.vseg button, .isoctl button, .toolrow button { appearance: none; border: 0; background: transparent; color: var(--ink-soft); font: 600 .98rem var(--f-display, inherit); padding: 8px 14px; min-height: 40px; cursor: pointer; }
+.vseg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.isoctl { display: inline-flex; gap: 6px; }
+.isoctl button, .toolrow button { border: 1px solid var(--line); border-radius: 8px; background: var(--sheet); color: var(--ink); }
+.isoctl button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.plan.iso { display: flex; justify-content: center; }
+.plan.iso svg { max-height: 72vh; }
+.toolrow { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Bau-Modus: nur das Nötigste, große Knöpfe unten, Bildschirm bleibt an */
+.bmbar { display: none; }
+html.bmode .wrap > header, html.bmode .picker, html.bmode .specs, html.bmode section:not(.sheet), html.bmode .side, html.bmode .probe, html.bmode #done, html.bmode .toolrow, html.bmode .foot { display: none !important; }
+html.bmode .wrap { padding-bottom: calc(120px + env(safe-area-inset-bottom)); }
+html.bmode .bmbar { display: grid; grid-template-columns: 64px 1fr 64px; grid-template-rows: auto auto; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: var(--sheet); border-top: 1px solid var(--line); box-shadow: 0 -6px 24px rgba(10, 20, 35, .16); }
+.bmbar button { min-height: 58px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font: 600 1.25rem var(--f-display, inherit); cursor: pointer; }
+.bmbar #bm-done { background: var(--ok); border-color: var(--ok); color: #fff; }
+.bmbar #bm-done[aria-pressed="true"] { background: var(--sheet); color: var(--ok); }
+.bmbar button:disabled { opacity: .4; }
+.bmbar .bminfo { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: .85rem; color: var(--ink-soft); }
+.bmbar #bm-exit { min-height: 36px; padding: 0 14px; font-size: 1rem; }
+/* Druck: nur der Ausdruck, hell und ohne Bedienelemente */
+#printroot { display: none; }
+@media print {
+  body > *:not(#printroot) { display: none !important; }
+  #printroot { display: block !important; }
+}
 .progress .ptext { font-size: .9rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .progress .pbar { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--paper); overflow: hidden; }
 .progress .pbar i { display: block; height: 100%; width: 0; background: var(--ok); border-radius: 3px; transition: width .25s ease; }
@@ -315,7 +346,7 @@ html.app .foot { max-width: none; }
 
 <header>
   <p class="eyebrow">Minecraft Bedrock Edition</p>
-  <h1>Zehn Baupläne für Farmen und Handel</h1>
+  <h1>Elf Baupläne für Farmen, Handel und Schmelzen</h1>
   <p class="lead">Ebene für Ebene, Block für Block. Ein Kästchen ist ein Block, Norden ist oben.</p>
 </header>
 
@@ -336,7 +367,11 @@ html.app .foot { max-width: none; }
     <button type="button" id="next" aria-label="Eine Ebene höher">›</button>
   </div>
   <ol class="steps" id="steps" aria-label="Ebenen"></ol>
-  <div class="progress"><span class="ptext" id="ptext" aria-live="polite"></span><button type="button" id="preset">Zurücksetzen</button><div class="pbar" aria-hidden="true"><i id="pbar"></i></div></div>
+  <div class="progress"><span class="pworld" id="pworld" hidden></span><span class="ptext" id="ptext" aria-live="polite"></span><button type="button" id="preset">Zurücksetzen</button><div class="pbar" aria-hidden="true"><i id="pbar"></i></div></div>
+  <div class="viewbar">
+    <div class="vseg" role="group" aria-label="Ansicht"><button type="button" data-v="grid" aria-pressed="true">Ebene von oben</button><button type="button" data-v="iso" aria-pressed="false">3D</button></div>
+    <div class="isoctl" id="isoctl" hidden><button type="button" id="isorot" aria-label="Ansicht drehen">Drehen ⟳</button><button type="button" id="isoall" aria-pressed="false">Ganze Farm</button></div>
+  </div>
   <div class="plan" id="plan"></div>
   <div class="probe proberow"><span id="probe" aria-live="polite"></span><button type="button" class="texbtn" id="texbtn" aria-pressed="true">Originalbilder</button></div>
   <div>
@@ -345,6 +380,7 @@ html.app .foot { max-width: none; }
   </div>
   <p class="instruction" id="instruction"></p>
   <button type="button" class="donebtn" id="done" aria-pressed="false"></button>
+  <div class="toolrow"><button type="button" id="bmbtn">Bau-Modus</button><button type="button" id="printbtn">Drucken oder als PDF</button><button type="button" id="sharebtn" hidden>Ebene teilen</button></div>
   <div class="side">
     <p class="sub">Schnitt von der Seite</p>
     <div id="side"></div>
@@ -776,7 +812,47 @@ html.app .foot { max-width: none; }
     </ul>
   </div>
 </section>
-<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Kürbis und Melone: Fruchtboden und Wachstum nach der Seite <a href="https://minecraft.wiki/w/Melon">Melon</a>, Bedrock-Verhalten von Beobachter und Kolbenkopf nach den Fehlerberichten MCPE-28520 und MCPE-29532. Hühner: Größen, Legezeit, Schlupfchance und Wachstumsdauer aus Mojangs Bedrock-Daten, Trichter unter einer unteren Stufe nach der Seite Hopper. Lava: Tropfstein nach der Seite <a href="https://minecraft.wiki/w/Pointed_Dripstone">Pointed Dripstone</a>, Ton nach dem Fehlerbericht MCPE-153823. Bibliothekar und Bauer: Handelsangebote aus Mojangs Bedrock-Daten. Spawner: Spawnbereich, Aktivierung und Lichtgrenze nach der Seite <a href="https://minecraft.wiki/w/Monster_Spawner">Monster Spawner</a>, Lebenspunkte, Größen und XP aus Mojangs Bedrock-Daten. Gürteltier: Größe, Hornschild-Zeit, Pinsel, Zucht, Einrollen und Spawnbiome aus Mojangs Bedrock-Daten. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
+<section class="notes" id="notes-ofen" hidden>
+  <div>
+    <h2>So arbeitet die Anlage</h2>
+    <ul>
+      <li><strong>Drei Wege in den Ofen:</strong> Was von oben in den Ofen fällt, kommt ins Zutatenfach. Was von hinten oder von der Seite kommt, kommt ins Brennstofffach. Ein Trichter unter dem Ofen holt das Fertige heraus.</li>
+      <li><strong>Das Tempo:</strong> Ein Ofen braucht 10 Sekunden je Gegenstand. Mit 4 Öfen sind das 24 Gegenstände pro Minute, ein Stapel Erz ist in knapp 3 Minuten fertig.</li>
+      <li><strong>Brennstoff:</strong> Eine Kohle oder Holzkohle reicht für 8 Gegenstände. Für einen Stapel aus 64 brauchst du also 8 Kohle.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Reihenfolge beim Bauen</h2>
+    <ol>
+      <li>Ausgabe-Kiste und die 4 Trichter darunter, Ebene 1.</li>
+      <li>Öfen auf die Trichter, die Brennstoff-Trichter dahinter, Ebene 2.</li>
+      <li>Zutaten-Trichter oben auf die Öfen und die Brennstoff-Kisten, Ebene 3.</li>
+      <li>Zutaten-Kisten obendrauf, Ebene 4.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>Gut zu wissen</h2>
+    <ul>
+      <li><strong>Schneller:</strong> Ein Schmelzofen schafft Erz und Rüstung doppelt so schnell, ein Räucherofen Essen. Sie passen an dieselben Stellen wie die Öfen.</li>
+      <li><strong>Schleichen:</strong> Halte beim Setzen der Trichter die Schleichtaste gedrückt, sonst öffnet sich der Ofen oder die Kiste statt zu bauen.</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Wenn etwas nicht klappt</h2>
+    <ul>
+      <li><strong>Ein Ofen bleibt kalt:</strong> Sein Brennstoff-Trichter zeigt nicht in den Ofen. Er muss nach Norden in die Rückseite zeigen.</li>
+      <li><strong>Erz landet im Brennstofffach:</strong> Der obere Trichter zeigt zur Seite statt nach unten. Setze ihn neu, schleichend oben auf den Ofen.</li>
+      <li><strong>Die Ausgabe-Kiste bleibt leer:</strong> Ein Trichter der unteren Reihe zeigt nicht zum Nachbarn oder zur Kiste.</li>
+    </ul>
+  </div>
+</section>
+<div class="bmbar" id="bmbar" aria-label="Bau-Modus">
+  <button type="button" id="bm-prev" aria-label="Eine Ebene tiefer">‹</button>
+  <button type="button" id="bm-done" aria-pressed="false">Ebene fertig</button>
+  <button type="button" id="bm-next" aria-label="Eine Ebene höher">›</button>
+  <div class="bminfo"><span id="bm-wake"></span><button type="button" id="bm-exit">Bau-Modus beenden</button></div>
+</div>
+<p class="foot">Eigener Entwurf nach den Spawn- und Dorfregeln aus dem <a href="https://minecraft.wiki/w/Iron_Golem">Minecraft Wiki</a> (Seiten Iron Golem, Tutorial: Iron golem farming, <a href="https://minecraft.wiki/w/Cactus">Cactus</a>, <a href="https://minecraft.wiki/w/Cactus_Flower">Cactus Flower</a> und Tutorial: Enderman farming). Die Werte der Endermen (40 Lebenspunkte, Köder bis 64 Blöcke, Sprünge bis 16 Blöcke, Gruppen zu viert im End) stammen aus Mojangs offiziellen Bedrock-Daten (<a href="https://github.com/Mojang/bedrock-samples">bedrock-samples</a>), Stand November 2026. Zuckerrohr: Wachstum und Ernte mit Beobachter und Kolben nach der Seite <a href="https://minecraft.wiki/w/Sugar_Cane">Sugar Cane</a>, Trichter unter Schlamm nach dem Fehlerbericht MCPE-174834 (Verhalten bestätigt). Kürbis und Melone: Fruchtboden und Wachstum nach der Seite <a href="https://minecraft.wiki/w/Melon">Melon</a>, Bedrock-Verhalten von Beobachter und Kolbenkopf nach den Fehlerberichten MCPE-28520 und MCPE-29532. Hühner: Größen, Legezeit, Schlupfchance und Wachstumsdauer aus Mojangs Bedrock-Daten, Trichter unter einer unteren Stufe nach der Seite Hopper. Lava: Tropfstein nach der Seite <a href="https://minecraft.wiki/w/Pointed_Dripstone">Pointed Dripstone</a>, Ton nach dem Fehlerbericht MCPE-153823. Bibliothekar und Bauer: Handelsangebote aus Mojangs Bedrock-Daten. Spawner: Spawnbereich, Aktivierung und Lichtgrenze nach der Seite <a href="https://minecraft.wiki/w/Monster_Spawner">Monster Spawner</a>, Lebenspunkte, Größen und XP aus Mojangs Bedrock-Daten. Gürteltier: Größe, Hornschild-Zeit, Pinsel, Zucht, Einrollen und Spawnbiome aus Mojangs Bedrock-Daten. Schmelzanlage: Trichter an Ofen nach der Seite <a href="https://minecraft.wiki/w/Furnace">Furnace</a> (oben Zutat, Seite Brennstoff, unten Ergebnis); 10 Sekunden je Gegenstand und 8 Gegenstände je Kohle sind dort ebenfalls angegeben. Die Raster sind nachgerechnet, im Spiel getestet ist der Entwurf nicht. Die Bilder sind Mojangs Originaltexturen; sie werden beim Anzeigen aus dem Repository bedrock-samples auf dein Gerät geladen.</p>
 
 </div>
 <script>
@@ -912,6 +988,7 @@ var BWTEX = (function () {
 })();
 
 </script>
+<div id="printroot" aria-hidden="true"></div>
 <script>
 /* Bauplan-Daten: reine Daten, kein DOM. Raster: grid[z][x], Norden ist oben (z = 0). */
 var BLOCKS = {
@@ -969,7 +1046,10 @@ var BLOCKS = {
   j: { name: 'Kessel, fängt die Lava auf', mat: 'cauldron', fill: 'var(--b-cauldron)', glyph: 'Ke', dark: true },
   1: { name: 'Spitzer Tropfstein, hängt unter dem Block', mat: 'dripstone', fill: 'var(--b-drip)', glyph: '▼', dark: true },
   3: { name: 'Spawner: ist schon da, nicht abbauen und kein Wasser direkt darauf gießen', fill: 'var(--b-spawner)', glyph: '✱', dark: true },
-  2: { name: 'Gürteltiere, stehen auf den Trichtern', fill: 'var(--b-armadillo)', glyph: 'Gü', dark: true }
+  2: { name: 'Gürteltiere, stehen auf den Trichtern', fill: 'var(--b-armadillo)', glyph: 'Gü', dark: true },
+  4: { name: 'Ofen (oder Schmelzofen, Räucherofen)', mat: 'furnace', fill: 'var(--b-furnace)', glyph: 'Of', dark: true },
+  6: { name: 'Trichter, zeigt nach Norden (↑) in die Rückseite des Ofens: Brennstoff', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↑', dark: true },
+  7: { name: 'Trichter, zeigt nach unten in den Ofen: Zutaten', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↓', dark: true }
 };
 
 var MATERIALS = {
@@ -1002,6 +1082,7 @@ var MATERIALS = {
   button: 'Steinknopf',
   dispenser: 'Spender',
   cauldron: 'Kessel',
+  furnace: 'Ofen',
   dripstone: 'Spitzer Tropfstein'
 };
 
@@ -1511,7 +1592,37 @@ var PLANS = (function () {
     };
   }
 
-  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner(), armadillo()];
+  /* ---------- Schmelzanlage: 6 x 3, Y1 bis Y4 ---------- */
+  function smelter() {
+    var W = 6, D = 3, L = [], g;
+
+    g = mk(W, D); rect(g, 0, 1, 3, 1, 'e'); g[1][4] = 'K'; g[1][5] = 'K';
+    L.push({ y: [1, 1], name: 'Ausgabe', grid: rows(g), pairs: [[4, 1, 5, 1]],
+      text: 'Stelle die Doppelkiste für die fertigen Sachen auf. Westlich davon kommt eine Reihe aus 4 Trichtern, die nach Osten zeigen: Setze den ersten schleichend an die Kiste und jeden weiteren an den vorigen. Diese Trichter holen später das Fertige unten aus den Öfen. Auf die Kiste kommt nichts, damit sie sich öffnen lässt.' });
+
+    g = mk(W, D); rect(g, 0, 1, 3, 1, '4'); rect(g, 0, 2, 3, 2, '6');
+    L.push({ y: [2, 2], name: 'Öfen und Brennstoff', grid: rows(g),
+      text: 'Setze 4 Öfen auf die Trichter, die Vorderseite nach Süden zu dir. Hinter jeden Ofen kommt ein Trichter, der nach Norden zeigt: Setze ihn schleichend an die Rückseite des Ofens. Was in einem Trichter von hinten oder von der Seite in den Ofen fällt, landet im Brennstofffach.' });
+
+    g = mk(W, D); rect(g, 0, 1, 3, 1, '7'); rect(g, 0, 2, 3, 2, 'K');
+    L.push({ y: [3, 3], name: 'Zutaten-Trichter und Brennstoff-Kisten', grid: rows(g), pairs: [[0, 2, 1, 2], [2, 2, 3, 2]],
+      text: 'Setze auf jeden Ofen einen Trichter: schleichend oben auf den Ofen klicken, dann zeigt er nach unten. Was von oben kommt, landet im Zutatenfach. Auf die 4 Brennstoff-Trichter hinten kommen 2 Doppelkisten. Ein Trichter unter einer Doppelkiste zieht aus der ganzen Kiste, so verteilt sich der Brennstoff auf alle Öfen.' });
+
+    g = mk(W, D); rect(g, 0, 1, 3, 1, 'K');
+    L.push({ y: [4, 4], name: 'Zutaten-Kisten', grid: rows(g), pairs: [[0, 1, 1, 1], [2, 1, 3, 1]],
+      text: 'Stelle 2 Doppelkisten auf die Zutaten-Trichter. Hier legst du Erz, Sand oder rohes Essen hinein, in die hinteren Kisten Kohle. Jede Doppelkiste versorgt die beiden Öfen darunter.' });
+
+    return {
+      id: 'ofen', out: 'furnace', title: 'Schmelzanlage mit 4 Öfen', w: W, d: D, yMin: 1, yMax: 4, sliceX: 1, ground: true,
+      guides: [],
+      specs: [['Grundfläche', '6 × 3 Blöcke'], ['Höhe', '4 Blöcke'], ['Öfen', '4'], ['Tempo', '24 Gegenstände pro Minute']],
+      extras: [['Kohle oder Holzkohle', 'nach Bedarf', '1 Stück reicht für 8 Gegenstände']],
+      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', furnace: '8 Bruchstein je Ofen', chest: 'ergibt 5 Doppelkisten' },
+      layers: L
+    };
+  }
+
+  return [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner(), armadillo(), smelter()];
 })();
 
 if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOCKS, MATERIALS: MATERIALS };
@@ -1520,18 +1631,29 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 <script>
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
-  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/pumpkin_face_off.png","blocks/pumpkin_side.png","blocks/pumpkin_top.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/bucket_lava.png","items/cauldron.png","items/chicken_cooked.png","items/door_wood.png","items/egg.png","items/emerald.png","items/ender_pearl.png","items/experience_bottle.png","items/hopper.png","items/iron_ingot.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",37,37,37],"Z":["c",37,37,37],"U":["c",37,37,37],"L":["c",18,18,18],"X":["f",58],"t":["f",52],"n":["f",52],"e":["f",52],"s":["f",52],"K":["c",6,4,5],"B":["f",43],"b":["f",43],"C":["c",8,7,7],"A":["c",21,20,19],"D":["f",47],"d":["f",47],"F":["f",38],"N":["c",36,36,36],"c":["c",1,0,0],"z":["fe",29,29,29],"g":["fe",29,29,29],"T":["s",37,37,37],"R":["t",39,39,39],"M":["f",54],"m":["c",23,23,23],"r":["f",56],"G":["c",14,14,14],"P":["c",28,27,27],"p":["c",28,27,27],"Y":["c",26,24,25],"y":["c",26,24,25],"i":["f",55],"a":["c",11,9,9],"k":["f",57],"W":["b",37,37,37],"H":["c",13,10,12],"I":["c",26,24,25],"J":["c",26,24,25],"l":["f",52],"q":["s",37,37,37],"x":["f",48],"j":["f",45],"1":["f",30],"3":["c",22,22,22],"2":["f",42],"Q":["c",41,41,41],"V":["c",17,17,17],"iron_ingot":["f",53],"emerald":["f",49],"cactus":["c",1,0,0],"ender_pearl":["f",50],"sugar_cane":["f",56],"pumpkin":["c",34,32,33],"cooked_chicken":["f",46],"lava_bucket":["f",44],"experience_bottle":["f",51],"armadillo_scute":["f",42]},"g":{"S":[37,37],"Z":[37,37],"U":[37,37],"L":[18,18],"t":[16,15],"n":[16,15],"e":[16,15],"s":[16,15],"K":[6,4],"C":[8,7],"F":[38,38],"N":[36,36],"c":[1,0],"z":[29,29],"g":[29,29],"T":[37,37],"R":[39,39],"M":[35,35],"m":[23,23],"r":[56,56],"G":[14,14],"P":[27,27],"p":[27,27],"Y":[26,25],"y":[26,25],"a":[11,9],"W":[37,37],"H":[13,10],"I":[26,25],"J":[26,25],"l":[16,15],"q":[37,37],"j":[3,2],"1":[31,31],"3":[22,22],"Q":[41,41],"f":[40,40],"V":[17,17]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","V":"lava_bucket"}};
+  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_front_off.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/pumpkin_face_off.png","blocks/pumpkin_side.png","blocks/pumpkin_top.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/bucket_lava.png","items/cauldron.png","items/chicken_cooked.png","items/door_wood.png","items/egg.png","items/emerald.png","items/ender_pearl.png","items/experience_bottle.png","items/hopper.png","items/iron_ingot.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",38,38,38],"Z":["c",38,38,38],"U":["c",38,38,38],"L":["c",19,19,19],"X":["f",59],"t":["f",53],"n":["f",53],"e":["f",53],"s":["f",53],"K":["c",6,4,5],"B":["f",44],"b":["f",44],"C":["c",8,7,7],"A":["c",22,21,20],"D":["f",48],"d":["f",48],"F":["f",39],"N":["c",37,37,37],"c":["c",1,0,0],"z":["fe",30,30,30],"g":["fe",30,30,30],"T":["s",38,38,38],"R":["t",40,40,40],"M":["f",55],"m":["c",24,24,24],"r":["f",57],"G":["c",15,15,15],"P":["c",29,28,28],"p":["c",29,28,28],"Y":["c",27,25,26],"y":["c",27,25,26],"i":["f",56],"a":["c",11,9,9],"k":["f",58],"W":["b",38,38,38],"H":["c",14,10,13],"I":["c",27,25,26],"J":["c",27,25,26],"l":["f",53],"q":["s",38,38,38],"x":["f",49],"j":["f",46],"1":["f",31],"3":["c",23,23,23],"2":["f",43],"4":["c",14,12,13],"6":["f",53],"7":["f",53],"Q":["c",42,42,42],"V":["c",18,18,18],"iron_ingot":["f",54],"emerald":["f",50],"cactus":["c",1,0,0],"ender_pearl":["f",51],"sugar_cane":["f",57],"pumpkin":["c",35,33,34],"cooked_chicken":["f",47],"lava_bucket":["f",45],"experience_bottle":["f",52],"armadillo_scute":["f",43],"furnace":["c",14,12,13]},"g":{"S":[38,38],"Z":[38,38],"U":[38,38],"L":[19,19],"t":[17,16],"n":[17,16],"e":[17,16],"s":[17,16],"K":[6,4],"C":[8,7],"F":[39,39],"N":[37,37],"c":[1,0],"z":[30,30],"g":[30,30],"T":[38,38],"R":[40,40],"M":[36,36],"m":[24,24],"r":[57,57],"G":[15,15],"P":[28,28],"p":[28,28],"Y":[27,26],"y":[27,26],"a":[11,9],"W":[38,38],"H":[14,10],"I":[27,26],"J":[27,26],"l":[17,16],"q":[38,38],"j":[3,2],"1":[32,32],"3":[23,23],"4":[14,12],"6":[53,53],"7":[53,53],"Q":[42,42],"f":[41,41],"V":[18,18]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","4":"furnace","6":"hopper","7":"hopper","V":"lava_bucket"}};
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
   function load(k) { try { return JSON.parse(window.localStorage.getItem(k)); } catch (e) { return null; } }
   function save(k, v) { try { window.localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-  PLANS.forEach(function (q, i) {
-    var d = load('bp.done.' + q.id), l = load('bp.layer.' + q.id);
-    st.done[q.id] = {}; if (Array.isArray(d)) d.forEach(function (n) { if (n >= 0 && n < q.layers.length) st.done[q.id][n] = 1; });
-    if (typeof l === 'number' && l >= 0 && l < q.layers.length) st.layer[i] = l;
-  });
+  // Mehrere Welten (in der App): Baufortschritt je Welt getrennt; die Hauptwelt nutzt die bisherigen Schlüssel
+  function world() { var w = null; try { w = window.localStorage.getItem('bw.world'); } catch (e) {} return w && /^[a-z0-9]{1,12}$/.test(w) ? w : ''; }
+  function wk(k) { var w = world(); return w ? 'bw.w.' + w + '.' + k : k; }
+  function worldName() {
+    var w = world(); if (!w) return '';
+    var a = load('bw.welten'); if (!Array.isArray(a)) return '';
+    var f = a.filter(function (x) { return x && x.id === w; })[0]; return f && typeof f.name === 'string' ? f.name : '';
+  }
+  function loadState() {
+    PLANS.forEach(function (q, i) {
+      var d = load(wk('bp.done.' + q.id)), l = load(wk('bp.layer.' + q.id));
+      st.done[q.id] = {}; if (Array.isArray(d)) d.forEach(function (n) { if (n >= 0 && n < q.layers.length) st.done[q.id][n] = 1; });
+      st.layer[i] = typeof l === 'number' && l >= 0 && l < q.layers.length ? l : 0;
+    });
+  }
+  loadState();
   function doneList(p) { return Object.keys(st.done[p.id]).map(Number).sort(function (a, b) { return a - b; }); }
-  function storeDone(p) { save('bp.done.' + p.id, doneList(p)); }
+  function storeDone(p) { save(wk('bp.done.' + p.id), doneList(p)); }
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function geom(p) {
@@ -1588,7 +1710,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     return (l._fd = d);
   }
 
-  function drawPlan(p, l) {
+  function drawPlan(p, l, print) {
     var G = geom(p), U = G.U, M = G.M, H = M + p.d * U + 1, s, x, z;
     s = '<svg viewBox="0 0 ' + G.W + ' ' + H + '" role="img" aria-label="Grundriss ' + esc(p.title) + ', ' + esc(l.name) + ', ' + yText(l) + '">';
     s += frame(G, p.w, p.d) + colLabels(G, p.w);
@@ -1600,7 +1722,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
         var d = flowDist(l)[z][x];
         op = d === Infinity ? .5 : 1 - (d - 1) * .105;
       }
-      s += cell(ch, M + x * U, M + z * U, G, op, 'top');
+      s += cell(ch, M + x * U, M + z * U, G, op, print ? null : 'top');
     }
     (l.pairs || []).forEach(function (r) {
       s += '<rect x="' + (M + r[0] * U + .7) + '" y="' + (M + r[1] * U + .7) + '" width="' + ((r[2] - r[0] + 1) * U - 1.4) + '" height="' + ((r[3] - r[1] + 1) * U - 1.4) + '" rx="1.4" fill="none" stroke="var(--ink)" stroke-width=".7"/>';
@@ -1609,7 +1731,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
       s += '<rect x="' + (M + r[0] * U) + '" y="' + (M + r[1] * U) + '" width="' + ((r[2] - r[0] + 1) * U) + '" height="' + ((r[3] - r[1] + 1) * U) + '" fill="none" stroke="var(--accent)" stroke-width=".55" stroke-dasharray="2.4 1.8"/>';
     });
     s += border(G, p.w, p.d);
-    if (st.sel) s += '<rect x="' + (M + st.sel[0] * U) + '" y="' + (M + st.sel[1] * U) + '" width="' + U + '" height="' + U + '" fill="none" stroke="var(--mark)" stroke-width="1.2"/>';
+    if (st.sel && !print) s += '<rect x="' + (M + st.sel[0] * U) + '" y="' + (M + st.sel[1] * U) + '" width="' + U + '" height="' + U + '" fill="none" stroke="var(--mark)" stroke-width="1.2"/>';
     return s + '</svg>';
   }
 
@@ -1630,6 +1752,111 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     var top = M + (p.yMax - cur.y[1]) * U, hh = (cur.y[1] - cur.y[0] + 1) * U;
     s += '<rect x="' + (M - .6) + '" y="' + (top - .6) + '" width="' + (cols * U + 1.2) + '" height="' + (hh + 1.2) + '" fill="var(--mark)" fill-opacity=".14" stroke="var(--mark)" stroke-width="1.1"/>';
     return s + '</svg>';
+  }
+
+  /* ---------- 3D-Ansicht: eigene isometrische Zeichnung aus allen Ebenen (keine Spielgrafik) ---------- */
+  var AIR = { '.': 1, o: 1, O: 1, h: 1, w: 1, u: 1, v: 1, E: 1 };
+  // Form je Kürzel: [x, z, Höhe-Start, Breite, Tiefe, Höhe] in Blockanteilen; fehlt sie, ist es ein ganzer Block
+  var SHAPE = { T: [0, 0, .5, 1, 1, .5], q: [0, 0, 0, 1, 1, .5], F: [.42, .42, 0, .16, .16, .62], X: [.1, .44, .25, .8, .12, .5], i: [.1, .1, 0, .8, .8, .06],
+    W: [.36, .36, 0, .28, .28, .14], k: [.36, .36, 0, .28, .28, .4], z: [.36, .36, 0, .28, .28, 1], g: [.36, .36, 0, .28, .28, 1], R: [0, 0, 0, 1, 1, .19],
+    '1': [.32, .32, .15, .36, .36, .85], f: [0, 0, 0, 1, 1, .78], Q: [0, 0, 0, 1, 1, .9], x: [.22, .22, 0, .56, .56, .62], '2': [.15, .2, 0, .7, .6, .62],
+    M: [.12, .12, 0, .76, .76, .55], j: [.05, .05, 0, .9, .9, .92], B: [0, 0, 0, 1, 1, .56], b: [0, 0, 0, 1, 1, .56], D: [0, .42, 0, 1, .16, 1], d: [0, .42, 0, 1, .16, 1],
+    C: [.04, .04, 0, .92, .92, .92], c: [.06, .06, 0, .88, .88, 1] };
+  var SEE = { G: .42, Q: .55, f: .4 };
+  var VIEWN = ['Südosten', 'Nordosten', 'Nordwesten', 'Südwesten'];
+  function drawIso(p, cur) {
+    var r = st.rot || 0, W = r % 2 ? p.d : p.w, Dd = r % 2 ? p.w : p.d, all = !!st.isoAll, occ = {}, list = [];
+    function rot(x, z) { return r === 0 ? [x, z] : r === 1 ? [p.d - 1 - z, x] : r === 2 ? [p.w - 1 - x, p.d - 1 - z] : [z, p.w - 1 - x]; }
+    p.layers.forEach(function (l, li) {
+      if (!all && li > cur) return;
+      for (var y = l.y[0]; y <= l.y[1]; y++) for (var z = 0; z < p.d; z++) for (var x = 0; x < p.w; x++) {
+        var ch = l.grid[z].charAt(x); if (AIR[ch] || !BLOCKS[ch]) continue;
+        var q = rot(x, z), h = y - p.yMin, e = { x: q[0], z: q[1], h: h, ch: ch, cur: li === cur };
+        occ[q[0] + ',' + q[1] + ',' + h] = ch; list.push(e);
+      }
+    });
+    function solid(x, z, h) { var c = occ[x + ',' + z + ',' + h]; return c && !SHAPE[c] && !SEE[c]; }
+    list.sort(function (a, b) { return (a.x + a.z) - (b.x + b.z) || a.h - b.h || a.x - b.x; });
+    var C = 0.8660254, U = 10, pts = [], minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+    function P(x, z, h) { var px = (x - z) * C * U, py = (x + z) * U / 2 - h * U; if (px < minX) minX = px; if (px > maxX) maxX = px; if (py < minY) minY = py; if (py > maxY) maxY = py; return px.toFixed(1) + ',' + py.toFixed(1); }
+    var body = '';
+    list.forEach(function (e) {
+      var sh = SHAPE[e.ch], b = BLOCKS[e.ch], x0 = e.x, z0 = e.z, h0 = e.h, w = 1, d = 1, hh = 1;
+      if (sh) { x0 += sh[0]; z0 += sh[1]; h0 += sh[2]; w = sh[3]; d = sh[4]; hh = sh[5]; }
+      var x1 = x0 + w, z1 = z0 + d, h1 = h0 + hh, op = SEE[e.ch] ? ' fill-opacity="' + SEE[e.ch] + '"' : '';
+      var full = !sh, stroke = e.cur ? ' stroke="var(--mark)" stroke-width=".9"' : ' stroke="rgba(10,20,35,.28)" stroke-width=".4"';
+      var top = 'color-mix(in srgb, ' + b.fill + ' 84%, #fff)', south = b.fill, east = 'color-mix(in srgb, ' + b.fill + ' 72%, #000)';
+      if (!(full && solid(e.x, e.z + 1, e.h))) body += '<polygon points="' + P(x0, z1, h0) + ' ' + P(x1, z1, h0) + ' ' + P(x1, z1, h1) + ' ' + P(x0, z1, h1) + '" style="fill:' + south + '"' + op + stroke + '/>';
+      if (!(full && solid(e.x + 1, e.z, e.h))) body += '<polygon points="' + P(x1, z0, h0) + ' ' + P(x1, z1, h0) + ' ' + P(x1, z1, h1) + ' ' + P(x1, z0, h1) + '" style="fill:' + east + '"' + op + stroke + '/>';
+      if (!(full && solid(e.x, e.z, e.h + 1))) body += '<polygon points="' + P(x0, z0, h1) + ' ' + P(x1, z0, h1) + ' ' + P(x1, z1, h1) + ' ' + P(x0, z1, h1) + '" style="fill:' + top + '"' + op + stroke + '/>';
+    });
+    // Bodenplatte als Orientierung
+    var base = '<polygon points="' + P(0, 0, 0) + ' ' + P(W, 0, 0) + ' ' + P(W, Dd, 0) + ' ' + P(0, Dd, 0) + '" fill="var(--paper)" stroke="var(--line)" stroke-width=".6"/>';
+    var pad = 6, vb = (minX - pad).toFixed(1) + ' ' + (minY - pad).toFixed(1) + ' ' + (maxX - minX + 2 * pad).toFixed(1) + ' ' + (maxY - minY + 2 * pad).toFixed(1);
+    return '<svg viewBox="' + vb + '" role="img" aria-label="3D-Ansicht ' + esc(p.title) + ', Blick von ' + VIEWN[r] + (all ? ', ganze Farm' : ', bis Ebene ' + (cur + 1)) + '">' + base + body + '</svg>';
+  }
+  function setView(v) {
+    st.view = v === 'iso' ? 'iso' : 'grid'; try { window.localStorage.setItem('bp.view', st.view); } catch (e) {}
+    [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === st.view)); });
+    $('isoctl').hidden = st.view !== 'iso'; $('isoall').setAttribute('aria-pressed', String(!!st.isoAll));
+    renderLayer();
+  }
+
+  /* ---------- Bau-Modus: große Knöpfe, Bildschirm bleibt an ---------- */
+  var wake = null;
+  function host() { try { return window.parent !== window ? window.parent : null; } catch (e) { return null; } }
+  function wakeOn(on) {
+    var h = host();
+    if (h && h.bwWake) { h.bwWake(on).then(function (ok) { $('bm-wake').textContent = on ? (ok ? 'Bildschirm bleibt an' : 'Bildschirm-Sperre lässt sich hier nicht abschalten') : ''; }); return; }
+    if (!on) { if (wake) { try { wake.release(); } catch (e) {} wake = null; } return; }
+    if (!('wakeLock' in navigator)) { $('bm-wake').textContent = 'Bildschirm-Sperre lässt sich hier nicht abschalten'; return; }
+    navigator.wakeLock.request('screen').then(function (l) { wake = l; $('bm-wake').textContent = 'Bildschirm bleibt an'; }, function () { $('bm-wake').textContent = 'Bildschirm-Sperre lässt sich hier nicht abschalten'; });
+  }
+  function setBuild(on) {
+    st.build = !!on; document.documentElement.classList.toggle('bmode', st.build);
+    var h = host(); if (h && h.bwBuild) h.bwBuild(st.build);
+    wakeOn(st.build); renderLayer(); if (st.build) window.scrollTo(0, 0);
+  }
+  document.addEventListener('visibilitychange', function () { if (st.build && document.visibilityState === 'visible' && !(host() && host().bwWake)) wakeOn(true); });
+  function syncBuild() {
+    if (!st.build) return;
+    var p = PLANS[st.plan], i = st.layer[st.plan], isDone = !!st.done[p.id][i];
+    $('bm-prev').disabled = i === 0; $('bm-next').disabled = i === p.layers.length - 1;
+    $('bm-done').setAttribute('aria-pressed', String(isDone));
+    $('bm-done').textContent = isDone ? '✓ Fertig' : 'Ebene ' + (i + 1) + ' fertig';
+  }
+
+  /* ---------- Drucken oder als PDF: alle Ebenen mit Stückliste, hell und ohne Bilder ---------- */
+  function printHTML() {
+    var p = PLANS[st.plan], root = document.documentElement, prev = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', 'light');
+    var cs = getComputedStyle(root), memo = {};
+    function solve(s) { return s.replace(/var\((--[a-z0-9-]+)\)/g, function (m, v) { if (!(v in memo)) memo[v] = cs.getPropertyValue(v).trim() || '#8D96A3'; return memo[v]; }); }
+    var s = '<style>#printroot{font:11pt/1.4 -apple-system,"Segoe UI",Roboto,sans-serif;color:#13263F;background:#fff}#printroot h1{font-size:20pt;margin:0 0 4pt}#printroot h2{font-size:13pt;margin:0 0 6pt}' +
+      '#printroot .pmeta{color:#4A5B70;margin:0 0 10pt}#printroot table{border-collapse:collapse;width:100%;margin:0 0 12pt}#printroot td,#printroot th{border:1px solid #C9D3DF;padding:3pt 6pt;text-align:left;vertical-align:top}' +
+      '#printroot .pl{break-inside:avoid;page-break-inside:avoid;margin:0 0 14pt}#printroot .pl svg{width:100%;max-height:150mm}#printroot .pl p{margin:4pt 0 0}#printroot .leg{columns:2;font-size:9.5pt;padding-left:16pt}</style>';
+    s += '<h1>' + esc(p.title) + '</h1><p class="pmeta">' + p.specs.map(function (x) { return esc(x[0]) + ': ' + esc(x[1]); }).join(' · ') + '</p>';
+    s += '<table><tr><th>Material</th><th>Menge</th><th>Hinweis</th></tr>' + st.mats.order.map(function (m) { return '<tr><td>' + esc(MATERIALS[m]) + '</td><td>' + st.mats.tot[m] + '</td><td>' + esc(p.hints[m] || '') + '</td></tr>'; }).join('') +
+      p.extras.map(function (e) { return '<tr><td>' + esc(e[0]) + '</td><td>' + esc(e[1]) + '</td><td>' + esc(e[2]) + '</td></tr>'; }).join('') + '</table>';
+    var seen = {}, keys = [];
+    p.layers.forEach(function (l) { l.grid.forEach(function (r) { for (var i = 0; i < r.length; i++) { var ch = r.charAt(i); if (ch !== '.' && !seen[ch]) { seen[ch] = 1; keys.push(ch); } } }); });
+    s += '<h2>Legende</h2><ul class="leg">' + keys.map(function (ch) { var b = BLOCKS[ch]; return '<li>' + esc(b.glyph || ch) + ' = ' + esc(b.name) + '</li>'; }).join('') + '</ul>';
+    p.layers.forEach(function (l, i) {
+      var c = counts(l);
+      s += '<section class="pl"><h2>Ebene ' + (i + 1) + ' von ' + p.layers.length + ': ' + esc(l.name) + ' · ' + yText(l) + '</h2>' + solve(drawPlan(p, l, true)) +
+        '<p><b>Setzen:</b> ' + (c.length ? c.map(function (k) { return k.n + ' × ' + esc(MATERIALS[k.mat]); }).join(', ') : 'nichts') + '</p><p>' + esc(l.text) + '</p></section>';
+    });
+    s += '<p class="pmeta">Norden ist oben. Bedrock-Werkbank, Bauplan ' + esc(p.title) + '.</p>';
+    if (prev) root.setAttribute('data-theme', prev); else root.removeAttribute('data-theme');
+    return s;
+  }
+  function doPrint() {
+    var html = printHTML(), h = host();
+    if (h && h.bwPrint) { h.bwPrint(html); return; }
+    $('printroot').innerHTML = html;
+    var clean = function () { $('printroot').innerHTML = ''; window.removeEventListener('afterprint', clean); };
+    window.addEventListener('afterprint', clean);
+    window.print();
   }
 
   function counts(l) {
@@ -1711,8 +1938,11 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     $('done').setAttribute('aria-pressed', String(isDone));
     $('done').textContent = isDone ? '✓ Ebene fertig' : (i < p.layers.length - 1 ? 'Ebene fertig, weiter ›' : 'Ebene fertig');
     $('done').title = isDone ? 'Noch einmal tippen, um den Haken zu entfernen' : '';
-    save('bp.layer.' + p.id, i);
-    $('plan').innerHTML = drawPlan(p, l);
+    save(wk('bp.layer.' + p.id), i);
+    var wn = worldName(); $('pworld').hidden = !wn; $('pworld').textContent = wn ? 'Welt: ' + wn : '';
+    syncBuild();
+    if (st.view === 'iso') { $('plan').className = 'plan iso'; $('plan').innerHTML = drawIso(p, i); }
+    else { $('plan').className = 'plan'; $('plan').innerHTML = drawPlan(p, l); }
     $('side').innerHTML = drawSide(p, l);
     if (window.BWTEX) { BWTEX.fill($('plan')); BWTEX.fill($('side')); }
     var c = counts(l);
@@ -1735,9 +1965,11 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   }
   function route() {
     disarm();
-    var want = 0;
-    PLANS.forEach(function (q, i) { if (location.hash === '#' + q.id) want = i; });
+    var want = 0, m = /^#([a-z]+)(?:\/(\d+))?$/.exec(location.hash), lay = null;
+    PLANS.forEach(function (q, i) { if (m && m[1] === q.id) want = i; });
+    if (m && m[2] && +m[2] >= 1 && +m[2] <= PLANS[want].layers.length) lay = +m[2] - 1;
     st.plan = want; st.sel = null;
+    if (lay != null) st.layer[want] = lay;
     renderPlanStatic(); renderLayer();
   }
   function hit(e, el, p, rowsN, extra, colsN) {
@@ -1780,6 +2012,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   $('next').addEventListener('click', function () { go(st.layer[st.plan] + 1); });
   $('steps').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) go(+b.getAttribute('data-i')); });
   $('plan').addEventListener('click', function (e) {
+    if (st.view === 'iso') return;
     var p = PLANS[st.plan], c = hit(e, this, p, p.d, 0);
     st.sel = c; $('plan').innerHTML = drawPlan(p, p.layers[st.layer[st.plan]]); if (window.BWTEX) BWTEX.fill($('plan')); probe();
   });
@@ -1795,6 +2028,26 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     if (e.key === 'ArrowRight') go(st.layer[st.plan] + 1);
   });
   window.addEventListener('hashchange', route);
+  st.view = (function () { try { return window.localStorage.getItem('bp.view') === 'iso' ? 'iso' : 'grid'; } catch (e) { return 'grid'; } })();
+  [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.addEventListener('click', function () { setView(b.getAttribute('data-v')); }); });
+  $('isoctl').hidden = st.view !== 'iso';
+  [].forEach.call(document.querySelectorAll('.vseg button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === st.view)); });
+  $('isorot').addEventListener('click', function () { st.rot = ((st.rot || 0) + 1) % 4; renderLayer(); });
+  $('isoall').addEventListener('click', function () { st.isoAll = !st.isoAll; this.setAttribute('aria-pressed', String(st.isoAll)); renderLayer(); });
+  $('bmbtn').addEventListener('click', function () { setBuild(true); });
+  $('bm-exit').addEventListener('click', function () { setBuild(false); });
+  $('bm-prev').addEventListener('click', function () { go(st.layer[st.plan] - 1); });
+  $('bm-next').addEventListener('click', function () { go(st.layer[st.plan] + 1); });
+  $('bm-done').addEventListener('click', function () { $('done').click(); });
+  $('printbtn').addEventListener('click', doPrint);
+  // Teilen (in der App): Link zu dieser Ebene
+  (function () { var h = host(); if (h && h.bwShare) $('sharebtn').hidden = false; })();
+  $('sharebtn').addEventListener('click', function () {
+    var p = PLANS[st.plan], i = st.layer[st.plan], h = host();
+    if (h && h.bwShare) h.bwShare('bau=' + p.id + '/' + (i + 1), 'Bauplan ' + p.title + ', Ebene ' + (i + 1) + ': ' + p.layers[i].name);
+  });
+  // Welt gewechselt (in der App): Fortschritt der anderen Welt laden
+  window.addEventListener('storage', function (e) { if (e.key === 'bw.world' || (e.key && e.key.indexOf('bp.done.') >= 0)) { loadState(); renderLayer(); } });
   function setPicker(open) { $('picker').classList.toggle('open', open); $('pickbtn').setAttribute('aria-expanded', String(open)); }
   $('pickbtn').addEventListener('click', function () { setPicker(!$('picker').classList.contains('open')); });
   $('tabs').addEventListener('click', function (e) { if (e.target.closest('a')) setPicker(false); });
@@ -1832,7 +2085,7 @@ var BWISO = (function () {
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
             glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B', end: '#DCD9A6',
             mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C', paper: '#EEE6D2', anvil: '#5A616B',
-            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E', armadillo: '#B07A6C',
+            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E', armadillo: '#B07A6C', furnace: '#77726C', fire: '#E5701A',
             grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
   function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
   var SCENES = {
@@ -1853,6 +2106,8 @@ var BWISO = (function () {
       [0, 4, 0, K.stone, .5], [1, 4, 0, K.stone, .5], [2, 4, 0, K.stone, .5]]),
     guerteltier: [].concat(box(0, 0, 0, 4, 1, K.stone, .7), box(0, 0, .7, 4, 1, K.glass), box(0, 0, 1.7, 4, 1, K.glass), box(0, 1, 0, 4, 1, K.dark, .7),
       [[0.15, 1.15, .7, K.armadillo, .55], [1.15, 1.15, .7, K.armadillo, .55], [2.15, 1.15, .7, K.armadillo, .55], [3.15, 1.15, .7, K.armadillo, .55], [4, 1, 0, K.wood, .9]]),
+    ofen: [].concat(box(0, 0, 0, 4, 1, K.dark, .6), box(0, 0, .6, 4, 1, K.furnace), box(0, 0, 1.6, 4, 1, K.dark, .6), box(0, 0, 2.2, 4, 1, K.wood, .9),
+      box(0, 1, .6, 4, 1, K.dark, .6), box(0, 1, 1.2, 4, 1, K.wood, .9), [[4, 0, 0, K.wood, .9], [5, 0, 0, K.wood, .9], [0.2, -0.05, .85, K.fire, .35], [2.2, -0.05, .85, K.fire, .35]]),
     lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
     hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
       [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],

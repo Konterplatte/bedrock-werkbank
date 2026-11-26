@@ -202,7 +202,7 @@ h1, h2, h3, .eyebrow, .navbtn, .cap, .ptitle, .fact b, .btn { font-family: var(-
 .thero .hero-in { grid-template-columns: minmax(0, 1fr); padding-bottom: clamp(20px, 3vw, 30px); }
 .thero h1 { font-size: clamp(2.3rem, 5vw, 3.4rem); }
 .thero .lead { margin-bottom: 0; }
-.tabsbar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); }
+.tabsbar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: var(--tint); border: 1px solid var(--line); }
 .tabsbar button { appearance: none; min-width: 0; min-height: 50px; border: 0; border-radius: 10px; background: transparent; color: var(--ink-soft); display: flex; align-items: center; justify-content: center; gap: 9px;
   font: 600 1.05rem var(--f-display); letter-spacing: .02em; padding: 4px 8px; cursor: pointer; white-space: nowrap; }
 .tabsbar button[aria-selected="true"] { background: var(--sheet); color: var(--ink); box-shadow: 0 1px 4px rgba(19, 38, 63, .16); }
@@ -320,6 +320,45 @@ html.bgtex.tex-page .startview { background-image: linear-gradient(color-mix(in 
 .prefs .small { margin: 0; }
 @media (max-width: 520px) { .prow { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
 
+/* Bau-Modus aus dem Bauplan: Navigation ausblenden */
+html.bmode body { grid-template-columns: minmax(0, 1fr); }
+html.bmode .rail { display: none !important; }
+/* Druck aus dem Bauplan: nur der Ausdruck */
+#printroot { display: none; }
+@media print {
+  html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
+  body { display: block !important; }
+  body > *:not(#printroot) { display: none !important; }
+  #printroot { display: block !important; }
+}
+/* Welten */
+.worldbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.worldbar .wl { font: 600 1.02rem var(--f-display); color: var(--ink-soft); letter-spacing: .04em; }
+.worldbar select { width: auto; flex: 1 1 170px; max-width: 340px; }
+.wform { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; width: 100%; }
+.wform input { flex: 1 1 200px; }
+/* Wegweiser */
+.here { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); }
+.here .coords { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.odist { font-size: .92rem; color: var(--accent); font-weight: 600; }
+.paste { display: flex; gap: 8px; }
+.paste input { flex: 1; min-width: 0; }
+/* Kreis-Rechner */
+.seg.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.clay { display: grid; grid-template-columns: 48px 1fr 48px; gap: 8px; align-items: center; text-align: center; font-weight: 600; }
+.clay .btn { min-height: 44px; padding: 0; justify-content: center; font-size: 1.3rem; }
+.cgrid { border: 1px solid var(--line); border-radius: 12px; background: var(--sheet); padding: 8px; }
+.cgrid svg { width: 100%; height: auto; display: block; max-height: 74vh; }
+/* Startsuche: Vorschläge aus Bauplänen, Werkzeugen, Übersichten und Lexikon */
+.hsugg { margin-top: 8px; border-radius: 16px; background: var(--sheet); color: var(--ink); box-shadow: var(--shadow); border: 1px solid var(--line); padding: 6px; max-height: min(420px, 60vh); overflow-y: auto; text-shadow: none; }
+.hsugg .sg { font: 600 .78rem var(--f-display); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); padding: 8px 10px 4px; }
+.hsugg button { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 0; background: transparent; padding: 8px 10px; border-radius: 10px; font: inherit; color: inherit; cursor: pointer; min-height: 44px; }
+.hsugg button:hover, .hsugg button.kb { background: var(--tint); }
+.hsugg button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hsugg small { margin-left: auto; padding-left: 8px; color: var(--ink-soft); font-size: .82rem; white-space: nowrap; }
+.hsugg .qt, .hsugg .sgi { width: 26px; height: 26px; flex: none; }
+.hsugg .sgi { display: grid; place-items: center; border-radius: 8px; background: var(--tint); color: var(--accent); font: 600 .9rem var(--f-display); }
+
 /* Info-Fenster */
 dialog { border: 1px solid var(--line); border-radius: 20px; padding: 0; background: var(--sheet); color: var(--ink); width: min(690px, calc(100vw - 28px)); max-height: calc(100dvh - 28px);
   box-shadow: 0 24px 80px rgba(6, 18, 31, .35); overflow: hidden; }
@@ -378,7 +417,8 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   .thero .hero-in { padding: 18px 16px 18px; }
   .thero h1 { font-size: 2.2rem; }
   .thero .lead { display: none; }
-  .tabsbar button { flex-direction: column; gap: 2px; min-height: 60px; padding: 6px 2px 5px; font-size: .95rem; }
+  .tabsbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tabsbar button { flex-direction: column; gap: 2px; min-height: 58px; padding: 6px 2px 5px; font-size: .95rem; }
   .tabsbar .qt { width: 24px; height: 24px; }
   .tabsbar .tl { display: none; }
   .tabsbar .ts { display: inline; }
@@ -434,12 +474,13 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <div>
           <p class="eyebrow">Minecraft Bedrock Edition 26.60</p>
           <h1>Bedrock-Werkbank</h1>
-          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu zehn Baupläne Block für Block und praktische Werkzeuge. Funktioniert ohne Internet.</p>
+          <p class="lead">Woraus jede Ressource entsteht und wo du sie findest, dazu elf Baupläne Block für Block und praktische Werkzeuge. Funktioniert ohne Internet.</p>
           <form class="hsearch" id="hsearch" role="search">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l4.5 4.5"/></svg>
             <input type="search" id="hq" enterkeyhint="search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Ressource suchen, z. B. Reparatur" aria-label="Ressource suchen">
             <button type="submit" class="btn primary">Suchen</button>
           </form>
+          <div class="hsugg" id="hsugg" hidden></div>
         </div>
         <div class="hero-pic" id="heropic" aria-hidden="true"></div>
       </div>
@@ -479,12 +520,15 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
             <button type="button" class="ttile" data-tool="amboss"><span class="ticon" id="ti-amboss" aria-hidden="true"></span><span><b>Amboss-Planer</b><small>Günstigste Reihenfolge für Zauberbücher</small></span></button>
             <button type="button" class="ttile" data-tool="brauen"><span class="ticon" id="ti-brauen" aria-hidden="true"></span><span><b>Brau-Planer</b><small>Weg und Zutaten für jeden Trank</small></span></button>
             <button type="button" class="ttile" data-tool="portal"><span class="ticon" id="ti-portal" aria-hidden="true"></span><span><b>Nether-Portal</b><small>Gegenportal berechnen</small></span></button>
+            <button type="button" class="ttile" data-tool="kreis"><span class="ticon" id="ti-kreis" aria-hidden="true"></span><span><b>Kreise und Kuppeln</b><small>Runde Bauten Block für Block</small></span></button>
           </div>
           <div class="tcard">
             <div class="ptitle">Übersichten im Lexikon</div>
             <div class="tlinks">
               <button type="button" class="tlink" data-slug="orte"><span id="icon-orte"></span><span><b>Fundorte</b><small>Was in welcher Truhe liegt und welcher Mob was fallen lässt</small></span></button>
               <button type="button" class="tlink" data-slug="berufe"><span id="icon-berufe"></span><span><b>Dorfbewohner</b><small>Alle Berufe mit ihren Angeboten, Stufe für Stufe</small></span></button>
+              <button type="button" class="tlink" data-slug="handel"><span id="icon-handel"></span><span><b>Handel</b><small>Smaragde verdienen und gezielt einkaufen</small></span></button>
+              <button type="button" class="tlink" data-slug="mobs"><span id="icon-mobs"></span><span><b>Mobs</b><small>Lebenspunkte, Erfahrung und Beute aller Mobs</small></span></button>
             </div>
           </div>
         </div>
@@ -506,17 +550,27 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
         <div>
           <p class="eyebrow">Bedrock-Werkbank</p>
           <h1>Werkzeuge</h1>
-          <p class="lead">Sammelliste, Koordinaten, Amboss-Planer, Brau-Planer und Portal-Rechner. Gespeichert wird alles nur auf diesem Gerät.</p>
+          <p class="lead">Sammelliste, Koordinaten, Amboss-Planer, Brau-Planer, Portal- und Kreis-Rechner. Gespeichert wird alles nur auf diesem Gerät, auf Wunsch getrennt nach Welten.</p>
         </div>
       </div>
     </div>
     <div class="sv">
+      <div class="worldbar" id="worldbar">
+        <label class="wl" for="w-sel">Welt</label>
+        <select class="inp" id="w-sel" aria-describedby="w-hint"></select>
+        <button type="button" class="btn" id="w-new">Neue Welt</button>
+        <button type="button" class="btn" id="w-ren">Umbenennen</button>
+        <button type="button" class="btn" id="w-del">Löschen</button>
+        <form class="wform" id="w-form" hidden autocomplete="off"><input class="inp" id="w-name" maxlength="30" placeholder="Name der Welt, z. B. Survival mit Lea" aria-label="Name der Welt"><button type="submit" class="btn primary" id="w-ok">Anlegen</button><button type="button" class="btn" id="w-cancel">Abbrechen</button></form>
+        <p class="fine" id="w-hint" style="margin:0;width:100%">Sammelliste, Orte und Baufortschritt gelten für die gewählte Welt.</p>
+      </div>
       <div class="tabsbar" role="tablist" aria-label="Werkzeug wählen">
         <button type="button" role="tab" id="tab-liste" aria-controls="tp-liste" data-tool="liste"><span class="tbi" id="tb-liste" aria-hidden="true"></span><span class="tl">Sammelliste</span><span class="ts" aria-hidden="true">Liste</span></button>
         <button type="button" role="tab" id="tab-orte" aria-controls="tp-orte" data-tool="orte"><span class="tbi" id="tb-orte" aria-hidden="true"></span><span class="tl">Koordinaten</span><span class="ts" aria-hidden="true">Orte</span></button>
         <button type="button" role="tab" id="tab-amboss" aria-controls="tp-amboss" data-tool="amboss"><span class="tbi" id="tb-amboss" aria-hidden="true"></span><span class="tl">Amboss</span><span class="ts" aria-hidden="true">Amboss</span></button>
         <button type="button" role="tab" id="tab-brauen" aria-controls="tp-brauen" data-tool="brauen"><span class="tbi" id="tb-brauen" aria-hidden="true"></span><span class="tl">Brauen</span><span class="ts" aria-hidden="true">Brauen</span></button>
         <button type="button" role="tab" id="tab-portal" aria-controls="tp-portal" data-tool="portal"><span class="tbi" id="tb-portal" aria-hidden="true"></span><span class="tl">Portal</span><span class="ts" aria-hidden="true">Portal</span></button>
+        <button type="button" role="tab" id="tab-kreis" aria-controls="tp-kreis" data-tool="kreis"><span class="tbi" id="tb-kreis" aria-hidden="true"></span><span class="tl">Kreise</span><span class="ts" aria-hidden="true">Kreise</span></button>
       </div>
 
       <div class="tpanel" id="tp-liste" role="tabpanel" aria-labelledby="tab-liste">
@@ -554,9 +608,23 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
               <label>Z <input class="inp" type="number" id="o-z" step="1" placeholder="0" required></label>
             </div>
             <label class="fl">Notiz <input class="inp" id="o-note" maxlength="80" placeholder="freiwillig"></label>
+            <label class="fl">Geteilten Ort einfügen <span class="paste"><input class="inp" id="o-paste" placeholder="Link oder Text aus einer Nachricht" autocomplete="off"><button type="button" class="btn" id="o-pastebtn">Übernehmen</button></span></label>
             <div class="tacts"><button type="submit" class="btn primary" id="o-save">Speichern</button><button type="button" class="btn" id="o-cancel" hidden>Abbrechen</button></div>
           </form>
           <div class="tcard">
+            <div class="here" id="here">
+              <div class="ptitle" style="font-size:1.1rem">Wo bist du gerade?</div>
+              <div class="seg three" role="radiogroup" aria-label="Deine Dimension" id="h-dim">
+                <button type="button" role="radio" aria-checked="true" data-dim="ober">Oberwelt</button>
+                <button type="button" role="radio" aria-checked="false" data-dim="nether">Nether</button>
+                <button type="button" role="radio" aria-checked="false" data-dim="end">End</button>
+              </div>
+              <div class="coords">
+                <label>X <input class="inp" type="number" id="h-x" step="1" placeholder="deine X"></label>
+                <label>Z <input class="inp" type="number" id="h-z" step="1" placeholder="deine Z"></label>
+              </div>
+              <p class="fine" style="margin:0">Dann siehst du bei jedem Ort Entfernung und Richtung, der nächste steht oben. Norden ist im Spiel die Richtung, in der Z kleiner wird, Osten die, in der X größer wird.</p>
+            </div>
             <div class="thead2"><div class="ptitle">Gespeicherte Orte</div><span class="tcount" id="o-count"></span></div>
             <p class="fine" id="o-empty">Noch keine Orte. Speichere Basis, Dörfer oder Portale, dann siehst du hier auch gleich die Nether-Koordinaten dazu.</p>
             <ul class="olist" id="o-list"></ul>
@@ -649,6 +717,31 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
           </div>
       </div>
 
+      <div class="tpanel" id="tp-kreis" role="tabpanel" aria-labelledby="tab-kreis" hidden>
+        <div class="tcard">
+          <div class="thead">
+            <div class="ticon" id="circlepic" aria-hidden="true"></div>
+            <div><div class="ptitle">Kreise und Kuppeln</div><p class="fine" style="margin:2px 0 0">Runde Türme, Kuppeln und Kugeln Block für Block. Jedes Kästchen ist ein Block.</p></div>
+          </div>
+          <div class="pgrid">
+            <div>
+              <div class="seg four" role="radiogroup" aria-label="Form" id="c-form">
+                <button type="button" role="radio" aria-checked="true" data-f="ring">Kreis</button>
+                <button type="button" role="radio" aria-checked="false" data-f="disc">Scheibe</button>
+                <button type="button" role="radio" aria-checked="false" data-f="dome">Kuppel</button>
+                <button type="button" role="radio" aria-checked="false" data-f="ball">Kugel</button>
+              </div>
+              <label class="fl">Durchmesser in Blöcken (3 bis 64) <input class="inp" type="number" id="c-d" min="3" max="64" step="1" value="15" inputmode="numeric"></label>
+              <div class="clay" id="c-lay" hidden><button type="button" class="btn" id="c-prev" aria-label="Eine Ebene tiefer">‹</button><span id="c-lname" aria-live="polite"></span><button type="button" class="btn" id="c-next" aria-label="Eine Ebene höher">›</button></div>
+              <div class="asum" id="c-sum" aria-live="polite"></div>
+              <div class="tacts"><button type="button" class="btn" id="c-add">Blöcke auf die Sammelliste</button></div>
+              <p class="fine" style="margin:0">Der Kreis ist ein Ring aus einem Block, die Scheibe ist gefüllt. Kuppel und Kugel sind hohl, ihre Hülle ist einen Block dick. Die gestrichelten Linien zeigen die Mitte. Bei geradem Durchmesser liegt sie zwischen zwei Blöcken.</p>
+            </div>
+            <div class="cgrid" id="c-out"></div>
+          </div>
+        </div>
+      </div>
+
       <div class="tcard" id="sync">
         <div class="ptitle">Daten übertragen</div>
         <p class="fine" style="margin:0">Sammelliste, Orte, Favoriten und Baufortschritt vom iPhone auf den PC mitnehmen oder umgekehrt: hier kopieren, auf dem anderen Gerät einfügen, zum Beispiel über eine Nachricht an dich selbst.</p>
@@ -663,11 +756,12 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   <iframe id="f-bau" title="Baupläne" class="off"></iframe>
 </main>
 
+<div id="printroot" aria-hidden="true"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-t"></span><button type="button" class="btn primary" id="toast-b">Ansehen</button></div>
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 1.8</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 1.9</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -681,11 +775,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 1.8 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 1.9 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
-    <p>Ressourcen-Lexikon, zehn Baupläne von der Eisenfarm bis zur Gürteltierfarm und die Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
+    <p>Ressourcen-Lexikon, elf Baupläne von der Eisenfarm bis zur Schmelzanlage und die Werkzeuge in einer App. Alles läuft ohne Internet, nur die Originalbilder werden beim ersten Ansehen einmal geladen. Nur die Links zum Minecraft Wiki öffnen deinen Browser.</p>
     <section class="prefs" aria-labelledby="prefs-h">
       <h3 id="prefs-h">Darstellung</h3>
       <div class="prow"><span class="plabel" id="pl-theme">Design</span>
@@ -732,11 +826,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","out":"iron_ingot","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","out":"emerald","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","out":"cactus","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","out":"ender_pearl","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","out":"sugar_cane","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","out":"pumpkin","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","out":"cooked_chicken","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","out":"lava_bucket","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},{"id":"spawner","out":"experience_bottle","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","out":"armadillo_scute","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3}];
+  var PLANS = [{"id":"eisenfarm","out":"iron_ingot","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","out":"emerald","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","out":"cactus","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","out":"ender_pearl","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","out":"sugar_cane","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","out":"pumpkin","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","out":"cooked_chicken","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","out":"lava_bucket","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},{"id":"spawner","out":"experience_bottle","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","out":"armadillo_scute","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},{"id":"ofen","out":"furnace","title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
   var BREW = {"e":[["potion:awkward","blaze_powder","potion:strength"],["potion:awkward","breeze_rod","potion:wind_charged"],["potion:awkward","fermented_spider_eye","potion:weakness"],["potion:awkward","ghast_tear","potion:regeneration"],["potion:awkward","golden_carrot","potion:nightvision"],["potion:awkward","magma_cream","potion:fire_resistance"],["potion:awkward","phantom_membrane","potion:slow_falling"],["potion:awkward","pufferfish","potion:water_breathing"],["potion:awkward","rabbit_foot","potion:leaping"],["potion:awkward","slime","potion:oozing"],["potion:awkward","glistering_melon_slice","potion:healing"],["potion:awkward","spider_eye","potion:poison"],["potion:awkward","stone","potion:infested"],["potion:awkward","sugar","potion:swiftness"],["potion:awkward","turtle_helmet","potion:turtle_master"],["potion:awkward","web","potion:weaving"],["potion:fire_resistance","redstone","potion:long_fire_resistance"],["potion:harming","glowstone_dust","potion:strong_harming"],["potion:healing","fermented_spider_eye","potion:harming"],["potion:healing","glowstone_dust","potion:strong_healing"],["potion:invisibility","redstone","potion:long_invisibility"],["potion:leaping","fermented_spider_eye","potion:slowness"],["potion:leaping","glowstone_dust","potion:strong_leaping"],["potion:leaping","redstone","potion:long_leaping"],["potion:long_leaping","fermented_spider_eye","potion:long_slowness"],["potion:long_mundane","fermented_spider_eye","potion:long_weakness"],["potion:long_poison","fermented_spider_eye","potion:harming"],["potion:long_strength","fermented_spider_eye","potion:long_weakness"],["potion:long_nightvision","fermented_spider_eye","potion:long_invisibility"],["potion:long_swiftness","fermented_spider_eye","potion:long_slowness"],["potion:mundane","fermented_spider_eye","potion:weakness"],["potion:nightvision","fermented_spider_eye","potion:invisibility"],["potion:nightvision","redstone","potion:long_nightvision"],["potion:poison","fermented_spider_eye","potion:harming"],["potion:poison","glowstone_dust","potion:strong_poison"],["potion:poison","redstone","potion:long_poison"],["potion:regeneration","glowstone_dust","potion:strong_regeneration"],["potion:regeneration","redstone","potion:long_regeneration"],["potion:slow_falling","redstone","potion:long_slow_falling"],["potion:slowness","glowstone_dust","potion:strong_slowness"],["potion:slowness","redstone","potion:long_slowness"],["potion:strength","fermented_spider_eye","potion:weakness"],["potion:strength","glowstone_dust","potion:strong_strength"],["potion:strength","redstone","potion:long_strength"],["potion:strong_healing","fermented_spider_eye","potion:strong_harming"],["potion:strong_poison","fermented_spider_eye","potion:strong_harming"],["potion:strong_strength","fermented_spider_eye","potion:weakness"],["potion:swiftness","fermented_spider_eye","potion:slowness"],["potion:swiftness","glowstone_dust","potion:strong_swiftness"],["potion:swiftness","redstone","potion:long_swiftness"],["potion:thick","fermented_spider_eye","potion:weakness"],["potion:turtle_master","glowstone_dust","potion:strong_turtle_master"],["potion:turtle_master","redstone","potion:long_turtle_master"],["potion:water","blaze_powder","potion:mundane"],["potion:water_breathing","redstone","potion:long_water_breathing"],["potion:water","breeze_rod","potion:mundane"],["potion:water","fermented_spider_eye","potion:weakness"],["potion:water","ghast_tear","potion:mundane"],["potion:water","glowstone_dust","potion:thick"],["potion:water","magma_cream","potion:mundane"],["potion:water","nether_wart","potion:awkward"],["potion:water","rabbit_foot","potion:mundane"],["potion:water","redstone","potion:mundane"],["potion:water","slime","potion:mundane"],["potion:water","glistering_melon_slice","potion:mundane"],["potion:water","spider_eye","potion:mundane"],["potion:water","stone","potion:mundane"],["potion:water","sugar","potion:mundane"],["potion:water","web","potion:mundane"],["potion:weakness","redstone","potion:long_weakness"],["potion:water","redstone","potion:long_mundane"]],"n":{"potion:awkward":"Seltsamer Trank","blaze_powder":"Lohenstaub","potion:strength":"Trank der Stärke","breeze_rod":"Böenrute","potion:wind_charged":"Trank des Windladens","fermented_spider_eye":"Fermentiertes Spinnenauge","potion:weakness":"Trank der Schwäche","ghast_tear":"Ghast-Träne","potion:regeneration":"Trank der Regeneration","golden_carrot":"Goldene Karotte","potion:nightvision":"Trank der Nachtsicht","magma_cream":"Magmacreme","potion:fire_resistance":"Trank der Feuerresistenz","phantom_membrane":"Phantomhaut","potion:slow_falling":"Trank des sanften Falls","pufferfish":"Kugelfisch","potion:water_breathing":"Trank der Unterwasseratmung","rabbit_foot":"Hasenpfote","potion:leaping":"Trank der Sprungkraft","slime":"Schleimblock","potion:oozing":"Trank des Sickerns","glistering_melon_slice":"Funkelnde Melonenscheibe","potion:healing":"Trank der Heilung","spider_eye":"Spinnenauge","potion:poison":"Trank der Vergiftung","stone":"Stein","potion:infested":"Trank der Verseuchung","sugar":"Zucker","potion:swiftness":"Trank der Schnelligkeit","turtle_helmet":"Schildkrötenpanzer","potion:turtle_master":"Trank des Schildkrötenmeisters","web":"Spinnennetz","potion:weaving":"Trank des Webens","redstone":"Redstone-Staub","potion:long_fire_resistance":"Trank der Feuerresistenz (verlängert)","potion:harming":"Trank des Schadens","glowstone_dust":"Leuchtstein-Staub","potion:strong_harming":"Trank des Schadens (Stufe II)","potion:strong_healing":"Trank der Heilung (Stufe II)","potion:invisibility":"Trank der Unsichtbarkeit","potion:long_invisibility":"Trank der Unsichtbarkeit (verlängert)","potion:slowness":"Trank der Langsamkeit","potion:strong_leaping":"Trank der Sprungkraft (Stufe II)","potion:long_leaping":"Trank der Sprungkraft (verlängert)","potion:long_slowness":"Trank der Langsamkeit (verlängert)","potion:long_mundane":"Gewöhnlicher Trank (verlängert)","potion:long_weakness":"Trank der Schwäche (verlängert)","potion:long_poison":"Trank der Vergiftung (verlängert)","potion:long_strength":"Trank der Stärke (verlängert)","potion:long_nightvision":"Trank der Nachtsicht (verlängert)","potion:long_swiftness":"Trank der Schnelligkeit (verlängert)","potion:mundane":"Gewöhnlicher Trank","potion:strong_poison":"Trank der Vergiftung (Stufe II)","potion:strong_regeneration":"Trank der Regeneration (Stufe II)","potion:long_regeneration":"Trank der Regeneration (verlängert)","potion:long_slow_falling":"Trank des sanften Falls (verlängert)","potion:strong_slowness":"Trank der Langsamkeit (Stufe IV)","potion:strong_strength":"Trank der Stärke (Stufe II)","potion:strong_swiftness":"Trank der Schnelligkeit (Stufe II)","potion:thick":"Dickflüssiger Trank","potion:strong_turtle_master":"Trank des Schildkrötenmeisters (Stufe II)","potion:long_turtle_master":"Trank des Schildkrötenmeisters (verlängert)","potion:water":"Wasserflasche","potion:long_water_breathing":"Trank der Unterwasseratmung (verlängert)","nether_wart":"Netherwarze","glass_bottle":"Glasflasche","gunpowder":"Schwarzpulver","dragon_breath":"Drachenatem","brewing_stand":"Braustand"},"f":{"potion:awkward":["Seltsamer Wurftrank","Seltsamer Verweiltrank"],"potion:strength":["Wurftrank der Stärke","Verweiltrank der Stärke"],"potion:wind_charged":["Wurftrank des Windladens","Verweiltrank des Windladens"],"potion:weakness":["Wurftrank der Schwäche","Verweiltrank der Schwäche"],"potion:regeneration":["Wurftrank der Regeneration","Verweiltrank der Regeneration"],"potion:nightvision":["Wurftrank der Nachtsicht","Verweiltrank der Nachtsicht"],"potion:fire_resistance":["Wurftrank der Feuerresistenz","Verweiltrank der Feuerresistenz"],"potion:slow_falling":["Wurftrank des sanften Falls","Verweiltrank des sanften Falls"],"potion:water_breathing":["Wurftrank der Unterwasseratmung","Verweiltrank der Unterwasseratmung"],"potion:leaping":["Wurftrank der Sprungkraft","Verweiltrank der Sprungkraft"],"potion:oozing":["Wurftrank des Sickerns","Verweiltrank des Sickerns"],"potion:healing":["Wurftrank der Heilung","Verweiltrank der Heilung"],"potion:poison":["Wurftrank der Vergiftung","Verweiltrank der Vergiftung"],"potion:infested":["Wurftrank der Verseuchung","Verweiltrank der Verseuchung"],"potion:swiftness":["Wurftrank der Schnelligkeit","Verweiltrank der Schnelligkeit"],"potion:turtle_master":["Wurftrank des Schildkrötenmeisters","Verweiltrank des Schildkrötenmeisters"],"potion:weaving":["Wurftrank des Webens","Verweiltrank des Webens"],"potion:long_fire_resistance":["Wurftrank der Feuerresistenz (verlängert)","Verweiltrank der Feuerresistenz (verlängert)"],"potion:harming":["Wurftrank des Schadens","Verweiltrank des Schadens"],"potion:strong_harming":["Wurftrank des Schadens (Stufe II)","Verweiltrank des Schadens (Stufe II)"],"potion:strong_healing":["Wurftrank der Heilung (Stufe II)","Verweiltrank der Heilung (Stufe II)"],"potion:invisibility":["Wurftrank der Unsichtbarkeit","Verweiltrank der Unsichtbarkeit"],"potion:long_invisibility":["Wurftrank der Unsichtbarkeit (verlängert)","Verweiltrank der Unsichtbarkeit (verlängert)"],"potion:slowness":["Wurftrank der Langsamkeit","Verweiltrank der Langsamkeit"],"potion:strong_leaping":["Wurftrank der Sprungkraft (Stufe II)","Verweiltrank der Sprungkraft (Stufe II)"],"potion:long_leaping":["Wurftrank der Sprungkraft (verlängert)","Verweiltrank der Sprungkraft (verlängert)"],"potion:long_slowness":["Wurftrank der Langsamkeit (verlängert)","Verweiltrank der Langsamkeit (verlängert)"],"potion:long_mundane":["Gewöhnlicher Wurftrank (verlängert)","Gewöhnlicher Verweiltrank (verlängert)"],"potion:long_weakness":["Wurftrank der Schwäche (verlängert)","Verweiltrank der Schwäche (verlängert)"],"potion:long_poison":["Wurftrank der Vergiftung (verlängert)","Verweiltrank der Vergiftung (verlängert)"],"potion:long_strength":["Wurftrank der Stärke (verlängert)","Verweiltrank der Stärke (verlängert)"],"potion:long_nightvision":["Wurftrank der Nachtsicht (verlängert)","Verweiltrank der Nachtsicht (verlängert)"],"potion:long_swiftness":["Wurftrank der Schnelligkeit (verlängert)","Verweiltrank der Schnelligkeit (verlängert)"],"potion:mundane":["Gewöhnlicher Wurftrank","Gewöhnlicher Verweiltrank"],"potion:strong_poison":["Wurftrank der Vergiftung (Stufe II)","Verweiltrank der Vergiftung (Stufe II)"],"potion:strong_regeneration":["Wurftrank der Regeneration (Stufe II)","Verweiltrank der Regeneration (Stufe II)"],"potion:long_regeneration":["Wurftrank der Regeneration (verlängert)","Verweiltrank der Regeneration (verlängert)"],"potion:long_slow_falling":["Wurftrank des sanften Falls (verlängert)","Verweiltrank des sanften Falls (verlängert)"],"potion:strong_slowness":["Wurftrank der Langsamkeit (Stufe IV)","Verweiltrank der Langsamkeit (Stufe IV)"],"potion:strong_strength":["Wurftrank der Stärke (Stufe II)","Verweiltrank der Stärke (Stufe II)"],"potion:strong_swiftness":["Wurftrank der Schnelligkeit (Stufe II)","Verweiltrank der Schnelligkeit (Stufe II)"],"potion:thick":["Dickflüssiger Wurftrank","Dickflüssiger Verweiltrank"],"potion:strong_turtle_master":["Wurftrank des Schildkrötenmeisters (Stufe II)","Verweiltrank des Schildkrötenmeisters (Stufe II)"],"potion:long_turtle_master":["Wurftrank des Schildkrötenmeisters (verlängert)","Verweiltrank des Schildkrötenmeisters (verlängert)"],"potion:water":["Werfbare Wasserflasche","Verweilende Wasserflasche"],"potion:long_water_breathing":["Wurftrank der Unterwasseratmung (verlängert)","Verweiltrank der Unterwasseratmung (verlängert)"]}};
-  var APPVER = '1.8';
+  var APPVER = '1.9';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -921,7 +1015,7 @@ var BWISO = (function () {
   var K = { stone: '#8D96A3', iron: '#D3D8DF', water: '#4C8FE3', lava: '#F27B2A', sand: '#E4CA8C', cactus: '#3E9446', wood: '#B78A52', emerald: '#2DB56C',
             glass: '#BCE0F2', dark: '#3A4350', purple: '#7B4BC2', dye: '#4BA34E', copper: '#D9824A', hay: '#E2B93B', end: '#DCD9A6',
             mud: '#5B4A3F', cane: '#7FB85A', piston: '#A88B5C', paper: '#EEE6D2', anvil: '#5A616B',
-            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E', armadillo: '#B07A6C',
+            pumpkin: '#E38A1E', melon: '#5DA03A', farmland: '#7A5230', chicken: '#F2EFE6', drip: '#A88A6E', armadillo: '#B07A6C', furnace: '#77726C', fire: '#E5701A',
             grass: ['#7CC35E', '#8B5E39', '#6C482B'] };
   function box(x0, y0, z, w, d, col, h) { var a = []; for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + d; y++) a.push([x, y, z, col, h]); return a; }
   var SCENES = {
@@ -942,6 +1036,8 @@ var BWISO = (function () {
       [0, 4, 0, K.stone, .5], [1, 4, 0, K.stone, .5], [2, 4, 0, K.stone, .5]]),
     guerteltier: [].concat(box(0, 0, 0, 4, 1, K.stone, .7), box(0, 0, .7, 4, 1, K.glass), box(0, 0, 1.7, 4, 1, K.glass), box(0, 1, 0, 4, 1, K.dark, .7),
       [[0.15, 1.15, .7, K.armadillo, .55], [1.15, 1.15, .7, K.armadillo, .55], [2.15, 1.15, .7, K.armadillo, .55], [3.15, 1.15, .7, K.armadillo, .55], [4, 1, 0, K.wood, .9]]),
+    ofen: [].concat(box(0, 0, 0, 4, 1, K.dark, .6), box(0, 0, .6, 4, 1, K.furnace), box(0, 0, 1.6, 4, 1, K.dark, .6), box(0, 0, 2.2, 4, 1, K.wood, .9),
+      box(0, 1, .6, 4, 1, K.dark, .6), box(0, 1, 1.2, 4, 1, K.wood, .9), [[4, 0, 0, K.wood, .9], [5, 0, 0, K.wood, .9], [0.2, -0.05, .85, K.fire, .35], [2.2, -0.05, .85, K.fire, .35]]),
     lexikon: [[0, 0, 0, K.sand], [2, 0, 0, K.sand], [2, 0, 1, K.cactus], [2, 0, 2, K.cactus], [4, 0, 0, K.dye, .45], [4, 1.6, 0, K.purple, .5]],
     hero: [].concat(box(0, 0, 0, 6, 5, K.grass), box(0, 0, 1, 2, 2, K.stone), box(0, 0, 2, 2, 2, K.water, .45), [[0.5, 0.5, 2.45, K.lava, .5]],
       [[4, 0, 1, K.sand], [5, 0, 1, K.sand], [4, 0, 2, K.cactus], [4, 0, 3, K.cactus], [5, 0, 2, K.cactus]],
@@ -979,7 +1075,10 @@ var BWISO = (function () {
   ['liste', 'orte', 'amboss', 'brauen'].forEach(function (t) { $('ti-' + t).innerHTML = $('tb-' + t).innerHTML = tq(ART[t][0], ART[t][1]); });
   $('brewpic').innerHTML = tq(ART.brauen[0], ART.brauen[1]);
   $('icon-orte').innerHTML = tq('chest', iso([[0, 0, 0, K.wood, .8], [1.2, 0, 0, K.stone], [1.2, 0, 1, K.end, .5]]));
-  $('icon-berufe').innerHTML = tq('emerald', iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]));
+  $('icon-berufe').innerHTML = tq('bell', iso([[0, 0, 0, K.emerald, .6], [1, 0, 0, K.copper], [1, 1, 0, K.hay]]));
+  $('icon-handel').innerHTML = tq('emerald', iso([[0, 0, 0, K.emerald, .6], [0.2, 0.2, .6, K.emerald, .6]]));
+  $('icon-mobs').innerHTML = tq('rotten_flesh', iso([[0, 0, 0, '#5E8F4A'], [0, 0, 1, '#4E7A3D', .8]]));
+  $('ti-kreis').innerHTML = $('tb-kreis').innerHTML = $('circlepic').innerHTML = tq('stone_bricks', iso([[1, 0, 0, K.stone], [0, 1, 0, K.stone], [2, 1, 0, K.stone], [1, 2, 0, K.stone], [1, 0, 1, K.stone, .5], [0, 1, 1, K.stone, .5], [2, 1, 1, K.stone, .5], [1, 2, 1, K.stone, .5]]));
 
   /* ---------- Nether-Portal-Rechner ---------- */
   var OBS = ['#3B2D57', '#2A2040', '#1D1630'], PUR = ['#B88BFF', '#8F5BEA', '#7444CC'];
@@ -1026,12 +1125,14 @@ var BWISO = (function () {
 
   // Zuletzt angesehen: Einträge aus dem Lexikon (Namen stehen in dessen Daten)
   var names = null, texReady = false;
+  var mobNames = [];
   function lexNames() {
     if (names) return names;
     try {
       var D = JSON.parse(frames.lex.contentDocument.getElementById('data').textContent);
       names = {};
-      Object.keys(D.items).forEach(function (id) { var it = D.items[id]; names[slug(id)] = [it[0] + (it[3] ? ' (' + it[3] + ')' : ''), D.cats[it[2]], id]; });
+      Object.keys(D.items).forEach(function (id) { var it = D.items[id]; names[slug(id)] = [it[0] + (it[3] ? ' (' + it[3] + ')' : ''), D.cats[it[2]], id, it[1] || '']; });
+      mobNames = []; (D.labels || []).forEach(function (l, n) { if (l[0] === 'mob' && D.mobs && D.mobs[n]) mobNames.push([l[1], 'ort-' + n]); });
       if (D.tex && !texReady) { texReady = true; BWTEX.init(D.tex.p, D.tex.m); }
     } catch (e) { names = null; }
     return names;
@@ -1048,7 +1149,7 @@ var BWISO = (function () {
     $('recent').innerHTML = a.map(function (s) { return '<button type="button" class="qchip" data-slug="' + s + '">' + qt(n[s][2], s.indexOf('enchanted-book') === 0 ? '#7B4BC2' : '#8D96A3') + '<span>' + esc(n[s][0]) + '</span></button>'; }).join('');
   }
   function remember(s) {
-    if (!/^[a-z0-9-]+$/.test(s) || /^(liste|orte|berufe|ort-\d+|beruf-\d+)$/.test(s)) return;
+    if (!/^[a-z0-9-]+$/.test(s) || /^(liste|orte|berufe|handel|mobs|ort-\d+|beruf-\d+)$/.test(s)) return;
     var a = recents().filter(function (x) { return x !== s; }); a.unshift(s); save('recent', JSON.stringify(a.slice(0, 12)));
   }
 
@@ -1076,7 +1177,7 @@ var BWISO = (function () {
     });
     if (v.frame === 'bau') {
       lastPlan = id; save('plan', id);
-      if (!fromFrame && ready.bau) { try { var w = frames.bau.contentWindow; if (w.location.hash !== '#' + id) w.location.hash = id; } catch (e) {} }
+      if (!fromFrame && ready.bau) { try { var w = frames.bau.contentWindow; if (w.location.hash.split('/')[0] !== '#' + id) w.location.hash = id; } catch (e) {} }
     }
     if (id === 'start') { renderRecent(); renderTiles(); }
     if (id === 'werkzeuge') renderTools();
@@ -1085,7 +1186,7 @@ var BWISO = (function () {
   }
   function onFrameHash(key, hash) {
     if (key === 'lex') { var s = hash.slice(1); if (/^[a-z0-9-]+$/.test(s)) { save('lex', hash); remember(s); } return; }
-    var id = hash.slice(1);
+    var id = hash.slice(1).split('/')[0];
     if (!byId[id] || byId[id].frame !== 'bau') return;
     lastPlan = id; save('plan', id);
     if (cur && cur.frame === 'bau' && cur.id !== id) show(id, true);
@@ -1108,15 +1209,19 @@ var BWISO = (function () {
   function loadJSON(k, d) { try { var v = JSON.parse(load(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } }
   function saveJSON(k, v) { save(k, JSON.stringify(v)); }
   function fmtN(n) { return Number(n).toLocaleString('de-DE'); }
+  function dur(sec) { var m = Math.floor(sec / 60), r = sec % 60; return m ? m + (m === 1 ? ' Minute' : ' Minuten') + (r ? ' ' + r + ' Sekunden' : '') : sec + ' Sekunden'; }
   function plural(n, a, b) { return fmtN(n) + ' ' + (n === 1 ? a : b); }
   var tool = load('tool') || 'liste';
-  if (['liste', 'orte', 'amboss', 'brauen', 'portal'].indexOf(tool) < 0) tool = 'liste';
+  var TOOLS = ['liste', 'orte', 'amboss', 'brauen', 'portal', 'kreis'];
+  if (TOOLS.indexOf(tool) < 0) tool = 'liste';
   function openTool(t) { tool = t; save('tool', t); show('werkzeuge'); }
   function renderTools() {
     [].forEach.call(document.querySelectorAll('.tabsbar [data-tool]'), function (b) {
       var on = b.getAttribute('data-tool') === tool; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
     });
-    ['liste', 'orte', 'amboss', 'brauen', 'portal'].forEach(function (t) { $('tp-' + t).hidden = t !== tool; });
+    TOOLS.forEach(function (t) { $('tp-' + t).hidden = t !== tool; });
+    renderWorlds();
+    if (tool === 'kreis') renderCircle();
     if (tool === 'liste') renderList();
     if (tool === 'orte') renderPlaces();
     if (tool === 'amboss') renderAnvil();
@@ -1144,17 +1249,59 @@ var BWISO = (function () {
     if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(function () { done(true); }, fallback); else fallback();
   }
   var toastT = null, toastGo = null;
-  function toast(text, go) {
-    $('toast-t').textContent = text; toastGo = go; $('toast-b').hidden = !go;
-    $('toast').classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function () { $('toast').classList.remove('show'); }, 5000);
+  function toast(text, go, label, sticky) {
+    $('toast-t').textContent = text; toastGo = go; $('toast-b').hidden = !go; $('toast-b').textContent = label || 'Ansehen';
+    $('toast').classList.add('show'); clearTimeout(toastT); if (!sticky) toastT = setTimeout(function () { $('toast').classList.remove('show'); }, 6000);
   }
   $('toast-b').addEventListener('click', function () { $('toast').classList.remove('show'); if (toastGo) toastGo(); });
 
+  /* Welten: Sammelliste, Orte, Standort und Baufortschritt je Welt getrennt; die Hauptwelt nutzt die bisherigen Schlüssel */
+  var worlds = loadJSON('welten', null);
+  if (!Array.isArray(worlds)) worlds = [];
+  worlds = worlds.filter(function (w) { return w && typeof w.id === 'string' && /^[a-z0-9]{1,12}$/.test(w.id) && typeof w.name === 'string'; });
+  worlds.unshift({ id: '', name: 'Hauptwelt' });
+  var wcur = load('world') || ''; if (!worlds.some(function (w) { return w.id === wcur; })) wcur = '';
+  function wkey(k) { return wcur ? 'w.' + wcur + '.' + k : k; }
+  function bpKey(id) { return (wcur ? 'bw.w.' + wcur + '.' : '') + 'bp.done.' + id; }
+  function storeWorlds() { saveJSON('welten', worlds.filter(function (w) { return w.id; })); }
+  var wmode = null;
+  function renderWorlds() {
+    $('w-sel').innerHTML = worlds.map(function (w) { return '<option value="' + esc(w.id) + '"' + (w.id === wcur ? ' selected' : '') + '>' + esc(w.name) + '</option>'; }).join('');
+    $('w-del').hidden = $('w-ren').hidden = !wcur;
+    $('w-form').hidden = !wmode;
+  }
+  function switchWorld(id) {
+    wcur = id; save('world', id);
+    list = loadList(); places = loadPlaces(); here = loadJSON(wkey('hier'), null); edit = null; fillHere();
+    renderWorlds(); renderTools(); renderTiles();
+  }
+  $('w-sel').addEventListener('change', function () { switchWorld(this.value); });
+  $('w-new').addEventListener('click', function () { wmode = 'new'; renderWorlds(); $('w-name').value = ''; $('w-ok').textContent = 'Anlegen'; $('w-name').focus(); });
+  $('w-ren').addEventListener('click', function () { wmode = 'ren'; renderWorlds(); $('w-name').value = worlds.find(function (w) { return w.id === wcur; }).name; $('w-ok').textContent = 'Umbenennen'; $('w-name').focus(); });
+  $('w-cancel').addEventListener('click', function () { wmode = null; renderWorlds(); });
+  $('w-form').addEventListener('submit', function (e) {
+    e.preventDefault(); var name = $('w-name').value.trim().slice(0, 30); if (!name) { $('w-name').focus(); return; }
+    if (wmode === 'new') { var id = Date.now().toString(36).slice(-8); worlds.push({ id: id, name: name }); storeWorlds(); wmode = null; switchWorld(id); return; }
+    worlds.forEach(function (w) { if (w.id === wcur) w.name = name; }); storeWorlds(); wmode = null; renderWorlds();
+    try { if (ready.bau) frames.bau.contentWindow.dispatchEvent(new StorageEvent('storage', { key: 'bw.world' })); } catch (er) {}
+  });
+  $('w-del').addEventListener('click', function () {
+    if (!wcur) return;
+    var name = worlds.find(function (w) { return w.id === wcur; }).name;
+    arm(this, '„' + name + '“ mit allen Daten löschen?', function () {
+      var pre = 'bw.w.' + wcur + '.';
+      try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf(pre) === 0) localStorage.removeItem(k); }); } catch (er) {}
+      worlds = worlds.filter(function (w) { return w.id !== wcur; }); storeWorlds(); switchWorld('');
+    });
+  });
+
   /* Sammelliste: [{k, t, n, d, s, x}] – k ist eine Lexikon-Kennung, 'mat:…' oder 'own:…'; x = Lexikon-Kennung fürs Bild bei Bauplan-Material */
-  var list = loadJSON('liste', []);
-  if (!Array.isArray(list)) list = [];
-  list = list.filter(function (e) { return e && typeof e.k === 'string' && typeof e.t === 'string' && e.n > 0; });
-  function storeList() { saveJSON('liste', list); }
+  function loadList() {
+    var a = loadJSON(wkey('liste'), []); if (!Array.isArray(a)) a = [];
+    return a.filter(function (e) { return e && typeof e.k === 'string' && typeof e.t === 'string' && e.n > 0; });
+  }
+  var list = loadList();
+  function storeList() { saveJSON(wkey('liste'), list); }
   window.bwList = {
     add: function (entries, source) {
       var added = 0;
@@ -1206,23 +1353,85 @@ var BWISO = (function () {
 
   /* Koordinaten: [{id, name, dim, x, y, z, note}] */
   var DIMS = { ober: 'Oberwelt', nether: 'Nether', end: 'End' };
-  var places = loadJSON('orte', []); if (!Array.isArray(places)) places = [];
+  function loadPlaces() { var a = loadJSON(wkey('orte'), []); return Array.isArray(a) ? a.filter(function (p) { return p && typeof p.name === 'string' && DIMS[p.dim] && isFinite(p.x) && isFinite(p.z); }) : []; }
+  var places = loadPlaces();
   var edit = null, odim = 'ober';
-  function storePlaces() { saveJSON('orte', places); }
+  function storePlaces() { saveJSON(wkey('orte'), places); }
+  /* Wegweiser: dein Standort, Entfernung und Richtung zu jedem Ort */
+  var here = loadJSON(wkey('hier'), null), hdim = 'ober';
+  function storeHere() { saveJSON(wkey('hier'), here); }
+  function syncHere() {
+    [].forEach.call($('h-dim').querySelectorAll('[data-dim]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-dim') === hdim)); });
+  }
+  function fillHere() {
+    hdim = here && DIMS[here.dim] ? here.dim : 'ober';
+    $('h-x').value = here && isFinite(here.x) ? here.x : ''; $('h-z').value = here && isFinite(here.z) ? here.z : '';
+    syncHere();
+  }
+  fillHere();
+  function readHere() {
+    var x = $('h-x').value, z = $('h-z').value;
+    here = x !== '' && z !== '' && isFinite(+x) && isFinite(+z) ? { dim: hdim, x: Math.trunc(+x), z: Math.trunc(+z) } : null;
+    storeHere(); renderPlaces();
+  }
+  $('h-dim').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (!b) return; hdim = b.getAttribute('data-dim'); syncHere(); readHere(); });
+  $('h-x').addEventListener('input', readHere); $('h-z').addEventListener('input', readHere);
+  var WIND = ['Norden', 'Nordosten', 'Osten', 'Südosten', 'Süden', 'Südwesten', 'Westen', 'Nordwesten'];
+  function way(p) {
+    if (!here) return null;
+    var px = p.x, pz = p.z, via = '';
+    if (p.dim !== here.dim) {
+      if (p.dim === 'ober' && here.dim === 'nether') { px = Math.floor(p.x / 8); pz = Math.floor(p.z / 8); via = ', in Nether-Koordinaten'; }
+      else if (p.dim === 'nether' && here.dim === 'ober') { px = p.x * 8; pz = p.z * 8; via = ', in Oberwelt-Koordinaten'; }
+      else return { d: Infinity, t: 'In einer anderen Dimension' };
+    }
+    var dx = px - here.x, dz = pz - here.z, d = Math.round(Math.sqrt(dx * dx + dz * dz));
+    if (d < 2) return { d: d, t: 'Du bist da' };
+    var deg = (Math.atan2(dx, -dz) * 180 / Math.PI + 360) % 360, t = plural(d, 'Block', 'Blöcke') + ' Richtung ' + WIND[Math.round(deg / 45) % 8] + ' (' + Math.round(deg) + '°)' + via;
+    if (p.dim === 'ober' && here.dim === 'ober' && d >= 400) t += '. Durch den Nether nur etwa ' + plural(Math.round(d / 8), 'Block', 'Blöcke');
+    return { d: d, t: t };
+  }
+  /* Teilen: Ort als Link oder Text; eingefügte Links und Texte werden erkannt */
+  function placeParam(p) { return 'ort=' + [p.dim, p.x, p.y == null ? '' : p.y, p.z, p.name].map(function (v) { return encodeURIComponent(String(v)).replace(/~/g, '%7E'); }).join('~'); }
+  function parsePlace(text) {
+    var m = /ort=([^\s#&]+)/.exec(String(text || ''));
+    if (m) {
+      var a = m[1].split('~').map(function (v) { try { return decodeURIComponent(v); } catch (e) { return ''; } });
+      if (a.length >= 5 && DIMS[a[0]] && a[1] !== '' && isFinite(+a[1]) && isFinite(+a[3])) return { dim: a[0], x: Math.trunc(+a[1]), y: a[2] === '' || !isFinite(+a[2]) ? null : Math.trunc(+a[2]), z: Math.trunc(+a[3]), name: a.slice(4).join('~').slice(0, 40) || 'Geteilter Ort' };
+    }
+    var t = String(text || ''), x = /X\s*[:=]?\s*(-?\d+)/i.exec(t), z = /Z\s*[:=]?\s*(-?\d+)/i.exec(t), y = /Y\s*[:=]?\s*(-?\d+)/i.exec(t);
+    if (!x || !z) { var n = t.match(/-?\d+/g); if (n && n.length === 3) return { dim: /nether/i.test(t) ? 'nether' : /\bend\b/i.test(t) ? 'end' : 'ober', x: +n[0], y: +n[1], z: +n[2], name: '' }; return null; }
+    return { dim: /nether/i.test(t) ? 'nether' : /\bend\b/i.test(t) ? 'end' : 'ober', x: +x[1], y: y ? +y[1] : null, z: +z[1], name: '' };
+  }
+  function fillPlaceForm(q) {
+    resetForm(); $('o-name').value = q.name || ''; $('o-x').value = q.x; $('o-y').value = q.y == null ? '' : q.y; $('o-z').value = q.z; setDim(q.dim);
+    if (!q.name) $('o-name').focus();
+  }
+  $('o-pastebtn').addEventListener('click', function () {
+    var q = parsePlace($('o-paste').value);
+    if (!q) { $('o-paste').setCustomValidity('Darin stehen keine Koordinaten'); $('o-paste').reportValidity(); return; }
+    $('o-paste').setCustomValidity(''); $('o-paste').value = ''; fillPlaceForm(q);
+  });
+  $('o-paste').addEventListener('input', function () { this.setCustomValidity(''); });
   function sgn(n) { return (n < 0 ? '−' : '') + fmtN(Math.abs(n)); }
   function setDim(d) { odim = d; [].forEach.call($('o-dim').querySelectorAll('[data-dim]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-dim') === d)); }); }
   $('o-dim').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (b) setDim(b.getAttribute('data-dim')); });
   function resetForm() { edit = null; $('o-form').reset(); setDim('ober'); $('o-title').textContent = 'Ort speichern'; $('o-save').textContent = 'Speichern'; $('o-cancel').hidden = true; }
   function renderPlaces() {
+    syncHere();
     $('o-count').textContent = places.length ? plural(places.length, 'Ort', 'Orte') : '';
     $('o-empty').hidden = !!places.length;
-    $('o-list').innerHTML = places.map(function (p, i) {
+    var rows = places.map(function (p, i) { return { p: p, i: i, w: way(p) }; });
+    if (here) rows.sort(function (a, b) { return (a.w ? a.w.d : Infinity) - (b.w ? b.w.d : Infinity) || a.i - b.i; });
+    $('o-list').innerHTML = rows.map(function (r) {
+      var p = r.p, i = r.i;
       var conv = p.dim === 'ober' ? 'Im Nether: X ' + sgn(Math.floor(p.x / 8)) + ' · Z ' + sgn(Math.floor(p.z / 8)) : p.dim === 'nether' ? 'In der Oberwelt: X ' + sgn(p.x * 8) + ' · Z ' + sgn(p.z * 8) : '';
       return '<li class="oitem" data-i="' + i + '"><div class="otop"><b>' + esc(p.name) + '</b><span class="dim ' + p.dim + '">' + DIMS[p.dim] + '</span></div>' +
         '<div class="oxyz">X ' + sgn(p.x) + (p.y != null ? ' · Y ' + sgn(p.y) : '') + ' · Z ' + sgn(p.z) + '</div>' + (conv ? '<div class="oconv">' + conv + '</div>' : '') +
+        (r.w ? '<div class="odist">' + esc(r.w.t) + '</div>' : '') +
         (p.note ? '<div class="onote">' + esc(p.note) + '</div>' : '') +
         '<div class="tacts">' + (p.dim !== 'end' ? '<button type="button" class="btn" data-act="portal">Portal-Rechner</button>' : '') +
-        '<button type="button" class="btn" data-act="edit">Ändern</button><button type="button" class="btn" data-act="del">Löschen</button></div></li>';
+        '<button type="button" class="btn" data-act="share">Teilen</button><button type="button" class="btn" data-act="edit">Ändern</button><button type="button" class="btn" data-act="del">Löschen</button></div></li>';
     }).join('');
   }
   $('o-form').addEventListener('submit', function (e) {
@@ -1237,6 +1446,7 @@ var BWISO = (function () {
   $('o-list').addEventListener('click', function (e) {
     var b = e.target.closest('[data-act]'); if (!b) return; var i = +b.closest('.oitem').getAttribute('data-i'), p = places[i], act = b.getAttribute('data-act');
     if (act === 'del') { arm(b, 'Wirklich löschen?', function () { places.splice(i, 1); storePlaces(); if (edit === i) resetForm(); renderPlaces(); }); return; }
+    if (act === 'share') { window.bwShare(placeParam(p), 'Minecraft-Ort „' + p.name + '“, ' + DIMS[p.dim] + ': X ' + p.x + (p.y != null ? ' Y ' + p.y : '') + ' Z ' + p.z); return; }
     if (act === 'edit') {
       edit = i; $('o-name').value = p.name; $('o-x').value = p.x; $('o-y').value = p.y == null ? '' : p.y; $('o-z').value = p.z; $('o-note').value = p.note || ''; setDim(p.dim);
       $('o-title').textContent = 'Ort ändern'; $('o-save').textContent = 'Änderung speichern'; $('o-cancel').hidden = false; $('o-name').focus(); return;
@@ -1415,6 +1625,7 @@ var BWISO = (function () {
       '<ol class="asteps">' + P.rows.map(function (r) {
         return '<li><span>' + esc(P.bottles + ' × ' + r.a) + ' <b>+</b> ' + esc(P.batches + ' × ' + (BREW.n[r.r] || r.r)) + '<small>ergibt ' + esc(r.b) + (P.batches > 1 ? ', in ' + P.batches + ' Durchgängen zu je 3 Flaschen' : '') + '</small></span></li>';
       }).join('') + '</ol>' +
+      '<p class="fine" style="margin:0">Reine Brauzeit: ' + P.ops + ' × 20 Sekunden = ' + dur(P.ops * 20) + '. Mit mehreren Brauständen geht es schneller.</p>' +
       '<p class="fl" style="margin:4px 0 0">Zutaten für ' + esc(P.bottles + ' × ' + P.out) + '</p><div class="qchips">' +
       P.need.map(function (x) { return '<button type="button" class="qchip" data-item="' + esc(x.k) + '">' + qt(x.k, '#8D96A3') + '<span>' + esc(x.n + ' × ' + x.t) + '</span></button>'; }).join('') +
       '</div><div class="tacts"><button type="button" class="btn" id="b-add">Zutaten auf die Sammelliste</button></div>';
@@ -1430,10 +1641,59 @@ var BWISO = (function () {
     window.bwList.add(P.need.map(function (x) { return { k: x.k, t: x.t, n: x.n }; }), 'Brau-Planer: ' + P.out);
   });
 
+  /* Kreise und Kuppeln: Blockkreise nach Abstand der Blockmitte zur Mitte (Radius = Durchmesser / 2) */
+  var cState = loadJSON('kreis', null);
+  if (!cState || ['ring', 'disc', 'dome', 'ball'].indexOf(cState.f) < 0) cState = { f: 'ring', d: 15, l: 0 };
+  function cIn(i, j, k, d) { var c = d / 2, x = i + .5 - c, y = j + .5 - c, z = k == null ? 0 : k + .5 - c; return i >= 0 && j >= 0 && i < d && j < d && (k == null || (k >= 0 && k < d)) && x * x + y * y + z * z <= c * c; }
+  function cLayer(f, d, k) {
+    var g = [], n = 0, i, j;
+    for (j = 0; j < d; j++) { g.push([]); for (i = 0; i < d; i++) {
+      var on;
+      if (f === 'ring') on = cIn(i, j, null, d) && (!cIn(i + 1, j, null, d) || !cIn(i - 1, j, null, d) || !cIn(i, j + 1, null, d) || !cIn(i, j - 1, null, d));
+      else if (f === 'disc') on = cIn(i, j, null, d);
+      else on = cIn(i, j, k, d) && (!cIn(i + 1, j, k, d) || !cIn(i - 1, j, k, d) || !cIn(i, j + 1, k, d) || !cIn(i, j - 1, k, d) || !cIn(i, j, k + 1, d) || !cIn(i, j, k - 1, d));
+      g[j].push(on); if (on) n++;
+    } }
+    return { g: g, n: n };
+  }
+  function cLayers(f, d) { if (f === 'ring' || f === 'disc') return [0]; var a = [], k0 = f === 'dome' ? Math.floor(d / 2) : 0; for (var k = k0; k < d; k++) a.push(k); return a; }
+  function renderCircle() {
+    var d = Math.max(3, Math.min(64, Math.round(+cState.d || 15))), f = cState.f, ks = cLayers(f, d);
+    cState.d = d; if (!(cState.l >= 0 && cState.l < ks.length)) cState.l = 0;
+    [].forEach.call($('c-form').querySelectorAll('[data-f]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-f') === f)); });
+    if (document.activeElement !== $('c-d')) $('c-d').value = d;
+    var L = cLayer(f, d, ks[cState.l]), total = 0;
+    ks.forEach(function (k) { total += f === 'ring' || f === 'disc' ? L.n : cLayer(f, d, k).n; });
+    $('c-lay').hidden = ks.length < 2;
+    $('c-lname').textContent = 'Ebene ' + (cState.l + 1) + ' von ' + ks.length + (f === 'dome' ? (cState.l === 0 ? ' (unten)' : cState.l === ks.length - 1 ? ' (oben)' : '') : '');
+    $('c-prev').disabled = cState.l === 0; $('c-next').disabled = cState.l === ks.length - 1;
+    var w = L.g[0].length, rowsUsed = L.g.filter(function (r) { return r.some(Boolean); }).length, width = 0;
+    L.g.forEach(function (r) { var a = r.indexOf(true), b = r.lastIndexOf(true); if (a >= 0) width = Math.max(width, b - a + 1); });
+    $('c-sum').innerHTML = '<div><span>Diese Ebene</span><b>' + fmtN(L.n) + '</b></div><div><span>' + (ks.length > 1 ? 'Alle ' + ks.length + ' Ebenen' : 'Gesamt') + '</span><b>' + fmtN(total) + '</b></div><div><span>Breite</span><b>' + width + '</b></div>';
+    var U = 10, M = d > 30 ? 12 : 9, fs = d > 30 ? 5 : 4, S = M + d * U + 2, sv = '<svg viewBox="0 0 ' + S + ' ' + S + '" role="img" aria-label="' + (f === 'ring' ? 'Kreis' : f === 'disc' ? 'Scheibe' : f === 'dome' ? 'Kuppel' : 'Kugel') + ' mit Durchmesser ' + d + ', ' + L.n + ' Blöcke">';
+    sv += '<rect x="' + M + '" y="' + M + '" width="' + d * U + '" height="' + d * U + '" fill="var(--paper)"/>';
+    for (var i = 1; i < d; i++) sv += '<line x1="' + (M + i * U) + '" y1="' + M + '" x2="' + (M + i * U) + '" y2="' + (M + d * U) + '" stroke="var(--line)" stroke-width=".35"/><line x1="' + M + '" y1="' + (M + i * U) + '" x2="' + (M + d * U) + '" y2="' + (M + i * U) + '" stroke="var(--line)" stroke-width=".35"/>';
+    L.g.forEach(function (r, j) { r.forEach(function (on, i) { if (on) sv += '<rect x="' + (M + i * U + .4) + '" y="' + (M + j * U + .4) + '" width="' + (U - .8) + '" height="' + (U - .8) + '" rx="1" fill="var(--accent)"/>'; }); });
+    var mid = M + d * U / 2;
+    sv += '<line x1="' + mid + '" y1="' + (M - 3) + '" x2="' + mid + '" y2="' + (M + d * U + 2) + '" stroke="var(--mark)" stroke-width=".8" stroke-dasharray="2.5 2"/><line x1="' + (M - 3) + '" y1="' + mid + '" x2="' + (M + d * U + 2) + '" y2="' + mid + '" stroke="var(--mark)" stroke-width=".8" stroke-dasharray="2.5 2"/>';
+    for (i = 0; i < d; i++) if (d <= 30 || i % 2 === 0 || i === d - 1) sv += '<text x="' + (M + i * U + U / 2) + '" y="' + (M - 2) + '" text-anchor="middle" font-size="' + fs + '" fill="var(--ink-soft)">' + (i + 1) + '</text><text x="' + (M - 2) + '" y="' + (M + i * U + U / 2) + '" dy=".35em" text-anchor="end" font-size="' + fs + '" fill="var(--ink-soft)">' + (i + 1) + '</text>';
+    $('c-out').innerHTML = sv + '<rect x="' + M + '" y="' + M + '" width="' + d * U + '" height="' + d * U + '" fill="none" stroke="var(--ink-soft)" stroke-width=".5"/></svg>';
+    cState.tot = total; saveJSON('kreis', { f: f, d: d, l: cState.l });
+  }
+  $('c-form').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (!b) return; cState.f = b.getAttribute('data-f'); cState.l = 0; renderCircle(); });
+  $('c-d').addEventListener('input', function () { var v = Math.round(+this.value); if (v >= 3 && v <= 64) { cState.d = v; cState.l = 0; renderCircle(); } });
+  $('c-d').addEventListener('change', function () { cState.d = Math.max(3, Math.min(64, Math.round(+this.value) || 15)); this.value = cState.d; renderCircle(); });
+  $('c-prev').addEventListener('click', function () { cState.l--; renderCircle(); });
+  $('c-next').addEventListener('click', function () { cState.l++; renderCircle(); });
+  $('c-add').addEventListener('click', function () {
+    var names = { ring: 'Kreis', disc: 'Scheibe', dome: 'Kuppel', ball: 'Kugel' }, label = 'Blöcke für ' + names[cState.f] + ' Ø ' + cState.d;
+    window.bwList.add([{ k: 'own:' + label.toLowerCase(), t: label, n: cState.tot }], names[cState.f] + ' Ø ' + cState.d);
+  });
+
   /* Daten übertragen */
   function bauKeys() { return PLANS.map(function (p) { return p.id; }); }
   $('s-export').addEventListener('click', function () {
-    var bau = {}; bauKeys().forEach(function (id) { try { var v = JSON.parse(localStorage.getItem('bp.done.' + id) || '[]'); if (Array.isArray(v) && v.length) bau[id] = v; } catch (e) {} });
+    var bau = {}; bauKeys().forEach(function (id) { try { var v = JSON.parse(localStorage.getItem(bpKey(id)) || '[]'); if (Array.isArray(v) && v.length) bau[id] = v; } catch (e) {} });
     var data = JSON.stringify({ app: 'bedrock-werkbank', v: 1, liste: list, orte: places, bau: bau, fav: favSlugs() });
     $('s-text').hidden = false; $('s-row').hidden = true; $('s-text').value = data; $('s-text').select();
     copyText(data, function (ok) { $('s-msg').textContent = ok ? 'Kopiert. Füge den Text auf dem anderen Gerät unter Werkzeuge → Daten einfügen ein.' : 'Markiere den Text und kopiere ihn selbst.'; });
@@ -1447,7 +1707,7 @@ var BWISO = (function () {
       places = d.orte.filter(function (p) { return p && typeof p.name === 'string' && DIMS[p.dim] && isFinite(p.x) && isFinite(p.z); });
       storeList(); storePlaces();
       if (Array.isArray(d.fav)) saveJSON('fav', d.fav.filter(function (x) { return typeof x === 'string' && /^[a-z0-9-]+$/.test(x); }).slice(0, 40));
-      bauKeys().forEach(function (id) { try { var v = (d.bau || {})[id]; localStorage.setItem('bp.done.' + id, JSON.stringify(Array.isArray(v) ? v.filter(function (n) { return n >= 0 && n < 99; }) : [])); } catch (e) {} });
+      bauKeys().forEach(function (id) { try { var v = (d.bau || {})[id]; localStorage.setItem(bpKey(id), JSON.stringify(Array.isArray(v) ? v.filter(function (n) { return n >= 0 && n < 99; }) : [])); } catch (e) {} });
       try { if (ready.bau) frames.bau.contentWindow.location.reload(); } catch (e) {}
       $('s-text').hidden = true; $('s-row').hidden = true; $('s-msg').textContent = 'Übernommen: ' + plural(list.length, 'Eintrag', 'Einträge') + ', ' + plural(places.length, 'Ort', 'Orte') + '.';
       renderTools();
@@ -1461,12 +1721,13 @@ var BWISO = (function () {
   }
 
   /* Was ist neu */
-  var NEWS = ['Neue Hintergründe: das Titelbild aus dem Spiel auf der Startseite, Bücherregal im Lexikon, Holz bei den Werkzeugen. Unter Info wählst du Klassisch, Minecraft oder Bewegt',
-              'Design-Schalter unter Info: System, Hell oder Dunkel',
-              'Werkzeuge und Baupläne mit Originalbildern, alle fünf Werkzeug-Reiter passen jetzt aufs iPhone',
-              'Baupläne: neue Auswahl mit dem Bild des Ertrags, auf dem iPhone zum Aufklappen',
-              'Startseite auf dem iPhone kompakter: Suche, Werkzeuge und Baupläne sind schneller erreichbar',
-              'Aus Version 1.7: Brau-Planer, Favoriten, Amboss-Vorlagen und die Gürteltierfarm'];
+  var NEWS = ['Baupläne: 3D-Ansicht der ganzen Farm, Bau-Modus mit großen Knöpfen (der Bildschirm bleibt an) und Drucken oder als PDF',
+              'Neuer Bauplan: Schmelzanlage mit 4 Öfen, die Zutaten, Brennstoff und Ergebnis über Trichter versorgt',
+              'Neues Werkzeug: Kreise und Kuppeln, Block für Block und Ebene für Ebene',
+              'Koordinaten mit Wegweiser: Entfernung und Richtung zu jedem Ort, Orte als Link teilen',
+              'Mehrere Welten: Sammelliste, Orte und Baufortschritt je Welt getrennt',
+              'Suche über alles auf der Startseite, im Lexikon die neuen Übersichten Handel und Mobs und die Markierung „Neu in 2026“',
+              'Aus Version 1.8: Hintergründe und Design-Schalter unter Info'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;
@@ -1590,7 +1851,7 @@ var BWISO = (function () {
       d.addEventListener('auxclick', extClick, true);
       d.addEventListener('keydown', onKey, true);
       w.addEventListener('hashchange', function () { onFrameHash(key, w.location.hash); });
-      if (key === 'bau' && w.location.hash !== '#' + lastPlan) w.location.hash = lastPlan;
+      if (key === 'bau' && w.location.hash.split('/')[0] !== '#' + lastPlan) w.location.hash = lastPlan;
       try { if (w.BW_LOOK) w.BW_LOOK(); } catch (e) {}
       if (key === 'lex') { lexNames(); if (cur && cur.id === 'start') renderRecent(); }
       if (cur && cur.frame === key) focusView();
@@ -1643,9 +1904,94 @@ var BWISO = (function () {
     else if (t.hasAttribute('data-item')) openItem(slug(t.getAttribute('data-item')));
     else openItem(t.getAttribute('data-slug'));
   });
-  $('hsearch').addEventListener('submit', function (e) { e.preventDefault(); var q = $('hq').value.trim(); if (q) { openSearch(q); $('hq').value = ''; $('hq').blur(); } });
+  $('hsearch').addEventListener('submit', function (e) {
+    e.preventDefault(); var kb = $('hsugg').querySelector('button.kb');
+    if (kb && !$('hsugg').hidden) { kb.click(); return; }
+    var q = $('hq').value.trim(); if (q) { openSearch(q); $('hq').value = ''; $('hq').blur(); hideSugg(); }
+  });
+  /* Suche über alles: Baupläne, Werkzeuge, Übersichten, Mobs und Lexikon */
+  function fold(t) { return String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss'); }
+  var TOOLWORDS = { liste: ['Sammelliste', 'liste einkauf rohstoffe material sammeln'], orte: ['Koordinaten', 'orte koordinaten wegweiser basis entfernung richtung teilen'],
+    amboss: ['Amboss-Planer', 'amboss verzaubern verzauberung reparatur zauberbuch'], brauen: ['Brau-Planer', 'brauen trank tränke braustand lohenstaub'],
+    portal: ['Nether-Portal', 'portal nether gegenportal umrechnen'], kreis: ['Kreise und Kuppeln', 'kreis kuppel kugel rund turm scheibe zylinder'] };
+  var OVERVIEW = [['Fundorte', 'orte', 'fundorte truhen beute loot schatz'], ['Dorfbewohner', 'berufe', 'dorfbewohner berufe handel'], ['Handel', 'handel', 'handel smaragd smaragde verkaufen kaufen'], ['Mobs', 'mobs', 'mobs monster tiere lebenspunkte']];
+  function hit(q, hay) { var h = fold(hay), i = h.indexOf(q); return i < 0 ? 99 : i === 0 ? 0 : /[\s\-(]/.test(h.charAt(i - 1)) ? 1 : 2; }
+  var suggT = null;
+  function hideSugg() { $('hsugg').hidden = true; $('hsugg').innerHTML = ''; }
+  function sugg() {
+    var q = fold($('hq').value.trim()); if (q.length < 2) { hideSugg(); return; }
+    var out = [], n = lexNames() || {};
+    var pl = PLANS.map(function (p) { var o = p.out && n[slug(p.out)] ? n[slug(p.out)][0] : ''; return [Math.min(hit(q, p.title), hit(q, o) + 1), p]; }).filter(function (x) { return x[0] < 99; }).sort(function (a, b) { return a[0] - b[0]; }).slice(0, 4);
+    if (pl.length) out.push('<p class="sg">Baupläne</p>' + pl.map(function (x) { return '<button type="button" data-go="' + esc(x[1].id) + '">' + (x[1].out ? qt(x[1].out, '#8D96A3') : '<span class="sgi">B</span>') + '<span>' + esc(x[1].title) + '</span><small>' + x[1].layers + ' Ebenen</small></button>'; }).join(''));
+    var tl = Object.keys(TOOLWORDS).map(function (t) { return [Math.min(hit(q, TOOLWORDS[t][0]), hit(q, TOOLWORDS[t][1]) + 1), t]; }).filter(function (x) { return x[0] < 99; }).sort(function (a, b) { return a[0] - b[0]; }).slice(0, 3);
+    var ov = OVERVIEW.map(function (o) { return [Math.min(hit(q, o[0]), hit(q, o[2]) + 1), o]; }).filter(function (x) { return x[0] < 99; });
+    if (tl.length || ov.length) out.push('<p class="sg">Werkzeuge und Übersichten</p>' + tl.map(function (x) { return '<button type="button" data-tool="' + x[1] + '"><span class="sgi">W</span><span>' + esc(TOOLWORDS[x[1]][0]) + '</span><small>Werkzeug</small></button>'; }).join('') +
+      ov.map(function (x) { return '<button type="button" data-slug="' + x[1][1] + '"><span class="sgi">Ü</span><span>' + esc(x[1][0]) + '</span><small>Übersicht</small></button>'; }).join(''));
+    var mb = mobNames.map(function (m) { return [hit(q, m[0]), m]; }).filter(function (x) { return x[0] < 99; }).sort(function (a, b) { return a[0] - b[0] || a[1][0].localeCompare(b[1][0], 'de'); }).slice(0, 3);
+    if (mb.length) out.push('<p class="sg">Mobs</p>' + mb.map(function (x) { return '<button type="button" data-slug="' + x[1][1] + '"><span class="sgi">M</span><span>' + esc(x[1][0]) + '</span><small>Mob</small></button>'; }).join(''));
+    var lx = Object.keys(n).map(function (k) { return [Math.min(hit(q, n[k][0]), hit(q, n[k][3]) + 3), k]; }).filter(function (x) { return x[0] < 99; })
+      .sort(function (a, b) { return a[0] - b[0] || n[a[1]][0].length - n[b[1]][0].length; }).slice(0, 6);
+    if (lx.length) out.push('<p class="sg">Lexikon</p>' + lx.map(function (x) { var e = n[x[1]]; return '<button type="button" data-slug="' + x[1] + '">' + qt(e[2], '#8D96A3') + '<span>' + esc(e[0]) + '</span><small>' + esc(e[1]) + '</small></button>'; }).join('') +
+      '<button type="button" data-search="1"><span class="sgi">›</span><span>Alle Treffer im Lexikon für „' + esc($('hq').value.trim()) + '“</span></button>');
+    $('hsugg').innerHTML = out.join('') || '<p class="sg">Nichts gefunden</p>';
+    $('hsugg').hidden = false;
+  }
+  $('hq').addEventListener('input', function () { clearTimeout(suggT); suggT = setTimeout(sugg, 80); });
+  $('hq').addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { hideSugg(); return; }
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    var bs = [].slice.call($('hsugg').querySelectorAll('button')); if (!bs.length) return;
+    e.preventDefault(); var i = bs.findIndex(function (b) { return b.classList.contains('kb'); });
+    bs.forEach(function (b) { b.classList.remove('kb'); });
+    i = e.key === 'ArrowDown' ? (i + 1) % bs.length : (i <= 0 ? bs.length - 1 : i - 1); bs[i].classList.add('kb'); bs[i].scrollIntoView({ block: 'nearest' });
+  });
+  $('hsugg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.hasAttribute('data-search')) { e.stopPropagation(); var q = $('hq').value.trim(); openSearch(q); }
+    $('hq').value = ''; setTimeout(hideSugg, 0);
+  });
   document.addEventListener('keydown', onKey);
   document.addEventListener('click', extClick, true);
+
+  /* ---------- Teilen: Link zur Web-App, die Empfängerin oder der Empfänger übernimmt den Ort oder öffnet die Bauplan-Ebene ---------- */
+  var SHARE_BASE = 'https://konterplatte.github.io/bedrock-werkbank/';
+  window.bwShare = function (param, text) {
+    var url = SHARE_BASE + '#' + param;
+    if (navigator.share && PLATFORM === 'web') { navigator.share({ title: 'Bedrock-Werkbank', text: text, url: url }).catch(function () {}); return; }
+    copyText(text + '\n' + url, function (ok) { toast(ok ? 'Link kopiert. Schick ihn per Nachricht weiter.' : 'Kopieren hat nicht geklappt.'); });
+  };
+  function incoming() {
+    var h = location.hash, m;
+    if (!h || h.length < 2) return;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    if (/^#ort=/.test(h)) {
+      var q = parsePlace(h); if (!q) return;
+      tool = 'orte'; save('tool', tool); show('werkzeuge'); fillPlaceForm(q);
+      toast('Geteilter Ort „' + (q.name || 'ohne Namen') + '“ steht im Formular. Prüfen und speichern.');
+    } else if ((m = /^#bau=([a-z]+)(?:\/(\d+))?$/.exec(h)) && byId[m[1]] && byId[m[1]].frame === 'bau') {
+      lastPlan = m[1]; save('plan', m[1]); pendingBau = m[1] + (m[2] ? '/' + m[2] : '');
+      if (ready.bau) { try { frames.bau.contentWindow.location.hash = pendingBau; } catch (e) {} show(lastPlan, true); pendingBau = ''; }
+    }
+  }
+  window.addEventListener('hashchange', incoming);
+  var pendingBau = '';
+
+  /* ---------- Bau-Modus und Druck aus dem Bauplan ---------- */
+  window.bwBuild = function (on) { document.documentElement.classList.toggle('bmode', !!on); };
+  var wakeLock = null, wakeWanted = false;
+  window.bwWake = function (on) {
+    wakeWanted = !!on;
+    if (!on) { if (wakeLock) { try { wakeLock.release(); } catch (e) {} wakeLock = null; } return Promise.resolve(false); }
+    if (!('wakeLock' in navigator)) return Promise.resolve(false);
+    return navigator.wakeLock.request('screen').then(function (l) { wakeLock = l; return true; }, function () { return false; });
+  };
+  document.addEventListener('visibilitychange', function () { if (wakeWanted && document.visibilityState === 'visible') window.bwWake(true); });
+  window.bwPrint = function (html) {
+    $('printroot').innerHTML = html;
+    var clean = function () { $('printroot').innerHTML = ''; window.removeEventListener('afterprint', clean); };
+    window.addEventListener('afterprint', clean);
+    setTimeout(function () { window.print(); }, 50);
+  };
 
   /* ---------- Web-App: offline speichern, Hinweis zum Installieren ---------- */
   if (PLATFORM === 'web') {
@@ -1656,7 +2002,10 @@ var BWISO = (function () {
     $('installok').addEventListener('click', function () { $('install').hidden = true; save('installok', '1'); });
     if ('serviceWorker' in navigator && window.isSecureContext) {
       var had = !!navigator.serviceWorker.controller, reloaded = false;
-      navigator.serviceWorker.addEventListener('controllerchange', function () { if (had && !reloaded) { reloaded = true; location.reload(); } });
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (!had || reloaded) return; reloaded = true;
+        toast('Eine neue Version der Werkbank ist geladen.', function () { location.reload(); }, 'Neu laden', true);
+      });
       navigator.serviceWorker.register('sw.js').catch(function () {});
     }
   }
@@ -1667,8 +2016,10 @@ var BWISO = (function () {
   wire('lex'); wire('bau');
   show('start', true);
   maybeNews();
+  incoming();
   frames.lex.src = PATHS.lex + lexHash;
-  frames.bau.src = PATHS.bau + '#' + lastPlan;
+  frames.bau.src = PATHS.bau + '#' + (pendingBau || lastPlan);
+  if (pendingBau) show(lastPlan);
 })();
 </script>
 </body>
