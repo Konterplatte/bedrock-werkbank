@@ -423,15 +423,21 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 #k-terms .qchip { min-height: 40px; padding: 4px 12px; }
 .kres { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 10px; }
 .kres:empty { display: none; }
-.kr { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--sheet); min-width: 0; }
-.kic { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; line-height: 1; background: var(--tint); border: 2.5px solid var(--kc, var(--line)); }
+.kr { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--sheet); min-width: 0; position: relative; }
+.kic { flex: none; width: 36px; height: 36px; display: grid; place-items: center; }
+.ksvg { display: block; flex: none; filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, .3)); }
+.kno { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #0B5CAD; color: #fff; font-size: .78rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.kr > .kno { position: absolute; left: -6px; top: -6px; box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
 .kt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .kt b { font-size: 1.02rem; }
 .kt .small { overflow-wrap: anywhere; }
 .kt .kbadge { align-self: flex-start; font-size: .74rem; font-weight: 600; padding: 1px 7px; border-radius: 999px; background: var(--tint); color: var(--ink-soft); }
 .kt .tacts .btn { height: 36px; padding: 0 12px; font-size: .92rem; }
+.kstat { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.kstat .small { flex: 1; min-width: 200px; margin: 0; }
+.kstat .btn { height: 36px; padding: 0 12px; font-size: .92rem; }
+.kstat .btn[hidden] { display: none; }
 .kmdim { width: min(100%, 330px); font-size: .9rem; }
-.ptitle .kh { font: inherit; }
 .kmdim button { min-height: 36px; }
 #k-mapcard .ptitle { flex-wrap: wrap; }
 .kmap { position: relative; height: min(64vh, 560px); min-height: 300px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #1b2a3a;
@@ -440,23 +446,62 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 .kmap canvas:active { cursor: grabbing; }
 .kzoom { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; }
 .kzoom button { appearance: none; width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--glass-edge); background: var(--glass); color: #F4F8FD;
-  font-size: 1.35rem; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+  font-size: 1.3rem; line-height: 1; cursor: pointer; display: grid; place-items: center; transition: background-color .15s, transform .1s; }
+.kzoom button:active { transform: scale(.94); }
+.kzoom button[aria-pressed="true"] { background: #0B5CAD; border-color: #0B5CAD; }
 .kinfo { position: absolute; top: 10px; left: 10px; max-width: calc(100% - 76px); padding: 5px 10px; border-radius: 10px; background: var(--glass); color: #F4F8FD; font-size: .84rem;
   pointer-events: none; font-variant-numeric: tabular-nums; }
 .kinfo:empty { display: none; }
 .kscale { position: absolute; left: 10px; bottom: 10px; display: flex; flex-direction: column; gap: 2px; color: #F4F8FD; font-size: .78rem; pointer-events: none;
   text-shadow: 0 1px 2px rgba(0, 0, 0, .8); }
-.kscale i { display: block; height: 6px; border: 2px solid #F4F8FD; border-top: 0; box-shadow: 0 1px 2px rgba(0, 0, 0, .6); }
+.kscale i { display: block; height: 6px; border: 2px solid #F4F8FD; border-top: 0; box-shadow: 0 1px 2px rgba(0, 0, 0, .6); transition: width .15s; }
 .kempty { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: #F4F8FD; background: rgba(13, 28, 48, .72); font-size: 1rem; }
 .kempty[hidden] { display: none; }
-.kpick { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--tint); }
+.kyou { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; z-index: 1; }
+.kyou[hidden] { display: none; }
+.kyou i { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: #0B84FF; border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .45); }
+.kyou i::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 3px solid rgba(11, 132, 255, .55); animation: kpulse 1.8s ease-out infinite; }
+.kyou b { position: absolute; left: 13px; top: -27px; padding: 1px 7px; border-radius: 8px; background: #0B84FF; color: #fff; font-size: .74rem; box-shadow: 0 1px 3px rgba(0, 0, 0, .35); }
+@keyframes kpulse { from { transform: scale(1); opacity: 1; } to { transform: scale(2.6); opacity: 0; } }
+.kcross { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; pointer-events: none;
+  background: linear-gradient(#fff, #fff) center / 2px 100% no-repeat, linear-gradient(#fff, #fff) center / 100% 2px no-repeat; filter: drop-shadow(0 0 1.5px rgba(0, 0, 0, .9)); }
+.kcross[hidden] { display: none; }
+.kpick { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 2; max-width: 520px; margin: 0 auto; display: flex; gap: 10px; align-items: flex-start;
+  border: 1px solid var(--line); border-radius: 14px; padding: 10px 40px 10px 12px; background: var(--sheet); box-shadow: 0 6px 24px rgba(0, 0, 0, .28); animation: kpin .22s ease-out; }
 .kpick[hidden] { display: none; }
-.klegend { display: flex; flex-wrap: wrap; gap: 6px; }
-.klegend button { appearance: none; display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 2px 10px 2px 4px; border-radius: 999px; border: 1px solid var(--line);
-  background: var(--sheet); color: var(--ink); font-size: .84rem; cursor: pointer; }
-.klegend button span { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; border: 2px solid var(--kc); background: var(--tint); }
+.kpick .kpx { position: absolute; right: 6px; top: 6px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: var(--tint); color: var(--ink-soft); font-size: 1rem; cursor: pointer; }
+@keyframes kpin { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+.kfsq { position: absolute; left: 10px; right: 62px; top: 10px; z-index: 2; display: flex; flex-direction: column; gap: 4px; }
+.kfsq[hidden] { display: none; }
+.kfsrow { display: flex; gap: 6px; }
+.kfsrow .inp { flex: 1; height: 44px; }
+.kfsrow .btn { height: 44px; }
+#k-fsmsg { align-self: flex-start; color: #F4F8FD; font-size: .82rem; text-shadow: 0 1px 2px rgba(0, 0, 0, .9); }
+#k-fsmsg:empty { display: none; }
+.kmap.kfull { position: fixed; inset: 0; z-index: 35; height: auto; min-height: 0; border: 0; border-radius: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); background: #1b2a3a; }
+.kmap.kfull canvas { width: 100%; height: 100%; }
+.kmap.kfull .kinfo { top: calc(env(safe-area-inset-top) + 86px); }
+.kmap.kfull .kzoom { top: calc(env(safe-area-inset-top) + 10px); right: calc(env(safe-area-inset-right) + 10px); }
+.kmap.kfull .kfsq { top: calc(env(safe-area-inset-top) + 10px); left: calc(env(safe-area-inset-left) + 10px); }
+.kmap.kfull .kpick { bottom: calc(env(safe-area-inset-bottom) + 12px); }
+.kmap.kfull .kscale { bottom: calc(env(safe-area-inset-bottom) + 12px); }
+html.kfullon, html.kfullon body { overflow: hidden; }
+.kpos { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.kpos .fl { margin: 0; flex: 1 0 100%; }
+.kpos .inp { width: 7.5em; flex: 1 1 6em; }
+.kpos .btn { flex: 1 1 auto; height: 48px; }
+.kopts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .92rem; color: var(--ink-soft); }
+.kopts label { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; cursor: pointer; }
+.kopts input { width: 20px; height: 20px; accent-color: #0B5CAD; }
+.klegend, .kbiomes { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.klegend button, .kbiomes button { appearance: none; display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 2px 10px 2px 4px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--sheet); color: var(--ink); font-size: .84rem; cursor: pointer; transition: opacity .15s; }
+.kbiomes button { padding-left: 6px; }
+.kbiomes:empty { display: none; }
 .klegend button[aria-pressed="false"] { opacity: .45; text-decoration: line-through; }
-@media (max-width: 720px) { .ksearch .btn { padding: 0 14px; } .kmap { height: min(58vh, 520px); } }
+@media (prefers-reduced-motion: reduce) { .kyou i::after, .kpick { animation: none; } }
+@media (max-width: 720px) { .ksearch .btn { padding: 0 14px; } .kmap { height: min(60vh, 520px); } .kpos .btn { flex-basis: 100%; } }
 
 /* Mittelbreit */
 @media (max-width: 1100px) {
@@ -671,7 +716,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
             <button type="submit" class="btn primary">Suchen</button>
           </form>
           <div class="qchips" id="k-terms"></div>
-          <p class="small" id="k-status" aria-live="polite"></p>
+          <div class="kstat"><p class="small" id="k-status" aria-live="polite"></p><button type="button" class="btn" id="k-fit" hidden>Alle auf der Karte</button></div>
           <ul class="kres" id="k-res"></ul>
         </div>
         <div class="tcard kwide" id="k-mapcard">
@@ -683,14 +728,32 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
             </div>
           </div>
           <div class="kmap" id="k-map">
-            <canvas id="k-cv" aria-label="Biomkarte mit Bauwerken. Mit einem Finger verschieben, mit zwei Fingern zoomen, antippen für Details."></canvas>
-            <div class="kzoom"><button type="button" id="k-zin" aria-label="Näher heran">+</button><button type="button" id="k-zout" aria-label="Weiter weg">−</button><button type="button" id="k-me" aria-label="Zu meinem Standort">◎</button></div>
+            <canvas id="k-cv" aria-label="Biomkarte mit Bauwerken. Mit einem Finger verschieben, mit zwei Fingern zoomen, doppelt tippen zum Heranzoomen, antippen für Details."></canvas>
+            <div class="kyou" id="k-you" hidden><i></i><b>Du</b></div>
+            <div class="kcross" id="k-cross" hidden></div>
+            <form class="kfsq" id="k-fsq" autocomplete="off" role="search" hidden>
+              <div class="kfsrow"><input class="inp" id="k-fq" type="search" enterkeyhint="search" maxlength="40" aria-label="Was suchst du?" placeholder="Was suchst du? z. B. Dorf"><button type="submit" class="btn primary">Suchen</button></div>
+              <span id="k-fsmsg" aria-live="polite"></span>
+            </form>
             <div class="kinfo" id="k-mapinfo"></div>
+            <div class="kzoom">
+              <button type="button" id="k-zin" aria-label="Näher heran">+</button><button type="button" id="k-zout" aria-label="Weiter weg">−</button>
+              <button type="button" id="k-me" aria-label="Zu meinem Standort">◎</button><button type="button" id="k-xhair" aria-pressed="false" aria-label="Fadenkreuz: Biom und Höhe der Mitte">⌖</button>
+              <button type="button" id="k-full" aria-label="Vollbild">⤢</button>
+            </div>
             <div class="kscale" id="k-scale"><i></i><span></span></div>
             <p class="kempty" id="k-empty" hidden></p>
+            <div class="kpick" id="k-pick" hidden></div>
           </div>
-          <div class="kpick" id="k-pick" hidden></div>
+          <form class="kpos" id="k-posf" autocomplete="off">
+            <span class="fl" id="k-posl">Du bist bei (Oberwelt)</span>
+            <input class="inp" id="k-mx" inputmode="numeric" enterkeyhint="go" maxlength="9" placeholder="X" aria-label="Deine X-Koordinate">
+            <input class="inp" id="k-mz" inputmode="numeric" enterkeyhint="go" maxlength="9" placeholder="Z" aria-label="Deine Z-Koordinate">
+            <button type="submit" class="btn primary">Auf der Karte zeigen</button>
+          </form>
+          <div class="kopts"><label><input type="checkbox" id="k-relief" checked> Gelände schattieren</label><label><input type="checkbox" id="k-classic"> Klassische Kartenfarben</label></div>
           <div class="klegend" id="k-legend"></div>
+          <div class="kbiomes" id="k-biomes"></div>
           <p class="fine" style="margin:0">Berechnet nach den Regeln von Minecraft Bedrock und mit veröffentlichten Koordinaten geprüft. Die Zahl ist die Mitte des Chunks, in dem das Bauwerk beginnt; große Bauwerke wie Dörfer reichen einige Dutzend Blöcke darüber hinaus. Antike Stätten liegen bis etwa 100 Blöcke daneben, Nether und End sind ungeprüft. Ganz selten fehlt ein Bauwerk im Spiel.</p>
         </div>
         <div class="tcard">
@@ -1006,7 +1069,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 2.4</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 2.5</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -1020,7 +1083,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 2.4 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 2.5 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
@@ -1068,7 +1131,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
           <li>„Ebene fertig“ hakt ab, der Fortschritt bleibt gespeichert.</li>
           <li>„3D“ zeigt die Farm räumlich. Mit einem Finger drehst und kippst du sie, auch von unten, mit zwei Fingern zoomst und verschiebst du. Am PC: ziehen, Mausrad, Umschalt + ziehen. Oben steht, von wo du gerade schaust, der Kompass zeigt deinen Standort.</li>
           <li>Bau-Modus: große Knöpfe zum Weiterschalten, der Bildschirm bleibt an. Drucken oder als PDF gibt alle Ebenen aufs Papier.</li>
-          <li>Lavafarm, Gürteltierfarm und Schmelzanlage stellst du mit − und + größer oder kleiner, Material und Ertrag rechnen mit.</li>
+          <li><b>Größe S bis XXL:</b> Handelsstation, Kaktus-, Zuckerrohr-, Kürbis-, Hühner-, Lava- und Gürteltierfarm sowie die Schmelzanlage gibt es in fünf Größen. Mit − und + gehen auch Zwischengrößen. Ebenen, Material und Ertrag rechnen mit. Eisenfarm, Endermen-Farm und Spawner-Farm gibt es nur in einer Größe, der Grund steht im Plan.</li>
           <li>„Im Spiel getestet“ abhaken und eine Notiz dazuschreiben, der Haken erscheint auch in der Liste und auf der Startseite.</li>
           <li>„Alle Seiten“ zeigt die ganze Farm von vorne, hinten, links, rechts, oben und unten. „Schnitt“ zeigt nur eine Reihe, so siehst du auch, was in den Wänden steckt. Einen Block antippen springt zu seiner Ebene.</li>
           <li>„Alle vergleichen“ stellt Ertrag, Größe und Material aller Pläne nebeneinander.</li></ul>
@@ -1089,7 +1152,9 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       <details><summary>Seed-Karte</summary>
         <ul><li>Unten oder links auf „Karte“ tippen, den Seed eintragen und die Version wählen. Den Seed findest du in Minecraft unter Welt bearbeiten → Spiel → Seed. Er gilt je Welt.</li>
           <li><b>Was suchst du?</b> Ein Wort eintippen oder einen Oberbegriff antippen: Dorf, Tempel, Ozean, Gefahr, Schätze, Seltene Biome, Höhlen, Nether, End. Auch Namen wie Kirschblütenhain, Pilzland, Iglu oder Prüfungskammer gehen. Du bekommst die nächsten Fundorte mit Koordinaten, Entfernung und Richtung ab deinem Standort.</li>
-          <li><b>Karte:</b> mit einem Finger verschieben, mit zwei Fingern oder +/− zoomen, ◎ springt zu deinem Standort. Ein Bauwerk oder eine Stelle antippen zeigt Name, Biom und Koordinaten. Die Symbole unter der Karte blenden Bauwerke aus und ein.</li>
+          <li><b>Karte:</b> mit einem Finger verschieben, mit zwei Fingern oder +/− zoomen, doppelt tippen zoomt heran, mit zwei Fingern tippen zoomt heraus. ◎ springt zu deinem Standort, ⌖ zeigt Biom und Geländehöhe der Mitte, ⤢ macht die Karte bildschirmfüllend. Ein Bauwerk oder eine Stelle antippen zeigt Name, Biom und Koordinaten. Die Symbole unter der Karte blenden Bauwerke aus und ein.</li>
+          <li><b>Dein Standort:</b> Unter der Karte bei „Du bist bei“ X und Z eintragen oder eine Stelle antippen und „Hier bin ich“ wählen. Du erscheinst als blauer Punkt „Du“, zu einem gewählten Fund zeigt eine Linie Entfernung und Richtung.</li>
+          <li>Die Funde einer Suche stehen mit Nummern auf der Karte, „Alle auf der Karte“ zeigt sie zusammen.</li>
           <li>„Als Ort speichern“ legt den Fund bei den Koordinaten ab, dann führt dich der Wegweiser hin.</li>
           <li>Alles wird auf deinem Gerät gerechnet, ohne Internet. Zum Vergleich gibt es die Online-Karte von Chunkbase; dort oben deine Version wählen, etwa „Bedrock 26.60 – 26.65“.</li></ul>
       </details>
@@ -1133,11 +1198,11 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 <script>
 (function () {
   'use strict';
-  var PLANS = [{"id":"eisenfarm","out":"iron_ingot","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","out":"emerald","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5},{"id":"kaktusfarm","out":"cactus","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11},{"id":"xpfarm","out":"ender_pearl","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","out":"sugar_cane","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5},{"id":"kuerbis","out":"pumpkin","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Knopfdruck"]],"layers":4},{"id":"huehner","out":"cooked_chicken","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6},{"id":"lava","out":"lava_bucket","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"size":6,"sizes":{"2":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","4 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","2"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"3":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","3"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"4":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","4"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"5":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","7 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","5"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"6":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"7":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","9 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","7"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"8":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","8"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"9":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","11 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","9"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"10":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","12 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","10"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"11":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","13 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","11"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5},"12":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","14 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","12"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5}}},{"id":"spawner","out":"experience_bottle","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","out":"armadillo_scute","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"size":6,"sizes":{"3":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","7 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","3, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"4":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","4, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"5":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","9 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","5, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"6":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"7":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","11 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","7, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"8":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","12 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","8, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"9":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","13 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","9, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"10":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","14 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","10, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"11":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","15 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","11, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3},"12":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","16 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","12, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3}}},{"id":"ofen","out":"furnace","title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4,"size":4,"sizes":{"2":{"title":"Schmelzanlage mit 2 Öfen","specs":[["Grundfläche","4 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","2"],["Tempo","12 Gegenstände pro Minute"]],"layers":4},"4":{"title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4},"6":{"title":"Schmelzanlage mit 6 Öfen","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","6"],["Tempo","36 Gegenstände pro Minute"]],"layers":4},"8":{"title":"Schmelzanlage mit 8 Öfen","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","8"],["Tempo","48 Gegenstände pro Minute"]],"layers":4}}}];
+  var PLANS = [{"id":"eisenfarm","out":"iron_ingot","title":"Eisenfarm","specs":[["Grundfläche","20 × 20 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Dorfbewohner","10, ausbaubar auf 20"],["Betten","20"]],"layers":13},{"id":"handelsstation","out":"emerald","title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5,"size":5,"sizes":{"2":{"title":"Handelsstation","specs":[["Grundfläche","11 × 5 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","4 Dorfbewohner"],["Betten","4"]],"layers":5,"n":2},"3":{"title":"Handelsstation","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","6 Dorfbewohner"],["Betten","6"]],"layers":5,"n":3},"4":{"title":"Handelsstation","specs":[["Grundfläche","11 × 9 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","8 Dorfbewohner"],["Betten","8"]],"layers":5,"n":4},"5":{"title":"Handelsstation","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","10 Dorfbewohner"],["Betten","10"]],"layers":5,"n":5},"6":{"title":"Handelsstation","specs":[["Grundfläche","11 × 13 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","12 Dorfbewohner"],["Betten","12"]],"layers":5,"n":6},"7":{"title":"Handelsstation","specs":[["Grundfläche","11 × 15 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","14 Dorfbewohner"],["Betten","14"]],"layers":5,"n":7},"8":{"title":"Handelsstation","specs":[["Grundfläche","11 × 17 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","16 Dorfbewohner"],["Betten","16"]],"layers":5,"n":8},"9":{"title":"Handelsstation","specs":[["Grundfläche","11 × 19 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","18 Dorfbewohner"],["Betten","18"]],"layers":5,"n":9},"10":{"title":"Handelsstation","specs":[["Grundfläche","11 × 21 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","20 Dorfbewohner"],["Betten","20"]],"layers":5,"n":10},"11":{"title":"Handelsstation","specs":[["Grundfläche","11 × 23 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","22 Dorfbewohner"],["Betten","22"]],"layers":5,"n":11},"12":{"title":"Handelsstation","specs":[["Grundfläche","11 × 25 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","24 Dorfbewohner"],["Betten","24"]],"layers":5,"n":12},"13":{"title":"Handelsstation","specs":[["Grundfläche","11 × 27 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","26 Dorfbewohner"],["Betten","26"]],"layers":5,"n":13},"14":{"title":"Handelsstation","specs":[["Grundfläche","11 × 29 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","28 Dorfbewohner"],["Betten","28"]],"layers":5,"n":14},"15":{"title":"Handelsstation","specs":[["Grundfläche","11 × 31 Blöcke"],["Höhe","5 Lagen, innen 3 hoch"],["Plätze","30 Dorfbewohner"],["Betten","30"]],"layers":5,"n":15}},"tiers":[3,5,7,10,15]},{"id":"kaktusfarm","out":"cactus","title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11,"size":2,"sizes":{"1":{"title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","7 Blöcke ab Boden"],["Kakteen","16 in 1 Etage"],["Redstone","keins"]],"layers":7,"n":1},"2":{"title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","11 Blöcke ab Boden"],["Kakteen","32 in 2 Etagen"],["Redstone","keins"]],"layers":11,"n":2},"3":{"title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","15 Blöcke ab Boden"],["Kakteen","48 in 3 Etagen"],["Redstone","keins"]],"layers":15,"n":3},"4":{"title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","19 Blöcke ab Boden"],["Kakteen","64 in 4 Etagen"],["Redstone","keins"]],"layers":19,"n":4},"5":{"title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","23 Blöcke ab Boden"],["Kakteen","80 in 5 Etagen"],["Redstone","keins"]],"layers":23,"n":5},"6":{"title":"Kaktusfarm","specs":[["Grundfläche","11 × 11 Blöcke"],["Höhe","27 Blöcke ab Boden"],["Kakteen","96 in 6 Etagen"],["Redstone","keins"]],"layers":27,"n":6}},"tiers":[1,2,3,4,6]},{"id":"xpfarm","out":"ender_pearl","title":"XP-Farm","specs":[["Ort","Das End, 128 Blöcke Abstand"],["Grundfläche","17 × 17 Blöcke"],["Fallhöhe","41 Blöcke"],["Erfahrung","5 pro Enderman"]],"layers":9},{"id":"zuckerrohr","out":"sugar_cane","title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5,"size":16,"sizes":{"8":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","7 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","8 Pflanzen"],["Ertrag","rund 25 pro Stunde"]],"layers":5,"n":8},"12":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","9 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","12 Pflanzen"],["Ertrag","rund 40 pro Stunde"]],"layers":5,"n":12},"16":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","16 Pflanzen"],["Ertrag","rund 50 pro Stunde"]],"layers":5,"n":16},"20":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","20 Pflanzen"],["Ertrag","rund 65 pro Stunde"]],"layers":5,"n":20},"24":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","15 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","24 Pflanzen"],["Ertrag","rund 75 pro Stunde"]],"layers":5,"n":24},"28":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","17 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","28 Pflanzen"],["Ertrag","rund 90 pro Stunde"]],"layers":5,"n":28},"32":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","19 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","32 Pflanzen"],["Ertrag","rund 100 pro Stunde"]],"layers":5,"n":32},"40":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","25 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","40 Pflanzen"],["Ertrag","rund 125 pro Stunde"]],"layers":5,"n":40},"48":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","29 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","48 Pflanzen"],["Ertrag","rund 150 pro Stunde"]],"layers":5,"n":48},"56":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","33 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","56 Pflanzen"],["Ertrag","rund 175 pro Stunde"]],"layers":5,"n":56},"64":{"title":"Zuckerrohrfarm","specs":[["Grundfläche","37 × 7 Blöcke"],["Höhe","5 Blöcke"],["Zuckerrohr","64 Pflanzen"],["Ertrag","rund 200 pro Stunde"]],"layers":5,"n":64}},"tiers":[8,16,32,48,64]},{"id":"kuerbis","out":"pumpkin","title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Ernte"]],"layers":4,"size":8,"sizes":{"4":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","9 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","4 Pflanzen"],["Ertrag","bis 4 Früchte je Ernte"]],"layers":4,"n":4},"6":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","11 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","6 Pflanzen"],["Ertrag","bis 6 Früchte je Ernte"]],"layers":4,"n":6},"8":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","13 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","8 Pflanzen"],["Ertrag","bis 8 Früchte je Ernte"]],"layers":4,"n":8},"10":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","19 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","10 Pflanzen"],["Ertrag","bis 10 Früchte je Ernte"]],"layers":4,"n":10},"12":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","21 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","12 Pflanzen"],["Ertrag","bis 12 Früchte je Ernte"]],"layers":4,"n":12},"14":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","23 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","14 Pflanzen"],["Ertrag","bis 14 Früchte je Ernte"]],"layers":4,"n":14},"16":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","25 × 7 Blöcke"],["Höhe","4 Blöcke"],["Stiele","16 Pflanzen"],["Ertrag","bis 16 Früchte je Ernte"]],"layers":4,"n":16},"20":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","19 × 15 Blöcke"],["Höhe","4 Blöcke"],["Stiele","20 Pflanzen"],["Ertrag","bis 20 Früchte je Ernte (2 Knöpfe)"]],"layers":4,"n":20},"24":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","21 × 15 Blöcke"],["Höhe","4 Blöcke"],["Stiele","24 Pflanzen"],["Ertrag","bis 24 Früchte je Ernte (2 Knöpfe)"]],"layers":4,"n":24},"28":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","23 × 15 Blöcke"],["Höhe","4 Blöcke"],["Stiele","28 Pflanzen"],["Ertrag","bis 28 Früchte je Ernte (2 Knöpfe)"]],"layers":4,"n":28},"32":{"title":"Kürbis- und Melonenfarm","specs":[["Grundfläche","25 × 15 Blöcke"],["Höhe","4 Blöcke"],["Stiele","32 Pflanzen"],["Ertrag","bis 32 Früchte je Ernte (2 Knöpfe)"]],"layers":4,"n":32}},"tiers":[4,8,12,16,32]},{"id":"huehner","out":"cooked_chicken","title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"size":1,"sizes":{"1":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 im Pferch"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":1},"2":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 6 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 je Pferch, 2 Pferche"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":2},"3":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 9 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 je Pferch, 3 Pferche"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":3},"4":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 12 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 je Pferch, 4 Pferche"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":4},"5":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 15 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 je Pferch, 5 Pferche"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":5},"6":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 18 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 je Pferch, 6 Pferche"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":6},"7":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 21 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 je Pferch, 7 Pferche"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":7},"8":{"title":"Hühnerfarm mit Kochautomat","specs":[["Grundfläche","5 × 24 Blöcke"],["Höhe","6 Blöcke"],["Hühner","4 bis 8 je Pferch, 8 Pferche"],["Ertrag","rund 1 Brathähnchen je Huhn und Stunde"]],"layers":6,"n":8}},"tiers":[1,2,4,6,8]},{"id":"lava","out":"lava_bucket","title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"size":6,"sizes":{"2":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","4 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","2"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":2},"3":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","5 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","3"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":3},"4":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","4"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":4},"5":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","7 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","5"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":5},"6":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","6"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":6},"7":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","9 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","7"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":7},"8":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","8"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":8},"9":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","11 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","9"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":9},"10":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","12 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","10"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":10},"11":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","13 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","11"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":11},"12":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","14 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","12"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":12},"13":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","15 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","13"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":13},"14":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","16 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","14"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":14},"15":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","17 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","15"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":15},"16":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","18 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","16"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":16},"17":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","19 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","17"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":17},"18":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","20 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","18"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":18},"19":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","21 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","19"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":19},"20":{"title":"Lava aus Tropfstein","specs":[["Grundfläche","22 × 3 Blöcke"],["Höhe","5 Blöcke"],["Kessel","20"],["Ertrag","etwa 1 Eimer je Kessel alle 20 Minuten"]],"layers":5,"n":20}},"tiers":[3,6,10,14,20]},{"id":"spawner","out":"experience_bottle","title":"Spawner-XP-Farm","specs":[["Raum","9 × 9 um den Spawner"],["Tiefe","4 Lagen unter dem Spawner"],["Spawner","Zombie oder Skelett"],["XP","je Mob mindestens 5"]],"layers":7},{"id":"guerteltier","out":"armadillo_scute","title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"size":6,"sizes":{"3":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","7 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","3, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":3},"4":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","4, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":4},"5":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","9 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","5, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":5},"6":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","6, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":6},"7":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","11 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","7, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":7},"8":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","12 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","8, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":8},"9":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","13 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","9, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":9},"10":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","14 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","10, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":10},"11":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","15 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","11, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":11},"12":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","16 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","12, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":12},"13":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","17 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","13, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":13},"14":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","18 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","14, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":14},"15":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","19 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","15, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":15},"16":{"title":"Gürteltierfarm für Hornschilde","specs":[["Grundfläche","20 × 3 Blöcke"],["Höhe","3 Blöcke"],["Gürteltiere","16, eines je Feld"],["Ertrag","rund 8 Hornschilde je Gürteltier und Stunde"]],"layers":3,"n":16}},"tiers":[3,6,9,12,16]},{"id":"ofen","out":"furnace","title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4,"size":4,"sizes":{"2":{"title":"Schmelzanlage mit 2 Öfen","specs":[["Grundfläche","4 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","2"],["Tempo","12 Gegenstände pro Minute"]],"layers":4,"n":2},"4":{"title":"Schmelzanlage mit 4 Öfen","specs":[["Grundfläche","6 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","4"],["Tempo","24 Gegenstände pro Minute"]],"layers":4,"n":4},"6":{"title":"Schmelzanlage mit 6 Öfen","specs":[["Grundfläche","8 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","6"],["Tempo","36 Gegenstände pro Minute"]],"layers":4,"n":6},"8":{"title":"Schmelzanlage mit 8 Öfen","specs":[["Grundfläche","10 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","8"],["Tempo","48 Gegenstände pro Minute"]],"layers":4,"n":8},"10":{"title":"Schmelzanlage mit 10 Öfen","specs":[["Grundfläche","12 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","10"],["Tempo","60 Gegenstände pro Minute"]],"layers":4,"n":10},"12":{"title":"Schmelzanlage mit 12 Öfen","specs":[["Grundfläche","14 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","12"],["Tempo","72 Gegenstände pro Minute"]],"layers":4,"n":12},"14":{"title":"Schmelzanlage mit 14 Öfen","specs":[["Grundfläche","16 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","14"],["Tempo","84 Gegenstände pro Minute"]],"layers":4,"n":14},"16":{"title":"Schmelzanlage mit 16 Öfen","specs":[["Grundfläche","18 × 3 Blöcke"],["Höhe","4 Blöcke"],["Öfen","16"],["Tempo","96 Gegenstände pro Minute"]],"layers":4,"n":16}},"tiers":[2,4,8,12,16]}];
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
   var BREW = {"e":[["potion:awkward","blaze_powder","potion:strength"],["potion:awkward","breeze_rod","potion:wind_charged"],["potion:awkward","fermented_spider_eye","potion:weakness"],["potion:awkward","ghast_tear","potion:regeneration"],["potion:awkward","golden_carrot","potion:nightvision"],["potion:awkward","magma_cream","potion:fire_resistance"],["potion:awkward","phantom_membrane","potion:slow_falling"],["potion:awkward","pufferfish","potion:water_breathing"],["potion:awkward","rabbit_foot","potion:leaping"],["potion:awkward","slime","potion:oozing"],["potion:awkward","glistering_melon_slice","potion:healing"],["potion:awkward","spider_eye","potion:poison"],["potion:awkward","stone","potion:infested"],["potion:awkward","sugar","potion:swiftness"],["potion:awkward","turtle_helmet","potion:turtle_master"],["potion:awkward","web","potion:weaving"],["potion:fire_resistance","redstone","potion:long_fire_resistance"],["potion:harming","glowstone_dust","potion:strong_harming"],["potion:healing","fermented_spider_eye","potion:harming"],["potion:healing","glowstone_dust","potion:strong_healing"],["potion:invisibility","redstone","potion:long_invisibility"],["potion:leaping","fermented_spider_eye","potion:slowness"],["potion:leaping","glowstone_dust","potion:strong_leaping"],["potion:leaping","redstone","potion:long_leaping"],["potion:long_leaping","fermented_spider_eye","potion:long_slowness"],["potion:long_mundane","fermented_spider_eye","potion:long_weakness"],["potion:long_poison","fermented_spider_eye","potion:harming"],["potion:long_strength","fermented_spider_eye","potion:long_weakness"],["potion:long_nightvision","fermented_spider_eye","potion:long_invisibility"],["potion:long_swiftness","fermented_spider_eye","potion:long_slowness"],["potion:mundane","fermented_spider_eye","potion:weakness"],["potion:nightvision","fermented_spider_eye","potion:invisibility"],["potion:nightvision","redstone","potion:long_nightvision"],["potion:poison","fermented_spider_eye","potion:harming"],["potion:poison","glowstone_dust","potion:strong_poison"],["potion:poison","redstone","potion:long_poison"],["potion:regeneration","glowstone_dust","potion:strong_regeneration"],["potion:regeneration","redstone","potion:long_regeneration"],["potion:slow_falling","redstone","potion:long_slow_falling"],["potion:slowness","glowstone_dust","potion:strong_slowness"],["potion:slowness","redstone","potion:long_slowness"],["potion:strength","fermented_spider_eye","potion:weakness"],["potion:strength","glowstone_dust","potion:strong_strength"],["potion:strength","redstone","potion:long_strength"],["potion:strong_healing","fermented_spider_eye","potion:strong_harming"],["potion:strong_poison","fermented_spider_eye","potion:strong_harming"],["potion:strong_strength","fermented_spider_eye","potion:weakness"],["potion:swiftness","fermented_spider_eye","potion:slowness"],["potion:swiftness","glowstone_dust","potion:strong_swiftness"],["potion:swiftness","redstone","potion:long_swiftness"],["potion:thick","fermented_spider_eye","potion:weakness"],["potion:turtle_master","glowstone_dust","potion:strong_turtle_master"],["potion:turtle_master","redstone","potion:long_turtle_master"],["potion:water","blaze_powder","potion:mundane"],["potion:water_breathing","redstone","potion:long_water_breathing"],["potion:water","breeze_rod","potion:mundane"],["potion:water","fermented_spider_eye","potion:weakness"],["potion:water","ghast_tear","potion:mundane"],["potion:water","glowstone_dust","potion:thick"],["potion:water","magma_cream","potion:mundane"],["potion:water","nether_wart","potion:awkward"],["potion:water","rabbit_foot","potion:mundane"],["potion:water","redstone","potion:mundane"],["potion:water","slime","potion:mundane"],["potion:water","glistering_melon_slice","potion:mundane"],["potion:water","spider_eye","potion:mundane"],["potion:water","stone","potion:mundane"],["potion:water","sugar","potion:mundane"],["potion:water","web","potion:mundane"],["potion:weakness","redstone","potion:long_weakness"],["potion:water","redstone","potion:long_mundane"]],"n":{"potion:awkward":"Seltsamer Trank","blaze_powder":"Lohenstaub","potion:strength":"Trank der Stärke","breeze_rod":"Böenrute","potion:wind_charged":"Trank des Windladens","fermented_spider_eye":"Fermentiertes Spinnenauge","potion:weakness":"Trank der Schwäche","ghast_tear":"Ghast-Träne","potion:regeneration":"Trank der Regeneration","golden_carrot":"Goldene Karotte","potion:nightvision":"Trank der Nachtsicht","magma_cream":"Magmacreme","potion:fire_resistance":"Trank der Feuerresistenz","phantom_membrane":"Phantomhaut","potion:slow_falling":"Trank des sanften Falls","pufferfish":"Kugelfisch","potion:water_breathing":"Trank der Unterwasseratmung","rabbit_foot":"Hasenpfote","potion:leaping":"Trank der Sprungkraft","slime":"Schleimblock","potion:oozing":"Trank des Sickerns","glistering_melon_slice":"Funkelnde Melonenscheibe","potion:healing":"Trank der Heilung","spider_eye":"Spinnenauge","potion:poison":"Trank der Vergiftung","stone":"Stein","potion:infested":"Trank der Verseuchung","sugar":"Zucker","potion:swiftness":"Trank der Schnelligkeit","turtle_helmet":"Schildkrötenpanzer","potion:turtle_master":"Trank des Schildkrötenmeisters","web":"Spinnennetz","potion:weaving":"Trank des Webens","redstone":"Redstone-Staub","potion:long_fire_resistance":"Trank der Feuerresistenz (verlängert)","potion:harming":"Trank des Schadens","glowstone_dust":"Leuchtstein-Staub","potion:strong_harming":"Trank des Schadens (Stufe II)","potion:strong_healing":"Trank der Heilung (Stufe II)","potion:invisibility":"Trank der Unsichtbarkeit","potion:long_invisibility":"Trank der Unsichtbarkeit (verlängert)","potion:slowness":"Trank der Langsamkeit","potion:strong_leaping":"Trank der Sprungkraft (Stufe II)","potion:long_leaping":"Trank der Sprungkraft (verlängert)","potion:long_slowness":"Trank der Langsamkeit (verlängert)","potion:long_mundane":"Gewöhnlicher Trank (verlängert)","potion:long_weakness":"Trank der Schwäche (verlängert)","potion:long_poison":"Trank der Vergiftung (verlängert)","potion:long_strength":"Trank der Stärke (verlängert)","potion:long_nightvision":"Trank der Nachtsicht (verlängert)","potion:long_swiftness":"Trank der Schnelligkeit (verlängert)","potion:mundane":"Gewöhnlicher Trank","potion:strong_poison":"Trank der Vergiftung (Stufe II)","potion:strong_regeneration":"Trank der Regeneration (Stufe II)","potion:long_regeneration":"Trank der Regeneration (verlängert)","potion:long_slow_falling":"Trank des sanften Falls (verlängert)","potion:strong_slowness":"Trank der Langsamkeit (Stufe IV)","potion:strong_strength":"Trank der Stärke (Stufe II)","potion:strong_swiftness":"Trank der Schnelligkeit (Stufe II)","potion:thick":"Dickflüssiger Trank","potion:strong_turtle_master":"Trank des Schildkrötenmeisters (Stufe II)","potion:long_turtle_master":"Trank des Schildkrötenmeisters (verlängert)","potion:water":"Wasserflasche","potion:long_water_breathing":"Trank der Unterwasseratmung (verlängert)","nether_wart":"Netherwarze","glass_bottle":"Glasflasche","gunpowder":"Schwarzpulver","dragon_breath":"Drachenatem","brewing_stand":"Braustand"},"f":{"potion:awkward":["Seltsamer Wurftrank","Seltsamer Verweiltrank"],"potion:strength":["Wurftrank der Stärke","Verweiltrank der Stärke"],"potion:wind_charged":["Wurftrank des Windladens","Verweiltrank des Windladens"],"potion:weakness":["Wurftrank der Schwäche","Verweiltrank der Schwäche"],"potion:regeneration":["Wurftrank der Regeneration","Verweiltrank der Regeneration"],"potion:nightvision":["Wurftrank der Nachtsicht","Verweiltrank der Nachtsicht"],"potion:fire_resistance":["Wurftrank der Feuerresistenz","Verweiltrank der Feuerresistenz"],"potion:slow_falling":["Wurftrank des sanften Falls","Verweiltrank des sanften Falls"],"potion:water_breathing":["Wurftrank der Unterwasseratmung","Verweiltrank der Unterwasseratmung"],"potion:leaping":["Wurftrank der Sprungkraft","Verweiltrank der Sprungkraft"],"potion:oozing":["Wurftrank des Sickerns","Verweiltrank des Sickerns"],"potion:healing":["Wurftrank der Heilung","Verweiltrank der Heilung"],"potion:poison":["Wurftrank der Vergiftung","Verweiltrank der Vergiftung"],"potion:infested":["Wurftrank der Verseuchung","Verweiltrank der Verseuchung"],"potion:swiftness":["Wurftrank der Schnelligkeit","Verweiltrank der Schnelligkeit"],"potion:turtle_master":["Wurftrank des Schildkrötenmeisters","Verweiltrank des Schildkrötenmeisters"],"potion:weaving":["Wurftrank des Webens","Verweiltrank des Webens"],"potion:long_fire_resistance":["Wurftrank der Feuerresistenz (verlängert)","Verweiltrank der Feuerresistenz (verlängert)"],"potion:harming":["Wurftrank des Schadens","Verweiltrank des Schadens"],"potion:strong_harming":["Wurftrank des Schadens (Stufe II)","Verweiltrank des Schadens (Stufe II)"],"potion:strong_healing":["Wurftrank der Heilung (Stufe II)","Verweiltrank der Heilung (Stufe II)"],"potion:invisibility":["Wurftrank der Unsichtbarkeit","Verweiltrank der Unsichtbarkeit"],"potion:long_invisibility":["Wurftrank der Unsichtbarkeit (verlängert)","Verweiltrank der Unsichtbarkeit (verlängert)"],"potion:slowness":["Wurftrank der Langsamkeit","Verweiltrank der Langsamkeit"],"potion:strong_leaping":["Wurftrank der Sprungkraft (Stufe II)","Verweiltrank der Sprungkraft (Stufe II)"],"potion:long_leaping":["Wurftrank der Sprungkraft (verlängert)","Verweiltrank der Sprungkraft (verlängert)"],"potion:long_slowness":["Wurftrank der Langsamkeit (verlängert)","Verweiltrank der Langsamkeit (verlängert)"],"potion:long_mundane":["Gewöhnlicher Wurftrank (verlängert)","Gewöhnlicher Verweiltrank (verlängert)"],"potion:long_weakness":["Wurftrank der Schwäche (verlängert)","Verweiltrank der Schwäche (verlängert)"],"potion:long_poison":["Wurftrank der Vergiftung (verlängert)","Verweiltrank der Vergiftung (verlängert)"],"potion:long_strength":["Wurftrank der Stärke (verlängert)","Verweiltrank der Stärke (verlängert)"],"potion:long_nightvision":["Wurftrank der Nachtsicht (verlängert)","Verweiltrank der Nachtsicht (verlängert)"],"potion:long_swiftness":["Wurftrank der Schnelligkeit (verlängert)","Verweiltrank der Schnelligkeit (verlängert)"],"potion:mundane":["Gewöhnlicher Wurftrank","Gewöhnlicher Verweiltrank"],"potion:strong_poison":["Wurftrank der Vergiftung (Stufe II)","Verweiltrank der Vergiftung (Stufe II)"],"potion:strong_regeneration":["Wurftrank der Regeneration (Stufe II)","Verweiltrank der Regeneration (Stufe II)"],"potion:long_regeneration":["Wurftrank der Regeneration (verlängert)","Verweiltrank der Regeneration (verlängert)"],"potion:long_slow_falling":["Wurftrank des sanften Falls (verlängert)","Verweiltrank des sanften Falls (verlängert)"],"potion:strong_slowness":["Wurftrank der Langsamkeit (Stufe IV)","Verweiltrank der Langsamkeit (Stufe IV)"],"potion:strong_strength":["Wurftrank der Stärke (Stufe II)","Verweiltrank der Stärke (Stufe II)"],"potion:strong_swiftness":["Wurftrank der Schnelligkeit (Stufe II)","Verweiltrank der Schnelligkeit (Stufe II)"],"potion:thick":["Dickflüssiger Wurftrank","Dickflüssiger Verweiltrank"],"potion:strong_turtle_master":["Wurftrank des Schildkrötenmeisters (Stufe II)","Verweiltrank des Schildkrötenmeisters (Stufe II)"],"potion:long_turtle_master":["Wurftrank des Schildkrötenmeisters (verlängert)","Verweiltrank des Schildkrötenmeisters (verlängert)"],"potion:water":["Werfbare Wasserflasche","Verweilende Wasserflasche"],"potion:long_water_breathing":["Wurftrank der Unterwasseratmung (verlängert)","Verweiltrank der Unterwasseratmung (verlängert)"]}};
-  var APPVER = '2.4';
+  var APPVER = '2.5';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -1381,11 +1446,12 @@ var BWISO = (function () {
   function planNow(p) {
     if (!p.sizes) return p;
     var n = null; try { n = JSON.parse(localStorage.getItem('bp.size.' + p.id)); } catch (e) {}
-    return p.sizes[n] || p;
+    return p.sizes[n] || p.sizes[p.size] || p;
   }
+  var TIERN = ['S', 'M', 'L', 'XL', 'XXL'];
   function planBody(p) {
-    var q = planNow(p);
-    return '<div class="ptitle">' + esc(q.title) + '<span>' + q.layers + ' Ebenen</span></div><div class="facts">' +
+    var q = planNow(p), ti = p.tiers && q.n != null ? p.tiers.indexOf(q.n) : -1;
+    return '<div class="ptitle">' + esc(q.title) + '<span>' + (ti >= 0 ? 'Größe ' + TIERN[ti] + ' · ' : '') + q.layers + ' Ebenen</span></div><div class="facts">' +
       q.specs.map(function (f) { return '<div class="fact"><small>' + esc(f[0]) + '</small><b>' + esc(f[1]) + '</b></div>'; }).join('') + '</div>';
   }
   $('plans').innerHTML = PLANS.map(function (p) {
@@ -2234,54 +2300,83 @@ var BWISO = (function () {
   function kVer() { var v = loadJSON(wkey('seedver'), 0); return v >= 0 && v < KVER.length ? v | 0 : 0; }
   $('k-ver').innerHTML = KVER.map(function (n, i) { return '<option value="' + i + '">' + n + (i === 0 ? ' (aktuell)' : '') + '</option>'; }).join('');
   $('k-ver').addEventListener('change', function () { saveJSON(wkey('seedver'), +this.value | 0); kChanged(); });
-  // Biome: Name, Farbe (wie cubiomes), Suchwörter
+  // Biome: Name, klassische Farbe (wie cubiomes), Suchwörter, ruhige Farbe (passend zur App)
   var KB = {
-    0: ['Ozean', '000070', 'meer wasser'], 1: ['Ebene', '8db360', 'flachland'], 2: ['Wüste', 'fa9418', 'sand kaktus'],
-    3: ['Windgepeitschte Hügel', '606060', 'berg smaragd lama'], 4: ['Wald', '056621', ''], 5: ['Taiga', '0b6a5f', 'fichte fuchs beeren'],
-    6: ['Sumpf', '07f9b2', 'schleim'], 7: ['Fluss', '2f5fe8', ''], 10: ['Vereister Ozean', '7070d6', 'eisbär eisberg'], 11: ['Vereister Fluss', 'a0a0ff', ''],
-    12: ['Verschneite Ebene', 'ffffff', 'schnee'], 14: ['Pilzland', 'ff00ff', 'pilzinsel pilzkuh mooshroom myzel'], 16: ['Strand', 'fade55', 'schildkröte'],
-    21: ['Dschungel', '507b0a', 'kakao melone papagei ozelot'], 23: ['Lichter Dschungel', '60930f', ''], 24: ['Tiefsee', '000030', 'tiefer ozean'],
-    25: ['Steinküste', 'a2a284', 'küste'], 26: ['Verschneiter Strand', 'faf0c0', ''], 27: ['Birkenwald', '307444', 'birke'],
-    29: ['Dunkler Wald', '40511a', 'dunkeleiche riesenpilz'], 30: ['Verschneite Taiga', '31554a', 'schnee'], 32: ['Uralte Kiefern-Taiga', '596651', 'riesentaiga podsol'],
-    34: ['Windgepeitschter Wald', '5b7352', ''], 35: ['Savanne', 'bdb25f', 'akazie pferd'], 36: ['Savannenhochebene', 'a79d64', ''],
-    37: ['Tafelberge', 'd94515', 'badlands mesa terrakotta keramik'], 38: ['Bewaldete Tafelberge', 'b09765', 'badlands mesa'],
-    44: ['Warmer Ozean', '0000ac', 'korallen korallenriff kugelfisch'], 45: ['Lauwarmer Ozean', '000090', ''], 46: ['Kalter Ozean', '202070', 'lachs'],
-    47: ['Warme Tiefsee', '000050', ''], 48: ['Lauwarme Tiefsee', '000040', ''], 49: ['Kalte Tiefsee', '202038', ''], 50: ['Vereiste Tiefsee', '404090', 'eisberg'],
-    129: ['Sonnenblumenebene', 'b5db88', 'sonnenblume'], 131: ['Windgepeitschte Kieshügel', '888888', 'kies'], 132: ['Blumenwald', '2d8e49', 'blumen bienen'],
-    140: ['Eiszapfenebene', 'b4dcdc', 'eiszapfen eisstacheln packeis'], 155: ['Uralter Birkenwald', '589c6c', 'birke'], 160: ['Uralte Fichten-Taiga', '818e79', 'riesentaiga'],
-    163: ['Windgepeitschte Savanne', 'e5da87', ''], 165: ['Abgetragene Tafelberge', 'ff6d3d', 'badlands mesa'], 168: ['Bambusdschungel', '849500', 'bambus panda'],
-    174: ['Tropfsteinhöhlen', '4e3012', 'tropfstein höhle'], 175: ['Üppige Höhlen', '283c00', 'axolotl leuchtbeeren azalee höhle'], 177: ['Wiese', '60a445', 'bienen'],
-    178: ['Hain', '47726c', 'wolf'], 179: ['Verschneite Hänge', 'c4c4c4', 'ziege pulverschnee'], 180: ['Zerklüftete Gipfel', 'dcdcc8', 'berg ziege'],
-    181: ['Vereiste Gipfel', 'b0b3ce', 'berg packeis'], 182: ['Steinige Gipfel', '7b8f74', 'berg'], 183: ['Tiefes Dunkel', '031f29', 'sculk wärter warden'],
-    184: ['Mangrovensumpf', '2ccc8e', 'mangrove schlamm frosch'], 185: ['Kirschblütenhain', 'ff91c8', 'kirsche rosa'], 186: ['Blasser Garten', '696d95', 'knarz creaking blasse eiche'],
-    187: ['Sulfur Caves', 'c8d232', 'schwefel höhle'], 188: ['Dappled Forest', 'eb9234', ''],
-    8: ['Netherödland', '572526', ''], 170: ['Seelensandtal', '4d3a2e', ''], 171: ['Karmesinwald', '981a11', ''], 172: ['Wirrwald', '49907b', ''], 173: ['Basaltdeltas', '645f63', ''],
-    9: ['Das Ende', '8080ff', ''], 40: ['Kleine Endinseln', '4b4bab', ''], 41: ['End-Mittelland', 'c9c959', ''], 42: ['End-Hochland', 'b5b536', ''], 43: ['End-Kargland', '7070cc', '']
+    0: ['Ozean', '000070', 'meer wasser', '2f5f8a'], 1: ['Ebene', '8db360', 'flachland', '9cbf6b'], 2: ['Wüste', 'fa9418', 'sand kaktus', 'e3c47c'],
+    3: ['Windgepeitschte Hügel', '606060', 'berg smaragd lama', '8b9a86'], 4: ['Wald', '056621', '', '4f8a45'], 5: ['Taiga', '0b6a5f', 'fichte fuchs beeren', '4f7a5e'],
+    6: ['Sumpf', '07f9b2', 'schleim', '5b7b4b'], 7: ['Fluss', '2f5fe8', '', '4a86c2'], 10: ['Vereister Ozean', '7070d6', 'eisbär eisberg', '7a96bb'], 11: ['Vereister Fluss', 'a0a0ff', '', '9db9d9'],
+    12: ['Verschneite Ebene', 'ffffff', 'schnee', 'eef2f5'], 14: ['Pilzland', 'ff00ff', 'pilzinsel pilzkuh mooshroom myzel', 'b07aa8'], 16: ['Strand', 'fade55', 'schildkröte', 'e8d9a4'],
+    21: ['Dschungel', '507b0a', 'kakao melone papagei ozelot', '3f8f30'], 23: ['Lichter Dschungel', '60930f', '', '6aa243'], 24: ['Tiefsee', '000030', 'tiefer ozean', '254f71'],
+    25: ['Steinküste', 'a2a284', 'küste', '9c9b91'], 26: ['Verschneiter Strand', 'faf0c0', '', 'e9ecef'], 27: ['Birkenwald', '307444', 'birke', '6aa05b'],
+    29: ['Dunkler Wald', '40511a', 'dunkeleiche riesenpilz', '355f32'], 30: ['Verschneite Taiga', '31554a', 'schnee', '7e9a90'], 32: ['Uralte Kiefern-Taiga', '596651', 'riesentaiga podsol', '5c7050'],
+    34: ['Windgepeitschter Wald', '5b7352', '', '5d7e5f'], 35: ['Savanne', 'bdb25f', 'akazie pferd', 'c6b66b'], 36: ['Savannenhochebene', 'a79d64', '', 'b5a564'],
+    37: ['Tafelberge', 'd94515', 'badlands mesa terrakotta keramik', 'c96a3d'], 38: ['Bewaldete Tafelberge', 'b09765', 'badlands mesa', 'a9764b'],
+    44: ['Warmer Ozean', '0000ac', 'korallen korallenriff kugelfisch', '3a88aa'], 45: ['Lauwarmer Ozean', '000090', '', '36749b'], 46: ['Kalter Ozean', '202070', 'lachs', '305f86'],
+    47: ['Warme Tiefsee', '000050', '', '2f7090'], 48: ['Lauwarme Tiefsee', '000040', '', '2b5f80'], 49: ['Kalte Tiefsee', '202038', '', '284e70'], 50: ['Vereiste Tiefsee', '404090', 'eisberg', '5b7aa0'],
+    129: ['Sonnenblumenebene', 'b5db88', 'sonnenblume', 'b3cf6b'], 131: ['Windgepeitschte Kieshügel', '888888', 'kies', '9e9e98'], 132: ['Blumenwald', '2d8e49', 'blumen bienen', '6aa051'],
+    140: ['Eiszapfenebene', 'b4dcdc', 'eiszapfen eisstacheln packeis', 'cfe6ee'], 155: ['Uralter Birkenwald', '589c6c', 'birke', '5f9656'], 160: ['Uralte Fichten-Taiga', '818e79', 'riesentaiga', '4f6c53'],
+    163: ['Windgepeitschte Savanne', 'e5da87', '', 'c9bd80'], 165: ['Abgetragene Tafelberge', 'ff6d3d', 'badlands mesa', 'da7840'], 168: ['Bambusdschungel', '849500', 'bambus panda', '7aa52f'],
+    174: ['Tropfsteinhöhlen', '4e3012', 'tropfstein höhle', '7a5a3a'], 175: ['Üppige Höhlen', '283c00', 'axolotl leuchtbeeren azalee höhle', '5f8a3a'], 177: ['Wiese', '60a445', 'bienen', '8fc77b'],
+    178: ['Hain', '47726c', 'wolf', 'a7bfb6'], 179: ['Verschneite Hänge', 'c4c4c4', 'ziege pulverschnee', 'dfe6ea'], 180: ['Zerklüftete Gipfel', 'dcdcc8', 'berg ziege', 'd8dce1'],
+    181: ['Vereiste Gipfel', 'b0b3ce', 'berg packeis', 'c7d3e3'], 182: ['Steinige Gipfel', '7b8f74', 'berg', 'aaa59b'], 183: ['Tiefes Dunkel', '031f29', 'sculk wärter warden', '1f3a44'],
+    184: ['Mangrovensumpf', '2ccc8e', 'mangrove schlamm frosch', '4f8051'], 185: ['Kirschblütenhain', 'ff91c8', 'kirsche rosa', 'eca8c9'], 186: ['Blasser Garten', '696d95', 'knarz creaking blasse eiche', '8b908d'],
+    187: ['Sulfur Caves', 'c8d232', 'schwefel höhle', 'c9c46b'], 188: ['Dappled Forest', 'eb9234', '', 'a9b85b'],
+    8: ['Netherödland', '572526', '', '572526'], 170: ['Seelensandtal', '4d3a2e', '', '4d3a2e'], 171: ['Karmesinwald', '981a11', '', '981a11'], 172: ['Wirrwald', '49907b', '', '49907b'], 173: ['Basaltdeltas', '645f63', '', '645f63'],
+    9: ['Das Ende', '8080ff', '', '8080ff'], 40: ['Kleine Endinseln', '4b4bab', '', '4b4bab'], 41: ['End-Mittelland', 'c9c959', '', 'c9c959'], 42: ['End-Hochland', 'b5b536', '', 'b5b536'], 43: ['End-Kargland', '7070cc', '', '7070cc']
   };
   var KBY = { 174: -20, 175: -20, 183: -45, 187: -20 };            // Höhlenbiome in dieser Höhe suchen
   var KBSKIP = { 8: 1, 170: 1, 171: 1, 172: 1, 173: 1, 9: 1, 40: 1, 41: 1, 42: 1, 43: 1, 47: 1 };   // nicht durchsuchbar
+  var KWATER = { 0: 1, 7: 1, 10: 1, 11: 1, 24: 1, 44: 1, 45: 1, 46: 1, 47: 1, 48: 1, 49: 1, 50: 1 };
+  function kOpt(k, d) { var v = loadJSON('k' + k, d); return typeof v === 'boolean' ? v : d; }
   function kBName(b) { return KB[b] ? KB[b][0] : 'Biom ' + b; }
+  function kBCol(b) { return '#' + (KB[b] ? KB[b][kOpt('classic', false) ? 1 : 3] : '888888'); }
   function kBiomeOk(b) { return !KBSKIP[b] && (b !== 188 || kVer() === 0) && (b !== 187 || kVer() <= 1) && (b !== 186 || kVer() <= 3) && (b !== 185 || kVer() <= 5) && ((b !== 183 && b !== 184) || kVer() <= 6); }
-  // Bauwerke: Typ im Rechenkern, Name, Zeichen, Farbe, Dimension, Suchwörter, 1 = ungefähr / 2 = ungeprüft, Suchradius
+  // Zeichen der Bauwerke: eigene Umrisse auf 24 × 24, gefüllt
+  var KICON = {
+    dorf: 'M3 11.5 12 4l9 7.5V21h-6v-6H9v6H3z',
+    posten: 'M6 22V10H4V3h3v2h2.5V3h5v2H17V3h3v7h-2v12zM10.5 12v4h3v-4z',
+    anwesen: 'M1 21V10.5L6 7l4 2.5V6l2-2 2 2v3.5L18 7l5 3.5V21h-8v-5H9v5z',
+    monument: 'M11 22V11H8.5A3.5 3.5 0 0 1 5 7.5V3h2v4.5A1.5 1.5 0 0 0 8.5 9H11V2h2v7h2.5A1.5 1.5 0 0 0 17 7.5V3h2v4.5a3.5 3.5 0 0 1-3.5 3.5H13v11z',
+    stadt: 'M12 2a8 8 0 0 0-8 8c0 2.9 1.5 5.1 4 6.3V21h2v-2h1v2h2v-2h1v2h2v-4.7c2.5-1.2 4-3.4 4-6.3a8 8 0 0 0-8-8zM8.5 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4z',
+    kammer: 'M12 9a5 5 0 1 1-10 0 5 5 0 0 1 10 0zM11 7.5h11v3H11zM17 10.5h2.2v4H17zM20.3 10.5H22v3h-1.7z',
+    pfad: 'M9 2h6v2h-1v1.2c2.9 1.2 5 4.1 5 7.8 0 4.4-3.1 8-7 8s-7-3.6-7-8c0-3.7 2.1-6.6 5-7.8V4H9z',
+    wueste: 'M12 3 2 21h20z',
+    dschungel: 'M3 21v-3h2v-3h2.5v-3H10V8h4v4h2.5v3H19v3h2v3z',
+    hexe: 'M2 18h20v2.5H2zM6 18l5.2-14.2c.2-.6 1.1-.6 1.3 0l1.3 3.6 2.4-1.1-1.9 4.9L18 18z',
+    iglu: 'M2 20a10 10 0 0 1 20 0zm8-.5V16a2 2 0 0 1 4 0v3.5z',
+    wrack: 'M12 1.5a2.5 2.5 0 0 1 1 4.8V8h3v2h-3v9.8c2.7-.4 4.8-2.4 5.3-4.8H16l3.5-3.5L23 15h-2.2c-.6 4-4.4 7-8.8 7s-8.2-3-8.8-7H1l3.5-3.5L8 15H5.7c.5 2.4 2.6 4.4 5.3 4.8V10H8V8h3V6.3a2.5 2.5 0 0 1 1-4.8z',
+    ruine: 'M2 9 12 3l10 6zM4 10h3v8H4zm6.5 0h3v8h-3zM17 10h3v8h-3zM2 19h20v2H2z',
+    schatz: 'M4.9 3 3 4.9l7.1 7.1L3 19.1 4.9 21l7.1-7.1 7.1 7.1 1.9-1.9-7.1-7.1L21 4.9 19.1 3 12 10.1z',
+    portal: 'M6 2h12v20H6zm3 3v14h6V5z',
+    flamme: 'M12 2c.6 3.4 5.5 5.5 5.5 11.5a5.5 5.5 0 0 1-11 0c0-2.6 1.4-4.5 2.6-6 .2 2.4 1.1 3.6 2.2 3.8-.4-3.6.1-6.6.7-9.3z',
+    endstadt: 'M9.5 22V8L12 3l2.5 5v14zM3 22V12l2.5-3.5L8 12v10zm13 0V12l2.5-3.5L21 12v10z'
+  };
+  var KEVEN = { posten: 1, stadt: 1, iglu: 1, portal: 1 };            // Umrisse mit Loch
+  function kSvg(ic, col, size) {
+    return '<svg class="ksvg" width="' + size + '" height="' + size + '" viewBox="-6 -6 36 36" aria-hidden="true"><circle cx="12" cy="12" r="17" fill="' + col + '" stroke="#fff" stroke-width="2.5"/>' +
+      '<path d="' + KICON[ic] + '" fill="#fff"' + (KEVEN[ic] ? ' fill-rule="evenodd"' : '') + '/></svg>';
+  }
+  function kSwatch(col, size) { return '<svg class="ksvg" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="' + col + '" stroke="#fff" stroke-width="2"/></svg>'; }
+  // Bauwerke: Typ im Rechenkern, Name, Zeichen, Farbe, Dimension, Suchwörter, 1 = ungefähr / 2 = ungeprüft, Suchradius, ab Version
   var KS = [
-    { t: 0, n: 'Dorf', i: '🏘️', c: '#E39B2D', w: 'dörfer dorfbewohner villager handel siedlung glocke' },
-    { t: 1, n: 'Plünderer-Außenposten', i: '⚔️', c: '#8A5A3A', w: 'außenposten aussenposten plünderer pillager outpost armbrust', r: 24000 },
-    { t: 2, n: 'Waldanwesen', i: '🏰', c: '#6B46A8', w: 'anwesen villa mansion totem magier', r: 40000 },
-    { t: 3, n: 'Ozeanmonument', i: '🔱', c: '#1F86B8', w: 'monument wächter guardian prismarin schwamm' },
-    { t: 4, n: 'Antike Stätte', i: '💀', c: '#2B5E6E', w: 'ancient city stadt wärter warden sculk schleichen', a: 1 },
-    { t: 5, n: 'Prüfungskammer', i: '🗝️', c: '#C06A2B', w: 'trial chamber kammer breeze böe kernstück kupfer', v: 4 },
-    { t: 6, n: 'Pfadruine', i: '🏺', c: '#A0704A', w: 'trail ruins archäologie scherben töpferscherben pinsel', v: 5 },
-    { t: 7, n: 'Wüstentempel', i: '🏜️', c: '#D9B04C', w: 'wüstenpyramide pyramide' },
-    { t: 8, n: 'Dschungeltempel', i: '🌿', c: '#3C8A3C', w: 'dschungelpyramide' },
-    { t: 9, n: 'Hexenhütte', i: '🧪', c: '#5E7A34', w: 'sumpfhütte hexe hütte' },
-    { t: 10, n: 'Iglu', i: '❄️', c: '#7FB6CC', w: 'igloo' },
-    { t: 11, n: 'Schiffswrack', i: '⚓', c: '#7A5230', w: 'wrack schiff schatzkarte' },
-    { t: 12, n: 'Ozeanruine', i: '🏛️', c: '#3F8F9A', w: 'ruine unterwasser ertrunkene' },
-    { t: 13, n: 'Vergrabener Schatz', i: '💰', c: '#D4A20A', w: 'schatz herz des meeres truhe', r: 4000 },
-    { t: 14, n: 'Portalruine', i: '🌀', c: '#7D3C98', w: 'ruiniertes portal obsidian' },
-    { t: 15, n: 'Netherfestung oder Bastion', i: '🔥', c: '#B03A2E', d: 'nether', w: 'festung bastion lohe blaze piglin netherwarze', a: 2 },
-    { t: 16, n: 'Portalruine', i: '🌀', c: '#7D3C98', d: 'nether', w: 'ruiniertes portal obsidian', a: 2 },
-    { t: 17, n: 'Endsiedlung', i: '🏙️', c: '#A77BC0', d: 'end', w: 'endstadt end city elytra shulker', a: 2 }
+    { t: 0, n: 'Dorf', ic: 'dorf', c: '#D9892B', w: 'dörfer dorfbewohner villager handel siedlung glocke' },
+    { t: 1, n: 'Plünderer-Außenposten', ic: 'posten', c: '#7A4E2E', w: 'außenposten aussenposten plünderer pillager outpost armbrust', r: 24000 },
+    { t: 2, n: 'Waldanwesen', ic: 'anwesen', c: '#6B46A8', w: 'anwesen villa mansion totem magier', r: 40000 },
+    { t: 3, n: 'Ozeanmonument', ic: 'monument', c: '#1F7FB0', w: 'monument wächter guardian prismarin schwamm' },
+    { t: 4, n: 'Antike Stätte', ic: 'stadt', c: '#1E4E5C', w: 'ancient city stadt wärter warden sculk schleichen', a: 1 },
+    { t: 5, n: 'Prüfungskammer', ic: 'kammer', c: '#B8622A', w: 'trial chamber kammer breeze böe kernstück kupfer', v: 4 },
+    { t: 6, n: 'Pfadruine', ic: 'pfad', c: '#9A6A44', w: 'trail ruins archäologie scherben töpferscherben pinsel', v: 5 },
+    { t: 7, n: 'Wüstentempel', ic: 'wueste', c: '#C99A2E', w: 'wüstenpyramide pyramide' },
+    { t: 8, n: 'Dschungeltempel', ic: 'dschungel', c: '#3C8A3C', w: 'dschungelpyramide' },
+    { t: 9, n: 'Hexenhütte', ic: 'hexe', c: '#4F6B2C', w: 'sumpfhütte hexe hütte' },
+    { t: 10, n: 'Iglu', ic: 'iglu', c: '#4E92B0', w: 'igloo' },
+    { t: 11, n: 'Schiffswrack', ic: 'wrack', c: '#6E4A2B', w: 'wrack schiff schatzkarte' },
+    { t: 12, n: 'Ozeanruine', ic: 'ruine', c: '#2F8C8C', w: 'ruine unterwasser ertrunkene' },
+    { t: 13, n: 'Vergrabener Schatz', ic: 'schatz', c: '#C8961A', w: 'schatz herz des meeres truhe', r: 4000 },
+    { t: 14, n: 'Portalruine', ic: 'portal', c: '#7D3C98', w: 'ruiniertes portal obsidian' },
+    { t: 15, n: 'Netherfestung oder Bastion', ic: 'flamme', c: '#B03A2E', d: 'nether', w: 'festung bastion lohe blaze piglin netherwarze', a: 2 },
+    { t: 16, n: 'Portalruine', ic: 'portal', c: '#7D3C98', d: 'nether', w: 'ruiniertes portal obsidian', a: 2 },
+    { t: 17, n: 'Endsiedlung', ic: 'endstadt', c: '#8E62A8', d: 'end', w: 'endstadt end city elytra shulker', a: 2 }
   ];
   var KSD = {}; KS.forEach(function (s) { s.d = s.d || 'ober'; KSD[s.t] = s; });
   function kSOk(s) { return !s.v || kVer() <= s.v; }
@@ -2315,41 +2410,53 @@ var BWISO = (function () {
     return { title: q, s: s, b: b, n: s.length + b.length === 1 ? 3 : 1 };
   }
 
-  /* Hintergrundrechnung */
-  var SM = { w: null, n: 0, cb: {}, key: '', init: null, dead: '' };
-  function smCall(cmd, a, tr) {
-    return new Promise(function (res, rej) {
-      if (SM.dead) { rej(new Error(SM.dead)); return; }
-      if (!SM.w) {
-        try {
-          if (typeof Worker === 'undefined' || typeof WebAssembly === 'undefined') throw new Error('nicht unterstützt');
-          SM.w = new Worker('karte/seedmap.js');
-        } catch (e) { SM.dead = 'Dieses Gerät kann die Karte nicht selbst berechnen. Die Online-Karte geht trotzdem.'; rej(new Error(SM.dead)); kmEmpty(); return; }
-        SM.w.onmessage = function (ev) {
+  /* Hintergrundrechnung: bis zu zwei Rechenkerne; Suchen laufen im ersten, die Karte nimmt den freien */
+  var SM = { ws: [], n: 0, cb: {}, key: '', init: null, dead: '' };
+  var KNW = (navigator.hardwareConcurrency || 2) >= 4 ? 2 : 1;
+  function smDead(msg) {
+    if (SM.dead) return;
+    SM.dead = msg;
+    Object.keys(SM.cb).forEach(function (k) { SM.cb[k][1](new Error(SM.dead)); }); SM.cb = {};
+    SM.ws.forEach(function (w) { try { w.w.terminate(); } catch (e) {} }); SM.ws = [];
+    kmEmpty();
+  }
+  function smWorkers() {
+    if (SM.ws.length || SM.dead) return SM.ws;
+    try {
+      if (typeof Worker === 'undefined' || typeof WebAssembly === 'undefined') throw new Error('nicht unterstützt');
+      for (var i = 0; i < KNW; i++) {
+        var w = { w: new Worker('karte/seedmap.js'), p: 0 };
+        w.w.onmessage = (function (w) { return function (ev) {
           var m = ev.data || {}, c = SM.cb[m.id]; if (!c) return;
-          delete SM.cb[m.id]; if (m.ok) c[0](m.r); else c[1](new Error(m.err));
-        };
-        SM.w.onerror = function (ev) {
-          if (ev && ev.preventDefault) ev.preventDefault();
-          SM.dead = 'Der Rechenkern der Karte ließ sich nicht laden. Die Online-Karte geht trotzdem.';
-          Object.keys(SM.cb).forEach(function (k) { SM.cb[k][1](new Error(SM.dead)); }); SM.cb = {}; kmEmpty();
-        };
+          delete SM.cb[m.id]; w.p = Math.max(0, w.p - 1); if (m.ok) c[0](m.r); else c[1](new Error(m.err));
+        }; })(w);
+        w.w.onerror = function (ev) { if (ev && ev.preventDefault) ev.preventDefault(); smDead('Der Rechenkern der Karte ließ sich nicht laden. Die Online-Karte geht trotzdem.'); };
+        SM.ws.push(w);
       }
-      var id = ++SM.n; SM.cb[id] = [res, rej];
-      SM.w.postMessage({ id: id, cmd: cmd, a: a }, tr || []);
+    } catch (e) { smDead('Dieses Gerät kann die Karte nicht selbst berechnen. Die Online-Karte geht trotzdem.'); }
+    return SM.ws;
+  }
+  function smCall(cmd, a, tr, wi) {
+    return new Promise(function (res, rej) {
+      var ws = smWorkers();
+      if (SM.dead || !ws.length) { rej(new Error(SM.dead || 'Kein Rechenkern')); return; }
+      var w = ws[Math.min(wi || 0, ws.length - 1)], id = ++SM.n;
+      SM.cb[id] = [res, rej]; w.p++;
+      w.w.postMessage({ id: id, cmd: cmd, a: a }, tr || []);
     });
   }
   function kPal() {
-    var p = new Uint32Array(256); p.fill(0xff6b6b6b);
-    Object.keys(KB).forEach(function (id) { var c = parseInt(KB[id][1], 16); p[+id] = (0xff000000 | ((c & 255) << 16) | (c & 0xff00) | ((c >> 16) & 255)) >>> 0; });
+    var p = new Uint32Array(256), cls = kOpt('classic', false); p.fill(0xff6b6b6b);
+    Object.keys(KB).forEach(function (id) { var c = parseInt(KB[id][cls ? 1 : 3], 16); p[+id] = (0xff000000 | ((c & 255) << 16) | (c & 0xff00) | ((c >> 16) & 255)) >>> 0; });
     return p;
   }
   function smReady() {
     var s = seedNow(); if (!s) return Promise.reject(new Error('Erst den Seed eintragen.'));
-    var key = s + '|' + kVer();
+    var key = s + '|' + kVer() + '|' + kOpt('relief', true) + '|' + kOpt('classic', false);
     if (SM.key !== key || !SM.init) {
-      SM.key = key; KM.tiles.clear(); KM.mk.clear(); KM.want = [];
-      SM.init = smCall('init', { seed: s, ver: kVer(), pal: kPal() });
+      SM.key = key; KM.tiles.clear(); KM.mk.clear(); KM.want = []; KM.fly = {};
+      var ws = smWorkers(), a = { seed: s, ver: kVer(), pal: kPal(), relief: kOpt('relief', true) };
+      SM.init = Promise.all(ws.map(function (w, i) { return smCall('init', a, null, i); }));
       SM.init.catch(function () { SM.init = null; SM.key = ''; });
     }
     return SM.init;
@@ -2359,7 +2466,7 @@ var BWISO = (function () {
   function kChanged() {
     if (!KM) return;
     var k = seedNow() + '|' + kVer();
-    if (k !== kResKey) { kResKey = k; kSeq++; kItems = []; kStatus(''); $('k-res').innerHTML = ''; KM.pick = null; KM.focus = null; kmPickShow(); }
+    if (k !== kResKey) { kResKey = k; kSeq++; kItems = []; KM.res = []; kStatus(''); $('k-res').innerHTML = ''; KM.pick = null; KM.focus = null; kmPickShow(); }
     if ($('v-karte').classList.contains('on')) kmShow();
   }
 
@@ -2372,35 +2479,38 @@ var BWISO = (function () {
     if (h.dim === 'nether' && dim === 'ober') return { x: h.x * 8, z: h.z * 8, t: 'ab deinem Standort, umgerechnet in die Oberwelt' };
     return { x: 0, z: 0, t: 'ab dem Weltursprung 0 / 0' };
   }
+  function kDir(dx, dz) { return WIND[Math.round(((Math.atan2(dx, -dz) * 180 / Math.PI + 360) % 360) / 45) % 8]; }
   function kWay(o, x, z) {
     var dx = x - o.x, dz = z - o.z, d = Math.round(Math.sqrt(dx * dx + dz * dz));
     if (d < 8) return 'Direkt hier';
-    return plural(d, 'Block', 'Blöcke') + ' Richtung ' + WIND[Math.round(((Math.atan2(dx, -dz) * 180 / Math.PI + 360) % 360) / 45) % 8];
+    return plural(d, 'Block', 'Blöcke') + ' Richtung ' + kDir(dx, dz);
   }
   function kLabel(it) {
-    if (it.k === 'b') return { i: '🌍', n: kBName(it.b), c: '#' + (KB[it.b] ? KB[it.b][1] : '888888'), sub: 'Biom' + (KBY[it.b] ? ', unter der Erde (Y ' + KBY[it.b] + ')' : ''), dim: 'ober' };
+    if (it.k === 'b') return { sw: kBCol(it.b), n: kBName(it.b), c: kBCol(it.b), sub: 'Biom' + (KBY[it.b] ? ', unter der Erde (Y ' + KBY[it.b] + ')' : ''), dim: 'ober' };
     var s = KSD[it.t], sub = '';
     if ((it.t === 0 || it.t === 1) && KB[it.e]) sub = kBName(it.e);
     if (it.t === 11) sub = it.e === 16 || it.e === 26 ? 'gestrandet am Strand' : 'im Wasser';
     if (it.t === 12 && KB[it.e]) sub = /warm|lauwarm/i.test(kBName(it.e)) ? 'warme Ruine (Sandstein)' : 'kalte Ruine (Stein)';
     if (it.t === 13 && KB[it.e]) sub = kBName(it.e);
-    return { i: s.i, n: s.n, c: s.c, sub: sub, dim: s.d, a: s.a };
+    return { ic: s.ic, n: s.n, c: s.c, sub: sub, dim: s.d, a: s.a };
   }
+  function kIco(L, size) { return L.ic ? kSvg(L.ic, L.c, size) : kSwatch(L.sw || L.c, size); }
 
   /* Suche */
   var kSeq = 0, kItems = [];
-  function kStatus(t, bad) { var m = $('k-status'); m.textContent = t; m.className = 'small' + (bad ? ' kbad' : ''); }
+  function kStatus(t, bad) { var m = $('k-status'); m.textContent = t; m.className = 'small' + (bad ? ' kbad' : ''); $('k-fit').hidden = !kItems.length || bad || /läuft/.test(t); }
   $('k-terms').innerHTML = KTERMS.map(function (tm) { return '<button type="button" class="qchip" data-q="' + esc(tm.k) + '"><span>' + esc(tm.k) + '</span></button>'; }).join('');
   $('k-terms').addEventListener('click', function (e) { var b = e.target.closest('[data-q]'); if (!b) return; $('k-q').value = b.getAttribute('data-q'); kSearch(b.getAttribute('data-q')); });
   $('k-qf').addEventListener('submit', function (e) { e.preventDefault(); kSearch($('k-q').value); try { $('k-q').blur(); } catch (er) {} });
-  function kSearch(q) {
+  $('k-fsq').addEventListener('submit', function (e) { e.preventDefault(); $('k-q').value = $('k-fq').value; kSearch($('k-fq').value, true); try { $('k-fq').blur(); } catch (er) {} });
+  function kSearch(q, fit) {
     var seq = ++kSeq;
-    if (!seedNow()) { kStatus('Erst oben den Seed deiner Welt eintragen.', true); $('k-seed').focus(); return; }
+    if (!seedNow()) { kStatus('Erst oben den Seed deiner Welt eintragen.', true); if (!KM.full) $('k-seed').focus(); return; }
     var r = kResolve(q);
-    if (!r || (!r.s.length && !r.b.length)) { kStatus('Dazu kenne ich nichts. Probier zum Beispiel: Dorf, Tempel, Ozean, Kirschblüten, Pilzland, Iglu, Prüfungskammer.', true); $('k-res').innerHTML = ''; return; }
-    kItems = []; $('k-res').innerHTML = '';
+    if (!r || (!r.s.length && !r.b.length)) { kItems = []; KM.res = []; kmRedraw(); kStatus('Dazu kenne ich nichts. Probier zum Beispiel: Dorf, Tempel, Ozean, Kirschblüten, Pilzland, Iglu, Prüfungskammer.', true); $('k-res').innerHTML = ''; kmFsInfo('Dazu kenne ich nichts.'); return; }
+    kItems = []; KM.res = []; $('k-res').innerHTML = '';
     var total = r.s.length + r.b.length, done = 0;
-    kStatus('Suche läuft …');
+    kStatus('Suche läuft …'); kmFsInfo('Suche läuft …');
     var chain = smReady();
     r.s.forEach(function (t) {
       chain = chain.then(function () {
@@ -2422,16 +2532,23 @@ var BWISO = (function () {
         });
       });
     });
-    chain.then(function () { if (seq === kSeq) kRender(r, total, total); }, function (e) { if (seq === kSeq) kStatus(e.message, true); });
+    chain.then(function () {
+      if (seq !== kSeq) return;
+      kRender(r, total, total);
+      if (fit || KM.full) kmFit();
+    }, function (e) { if (seq === kSeq) { kStatus(e.message, true); kmFsInfo(e.message); } });
   }
   function kRender(r, done, total) {
     var o = kOrigin('ober');
     kItems.sort(function (a, b) { return a.d - b.d; });
+    kItems.forEach(function (it, i) { it.no = i + 1; });
+    KM.res = kItems.slice(); kmRedraw();
     if (done < total) kStatus('Suche läuft … ' + done + ' von ' + total);
-    else kStatus(kItems.length ? '„' + r.title + '“: ' + plural(kItems.length, 'Fund', 'Funde') + ', ' + o.t + '.' : 'Im weiten Umkreis nichts gefunden. In dieser Version oder Gegend gibt es das vielleicht nicht.', !kItems.length);
+    else kStatus(kItems.length ? '„' + r.title + '“: ' + plural(kItems.length, 'Fund', 'Funde') + ', ' + o.t + '. Die Nummern stehen auch auf der Karte.' : 'Im weiten Umkreis nichts gefunden. In dieser Version oder Gegend gibt es das vielleicht nicht.', !kItems.length);
+    if (done >= total) kmFsInfo(kItems.length ? '„' + r.title + '“: ' + plural(kItems.length, 'Fund', 'Funde') : 'Nichts gefunden');
     $('k-res').innerHTML = kItems.map(function (it, i) {
       var L = kLabel(it), og = kOrigin(L.dim);
-      return '<li class="kr" style="--kc:' + L.c + '"><span class="kic" aria-hidden="true">' + L.i + '</span><div class="kt"><b>' + esc(L.n) + '</b>' +
+      return '<li class="kr" style="--kc:' + L.c + '"><span class="kno" aria-label="Nummer ' + it.no + '">' + it.no + '</span><span class="kic">' + kIco(L, 34) + '</span><div class="kt"><b>' + esc(L.n) + '</b>' +
         (L.sub ? '<span class="small">' + esc(L.sub) + '</span>' : '') +
         '<span class="small">' + (L.dim !== 'ober' ? DIMS[L.dim] + ': ' : '') + 'X ' + it.x + ' · Z ' + it.z + ' · ' + esc(kWay(og, it.x, it.z)) + '</span>' +
         (L.a ? '<span class="kbadge">' + (L.a === 1 ? 'ungefähr, ±100 Blöcke' : 'ungeprüft') + '</span>' : '') +
@@ -2441,48 +2558,58 @@ var BWISO = (function () {
   function kSave(name, dim, x, z) {
     places.unshift({ id: Date.now().toString(36), name: String(name).slice(0, 40), dim: dim, x: Math.trunc(x), y: null, z: Math.trunc(z), note: 'berechnet mit der Seed-Karte' });
     storePlaces(); renderPlaces();
-    toast('„' + String(name).slice(0, 40) + '“ gespeichert', function () { openTool('orte'); }, 'Ansehen');
+    toast('„' + String(name).slice(0, 40) + '“ gespeichert', function () { kmFull(false); openTool('orte'); }, 'Ansehen');
   }
   $('k-res').addEventListener('click', function (e) {
     var b = e.target.closest('[data-a]'); if (!b) return;
     var it = kItems[+b.getAttribute('data-i')]; if (!it) return;
     var L = kLabel(it);
     if (b.getAttribute('data-a') === 'save') kSave(L.n, L.dim, it.x, it.z);
-    else { kmGo(L.dim, it.x, it.z, { i: L.i, n: L.n, c: L.c, sub: L.sub }); $('k-mapcard').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    else { kmGo(L.dim, it.x, it.z, { ic: L.ic, sw: L.sw, n: L.n, c: L.c, sub: L.sub, a: L.a, no: it.no }); $('k-mapcard').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
+  $('k-fit').addEventListener('click', function () { kmFit(); $('k-mapcard').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 
-  /* Karte: Biome als Kacheln, Bauwerke als Zeichen; Norden oben, X nach rechts, Z nach unten (wie im Spiel) */
-  var KT = 128, KMT = 2048;
-  var KM = { cv: $('k-cv'), ctx: null, w: 0, h: 0, dpr: 1, x: 0, z: 0, bpp: 2, dim: 'ober', tiles: new Map(), mk: new Map(), want: [], busy: '', hits: [], pts: new Map(),
-             tap: null, hide: {}, raf: 0, focus: null, pick: null, centered: '' };
-  function kmScale() { return KM.bpp < 2.5 ? 4 : KM.bpp < 10 ? 16 : 64; }
+  /* Karte: Biome als Kacheln mit Geländeschattierung, Bauwerke als Zeichen; Norden oben, X nach rechts, Z nach unten (wie im Spiel) */
+  var KT = 128, KMT = 2048, KSC = [1, 4, 16, 64];
+  var KM = { cv: $('k-cv'), ctx: null, w: 0, h: 0, dpr: 1, x: 0, z: 0, bpp: 2, dim: 'ober', tiles: new Map(), mk: new Map(), want: [], fly: {}, hits: [], pins: [],
+             pts: new Map(), tap: null, two: null, vel: [], hide: {}, raf: 0, focus: null, pick: null, centered: '', res: [], anim: null, inert: null,
+             lastTap: null, tapTimer: 0, spr: {}, full: false, cross: false, bio: '', bioT: 0, fade: false };
+  var KRM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function kNow() { return window.performance && performance.now ? performance.now() : Date.now(); }
+  function kmScale() { return KM.bpp < 0.6 ? 1 : KM.bpp < 2.5 ? 4 : KM.bpp < 10 ? 16 : 64; }
   function kmRedraw() { if (!KM.raf) KM.raf = requestAnimationFrame(kmDraw); }
   function kmEmpty() {
     var e = $('k-empty'), msg = SM.dead || (!seedNow() ? 'Trag oben den Seed deiner Welt ein, dann erscheint hier die Karte.' : '');
     e.textContent = msg; e.hidden = !msg;
   }
   function kmSize() {
-    var r = KM.cv.getBoundingClientRect(); if (!r.width) return false;
+    var r = KM.cv.getBoundingClientRect(); if (!r.width || !r.height) return false;
     var dpr = Math.min(window.devicePixelRatio || 1, 3);
+    if (dpr !== KM.dpr) KM.spr = {};
     KM.w = r.width; KM.h = r.height; KM.dpr = dpr;
     var W = Math.round(r.width * dpr), H = Math.round(r.height * dpr);
     if (KM.cv.width !== W || KM.cv.height !== H) { KM.cv.width = W; KM.cv.height = H; }
     KM.ctx = KM.cv.getContext('2d');
     return true;
   }
-  function kmSync() { [].forEach.call($('k-mdim').querySelectorAll('[data-dim]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-dim') === KM.dim)); }); }
+  function kmSync() {
+    [].forEach.call($('k-mdim').querySelectorAll('[data-dim]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-dim') === KM.dim)); });
+    kmPosFill();
+  }
   function kmShow() {
     kmEmpty(); kmLegend();
+    $('k-relief').checked = kOpt('relief', true); $('k-classic').checked = kOpt('classic', false);
     if (!seedNow() || SM.dead) { if (kmSize()) kmRedraw(); return; }
     var key = seedNow() + '|' + kVer();
-    if (KM.centered !== key) { KM.centered = key; KM.dim = here && DIMS[here.dim] ? here.dim : 'ober'; var o = kOrigin(KM.dim); KM.x = o.x; KM.z = o.z; KM.focus = null; kmSync(); }
+    if (KM.centered !== key) { KM.centered = key; KM.dim = here && DIMS[here.dim] ? here.dim : 'ober'; var o = kOrigin(KM.dim); KM.x = o.x; KM.z = o.z; KM.focus = null; KM.anim = null; kmSync(); }
     smReady().then(function () { kmSize(); kmRedraw(); }, function () { kmEmpty(); });
     if (kmSize()) kmRedraw();
   }
   function kmGo(dim, x, z, f) {
-    KM.dim = dim; KM.x = x; KM.z = z; KM.bpp = Math.min(KM.bpp, 2); KM.focus = { x: x, z: z }; kmSync(); kmLegend();
-    if (f) { KM.pick = { i: f.i, n: f.n, c: f.c, sub: f.sub, x: x, z: z, dim: dim }; kmPickShow(); }
-    kmShow(); kmRedraw();
+    if (f) { KM.pick = { ic: f.ic, sw: f.sw, n: f.n, c: f.c, sub: f.sub, a: f.a, no: f.no, x: x, z: z, dim: dim }; kmPickShow(); }
+    KM.focus = { x: x, z: z };
+    if (dim !== KM.dim) { KM.dim = dim; KM.x = x; KM.z = z; KM.bpp = Math.min(KM.bpp, 2); KM.anim = null; kmSync(); kmLegend(); kmShow(); return; }
+    kmFlyTo(x, z, Math.min(KM.bpp, 2)); kmShow();
   }
   function kmTypes() {
     if (KM.dim === 'nether') return [15, 16];
@@ -2495,110 +2622,304 @@ var BWISO = (function () {
     var ts = KM.dim === 'nether' ? [15, 16] : KM.dim === 'end' ? [17] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].filter(function (t) { return kSOk(KSD[t]); });
     $('k-legend').innerHTML = ts.map(function (t) {
       var s = KSD[t];
-      return '<button type="button" data-t="' + t + '" aria-pressed="' + !KM.hide[t] + '" style="--kc:' + s.c + '"><span aria-hidden="true">' + s.i + '</span>' + esc(s.n) + (t === 13 ? ' (ganz nah)' : '') + '</button>';
+      return '<button type="button" data-t="' + t + '" aria-pressed="' + !KM.hide[t] + '" style="--kc:' + s.c + '">' + kSvg(s.ic, s.c, 24) + esc(s.n) + (t === 13 ? ' (ganz nah)' : '') + '</button>';
     }).join('');
   }
   $('k-legend').addEventListener('click', function (e) { var b = e.target.closest('[data-t]'); if (!b) return; var t = +b.getAttribute('data-t'); KM.hide[t] = !KM.hide[t]; b.setAttribute('aria-pressed', String(!KM.hide[t])); kmRedraw(); });
   $('k-mdim').addEventListener('click', function (e) {
     var b = e.target.closest('[data-dim]'); if (!b) return; var d = b.getAttribute('data-dim'); if (d === KM.dim) return;
-    var o = kOrigin(d); KM.dim = d; KM.x = o.x; KM.z = o.z; KM.focus = null; KM.pick = null; kmPickShow(); kmSync(); kmLegend(); kmRedraw();
+    var o = kOrigin(d); KM.dim = d; KM.x = o.x; KM.z = o.z; KM.focus = null; KM.pick = null; KM.anim = null; KM.inert = null; kmPickShow(); kmSync(); kmLegend(); kmRedraw();
   });
+  function kmOpt() { saveJSON('krelief', $('k-relief').checked); saveJSON('kclassic', $('k-classic').checked); SM.key = ''; KM.bio = ''; kmShow(); if (kItems.length) kRender({ title: $('k-q').value || 'Suche' }, 1, 1); }
+  $('k-relief').addEventListener('change', kmOpt); $('k-classic').addEventListener('change', kmOpt);
   function kmView() { return { x0: KM.x - KM.w / 2 * KM.bpp, z0: KM.z - KM.h / 2 * KM.bpp, x1: KM.x + KM.w / 2 * KM.bpp, z1: KM.z + KM.h / 2 * KM.bpp }; }
+
+  /* Bewegung: weiches Zoomen, Flug zum Ziel, Schwung nach dem Wischen */
+  function kEaseOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function kEaseInOut(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function kClampB(b) { return Math.max(0.25, Math.min(64, b)); }
+  function kmZoomAt(px, py, f, dur) {
+    var a = KM.anim, b1 = kClampB((a && a.zoom ? a.b1 : KM.bpp) * f);
+    var wx = KM.x + (px - KM.w / 2) * KM.bpp, wz = KM.z + (py - KM.h / 2) * KM.bpp;
+    KM.inert = null;
+    if (KRM || !dur) { KM.bpp = b1; KM.x = wx - (px - KM.w / 2) * b1; KM.z = wz - (py - KM.h / 2) * b1; KM.anim = null; kmRedraw(); return; }
+    KM.anim = { zoom: true, t0: kNow(), dur: dur, b0: KM.bpp, b1: b1, px: px, py: py, wx: wx, wz: wz };
+    kmRedraw();
+  }
+  function kmFlyTo(x, z, b1) {
+    b1 = kClampB(b1); KM.inert = null;
+    var dx = x - KM.x, dz = z - KM.z, D = Math.sqrt(dx * dx + dz * dz), vw = Math.max(1, Math.min(KM.w, KM.h) * KM.bpp);
+    if (KRM || !KM.w) { KM.x = x; KM.z = z; KM.bpp = b1; KM.anim = null; kmRedraw(); return; }
+    var top = Math.max(KM.bpp, b1, D / Math.max(1, Math.min(KM.w, KM.h) * 0.7)), bump = Math.max(0, Math.log(top) - Math.max(Math.log(KM.bpp), Math.log(b1)));
+    KM.anim = { fly: true, t0: kNow(), dur: Math.min(1300, 420 + 260 * Math.log(1 + D / vw) / Math.LN2), x0: KM.x, z0: KM.z, x1: x, z1: z, b0: KM.bpp, b1: b1, bump: bump };
+    kmRedraw();
+  }
+  function kmStep(now) {
+    var a = KM.anim, busy = false;
+    if (a) {
+      var t = Math.min(1, (now - a.t0) / a.dur);
+      if (a.zoom) {
+        var e = kEaseOut(t), b = t >= 1 ? a.b1 : Math.exp(Math.log(a.b0) + (Math.log(a.b1) - Math.log(a.b0)) * e);
+        KM.bpp = b; KM.x = a.wx - (a.px - KM.w / 2) * b; KM.z = a.wz - (a.py - KM.h / 2) * b;
+      } else {
+        var e2 = kEaseInOut(t);
+        KM.bpp = Math.exp(Math.log(a.b0) + (Math.log(a.b1) - Math.log(a.b0)) * e2 + a.bump * Math.sin(Math.PI * t));
+        KM.x = a.x0 + (a.x1 - a.x0) * e2; KM.z = a.z0 + (a.z1 - a.z0) * e2;
+        if (t >= 1) { KM.bpp = a.b1; KM.x = a.x1; KM.z = a.z1; }
+      }
+      if (t >= 1) KM.anim = null; else busy = true;
+    }
+    var n = KM.inert;
+    if (n) {
+      var dt = Math.min(40, now - n.t); n.t = now;
+      KM.x -= n.vx * dt * KM.bpp; KM.z -= n.vy * dt * KM.bpp;
+      var k = Math.exp(-dt / 300); n.vx *= k; n.vy *= k;
+      if (Math.abs(n.vx) + Math.abs(n.vy) < 0.015) KM.inert = null; else busy = true;
+    }
+    return busy;
+  }
+
+  /* Zeichen als vorgezeichnete Bildchen (schneller als jedes Mal neu zeichnen) */
+  function kmSprite(ic, col, r) {
+    var key = ic + col + r, sp = KM.spr[key]; if (sp) return sp;
+    var d = KM.dpr, S = r * 2 + 8, c = document.createElement('canvas'); c.width = c.height = Math.ceil(S * d);
+    var x = c.getContext('2d'); x.scale(d, d);
+    x.shadowColor = 'rgba(0,0,0,.4)'; x.shadowBlur = 3; x.shadowOffsetY = 1;
+    x.beginPath(); x.arc(S / 2, S / 2, r, 0, Math.PI * 2); x.fillStyle = col; x.fill();
+    x.shadowColor = 'transparent'; x.lineWidth = 2; x.strokeStyle = '#fff'; x.stroke();
+    var isz = r * 1.25;
+    if (window.Path2D) { x.save(); x.translate(S / 2 - isz / 2, S / 2 - isz / 2); x.scale(isz / 24, isz / 24); x.fillStyle = '#fff'; x.fill(new Path2D(KICON[ic]), KEVEN[ic] ? 'evenodd' : 'nonzero'); x.restore(); }
+    else { x.beginPath(); x.arc(S / 2, S / 2, r * .35, 0, Math.PI * 2); x.fillStyle = '#fff'; x.fill(); }
+    sp = { c: c, S: S }; KM.spr[key] = sp; return sp;
+  }
+  function kmPin(no, hot) {
+    var key = 'pin' + no + (hot ? 'h' : ''), sp = KM.spr[key]; if (sp) return sp;
+    var d = KM.dpr, W = 30, H = 38, c = document.createElement('canvas'); c.width = Math.ceil(W * d); c.height = Math.ceil(H * d);
+    var x = c.getContext('2d'); x.scale(d, d);
+    x.shadowColor = 'rgba(0,0,0,.45)'; x.shadowBlur = 4; x.shadowOffsetY = 1.5;
+    x.beginPath(); x.moveTo(W / 2, H - 2); x.bezierCurveTo(W / 2 - 3, H - 10, 3, 22, 3, 14); x.arc(W / 2, 14, 12, Math.PI, 0); x.bezierCurveTo(W - 3, 22, W / 2 + 3, H - 10, W / 2, H - 2);
+    x.fillStyle = hot ? '#E8590C' : '#0B5CAD'; x.fill();
+    x.shadowColor = 'transparent'; x.lineWidth = 2; x.strokeStyle = '#fff'; x.stroke();
+    x.fillStyle = '#fff'; x.font = '700 ' + (no > 9 ? 11 : 13) + 'px system-ui,-apple-system,"Segoe UI",sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(no), W / 2, 14.5);
+    sp = { c: c, W: W, H: H }; KM.spr[key] = sp; return sp;
+  }
+  // Muster für Nether und End, an der Welt verankert
+  function kmPattern(dim) {
+    var key = 'pat' + dim; if (KM.spr[key]) return KM.spr[key];
+    var c = document.createElement('canvas'); c.width = c.height = 64; var x = c.getContext('2d'), s = dim === 'nether' ? 7 : 3;
+    x.fillStyle = dim === 'nether' ? '#3b1d1a' : '#211a35'; x.fillRect(0, 0, 64, 64);
+    function rnd() { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+    for (var i = 0; i < (dim === 'nether' ? 140 : 26); i++) {
+      var px = Math.floor(rnd() * 64), py = Math.floor(rnd() * 64), v = rnd();
+      if (dim === 'nether') { x.fillStyle = v < .5 ? '#46221e' : v < .85 ? '#311715' : '#5c2a1c'; x.fillRect(px, py, 2 + Math.floor(rnd() * 3), 2); }
+      else { x.fillStyle = v < .7 ? 'rgba(200,190,255,.55)' : 'rgba(255,255,255,.85)'; x.fillRect(px, py, 1, 1); }
+    }
+    var p = KM.ctx.createPattern(c, 'repeat'); KM.spr[key] = p; return p;
+  }
+  function kmTileAt(wx, wz) {
+    var s = kmScale(), size = KT * s, tl = KM.tiles.get(s + ':' + Math.floor(wx / size) + ':' + Math.floor(wz / size));
+    if (!tl) return null;
+    return { tl: tl, k: Math.floor((wz - tl.z0) / s) * KT + Math.floor((wx - tl.x0) / s) };
+  }
+  function kmBiomeAt(wx, wz) { var t = kmTileAt(wx, wz); return t ? t.tl.ids[t.k] : -1; }
+  function kmHeightAt(wx, wz) { var t = kmTileAt(wx, wz); return t ? t.tl.h[t.k] : null; }
+  function kHalo(c, text, x, y, size, weight) {
+    c.font = (weight || 600) + ' ' + size + 'px system-ui,-apple-system,"Segoe UI",sans-serif';
+    c.lineJoin = 'round'; c.lineWidth = 3; c.strokeStyle = 'rgba(8,18,32,.72)'; c.strokeText(text, x, y); c.fillStyle = '#F4F8FD'; c.fillText(text, x, y);
+  }
+
   function kmDraw() {
     KM.raf = 0;
-    if (!KM.ctx && !kmSize()) return;
-    var c = KM.ctx, v = kmView(), bpp = KM.bpp, ready = !!SM.init && !SM.dead && !!seedNow(), want = [];
+    if (!kmSize()) return;
+    var now = kNow(), moving = kmStep(now);
+    var c = KM.ctx, v = kmView(), bpp = KM.bpp, ready = !!SM.init && !SM.dead && !!seedNow(), want = [], fading = false;
     c.setTransform(KM.dpr, 0, 0, KM.dpr, 0, 0);
     c.imageSmoothingEnabled = false;
-    c.fillStyle = KM.dim === 'nether' ? '#3a1c1a' : KM.dim === 'end' ? '#221a36' : '#1b2a3a';
-    c.fillRect(0, 0, KM.w, KM.h);
+    if (KM.dim === 'ober') { c.fillStyle = '#1b2a3a'; c.fillRect(0, 0, KM.w, KM.h); }
+    else {
+      var ox = Math.round(-v.x0 / bpp) % 64, oz = Math.round(-v.z0 / bpp) % 64;
+      c.save(); c.translate(ox, oz); c.fillStyle = kmPattern(KM.dim); c.fillRect(-ox, -oz, KM.w, KM.h); c.restore();
+    }
     if (ready && KM.dim === 'ober') {
       var s = kmScale(), size = KT * s;
-      for (var tx = Math.floor(v.x0 / size); tx <= Math.floor(v.x1 / size); tx++) {
-        for (var tz = Math.floor(v.z0 / size); tz <= Math.floor(v.z1 / size); tz++) {
-          var key = s + ':' + tx + ':' + tz, tl = KM.tiles.get(key), sx = (tx * size - v.x0) / bpp, sy = (tz * size - v.z0) / bpp, sw = size / bpp;
-          if (tl) { c.drawImage(tl.cv, sx, sy, sw, sw); tl.used = Date.now(); continue; }
-          // Solange die Kachel rechnet: gröbere oder feinere vorhandene Kachel zeigen
-          var cs = s * 4, csize = KT * cs, cx = Math.floor(tx * size / csize), cz = Math.floor(tz * size / csize), ct = cs <= 64 ? KM.tiles.get(cs + ':' + cx + ':' + cz) : null;
-          if (ct) {
-            var f = KT / 4, ox = (tx * size - cx * csize) / cs, oz = (tz * size - cz * csize) / cs;
-            c.drawImage(ct.cv, ox, oz, f, f, sx, sy, sw, sw);
+      var tx0 = Math.floor(v.x0 / size), tx1 = Math.floor(v.x1 / size), tz0 = Math.floor(v.z0 / size), tz1 = Math.floor(v.z1 / size);
+      for (var tx = tx0 - 1; tx <= tx1 + 1; tx++) {
+        for (var tz = tz0 - 1; tz <= tz1 + 1; tz++) {
+          var key = s + ':' + tx + ':' + tz, tl = KM.tiles.get(key), mx = (tx + 0.5) * size - KM.x, mz = (tz + 0.5) * size - KM.z;
+          var inView = tx >= tx0 && tx <= tx1 && tz >= tz0 && tz <= tz1;
+          if (!inView) { if (!tl && !moving) want.push({ k: 't', key: key, s: s, tx: tx, tz: tz, d: 1e15 + mx * mx + mz * mz }); continue; }
+          var sx = (tx * size - v.x0) / bpp, sy = (tz * size - v.z0) / bpp, sw = size / bpp, al = tl ? Math.min(1, (now - tl.t0) / 220) : 0;
+          if (tl) tl.used = now;
+          if (al < 1) {
+            kmFallback(c, s, tx, tz, sx, sy, sw);
+            if (!tl) { want.push({ k: 't', key: key, s: s, tx: tx, tz: tz, d: mx * mx + mz * mz }); continue; }
+            fading = true; c.globalAlpha = al;
           }
-          var mx = (tx + 0.5) * size - KM.x, mz = (tz + 0.5) * size - KM.z;
-          want.push({ k: 't', key: key, s: s, tx: tx, tz: tz, d: mx * mx + mz * mz });
+          c.drawImage(tl.cv, sx, sy, sw, sw); c.globalAlpha = 1;
         }
       }
     }
-    // Raster: Linien alle 128 bis 16384 Blöcke, die Achsen X = 0 und Z = 0 kräftiger
-    var g = [128, 512, 2048, 8192, 32768].filter(function (n) { return n / bpp >= 90; })[0] || 32768;
-    c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,.13)'; c.beginPath();
-    for (var gx = Math.ceil(v.x0 / g) * g; gx <= v.x1; gx += g) { var px = Math.round((gx - v.x0) / bpp) + 0.5; c.moveTo(px, 0); c.lineTo(px, KM.h); }
-    for (var gz = Math.ceil(v.z0 / g) * g; gz <= v.z1; gz += g) { var py = Math.round((gz - v.z0) / bpp) + 0.5; c.moveTo(0, py); c.lineTo(KM.w, py); }
+    // Raster: Linien alle 128 bis 32768 Blöcke, die Achsen X = 0 und Z = 0 kräftiger, Koordinaten am Rand
+    var g = [16, 128, 512, 2048, 8192, 32768].filter(function (n) { return n / bpp >= 90; })[0] || 32768;
+    c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,.12)'; c.beginPath();
+    var gxs = [], gzs = [];
+    for (var gx = Math.ceil(v.x0 / g) * g; gx <= v.x1; gx += g) { var px = Math.round((gx - v.x0) / bpp) + 0.5; c.moveTo(px, 0); c.lineTo(px, KM.h); gxs.push([gx, px]); }
+    for (var gz = Math.ceil(v.z0 / g) * g; gz <= v.z1; gz += g) { var py = Math.round((gz - v.z0) / bpp) + 0.5; c.moveTo(0, py); c.lineTo(KM.w, py); gzs.push([gz, py]); }
     c.stroke();
-    c.strokeStyle = 'rgba(255,255,255,.38)'; c.beginPath();
+    c.strokeStyle = 'rgba(255,255,255,.4)'; c.beginPath();
     if (v.x0 <= 0 && v.x1 >= 0) { var ax = Math.round(-v.x0 / bpp) + 0.5; c.moveTo(ax, 0); c.lineTo(ax, KM.h); }
     if (v.z0 <= 0 && v.z1 >= 0) { var az = Math.round(-v.z0 / bpp) + 0.5; c.moveTo(0, az); c.lineTo(KM.w, az); }
     c.stroke();
+    c.textBaseline = 'alphabetic'; c.textAlign = 'center';
+    gxs.forEach(function (p) { if (p[1] > 160 && p[1] < KM.w - 30) kHalo(c, 'X ' + fmtN(p[0] + 0), p[1], KM.h - 9, 11, 500); });
+    c.textAlign = 'left';
+    gzs.forEach(function (p) { if (p[1] > 52 && p[1] < KM.h - 36) kHalo(c, 'Z ' + fmtN(p[0] + 0), 6, p[1] - 4, 11, 500); });
+    // Biomnamen in großen Flächen
+    var boxes = [];
+    if (ready && KM.dim === 'ober' && bpp <= 12) {
+      var st = Math.pow(2, Math.ceil(Math.log(170 * bpp) / Math.LN2)), n = 0;
+      c.textAlign = 'center'; c.textBaseline = 'middle';
+      for (var lx = Math.floor(v.x0 / st) * st + st / 2; lx < v.x1 && n < 10; lx += st) {
+        for (var lz = Math.floor(v.z0 / st) * st + st / 2; lz < v.z1 && n < 10; lz += st) {
+          var b0 = kmBiomeAt(lx, lz); if (b0 < 0 || !KB[b0]) continue;
+          var r0 = st * 0.32;
+          if (kmBiomeAt(lx - r0, lz) !== b0 || kmBiomeAt(lx + r0, lz) !== b0 || kmBiomeAt(lx, lz - r0) !== b0 || kmBiomeAt(lx, lz + r0) !== b0) continue;
+          var qx = (lx - v.x0) / bpp, qz = (lz - v.z0) / bpp, tw = kBName(b0).length * 6.6 + 8;
+          if (qx < tw / 2 + 4 || qx > KM.w - tw / 2 - 52 || qz < 48 || qz > KM.h - 40) continue;
+          boxes.push([qx - tw / 2, qz - 9, qx + tw / 2, qz + 9]);
+          c.font = 'italic 500 12px system-ui,-apple-system,"Segoe UI",sans-serif';
+          c.lineJoin = 'round'; c.lineWidth = 3; c.strokeStyle = 'rgba(8,18,32,.6)'; c.strokeText(kBName(b0), qx, qz); c.fillStyle = 'rgba(244,248,253,.95)'; c.fillText(kBName(b0), qx, qz);
+          n++;
+        }
+      }
+    }
     // Bauwerke
     KM.hits = [];
     var info = '';
     if (ready && bpp <= 16) {
-      var ts = kmTypes().filter(function (t) { return !KM.hide[t]; }), tk = ts.join(','), rad = bpp > 6 ? 8 : 11;
+      var ts = kmTypes().filter(function (t) { return !KM.hide[t]; }), tk = ts.join(','), rad = bpp > 6 ? 8 : bpp > 2.5 ? 10 : 12, names = bpp <= 0.9;
+      c.textAlign = 'center'; c.textBaseline = 'top';
       for (var mx2 = Math.floor(v.x0 / KMT); mx2 <= Math.floor(v.x1 / KMT); mx2++) {
         for (var mz2 = Math.floor(v.z0 / KMT); mz2 <= Math.floor(v.z1 / KMT); mz2++) {
           var mkey = KM.dim + '|' + tk + '|' + mx2 + ':' + mz2, ml = KM.mk.get(mkey);
           if (!ml) { if (ts.length) want.push({ k: 'm', key: mkey, mx: mx2, mz: mz2, ts: ts, d: -1 }); continue; }
-          ml.used = Date.now();
+          ml.used = now;
           for (var i = 0; i < ml.a.length; i += 4) {
             var t = ml.a[i], wx = ml.a[i + 1], wz = ml.a[i + 2], s2 = KSD[t];
-            var qx = (wx - v.x0) / bpp, qz = (wz - v.z0) / bpp;
-            if (qx < -20 || qz < -20 || qx > KM.w + 20 || qz > KM.h + 20) continue;
-            c.beginPath(); c.arc(qx, qz, rad, 0, Math.PI * 2); c.fillStyle = 'rgba(244,248,253,.92)'; c.fill();
-            c.lineWidth = rad > 8 ? 2.5 : 2; c.strokeStyle = s2.c; c.stroke();
-            c.font = (rad > 8 ? 13 : 10) + 'px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
-            c.fillStyle = '#13263F'; c.fillText(s2.i, qx, qz + 1);
-            KM.hits.push({ x: qx, y: qz, t: t, wx: wx, wz: wz, e: ml.a[i + 3] });
+            var qx2 = (wx - v.x0) / bpp, qz2 = (wz - v.z0) / bpp;
+            if (qx2 < -20 || qz2 < -20 || qx2 > KM.w + 20 || qz2 > KM.h + 20) continue;
+            var sp = kmSprite(s2.ic, s2.c, rad);
+            c.drawImage(sp.c, qx2 - sp.S / 2, qz2 - sp.S / 2, sp.S, sp.S);
+            if (names) kHalo(c, s2.n, qx2, qz2 + rad + 3, 11, 600);
+            KM.hits.push({ x: qx2, y: qz2, t: t, wx: wx, wz: wz, e: ml.a[i + 3] });
           }
         }
       }
     } else if (ready) info = 'Für Bauwerke näher heranzoomen';
-    // Ziel und eigener Standort
-    if (KM.focus) {
+    // Linie von dir zum Ziel
+    var o = here && DIMS[here.dim] && here.dim === KM.dim ? here : null, hx = 0, hz = 0;
+    if (o) { hx = (o.x - v.x0) / bpp; hz = (o.z - v.z0) / bpp; }
+    if (o && KM.focus && (KM.focus.x !== o.x || KM.focus.z !== o.z)) {
       var fx = (KM.focus.x - v.x0) / bpp, fz = (KM.focus.z - v.z0) / bpp;
-      c.beginPath(); c.arc(fx, fz, 19, 0, Math.PI * 2); c.lineWidth = 3; c.strokeStyle = '#FF9B61'; c.stroke();
+      c.save(); c.setLineDash([7, 6]); c.lineWidth = 3; c.strokeStyle = 'rgba(255,255,255,.85)'; c.beginPath(); c.moveTo(hx, hz); c.lineTo(fx, fz); c.stroke();
+      c.lineWidth = 1.5; c.strokeStyle = '#0B5CAD'; c.stroke(); c.restore();
+      var dx = KM.focus.x - o.x, dz = KM.focus.z - o.z, dd = Math.round(Math.sqrt(dx * dx + dz * dz)), lab = fmtN(dd) + ' Blöcke · ' + kDir(dx, dz);
+      if (Math.hypot(fx - hx, fz - hz) > 150) {
+      var mxl = Math.max(70, Math.min(KM.w - 70, (hx + fx) / 2)), mzl = Math.max(56, Math.min(KM.h - 50, (hz + fz) / 2));
+      c.font = '600 12px system-ui,-apple-system,"Segoe UI",sans-serif'; var lw = c.measureText(lab).width + 16;
+      c.fillStyle = 'rgba(11,92,173,.94)'; kRound(c, mxl - lw / 2, mzl - 12, lw, 24, 12); c.fill();
+      c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(lab, mxl, mzl + 0.5);
+      }
     }
-    var o = here && DIMS[here.dim] && here.dim === KM.dim ? here : null;
-    if (o) {
-      var hx = (o.x - v.x0) / bpp, hz = (o.z - v.z0) / bpp;
-      c.beginPath(); c.arc(hx, hz, 8, 0, Math.PI * 2); c.fillStyle = '#0B5CAD'; c.fill(); c.lineWidth = 3; c.strokeStyle = '#FFFFFF'; c.stroke();
+    if (KM.focus) {
+      var fx2 = (KM.focus.x - v.x0) / bpp, fz2 = (KM.focus.z - v.z0) / bpp;
+      c.beginPath(); c.arc(fx2, fz2, 19, 0, Math.PI * 2); c.lineWidth = 3; c.strokeStyle = '#FF9B61'; c.stroke();
     }
-    $('k-mapinfo').textContent = ready ? (DIMS[KM.dim] + ' · Mitte X ' + Math.round(KM.x) + ' / Z ' + Math.round(KM.z) + (KM.dim !== 'ober' ? ' · ohne Biome' : '') + (info ? ' · ' + info : '')) : '';
+    // Funde der Suche als nummerierte Nadeln
+    KM.pins = [];
+    KM.res.forEach(function (it) {
+      var L = kLabel(it); if (L.dim !== KM.dim) return;
+      var qx3 = (it.x - v.x0) / bpp, qz3 = (it.z - v.z0) / bpp;
+      if (qx3 < -30 || qz3 < -40 || qx3 > KM.w + 30 || qz3 > KM.h + 40) return;
+      var hot = KM.focus && KM.focus.x === it.x && KM.focus.z === it.z, sp3 = kmPin(it.no, hot);
+      c.drawImage(sp3.c, qx3 - sp3.W / 2, qz3 - sp3.H + 2, sp3.W, sp3.H);
+      KM.pins.push({ x: qx3, y: qz3 - 22, it: it });
+    });
+    // Eigener Standort als pulsierende Markierung (HTML über der Karte)
+    var you = $('k-you');
+    if (o && hx > -40 && hz > -40 && hx < KM.w + 40 && hz < KM.h + 40) { you.hidden = false; you.style.transform = 'translate(' + hx.toFixed(1) + 'px,' + hz.toFixed(1) + 'px)'; }
+    else you.hidden = true;
+    // Infozeile: Dimension, Mitte, mit Fadenkreuz Biom und Höhe der Mitte
+    var mid = DIMS[KM.dim] + ' · Mitte X ' + Math.round(KM.x) + ' / Z ' + Math.round(KM.z);
+    if (KM.cross && ready && KM.dim === 'ober') {
+      var cb = kmBiomeAt(KM.x, KM.z), ch = kmHeightAt(KM.x, KM.z);
+      mid = (cb >= 0 ? kBName(cb) + ' · ' : '') + 'X ' + Math.round(KM.x) + ' / Z ' + Math.round(KM.z) + (ch != null ? ' · Gelände etwa Y ' + ch : '');
+    }
+    $('k-mapinfo').textContent = ready ? mid + (KM.dim !== 'ober' ? ' · ohne Biome' : '') + (info ? ' · ' + info : '') : '';
     // Maßstab
-    var L = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000].filter(function (n) { return n / bpp >= 60; })[0] || 25000;
-    $('k-scale').firstChild.style.width = Math.round(L / bpp) + 'px';
-    $('k-scale').lastChild.textContent = fmtN(L) + ' Blöcke';
-    // Rechenaufträge: Bauwerke zuerst (schnell), dann Kacheln von der Mitte nach außen
+    var Lm = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000].filter(function (n) { return n / bpp >= 60; })[0] || 25000;
+    $('k-scale').firstChild.style.width = Math.round(Lm / bpp) + 'px';
+    $('k-scale').lastChild.textContent = fmtN(Lm) + ' Blöcke';
+    // Biome im Bild (höchstens alle halbe Sekunde)
+    if (now - KM.bioT > 500 && !moving) { KM.bioT = now; kmBiomeList(v); }
+    // Rechenaufträge: Bauwerke zuerst (schnell), dann Kacheln von der Mitte nach außen, zuletzt der Rand
     want.sort(function (a, b) { return a.d - b.d; });
     KM.want = want; kmPump();
+    if (moving || fading) kmRedraw();
   }
+  function kRound(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  // Solange eine Kachel rechnet: gröbere oder feinere vorhandene Kacheln zeigen
+  function kmFallback(c, s, tx, tz, sx, sy, sw) {
+    var i = KSC.indexOf(s), size = KT * s;
+    if (i < KSC.length - 1) {
+      var cs = KSC[i + 1], csize = KT * cs, cx = Math.floor(tx * size / csize), cz = Math.floor(tz * size / csize), ct = KM.tiles.get(cs + ':' + cx + ':' + cz);
+      if (ct) { var f = KT * s / cs; c.drawImage(ct.cv, (tx * size - cx * csize) / cs, (tz * size - cz * csize) / cs, f, f, sx, sy, sw, sw); return; }
+    }
+    if (i > 0) {
+      var fs = KSC[i - 1], m = s / fs, fsw = sw / m;
+      for (var a = 0; a < m; a++) for (var b = 0; b < m; b++) {
+        var ft = KM.tiles.get(fs + ':' + (tx * m + a) + ':' + (tz * m + b));
+        if (ft) { c.imageSmoothingEnabled = true; c.drawImage(ft.cv, sx + a * fsw, sy + b * fsw, fsw, fsw); c.imageSmoothingEnabled = false; }
+      }
+    }
+  }
+  function kmBiomeList(v) {
+    var el = $('k-biomes');
+    if (KM.dim !== 'ober' || !SM.init) { if (KM.bio) { KM.bio = ''; el.innerHTML = ''; } return; }
+    var cnt = {}, tot = 0, stp = Math.max(1, Math.round(KM.bpp * 14));
+    for (var x = v.x0; x < v.x1; x += stp * 2) for (var z = v.z0; z < v.z1; z += stp * 2) { var b = kmBiomeAt(x, z); if (b >= 0) { cnt[b] = (cnt[b] || 0) + 1; tot++; } }
+    var top = Object.keys(cnt).filter(function (b) { return cnt[b] / tot >= 0.02; }).sort(function (a, b) { return cnt[b] - cnt[a]; }).slice(0, 8);
+    var key = top.join(',') + kOpt('classic', false);
+    if (key === KM.bio) return; KM.bio = key;
+    el.innerHTML = top.length ? '<span class="small">Biome im Bild:</span>' + top.map(function (b) { return '<button type="button" data-b="' + b + '" title="Nächstes ' + esc(kBName(+b)) + ' suchen">' + kSwatch(kBCol(+b), 18) + esc(kBName(+b)) + '</button>'; }).join('') : '';
+  }
+  $('k-biomes').addEventListener('click', function (e) { var b = e.target.closest('[data-b]'); if (!b) return; var n = kBName(+b.getAttribute('data-b')); $('k-q').value = n; kSearch(n, true); });
   function kmPump() {
-    if (KM.busy || !KM.want.length || !SM.init) return;
-    var job = KM.want.shift(), key0 = SM.key;
-    if ((job.k === 't' ? KM.tiles : KM.mk).has(job.key)) { kmPump(); return; }
-    KM.busy = job.key;
+    if (!SM.init || SM.dead) return;
+    var ws = SM.ws;
+    while (KM.want.length) {
+      var wi = -1; for (var i = ws.length - 1; i >= 0; i--) if (ws[i].p === 0) { wi = i; break; }
+      if (wi < 0) return;
+      var job = KM.want.shift();
+      if ((job.k === 't' ? KM.tiles : KM.mk).has(job.key) || KM.fly[job.key]) continue;
+      kmJob(job, wi);
+    }
+  }
+  function kmJob(job, wi) {
+    var key0 = SM.key; KM.fly[job.key] = 1;
     var p = job.k === 't'
-      ? smCall('tile', { x0: job.tx * KT * job.s, z0: job.tz * KT * job.s, n: KT, s: job.s }).then(function (r) {
+      ? smCall('tile', { x0: job.tx * KT * job.s, z0: job.tz * KT * job.s, n: KT, s: job.s }, null, wi).then(function (r) {
         if (key0 !== SM.key) return;
         var cv = document.createElement('canvas'); cv.width = cv.height = KT;
         cv.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(r.px), KT, KT), 0, 0);
-        KM.tiles.set(job.key, { cv: cv, ids: new Uint8Array(r.ids), s: job.s, x0: job.tx * KT * job.s, z0: job.tz * KT * job.s, used: Date.now() });
-        kmTrim(KM.tiles, 180);
+        KM.tiles.set(job.key, { cv: cv, ids: new Uint8Array(r.ids), h: new Int16Array(r.h), s: job.s, x0: job.tx * KT * job.s, z0: job.tz * KT * job.s, used: kNow(), t0: kNow() });
+        kmTrim(KM.tiles, 220);
       })
-      : smCall('marks', { cx0: job.mx * KMT / 16, cz0: job.mz * KMT / 16, cx1: (job.mx + 1) * KMT / 16 - 1, cz1: (job.mz + 1) * KMT / 16 - 1, t: job.ts }).then(function (a) {
+      : smCall('marks', { cx0: job.mx * KMT / 16, cz0: job.mz * KMT / 16, cx1: (job.mx + 1) * KMT / 16 - 1, cz1: (job.mz + 1) * KMT / 16 - 1, t: job.ts }, null, wi).then(function (a) {
         if (key0 !== SM.key) return;
-        KM.mk.set(job.key, { a: a, used: Date.now() }); kmTrim(KM.mk, 400);
+        KM.mk.set(job.key, { a: a, used: kNow() }); kmTrim(KM.mk, 400);
       });
-    p.catch(function () {}).then(function () { KM.busy = ''; kmRedraw(); });
+    p.catch(function () {}).then(function () { delete KM.fly[job.key]; kmRedraw(); });
   }
   function kmTrim(map, max) {
     if (map.size <= max) return;
@@ -2606,24 +2927,35 @@ var BWISO = (function () {
     a.sort(function (p, q) { return p[0] - q[0]; });
     for (var i = 0; i < a.length - max; i++) map.delete(a[i][1]);
   }
-  function kmZoom(px, py, f) {
-    var nb = Math.max(0.25, Math.min(64, KM.bpp * f));
-    var wx = KM.x + (px - KM.w / 2) * KM.bpp, wz = KM.z + (py - KM.h / 2) * KM.bpp;
-    KM.bpp = nb; KM.x = wx - (px - KM.w / 2) * nb; KM.z = wz - (py - KM.h / 2) * nb;
-    kmRedraw();
+  function kmFit() {
+    var dim = KM.res.some(function (it) { return kLabel(it).dim === KM.dim; }) ? KM.dim : (KM.res[0] ? kLabel(KM.res[0]).dim : KM.dim);
+    var pts = KM.res.filter(function (it) { return kLabel(it).dim === dim; }).map(function (it) { return [it.x, it.z]; });
+    if (!pts.length) return;
+    var o = kOrigin(dim); pts.push([o.x, o.z]);
+    var x0 = Math.min.apply(null, pts.map(function (p) { return p[0]; })), x1 = Math.max.apply(null, pts.map(function (p) { return p[0]; }));
+    var z0 = Math.min.apply(null, pts.map(function (p) { return p[1]; })), z1 = Math.max.apply(null, pts.map(function (p) { return p[1]; }));
+    if (dim !== KM.dim) { KM.dim = dim; kmSync(); kmLegend(); }
+    if (!kmSize()) { KM.x = (x0 + x1) / 2; KM.z = (z0 + z1) / 2; return; }
+    var b = Math.max((x1 - x0) / Math.max(60, KM.w - 90), (z1 - z0) / Math.max(60, KM.h - 130), 0.6);
+    kmFlyTo((x0 + x1) / 2, (z0 + z1) / 2 + 12 * b, b);
   }
+
+  /* Bedienung: ein Finger verschiebt (mit Schwung), zwei Finger zoomen, Doppeltipp zoomt heran, Zwei-Finger-Tipp heraus */
   function kmXY(e) { var r = KM.cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
   KM.cv.addEventListener('pointerdown', function (e) {
     try { KM.cv.setPointerCapture(e.pointerId); } catch (er) {}
-    var p = kmXY(e); KM.pts.set(e.pointerId, p);
-    KM.tap = KM.pts.size === 1 ? { x: p.x, y: p.y, t: Date.now(), moved: false } : null;
+    var p = kmXY(e), now = kNow(); KM.pts.set(e.pointerId, p);
+    KM.anim = null; KM.inert = null;
+    if (KM.pts.size === 1) { KM.tap = { x: p.x, y: p.y, t: now, moved: false }; KM.vel = [{ t: now, x: p.x, y: p.y }]; KM.two = null; }
+    else { KM.tap = null; if (KM.pts.size === 2) KM.two = { t: now, moved: false }; }
   });
   KM.cv.addEventListener('pointermove', function (e) {
     var old = KM.pts.get(e.pointerId); if (!old) return;
-    var p = kmXY(e);
+    var p = kmXY(e), now = kNow();
     if (KM.pts.size === 1) {
       KM.x -= (p.x - old.x) * KM.bpp; KM.z -= (p.y - old.y) * KM.bpp;
       if (KM.tap && Math.abs(p.x - KM.tap.x) + Math.abs(p.y - KM.tap.y) > 8) KM.tap.moved = true;
+      KM.vel.push({ t: now, x: p.x, y: p.y }); while (KM.vel.length > 2 && now - KM.vel[0].t > 90) KM.vel.shift();
       KM.pts.set(e.pointerId, p); kmRedraw(); return;
     }
     var ids = Array.from(KM.pts.keys()), oth = KM.pts.get(ids[0] === e.pointerId ? ids[1] : ids[0]);
@@ -2631,54 +2963,139 @@ var BWISO = (function () {
       var d0 = Math.hypot(old.x - oth.x, old.y - oth.y), d1 = Math.hypot(p.x - oth.x, p.y - oth.y);
       var m0 = { x: (old.x + oth.x) / 2, y: (old.y + oth.y) / 2 }, m1 = { x: (p.x + oth.x) / 2, y: (p.y + oth.y) / 2 };
       KM.x -= (m1.x - m0.x) * KM.bpp; KM.z -= (m1.y - m0.y) * KM.bpp;
-      if (d0 > 10 && d1 > 10) kmZoom(m1.x, m1.y, d0 / d1);
+      if (d0 > 10 && d1 > 10) kmZoomAt(m1.x, m1.y, d0 / d1, 0);
+      if (KM.two && (Math.abs(d1 - d0) > 1.5 || Math.abs(m1.x - m0.x) + Math.abs(m1.y - m0.y) > 1.5)) KM.two.movedPx = (KM.two.movedPx || 0) + Math.abs(d1 - d0) + Math.abs(m1.x - m0.x) + Math.abs(m1.y - m0.y);
+      if (KM.two && KM.two.movedPx > 12) KM.two.moved = true;
     }
     KM.pts.set(e.pointerId, p); kmRedraw();
   });
   function kmUp(e) {
     if (!KM.pts.has(e.pointerId)) return;
+    var n = KM.pts.size, last = KM.pts.get(e.pointerId), now = kNow();
     KM.pts.delete(e.pointerId);
+    if (n === 2 && KM.two && !KM.two.moved && now - KM.two.t < 350 && e.type === 'pointerup') {
+      var oth = KM.pts.get(Array.from(KM.pts.keys())[0]);
+      KM.two = null; KM.tap = null; KM.vel = [];
+      if (oth) kmZoomAt((last.x + oth.x) / 2, (last.y + oth.y) / 2, 2, 260);
+      return;
+    }
+    if (n === 2) { KM.vel = []; KM.two = null; return; }
+    if (n !== 1) return;
     var t = KM.tap; KM.tap = null;
-    if (e.type === 'pointerup' && t && !t.moved && Date.now() - t.t < 600) kmPick(t.x, t.y);
+    if (e.type === 'pointerup' && t && !t.moved && now - t.t < 600) { kmTap(t.x, t.y); return; }
+    // Schwung: Geschwindigkeit der letzten 90 ms
+    var vs = KM.vel; KM.vel = [];
+    if (t && t.moved && vs.length >= 2 && !KRM) {
+      var a = vs[0], b = vs[vs.length - 1], dt = Math.max(16, b.t - a.t);
+      if (now - b.t < 60) {
+        var vx = (b.x - a.x) / dt, vy = (b.y - a.y) / dt;
+        var sp = Math.sqrt(vx * vx + vy * vy), cap = 2.4;
+        if (sp > cap) { vx *= cap / sp; vy *= cap / sp; }
+        if (sp > 0.25) { KM.inert = { vx: vx, vy: vy, t: now }; kmRedraw(); }
+      }
+    }
   }
   KM.cv.addEventListener('pointerup', kmUp); KM.cv.addEventListener('pointercancel', kmUp);
-  KM.cv.addEventListener('wheel', function (e) { e.preventDefault(); var p = kmXY(e); kmZoom(p.x, p.y, Math.exp(Math.max(-60, Math.min(60, e.deltaY)) * 0.006)); }, { passive: false });
-  $('k-zin').addEventListener('click', function () { kmZoom(KM.w / 2, KM.h / 2, 0.5); });
-  $('k-zout').addEventListener('click', function () { kmZoom(KM.w / 2, KM.h / 2, 2); });
-  $('k-me').addEventListener('click', function () { var o = kOrigin(KM.dim); KM.x = o.x; KM.z = o.z; kmRedraw(); });
+  function kmTap(x, y) {
+    var now = kNow(), lt = KM.lastTap;
+    if (lt && now - lt.t < 320 && Math.abs(lt.x - x) + Math.abs(lt.y - y) < 36) {
+      clearTimeout(KM.tapTimer); KM.lastTap = null;
+      kmZoomAt(x, y, 0.5, 260); return;
+    }
+    KM.lastTap = { x: x, y: y, t: now };
+    clearTimeout(KM.tapTimer);
+    KM.tapTimer = setTimeout(function () { KM.lastTap = null; kmPick(x, y); }, 270);
+  }
+  KM.cv.addEventListener('wheel', function (e) { e.preventDefault(); var p = kmXY(e); kmZoomAt(p.x, p.y, Math.exp(Math.max(-80, Math.min(80, e.deltaY * (e.deltaMode === 1 ? 16 : 1))) * 0.0045), 170); }, { passive: false });
+  KM.cv.addEventListener('dblclick', function (e) { e.preventDefault(); });
+  $('k-zin').addEventListener('click', function () { kmZoomAt(KM.w / 2, KM.h / 2, 0.5, 260); });
+  $('k-zout').addEventListener('click', function () { kmZoomAt(KM.w / 2, KM.h / 2, 2, 260); });
+  $('k-me').addEventListener('click', function () { var o = kOrigin(KM.dim); kmFlyTo(o.x, o.z, KM.bpp); });
+  $('k-xhair').addEventListener('click', function () { KM.cross = !KM.cross; this.setAttribute('aria-pressed', String(KM.cross)); $('k-cross').hidden = !KM.cross; kmRedraw(); });
+  function kmFsInfo(t) { $('k-fsmsg').textContent = t; }
+  var kHome = null;
+  function kmFull(on) {
+    if (on === KM.full) return;
+    KM.full = on;
+    var m = $('k-map');
+    // Vollbild: Karte direkt an den Seitenkörper hängen, sonst hält sie ein Elternelement mit Verschiebung fest
+    if (on) { kHome = { p: m.parentNode, n: m.nextSibling }; document.body.appendChild(m); }
+    else if (kHome) { kHome.p.insertBefore(m, kHome.n); kHome = null; }
+    m.classList.toggle('kfull', on); document.documentElement.classList.toggle('kfullon', on);
+    $('k-fsq').hidden = !on; $('k-full').setAttribute('aria-label', on ? 'Vollbild beenden' : 'Vollbild'); $('k-full').textContent = on ? '✕' : '⤢';
+    if (on) { $('k-fq').value = $('k-q').value; kmFsInfo(''); }
+    requestAnimationFrame(function () { kmSize(); kmRedraw(); });
+  }
+  $('k-full').addEventListener('click', function () { kmFull(!KM.full); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && KM.full) kmFull(false); });
+
+  /* Antippen: Fund, Bauwerk oder Stelle mit Biom */
   function kmPick(px, py) {
-    var best = null, bd = 22 * 22;
-    KM.hits.forEach(function (h) { var d = (h.x - px) * (h.x - px) + (h.y - py) * (h.y - py); if (d < bd) { bd = d; best = h; } });
+    var best = null, bd = 24 * 24;
+    KM.pins.forEach(function (h) { var d = (h.x - px) * (h.x - px) + (h.y - py) * (h.y - py); if (d < bd) { bd = d; best = { pin: h }; } });
+    if (!best) KM.hits.forEach(function (h) { var d = (h.x - px) * (h.x - px) + (h.y - py) * (h.y - py); if (d < bd) { bd = d; best = { hit: h }; } });
+    if (best && best.pin) {
+      var it = best.pin.it, L0 = kLabel(it);
+      KM.pick = { ic: L0.ic, sw: L0.sw, n: L0.n, c: L0.c, sub: L0.sub, a: L0.a, no: it.no, x: it.x, z: it.z, dim: KM.dim }; KM.focus = { x: it.x, z: it.z };
+      kmPickShow(); kmRedraw(); return;
+    }
     if (best) {
-      var L = kLabel({ k: 's', t: best.t, e: best.e });
-      KM.pick = { i: L.i, n: L.n, c: L.c, sub: L.sub, a: L.a, x: best.wx, z: best.wz, dim: KM.dim }; KM.focus = { x: best.wx, z: best.wz };
+      var h = best.hit, L = kLabel({ k: 's', t: h.t, e: h.e });
+      KM.pick = { ic: L.ic, n: L.n, c: L.c, sub: L.sub, a: L.a, x: h.wx, z: h.wz, dim: KM.dim }; KM.focus = { x: h.wx, z: h.wz };
       kmPickShow(); kmRedraw(); return;
     }
     var wx = Math.floor(KM.x + (px - KM.w / 2) * KM.bpp), wz = Math.floor(KM.z + (py - KM.h / 2) * KM.bpp);
     KM.focus = { x: wx, z: wz };
-    if (KM.dim !== 'ober') { KM.pick = { i: '📍', n: 'Stelle', c: '#0B5CAD', sub: '', x: wx, z: wz, dim: KM.dim }; kmPickShow(); kmRedraw(); return; }
-    var s = kmScale(), size = KT * s, tl = KM.tiles.get(s + ':' + Math.floor(wx / size) + ':' + Math.floor(wz / size));
-    function done(b) { KM.pick = { i: '🌍', n: kBName(b), c: '#' + (KB[b] ? KB[b][1] : '888888'), sub: 'Biom', x: wx, z: wz, dim: 'ober' }; kmPickShow(); kmRedraw(); }
-    if (tl) done(tl.ids[Math.floor((wz - tl.z0) / s) * KT + Math.floor((wx - tl.x0) / s)]);
-    else smCall('at', { x: wx, z: wz, y: 319 }).then(done, function () {});
+    if (KM.dim !== 'ober') { KM.pick = { sw: '#0B5CAD', n: 'Stelle', c: '#0B5CAD', sub: '', x: wx, z: wz, dim: KM.dim }; kmPickShow(); kmRedraw(); return; }
+    var ht = kmHeightAt(wx, wz);
+    function done(b) { KM.pick = { sw: kBCol(b), n: kBName(b), c: kBCol(b), sub: 'Biom' + (ht != null ? ', Gelände etwa auf Y ' + ht : ''), x: wx, z: wz, dim: 'ober' }; kmPickShow(); kmRedraw(); }
+    var b0 = kmBiomeAt(wx, wz);
+    if (b0 >= 0) done(b0); else smCall('at', { x: wx, z: wz, y: 319 }).then(done, function () {});
   }
   function kmPickShow() {
     var el = $('k-pick'), p = KM.pick;
     if (!p) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false; el.style.setProperty('--kc', p.c);
-    el.innerHTML = '<span class="kic" aria-hidden="true">' + p.i + '</span><div class="kt"><b>' + esc(p.n) + '</b>' + (p.sub ? '<span class="small">' + esc(p.sub) + '</span>' : '') +
+    el.innerHTML = '<span class="kic">' + kIco(p, 36) + '</span><div class="kt"><b>' + (p.no ? '<span class="kno">' + p.no + '</span> ' : '') + esc(p.n) + '</b>' + (p.sub ? '<span class="small">' + esc(p.sub) + '</span>' : '') +
       '<span class="small">' + (p.dim !== 'ober' ? DIMS[p.dim] + ': ' : '') + 'X ' + p.x + ' · Z ' + p.z + ' · ' + esc(kWay(kOrigin(p.dim), p.x, p.z)) + '</span>' +
       (p.a ? '<span class="kbadge">' + (p.a === 1 ? 'ungefähr, ±100 Blöcke' : 'ungeprüft') + '</span>' : '') +
-      '<div class="tacts"><button type="button" class="btn" data-a="save">Als Ort speichern</button><button type="button" class="btn" data-a="close">Schließen</button></div></div>';
+      '<div class="tacts"><button type="button" class="btn" data-a="save">Als Ort speichern</button><button type="button" class="btn" data-a="here">Hier bin ich</button></div></div>' +
+      '<button type="button" class="kpx" data-a="close" aria-label="Schließen">✕</button>';
   }
   $('k-pick').addEventListener('click', function (e) {
     var b = e.target.closest('[data-a]'), p = KM.pick; if (!b || !p) return;
-    if (b.getAttribute('data-a') === 'save') kSave(p.n === 'Stelle' ? 'Fundort' : p.n, p.dim, p.x, p.z);
+    var a = b.getAttribute('data-a');
+    if (a === 'save') kSave(p.n === 'Stelle' ? 'Fundort' : p.n, p.dim, p.x, p.z);
+    else if (a === 'here') kmSetHere(p.dim, p.x, p.z);
     else { KM.pick = null; KM.focus = null; kmPickShow(); kmRedraw(); }
+  });
+
+  /* Eigener Standort: direkt an der Karte eintragen, erscheint als „Du“ */
+  function kmPosFill() {
+    var h = here && DIMS[here.dim] && here.dim === KM.dim ? here : null;
+    $('k-posl').textContent = 'Du bist bei (' + DIMS[KM.dim] + ')';
+    if (document.activeElement !== $('k-mx') && document.activeElement !== $('k-mz')) { $('k-mx').value = h ? h.x : ''; $('k-mz').value = h ? h.z : ''; }
+  }
+  function kmSetHere(dim, x, z) {
+    here = { dim: dim, x: Math.trunc(x), z: Math.trunc(z) };
+    storeHere(); fillHere(); renderPlaces();
+    kdim = dim; kSync(); $('k-x').value = here.x; $('k-z').value = here.z;
+    if (dim !== KM.dim) { KM.dim = dim; kmSync(); kmLegend(); }
+    $('k-mx').value = here.x; $('k-mz').value = here.z; kmPosFill();
+    if (KM.pick) kmPickShow();
+    kmFlyTo(here.x, here.z, KM.bpp);
+    toast('Standort gesetzt: X ' + here.x + ' / Z ' + here.z);
+  }
+  $('k-posf').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var x = $('k-mx').value.trim(), z = $('k-mz').value.trim();
+    if (x === '' || z === '' || !isFinite(+x) || !isFinite(+z) || Math.abs(+x) > 30000000 || Math.abs(+z) > 30000000) { $('k-mx').focus(); toast('Bitte X und Z als Zahlen eintragen'); return; }
+    try { $('k-mx').blur(); $('k-mz').blur(); } catch (er) {}
+    kmSetHere(KM.dim, +x, +z);
   });
   if (window.ResizeObserver) new ResizeObserver(function () { if (kmSize()) kmRedraw(); }).observe($('k-map'));
   else window.addEventListener('resize', function () { if (kmSize()) kmRedraw(); });
-  window.bwKarte = { state: KM, sm: SM, resolve: kResolve, search: kSearch };
+  window.bwKarte = { state: KM, sm: SM, resolve: kResolve, search: kSearch, fit: kmFit, full: kmFull, setHere: kmSetHere };
 
   fillKarte();
 
@@ -2811,16 +3228,16 @@ var BWISO = (function () {
   }
 
   /* Was ist neu */
-  var NEWS = ['Neu: Seed-Karte direkt in der App, auch ohne Internet. „Was suchst du?“ findet das nächste Dorf, Tempel, Schätze oder seltene Biome ab deinem Standort; dazu eine Karte zum Wischen und Zoomen',
+  var NEWS = ['Neu: Baupläne in Größen von S bis XXL, etwa Kaktusfarm mit 1 bis 6 Etagen, Zuckerrohr mit 8 bis 64 Pflanzen, Handelsstation mit 6 bis 30 Plätzen',
+              'Seed-Karte flüssiger und schöner: weiches Zoomen und Schwung, Geländeschattierung, eigene Symbole, Vollbild, nummerierte Funde, dein Standort als „Du“ auf der Karte',
+              'Seed-Karte direkt in der App, auch ohne Internet: „Was suchst du?“ findet das nächste Dorf, Tempel, Schätze oder seltene Biome ab deinem Standort',
               '3D frei drehbar: mit einem Finger drehen und kippen, mit zwei Fingern zoomen; oben steht, von wo du gerade schaust',
               'Baupläne „Alle Seiten“: die ganze Farm von vorne, hinten, links, rechts, oben und unten, auf Wunsch als Schnitt durch eine Reihe',
               'Eigene Baupläne: Ebene für Ebene zeichnen, speichern und wie die anderen Pläne nutzen, mit 3D, Bau-Modus und Drucken',
               'Baupläne: alle im Vergleich, „Im Spiel getestet“ mit Notiz, Lavafarm, Gürteltierfarm und Schmelzanlage in der Größe einstellbar',
               'Neue Werkzeuge: Erfahrungs-Rechner sowie Zeit und Redstone mit Ticks, Verstärkern, Trichter-Uhr und Brennstoff für Öfen',
               'Sammelliste: Packlisten-Vorlagen für Nether, Enderdrache, Höhlen, Meer und die erste Nacht',
-              'Sicherung als Datei: alle Daten speichern und auf diesem oder einem anderen Gerät zurückholen',
-              'Unter Info: alle Originalbilder vorab laden und eine Hilfe zu allen Funktionen',
-              'Schnellerer Start: Lexikon und Baupläne laden erst, wenn die Startseite steht'];
+              'Sicherung als Datei: alle Daten speichern und auf diesem oder einem anderen Gerät zurückholen'];
   function maybeNews() {
     var seen = load('seen');
     if (seen === APPVER) return;

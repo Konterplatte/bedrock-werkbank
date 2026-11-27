@@ -183,6 +183,23 @@ a { color: var(--accent); }
 .sizer button { width: 44px; height: 40px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); font-size: 1.3rem; cursor: pointer; }
 .sizer button:disabled { opacity: .4; cursor: default; }
 .sizer small, .tested small { color: var(--ink-soft); }
+#sizer { display: grid; gap: 10px; }
+#sizer[hidden], .szone[hidden] { display: none; }
+.szhead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.sztiers { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.sizer .sztiers button { width: auto; height: 56px; padding: 0 4px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--ink); font: inherit;
+  display: grid; place-content: center; gap: 2px; cursor: pointer; transition: background-color .18s, border-color .18s, color .18s, transform .12s; }
+.sztiers button b { font-family: var(--f-display); font-size: 1.2rem; line-height: 1; min-width: 0; }
+.sztiers button small { font-size: .78rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.sztiers button[aria-checked="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sztiers button[aria-checked="true"] small { color: rgba(255, 255, 255, .88); }
+.sztiers button:active { transform: scale(.96); }
+.szfine { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.szfine #sz-label { font-weight: 600; }
+.szone { margin: 0; padding: 10px 12px; border: 1px dashed var(--line); border-radius: 8px; color: var(--ink-soft); font-size: .92rem; }
+.szanim { animation: szin .3s ease-out; }
+@keyframes szin { from { opacity: .3; transform: scale(.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .szanim { animation: none; } .sztiers button { transition: none; } }
 .tested label { display: flex; align-items: center; gap: 8px; font-weight: 600; min-height: 40px; cursor: pointer; }
 .tested input[type="checkbox"] { width: 22px; height: 22px; margin: 0; accent-color: var(--ok); }
 .tested input[type="text"] { flex: 1 1 220px; min-width: 0; min-height: 40px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; font: inherit; background: var(--paper); color: var(--ink); }
@@ -430,7 +447,12 @@ html.cmp .below, html.edit .below { display: none; }
 </div>
 
 <dl class="specs" id="specs"></dl>
-<div class="sizer" id="sizer" hidden><span class="szl" id="sz-label"></span><button type="button" id="sz-minus" aria-label="Kleiner">−</button><b id="sz-val" aria-live="polite"></b><button type="button" id="sz-plus" aria-label="Größer">+</button><small id="sz-rate"></small></div>
+<div class="sizer" id="sizer" hidden>
+  <div class="szhead"><span class="szl">Größe</span><small id="sz-rate"></small></div>
+  <div class="sztiers" id="sz-tiers" role="radiogroup" aria-label="Größe der Farm"></div>
+  <div class="szfine"><span id="sz-label"></span><button type="button" id="sz-minus" aria-label="Kleiner">−</button><b id="sz-val" aria-live="polite"></b><button type="button" id="sz-plus" aria-label="Größer">+</button><small id="sz-tier"></small></div>
+</div>
+<p class="szone" id="sz-one" hidden></p>
 <div class="tested" id="tested"><label><input type="checkbox" id="t-ok"> Im Spiel getestet</label><input type="text" id="t-note" maxlength="140" placeholder="Notiz, z. B. klappt, aber 2 Trichter mehr nötig" aria-label="Notiz zum Test"></div>
 <section id="compare" hidden></section>
 <section id="editor" hidden>
@@ -589,7 +611,7 @@ html.cmp .below, html.edit .below { display: none; }
     <ul>
       <li><strong>Angebote füllen sich nicht auf:</strong> Der Dorfbewohner hat Bett oder Arbeitsblock einer anderen Box übernommen. Baue seinen Arbeitsblock ab und setze ihn neu.</li>
       <li><strong>Falscher Beruf oder schwaches Angebot:</strong> Solange du noch nicht mit ihm gehandelt hast, kannst du den Arbeitsblock abbauen und neu setzen. Dann wählt er neue Angebote.</li>
-      <li><strong>Eisengolems an der Halle:</strong> Ab 20 Betten und 10 Dorfbewohnern erzeugt jedes Dorf Golems. Bleib bei dieser Halle unter 20 Betten.</li>
+      <li><strong>Eisengolems an der Halle:</strong> Ab 20 Betten und 10 Dorfbewohnern erzeugt jedes Dorf Golems. Die Größen S bis L bleiben darunter. Ab XL mit 20 Plätzen können Golems in den Gang oder aufs Dach kommen. Das schadet nicht, sie stehen aber im Weg.</li>
       <li><strong>Monster im Gang:</strong> Halte die Tür geschlossen und setze alle Fackeln.</li>
     </ul>
   </div>
@@ -604,7 +626,7 @@ html.cmp .below, html.edit .below { display: none; }
       <li><strong>Die Sammlung:</strong> Fällt es in eine der 5 Wasserbahnen, spült das Wasser es in die Sammelrinne und von dort in den Trichter.</li>
       <li><strong>Der Verlust:</strong> Was auf einem Kaktus oder auf dem Sand landet, ist verloren. Das gehört zu jeder Kaktusfarm ohne Redstone.</li>
       <li><strong>Kaktusblüten:</strong> Seit Version 1.21.70 können Kakteen Blüten treiben und wachsen dann nicht weiter. Neben einem Block entsteht keine Blüte. Deshalb hat hier jedes Wuchsfeld einen Zaun als Nachbarn.</li>
-      <li><strong>Das Tempo:</strong> Ein Kaktus wächst im Schnitt etwa alle 18 Minuten, im Einzelfall auch viel früher oder später. 32 Kakteen wachsen zusammen rund 100-mal pro Stunde.</li>
+      <li><strong>Das Tempo:</strong> Ein Kaktus wächst im Schnitt etwa alle 18 Minuten, im Einzelfall auch viel früher oder später. Jede Etage mit 16 Kakteen bringt so rund 50 pro Stunde.</li>
     </ul>
   </div>
   <div>
@@ -620,7 +642,7 @@ html.cmp .below, html.edit .below { display: none; }
   <div>
     <h2>Ausbau und Nutzen</h2>
     <ul>
-      <li><strong>Mehr Etagen:</strong> Die Ebenen 8 bis 11 kannst du beliebig oft wiederholen. Jede Etage bringt 16 Kakteen und kostet 32 Sand, 16 Zäune, 32 Träger und 4 Mauerlagen.</li>
+      <li><strong>Mehr Etagen:</strong> Stell oben eine größere Stufe ein, bis XXL mit 6 Etagen. Aufstocken geht auch nachträglich. Jede Etage bringt 16 Kakteen und kostet 32 Sand, 16 Zäune, 32 Träger und 4 Mauerlagen.</li>
       <li><strong>Grüner Farbstoff:</strong> Kaktus im Ofen schmelzen. In der Bedrock Edition gibt das nur wenig Erfahrung.</li>
       <li><strong>Knochenmehl:</strong> Im Komposter füllt im Schnitt jeder zweite Kaktus eine Stufe.</li>
       <li><strong>Standort:</strong> Die Farm braucht kein Licht und keinen Abstand zu Dörfern. Sie arbeitet nur, solange du in der Nähe bist.</li>
@@ -687,16 +709,16 @@ html.cmp .below, html.edit .below { display: none; }
     <h2>So arbeitet die Farm</h2>
     <ul>
       <li><strong>Das Wachstum:</strong> Zuckerrohr wächst bis 3 Blöcke hoch, wenn direkt neben seinem Boden Wasser liegt. Die Rinne in der Mitte versorgt beide Reihen.</li>
-      <li><strong>Die Ernte:</strong> Erreicht ein Rohr den 3. Block, sieht das der Beobachter darüber. Er schickt ein Signal über den Redstone-Staub in den Block unter dem Staub, und alle Kolben der Reihe fahren aus. Sie schlagen den 2. Block ab, der 3. fällt mit. Der unterste bleibt stehen und wächst nach.</li>
+      <li><strong>Die Ernte:</strong> Erreicht ein Rohr den 3. Block, sieht das der Beobachter darüber. Er schickt ein Signal über den Redstone-Staub in den Block unter dem Staub, und die Kolben bis zu 15 Felder weit fahren aus, mindestens der direkt darunter. Sie schlagen den 2. Block ab, der 3. fällt mit. Der unterste bleibt stehen und wächst nach.</li>
       <li><strong>Die Sammlung:</strong> Die Ernte fällt auf den Schlamm. Der Trichter darunter zieht sie durch den Schlamm hindurch ein, das geht nur mit Schlamm, nicht mit Erde oder Sand. Die Trichter reichen alles in die Kiste weiter.</li>
-      <li><strong>Das Tempo:</strong> Ein Rohr wächst im Schnitt etwa alle 18 Minuten um einen Block. 16 Pflanzen bringen zusammen rund 50 Zuckerrohr pro Stunde. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
+      <li><strong>Das Tempo:</strong> Ein Rohr wächst im Schnitt etwa alle 18 Minuten um einen Block, jede Pflanze bringt also gut 3 Zuckerrohr pro Stunde. 16 Pflanzen bringen zusammen rund 50. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
     </ul>
   </div>
   <div>
     <h2>Reihenfolge beim Bauen</h2>
     <ol>
       <li>Stelle die Kiste auf und lege die Trichter, Ebene 1. Schleiche beim Setzen, sonst öffnet sich die Kiste oder der Trichter, statt dass gebaut wird.</li>
-      <li>Leere 16 Wasserflaschen auf Erde, so entsteht Schlamm. Lege ihn auf die Trichter und fülle die Rinne mit Wasser, Ebene 2.</li>
+      <li>Leere je Pflanze eine Wasserflasche auf Erde, so entsteht Schlamm. Lege ihn auf die Trichter und fülle die Rinne mit Wasser, Ebene 2.</li>
       <li>Pflanze das Zuckerrohr und setze das Glas, Ebene 3.</li>
       <li>Setze die Kolben, dann die Beobachter und zuletzt den Redstone-Staub, Ebenen 4 und 5. Beim Setzen der Beobachter fahren die Kolben einmal aus, das ist normal.</li>
     </ol>
@@ -704,7 +726,7 @@ html.cmp .below, html.edit .below { display: none; }
   <div>
     <h2>Ausbau</h2>
     <ul>
-      <li><strong>Länger:</strong> Jede weitere Spalte bringt 2 Pflanzen und kostet 2 Trichter, 2 Schlamm, 2 Kolben, 2 Beobachter, 2 Redstone, 1 Glas und 5 feste Blöcke. Ab 16 Spalten pro Reihe reicht ein Trichterstrang nicht mehr, dann kommt eine zweite Kiste in die Mitte.</li>
+      <li><strong>Länger:</strong> Jede weitere Spalte bringt 2 Pflanzen und kostet 2 Trichter, 2 Schlamm, 2 Kolben, 2 Beobachter, 2 Redstone, 1 Glas und 5 feste Blöcke. Mehr als 16 Spalten pro Reihe schafft ein Trichterstrang nicht. Deshalb baut die Farm ab 40 Pflanzen zwei gespiegelte Hälften mit je eigener Kiste.</li>
       <li><strong>Nutzen:</strong> 3 Zuckerrohr ergeben 3 Papier. Ein Bibliothekar kauft Papier für Smaragde, und aus Papier und Leder werden Bücher für den Zaubertisch.</li>
     </ul>
   </div>
@@ -724,7 +746,7 @@ html.cmp .below, html.edit .below { display: none; }
     <h2>So arbeitet die Farm</h2>
     <ul>
       <li><strong>Das Wachstum:</strong> Ein ausgewachsener Stiel setzt eine Frucht auf ein zufälliges Nachbarfeld. Hier sind nur die beiden Schlammfelder frei, alle anderen Seiten sind belegt. Solange eine Frucht am Stiel hängt, wächst keine neue.</li>
-      <li><strong>Die Ernte:</strong> Ein Druck auf den Knopf, und alle 16 Kolben fahren einmal aus. Sie zerschlagen jede Frucht, die gerade da ist. Kürbisse fallen als ganzer Block, Melonen als 3 bis 7 Scheiben.</li>
+      <li><strong>Die Ernte:</strong> Ein Druck auf den Knopf, und alle Kolben fahren einmal aus. Sie zerschlagen jede Frucht, die gerade da ist. Kürbisse fallen als ganzer Block, Melonen als 3 bis 7 Scheiben.</li>
       <li><strong>Die Sammlung:</strong> Die Ernte fällt auf den Schlamm, der Trichter darunter zieht sie hindurch und reicht sie bis in die Kiste weiter. Das klappt nur mit Schlamm, nicht mit Erde.</li>
       <li><strong>Das Tempo:</strong> Eine Frucht braucht 10 bis 30 Minuten. Drückst du etwa jede halbe Stunde, bekommst du fast jedes Mal 8 Früchte. Die Pflanzen wachsen nur, solange du in der Nähe bist.</li>
     </ul>
@@ -741,7 +763,7 @@ html.cmp .below, html.edit .below { display: none; }
     <h2>Reihenfolge beim Bauen</h2>
     <ol>
       <li>Stelle die Kiste auf und lege die Trichter, Ebene 1. Schleiche beim Setzen.</li>
-      <li>Leere 16 Wasserflaschen auf Erde, so entsteht Schlamm. Lege ihn auf die Trichter. Lege die Erde in die Mitte, mach sie mit der Hacke zu Ackerboden und gieße die beiden Wasserquellen, Ebene 2.</li>
+      <li>Leere je Stiel 2 Wasserflaschen auf Erde, so entsteht Schlamm. Lege ihn auf die Trichter. Lege die Erde in die Mitte, mach sie mit der Hacke zu Ackerboden und gieße die Wasserquellen, Ebene 2.</li>
       <li>Setze die Kolben und die Blöcke dahinter. Pflanze erst danach die Kerne, Ebene 3. Spring nie auf den Ackerboden.</li>
       <li>Streue den Staub und setze den Knopf, Ebene 4.</li>
     </ol>
@@ -751,7 +773,7 @@ html.cmp .below, html.edit .below { display: none; }
     <ul>
       <li><strong>Smaragde:</strong> Laut Mojangs Handelsdaten kauft ein Bauer auf Stufe 2 sechs Kürbisse für einen Smaragd und auf Stufe 3 vier Melonenblöcke für einen Smaragd. Aus 9 Melonenscheiben machst du einen Block.</li>
       <li><strong>Sonst:</strong> Kürbisse für Kürbiskuchen, geschnitzte Kürbisse für Schnee- und Eisengolems. Melonenscheiben mit Goldnuggets ergeben glitzernde Melonenscheiben für Heiltränke.</li>
-      <li><strong>Größer:</strong> Die zwei Wasserquellen reichen für genau 8 Stiele. Für mehr baust du eine zweite Farm daneben.</li>
+      <li><strong>Größer:</strong> Zwei Wasserquellen reichen für genau 8 Stiele. Deshalb besteht die Farm ab 10 Stielen aus zwei gespiegelten Hälften um einen gemeinsamen Knopf und ab 20 Stielen aus zwei solchen Anlagen mit je eigenem Knopf.</li>
     </ul>
   </div>
   <div>
@@ -770,7 +792,7 @@ html.cmp .below, html.edit .below { display: none; }
       <li><strong>Die Eier:</strong> Laut Mojangs Daten legt jedes Huhn alle 5 bis 10 Minuten ein Ei. Es fällt in den Trichter unter dem Pferch und weiter in den Spender.</li>
       <li><strong>Der Spender:</strong> Die beiden Beobachter lösen sich ständig gegenseitig aus, der östliche gibt dabei jedes Mal ein Signal an den Spender. Er wirft ein Ei auf die Stufe, sobald eines in ihm liegt. Aus jedem achten Ei schlüpft ein Küken.</li>
       <li><strong>Das Kochen:</strong> Nach 20 Minuten ist das Küken ausgewachsen. Es ist dann 0,8 Blöcke hoch, berührt die Lava und verbrennt. Dabei lässt es gebratenes Hähnchen und Federn fallen. Der Trichter zieht beides durch die untere Stufe in die Kiste.</li>
-      <li><strong>Das Tempo:</strong> Rund ein Brathähnchen je Huhn im Pferch und Stunde, mit 8 Hühnern also etwa 8. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
+      <li><strong>Das Tempo:</strong> Rund ein Brathähnchen je Huhn im Pferch und Stunde, mit 8 Hühnern also etwa 8 je Modul. Die Farm arbeitet nur, solange du in der Nähe bist.</li>
     </ul>
   </div>
   <div>
@@ -920,7 +942,7 @@ html.cmp .below, html.edit .below { display: none; }
   <div>
     <h2>Reihenfolge beim Bauen</h2>
     <ol>
-      <li>Ausgabe-Kiste und die 4 Trichter darunter, Ebene 1.</li>
+      <li>Ausgabe-Kiste und die Trichter daneben, Ebene 1.</li>
       <li>Öfen auf die Trichter, die Brennstoff-Trichter dahinter, Ebene 2.</li>
       <li>Zutaten-Trichter oben auf die Öfen und die Brennstoff-Kisten, Ebene 3.</li>
       <li>Zutaten-Kisten obendrauf, Ebene 4.</li>
@@ -1145,7 +1167,8 @@ var BLOCKS = {
   2: { name: 'Gürteltiere, stehen auf den Trichtern', fill: 'var(--b-armadillo)', glyph: 'Gü', dark: true },
   4: { name: 'Ofen (oder Schmelzofen, Räucherofen)', mat: 'furnace', fill: 'var(--b-furnace)', glyph: 'Of', dark: true },
   6: { name: 'Trichter, zeigt nach Norden (↑) in die Rückseite des Ofens: Brennstoff', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↑', dark: true },
-  7: { name: 'Trichter, zeigt nach unten in den Ofen: Zutaten', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↓', dark: true }
+  7: { name: 'Trichter, zeigt nach unten in den Ofen: Zutaten', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '↓', dark: true },
+  5: { name: 'Trichter, zeigt nach Westen (←) in den Nachbarn', mat: 'hopper', fill: 'var(--b-hopper)', glyph: '←', dark: true }
 };
 
 var MATERIALS = {
@@ -1259,6 +1282,7 @@ var PLANS = (function () {
 
     return {
       id: 'eisenfarm', out: 'iron_ingot', title: 'Eisenfarm', w: W, d: W, yMin: 1, yMax: 15, sliceZ: 9, ground: true,
+      one: 'Diese Farm gibt es nur in einer Größe: Bedrock lässt je Dorf nur in festem Takt Golems entstehen. Mehr Betten oder Dorfbewohner bringen kein zusätzliches Eisen. Mehr Eisen gibt es nur mit einer zweiten Farm, weit genug weg, dass sie ein eigenes Dorf bildet.',
       guides: [[1, 1, 18, 18], [9, 9, 10, 10]],
             specs: [['Grundfläche', '20 × 20 Blöcke'], ['Höhe', '15 Blöcke ab Boden'], ['Dorfbewohner', '10, ausbaubar auf 20'], ['Betten', '20']],
       extras: [['Dorfbewohner', '10', '2 reichen für den Start, den Rest züchtest du in der Kammer'],
@@ -1270,20 +1294,23 @@ var PLANS = (function () {
     };
   }
 
-  /* ---------- Handelsstation: 11 x 11, Y0 bis Y4 ---------- */
-  function hall() {
-    var W = 11, L = [], g, z, lanes = [1, 3, 5, 7, 9], walls = [2, 4, 6, 8];
+  /* ---------- Handelsstation: 11 x (2n+1), Y0 bis Y4; n Boxen je Seite ---------- */
+  function hall(n) {
+    n = n || 5;
+    var W = 11, D = 2 * n + 1, L = [], g, k, v = 2 * n, lanes = [], walls = [];
+    for (k = 0; k < n; k++) lanes.push(2 * k + 1);
+    for (k = 1; k < n; k++) walls.push(2 * k);
     function shell(g) {
-      ring(g, 0, 0, 10, 10, 'S');
+      ring(g, 0, 0, 10, D - 1, 'S');
       walls.forEach(function (z) { rect(g, 1, z, 3, z, 'S'); rect(g, 7, z, 9, z, 'S'); });
-      rect(g, 4, 1, 6, 9, 'o');
+      rect(g, 4, 1, 6, D - 2, 'o');
     }
 
-    g = mk(W, W); rect(g, 0, 0, 10, 10, 'S');
+    g = mk(W, D); rect(g, 0, 0, 10, D - 1, 'S');
     L.push({ y: [0, 0], name: 'Boden', grid: rows(g),
-      text: 'Lege 11 × 11 feste Blöcke als Boden.' });
+      text: 'Lege 11 × ' + D + ' feste Blöcke als Boden.' });
 
-    g = mk(W, W); shell(g); g[0][5] = 'D';
+    g = mk(W, D); shell(g); g[0][5] = 'D';
     var beds = [];
     lanes.forEach(function (z) {
       g[z][1] = 'B'; g[z][2] = 'b'; g[z][3] = 'A';
@@ -1291,28 +1318,29 @@ var PLANS = (function () {
       beds.push([1, z, 2, z]); beds.push([8, z, 9, z]);
     });
     L.push({ y: [1, 1], name: 'Betten und Arbeitsblöcke', grid: rows(g), pairs: beds,
-      text: 'Außenwand mit Tür an der Nordseite. Zehn Boxen, je 1 breit und 2 tief, getrennt durch Wände. In jeder Box liegt ein Bett als Boden, das Kopfteil an der Außenwand. Vor jeder Box steht der Arbeitsblock. Der Gang in der Mitte ist 3 breit.' });
+      text: 'Außenwand mit Tür an der Nordseite. ' + v + ' Boxen, je 1 breit und 2 tief, getrennt durch Wände. In jeder Box liegt ein Bett als Boden, das Kopfteil an der Außenwand. Vor jeder Box steht der Arbeitsblock. Der Gang in der Mitte ist 3 breit.' });
 
-    g = mk(W, W); shell(g); g[0][5] = 'd';
+    g = mk(W, D); shell(g); g[0][5] = 'd';
     lanes.forEach(function (z) { g[z][1] = 'o'; g[z][2] = 'o'; g[z][3] = 'O'; g[z][7] = 'O'; g[z][8] = 'o'; g[z][9] = 'o'; });
     L.push({ y: [2, 2], name: 'Handelsöffnung', grid: rows(g),
       text: 'Wände weiterbauen. Über jedem Arbeitsblock bleibt ein Feld offen. Durch diese Öffnung handelst du mit dem Dorfbewohner, der auf seinem Bett steht.' });
 
-    g = mk(W, W); shell(g);
+    g = mk(W, D); shell(g);
     lanes.forEach(function (z) { g[z][1] = 'o'; g[z][2] = 'o'; g[z][3] = 'Z'; g[z][7] = 'Z'; g[z][8] = 'o'; g[z][9] = 'o'; });
     walls.forEach(function (z) { g[z][4] = 'F'; g[z][6] = 'F'; });
     L.push({ y: [3, 3], name: 'Sturz und Licht', grid: rows(g),
-      text: 'Wände weiterbauen. Über jeder Öffnung sitzt ein fester Block, damit der Dorfbewohner nicht auf den Arbeitsblock klettert und entkommt. Setze 8 Fackeln an die Trennwände im Gang.' });
+      text: 'Wände weiterbauen. Über jeder Öffnung sitzt ein fester Block, damit der Dorfbewohner nicht auf den Arbeitsblock klettert und entkommt. Setze ' + (2 * walls.length) + ' Fackeln an die Trennwände im Gang.' });
 
-    g = mk(W, W); rect(g, 0, 0, 10, 10, 'S');
+    g = mk(W, D); rect(g, 0, 0, 10, D - 1, 'S');
     L.push({ y: [4, 4], name: 'Dach', grid: rows(g),
-      text: 'Lege 11 × 11 feste Blöcke als Dach.' });
+      text: 'Lege 11 × ' + D + ' feste Blöcke als Dach.' });
 
     return {
-      id: 'handelsstation', out: 'emerald', title: 'Handelsstation', w: W, d: W, yMin: 0, yMax: 4, sliceZ: 1, ground: false,
+      id: 'handelsstation', out: 'emerald', title: 'Handelsstation', w: W, d: D, yMin: 0, yMax: 4, sliceZ: 1, ground: false,
+      size: { n: n, min: 2, max: 15, step: 1, label: 'Boxen je Seite', tiers: [3, 5, 7, 10, 15] }, outName: 'Handel', rate: v + ' Dorfbewohner zum Handeln',
       guides: [],
-      specs: [['Grundfläche', '11 × 11 Blöcke'], ['Höhe', '5 Lagen, innen 3 hoch'], ['Plätze', '10 Dorfbewohner'], ['Betten', '10']],
-      extras: [['Dorfbewohner', '10', 'einzeln hineinbringen'],
+      specs: [['Grundfläche', '11 × ' + D + ' Blöcke'], ['Höhe', '5 Lagen, innen 3 hoch'], ['Plätze', v + ' Dorfbewohner'], ['Betten', String(v)]],
+      extras: [['Dorfbewohner', String(v), 'einzeln hineinbringen'],
                ['Hilfsblock', '1', 'sperrt die Öffnung, während du Arbeitsblock und Sturz setzt'],
                ['Schienen und Lore', 'nach Bedarf', 'für den Transport der Dorfbewohner']],
       hints: { stone: 'Material frei wählbar', work: 'bestimmt den Beruf, siehe unten', bed: 'Farbe egal', door: 'Eisentür mit Knopf hält Zombies sicher draußen' },
@@ -1320,9 +1348,10 @@ var PLANS = (function () {
     };
   }
 
-  /* ---------- Kaktusfarm: 11 x 11, Y1 bis Y11, zwei Etagen ---------- */
-  function cactus() {
-    var W = 11, L = [], g, ev = [2, 4, 6, 8], od = [1, 3, 5, 7, 9];
+  /* ---------- Kaktusfarm: 11 x 11, Y1 bis Y(3 + 4f), f Etagen ---------- */
+  function cactus(f) {
+    f = f || 2;
+    var W = 11, L = [], g, k, ev = [2, 4, 6, 8], od = [1, 3, 5, 7, 9];
     function wall(g) { ring(g, 0, 0, 10, 10, 'S'); }
     function cols(g, c) { ev.forEach(function (x) { rect(g, x, 1, x, 8, c); }); }
     function plants(g) { ev.forEach(function (x) { ev.forEach(function (z) { g[z][x] = 'c'; }); }); }
@@ -1345,42 +1374,36 @@ var PLANS = (function () {
     L.push({ y: [3, 3], name: 'Boden und Sammelrinne', grid: rows(g),
       text: 'Lege 9 × 8 feste Blöcke als Boden und ziehe die Mauer ringsum, auch um die Rinne. Die Wasserquelle der Rinne sitzt ganz im Osten. Das Wasser fließt 7 Felder nach Westen und endet ein Feld vor dem Trichter.' });
 
-    g = mk(W, W); wall(g); cols(g, 'N'); od.forEach(function (x) { g[1][x] = 'Q'; rect(g, x, 2, x, 8, 'f'); });
-    L.push({ y: [4, 4], name: 'Sand und Wasserbahnen', grid: rows(g),
-      text: 'Mauer weiterbauen. Lege 4 Sandreihen, je 8 lang, mit einer Bahn Abstand. In jede der 5 Bahnen kommt eine Wasserquelle am Nordende. Das Wasser fließt nach Süden und lässt die Ernte in die Rinne fallen.' });
-
-    g = mk(W, W); wall(g); plants(g);
-    L.push({ y: [5, 5], name: 'Kakteen, Etage 1', grid: rows(g),
-      text: 'Mauer weiterbauen. Pflanze 16 Kakteen auf den Sand, immer mit einem Feld Abstand. Neben einem Kaktus darf auf dieser Höhe kein Block stehen.' });
-
-    g = mk(W, W); wall(g); fences(g);
-    L.push({ y: [6, 6], name: 'Zäune, Etage 1', grid: rows(g),
-      text: 'Mauer weiterbauen. Über jedem freien Sandfeld hängt ein Zaun. Lege zuerst die Träger der nächsten Ebene und klicke die Zäune dann von unten an. Die Felder über den Kakteen bleiben frei. Dort wächst der Kaktus hinein und bricht am Zaun ab.' });
-
-    g = mk(W, W); wall(g); cols(g, 'U');
-    L.push({ y: [7, 7], name: 'Träger', grid: rows(g),
-      text: 'Mauer weiterbauen. Lege über jede Sandreihe eine Reihe aus 8 festen Blöcken, von der Nordwand aus. Sie hält die Zäune darunter und trägt den Sand der zweiten Etage.' });
-
-    g = mk(W, W); wall(g); cols(g, 'N');
-    L.push({ y: [8, 8], name: 'Sand, Etage 2', grid: rows(g),
-      text: 'Mauer weiterbauen. Lege 4 Sandreihen auf die Träger.' });
-
-    g = mk(W, W); wall(g); plants(g);
-    L.push({ y: [9, 9], name: 'Kakteen, Etage 2', grid: rows(g),
-      text: 'Mauer weiterbauen. Pflanze wieder 16 Kakteen, genau über denen der ersten Etage.' });
-
-    g = mk(W, W); wall(g); fences(g);
-    L.push({ y: [10, 10], name: 'Zäune, Etage 2', grid: rows(g),
-      text: 'Mauer weiterbauen. Wieder hängt über jedem freien Sandfeld ein Zaun, die Felder über den Kakteen bleiben frei.' });
-
-    g = mk(W, W); wall(g); cols(g, 'U');
-    L.push({ y: [11, 11], name: 'Abschluss', grid: rows(g),
-      text: 'Letzte Mauerlage und 4 Trägerreihen als Deckel. Daran hängen die Zäune der zweiten Etage. Für eine dritte Etage baust du hier mit Sand weiter.' });
+    for (k = 0; k < f; k++) {
+      var y = 4 + 4 * k, et = f > 1 ? ', Etage ' + (k + 1) : '', last = k === f - 1;
+      if (k === 0) {
+        g = mk(W, W); wall(g); cols(g, 'N'); od.forEach(function (x) { g[1][x] = 'Q'; rect(g, x, 2, x, 8, 'f'); });
+        L.push({ y: [y, y], name: 'Sand und Wasserbahnen', grid: rows(g),
+          text: 'Mauer weiterbauen. Lege 4 Sandreihen, je 8 lang, mit einer Bahn Abstand. In jede der 5 Bahnen kommt eine Wasserquelle am Nordende. Das Wasser fließt nach Süden und lässt die Ernte in die Rinne fallen.' + (f > 1 ? ' Auch die Ernte der oberen Etagen fällt durch die Bahnen hierher.' : '') });
+      } else {
+        g = mk(W, W); wall(g); cols(g, 'N');
+        L.push({ y: [y, y], name: 'Sand' + et, grid: rows(g),
+          text: 'Mauer weiterbauen. Lege 4 Sandreihen auf die Träger. Die Bahnen dazwischen bleiben offen, durch sie fällt die Ernte nach unten.' });
+      }
+      g = mk(W, W); wall(g); plants(g);
+      L.push({ y: [y + 1, y + 1], name: 'Kakteen' + et, grid: rows(g),
+        text: k === 0 ? 'Mauer weiterbauen. Pflanze 16 Kakteen auf den Sand, immer mit einem Feld Abstand. Neben einem Kaktus darf auf dieser Höhe kein Block stehen.'
+                      : 'Mauer weiterbauen. Pflanze wieder 16 Kakteen, genau über denen der Etage darunter.' });
+      g = mk(W, W); wall(g); fences(g);
+      L.push({ y: [y + 2, y + 2], name: 'Zäune' + et, grid: rows(g),
+        text: k === 0 ? 'Mauer weiterbauen. Über jedem freien Sandfeld hängt ein Zaun. Lege zuerst die Träger der nächsten Ebene und klicke die Zäune dann von unten an. Die Felder über den Kakteen bleiben frei. Dort wächst der Kaktus hinein und bricht am Zaun ab.'
+                      : 'Mauer weiterbauen. Wieder hängt über jedem freien Sandfeld ein Zaun, die Felder über den Kakteen bleiben frei.' });
+      g = mk(W, W); wall(g); cols(g, 'U');
+      L.push({ y: [y + 3, y + 3], name: last ? 'Abschluss' : 'Träger' + (k > 0 ? et : ''), grid: rows(g),
+        text: last ? 'Letzte Mauerlage und 4 Trägerreihen als Deckel. Daran hängen die Zäune ' + (f > 1 ? 'der obersten Etage.' : 'darunter.') + (f < 6 ? ' Aufstocken kannst du später jederzeit: einfach mit Sand weiterbauen wie bei der nächsten Größe.' : '')
+                   : 'Mauer weiterbauen. Lege über jede Sandreihe eine Reihe aus 8 festen Blöcken, von der Nordwand aus. Sie hält die Zäune darunter und trägt den Sand der nächsten Etage.' });
+    }
 
     return {
-      id: 'kaktusfarm', out: 'cactus', title: 'Kaktusfarm', w: W, d: W, yMin: 1, yMax: 11, sliceX: 2, ground: true,
+      id: 'kaktusfarm', out: 'cactus', title: 'Kaktusfarm', w: W, d: W, yMin: 1, yMax: 3 + 4 * f, sliceX: 2, ground: true,
+      size: { n: f, min: 1, max: 6, step: 1, label: 'Etagen', tiers: [1, 2, 3, 4, 6] }, outName: 'Kakteen', rate: 'rund ' + (50 * f) + ' pro Stunde',
       guides: [],
-      specs: [['Grundfläche', '11 × 11 Blöcke'], ['Höhe', '11 Blöcke ab Boden'], ['Kakteen', '32 in 2 Etagen'], ['Redstone', 'keins']],
+      specs: [['Grundfläche', '11 × 11 Blöcke'], ['Höhe', (3 + 4 * f) + ' Blöcke ab Boden'], ['Kakteen', (16 * f) + ' in ' + f + (f === 1 ? ' Etage' : ' Etagen')], ['Redstone', 'keins']],
       extras: [['Wassereimer', '1', 'für die 6 Quellen immer wieder auffüllen'],
                ['Fackeln', 'nach Bedarf', 'für den Raum unter dem Boden']],
       hints: { stone: 'Mauer auch aus Glas, dann siehst du hinein', sand: 'roter Sand geht auch', cactus: 'wenige reichen, den Rest liefert die Farm',
@@ -1437,6 +1460,7 @@ var PLANS = (function () {
 
     return {
       id: 'xpfarm', out: 'ender_pearl', title: 'XP-Farm', w: W, d: W, yMin: 1, yMax: 45, sliceZ: 8, ground: false,
+      one: 'Diese Farm gibt es nur in einer Größe: Endermen erscheinen höchstens 44 Blöcke von dir entfernt. Die Plattform liegt 42 Blöcke über dir und nutzt diesen Bereich schon aus, eine größere brächte kaum mehr.',
       guides: [[3, 3, 13, 13], [7, 7, 9, 9]],
       specs: [['Ort', 'Das End, 128 Blöcke Abstand'], ['Grundfläche', '17 × 17 Blöcke'], ['Fallhöhe', '41 Blöcke'], ['Erfahrung', '5 pro Enderman']],
       extras: [['Brücke zur Hauptinsel', 'etwa 128 Blöcke', 'die ersten 16 Blöcke ab der Farm als Tunnel mit Wasserdach'],
@@ -1452,121 +1476,165 @@ var PLANS = (function () {
     };
   }
 
-  /* ---------- Zuckerrohrfarm: 11 x 7, Y1 bis Y5 ----------
+  /* ---------- Zuckerrohrfarm: (c+3) x 7, Y1 bis Y5; c Spalten mit je 2 Pflanzen ----------
      Reihen von Norden: z0 Block mit Redstone, z1 Kolben und Beobachter, z2 Zuckerrohr A, z3 Wasser unter Glas,
-     z4 Zuckerrohr B, z5 Kolben und Beobachter, z6 Block mit Redstone. Spalten 1 bis 8 tragen je 2 Pflanzen. */
-  function cane() {
-    var W = 11, D = 7, L = [], g, X0 = 1, X1 = 8;
-    function row(g, z, c) { rect(g, X0, z, X1, z, c); }
-    function caps(g) { [2, 3, 4].forEach(function (z) { g[z][0] = 'G'; g[z][9] = 'G'; }); }
+     z4 Zuckerrohr B, z5 Kolben und Beobachter, z6 Block mit Redstone. Spalten 1 bis c tragen je 2 Pflanzen.
+     Ein Trichterstrang trägt höchstens 16 Spalten; darüber zwei gespiegelte Hälften mit eigener Kiste. */
+  function cane(pl) {
+    pl = pl || 16;
+    var dbl = pl > 32, c = dbl ? pl / 4 : pl / 2, W = c + 3, D = 7, L = [], g, X0 = 1, X1 = c, E = c + 1, K = c + 2, x, src = 0;
+    function row(g, z, ch) { rect(g, X0, z, X1, z, ch); }
+    function caps(g) { [2, 3, 4].forEach(function (z) { g[z][0] = 'G'; g[z][E] = 'G'; }); }
 
     g = mk(W, D); row(g, 1, 'S'); row(g, 2, 'e'); row(g, 3, 'S'); row(g, 4, 'e'); row(g, 5, 'S');
-    g[2][9] = 's'; g[3][9] = 'e'; g[4][9] = 'n'; g[3][10] = 'K'; g[4][10] = 'K';
-    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[10, 3, 10, 4]],
-      text: 'Stelle die Doppelkiste ganz im Osten auf. Lege dann zwei Reihen aus je 8 Trichtern, die nach Osten zeigen: Klicke beim Bauen immer die Seite des vorigen Trichters an. Am Ende führen zwei Trichter nach Süden und Norden in den mittleren, der zeigt nach Osten in die Kiste. Dazwischen und außen liegen feste Blöcke als Boden.' });
+    g[2][E] = 's'; g[3][E] = 'e'; g[4][E] = 'n'; g[3][K] = 'K'; g[4][K] = 'K';
+    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[K, 3, K, 4]],
+      text: 'Stelle die Doppelkiste ganz im Osten auf. Lege dann zwei Reihen aus je ' + c + ' Trichtern, die nach Osten zeigen: Klicke beim Bauen immer die Seite des vorigen Trichters an. Am Ende führen zwei Trichter nach Süden und Norden in den mittleren, der zeigt nach Osten in die Kiste. Dazwischen und außen liegen feste Blöcke als Boden.' });
 
     g = mk(W, D); row(g, 1, 'S'); row(g, 2, 'm'); row(g, 4, 'm'); row(g, 5, 'S');
-    [1, 3, 5, 7].forEach(function (x) { g[3][x] = 'Q'; }); [2, 4, 6, 8].forEach(function (x) { g[3][x] = 'f'; });
-    [2, 3, 4].forEach(function (z) { g[z][0] = 'S'; g[z][9] = 'S'; });
+    for (x = X0; x <= X1; x++) { if (x % 2) { g[3][x] = 'Q'; src++; } else g[3][x] = 'f'; }
+    [2, 3, 4].forEach(function (z) { g[z][0] = 'S'; g[z][E] = 'S'; });
     L.push({ y: [2, 2], name: 'Schlamm und Wasser', grid: rows(g),
-      text: 'Lege auf jeden Trichter der beiden Reihen einen Schlammblock. Den bekommst du, wenn du eine Wasserflasche auf Erde leerst. Zwischen den Reihen entsteht die Wasserrinne: Gieße Wasser in das 1., 3., 5. und 7. Feld, die Lücken füllen sich von selbst. An beiden Enden hält ein fester Block das Wasser.' });
+      text: 'Lege auf jeden Trichter der beiden Reihen einen Schlammblock. Den bekommst du, wenn du eine Wasserflasche auf Erde leerst. Zwischen den Reihen entsteht die Wasserrinne: Gieße Wasser in jedes zweite Feld, das 1., 3., 5. und so weiter, insgesamt ' + src + ' Quellen. Die Lücken füllen sich von selbst. An beiden Enden hält ein fester Block das Wasser.' });
 
     g = mk(W, D); row(g, 1, 'S'); row(g, 2, 'r'); row(g, 3, 'G'); row(g, 4, 'r'); row(g, 5, 'S'); caps(g);
     L.push({ y: [3, 3], name: 'Zuckerrohr pflanzen', grid: rows(g),
-      text: 'Pflanze auf jeden Schlammblock ein Zuckerrohr, 16 Stück. Decke die Wasserrinne mit Glas ab und setze Glas an beide Enden. So fällt die Ernte nicht ins Wasser. Außen kommt eine Reihe fester Blöcke als Unterbau für die Kolben.' });
+      text: 'Pflanze auf jeden Schlammblock ein Zuckerrohr, ' + pl + ' Stück. Decke die Wasserrinne mit Glas ab und setze Glas an beide Enden. So fällt die Ernte nicht ins Wasser. Außen kommt eine Reihe fester Blöcke als Unterbau für die Kolben.' });
 
     g = mk(W, D); row(g, 0, 'S'); row(g, 1, 'P'); row(g, 2, 'u'); row(g, 3, 'G'); row(g, 4, 'u'); row(g, 5, 'p'); row(g, 6, 'S'); caps(g);
     L.push({ y: [4, 4], name: 'Kolben', grid: rows(g),
-      text: 'Setze 16 normale Kolben, keine klebrigen. Ihr Kopf zeigt zum Zuckerrohr, damit sie den zweiten Block abschlagen. Ein Kolben zeigt beim Setzen mit dem Kopf zu dir: Stell dich auf das Glas über der Rinne und schau waagerecht nach außen. Zeigt einer falsch, bau ihn ab und setz ihn neu. Ganz außen kommt je eine Reihe fester Blöcke. Die Felder über dem Zuckerrohr bleiben frei.' });
+      text: 'Setze ' + pl + ' normale Kolben, keine klebrigen. Ihr Kopf zeigt zum Zuckerrohr, damit sie den zweiten Block abschlagen. Ein Kolben zeigt beim Setzen mit dem Kopf zu dir: Stell dich auf das Glas über der Rinne und schau waagerecht nach außen. Zeigt einer falsch, bau ihn ab und setz ihn neu. Ganz außen kommt je eine Reihe fester Blöcke. Die Felder über dem Zuckerrohr bleiben frei.' });
 
     g = mk(W, D); row(g, 0, 'i'); row(g, 1, 'Y'); row(g, 2, 'u'); row(g, 3, 'G'); row(g, 4, 'u'); row(g, 5, 'y'); row(g, 6, 'i'); caps(g);
     L.push({ y: [5, 5], name: 'Beobachter und Redstone', grid: rows(g),
-      text: 'Setze auf jeden Kolben einen Beobachter. Sein Gesicht schaut zum Zuckerrohr, der rote Punkt nach außen. Ein Beobachter schaut beim Setzen in deine Blickrichtung: Stell dich außen so hin, dass deine Füße auf Höhe der Kolben stehen, und schau waagerecht zum Zuckerrohr. Zeigt einer nach oben oder unten, bau ihn ab und setz ihn neu. Streue auf die äußeren Blöcke je eine Linie Redstone-Staub. Wächst ein Zuckerrohr auf 3 Blöcke, meldet es der Beobachter, und alle Kolben der Reihe schlagen zu.' });
+      text: 'Setze auf jeden Kolben einen Beobachter. Sein Gesicht schaut zum Zuckerrohr, der rote Punkt nach außen. Ein Beobachter schaut beim Setzen in deine Blickrichtung: Stell dich außen so hin, dass deine Füße auf Höhe der Kolben stehen, und schau waagerecht zum Zuckerrohr. Zeigt einer nach oben oder unten, bau ihn ab und setz ihn neu. Streue auf die äußeren Blöcke je eine Linie Redstone-Staub. Wächst ein Zuckerrohr auf 3 Blöcke, meldet es der Beobachter, und die Kolben der Reihe schlagen zu. Jeder Beobachter speist den Staub direkt hinter sich, deshalb klappt das auch bei langen Reihen.' });
 
+    var rate = Math.round(pl * 3.125 / 5) * 5;
+    if (dbl) {
+      // Zwei Hälften: links gespiegelt (Trichter nach Westen), rechts wie gebaut; die Endspalte 0 teilen sich beide
+      L.forEach(function (l) {
+        l.grid = l.grid.map(function (r) {
+          var left = r.split('').reverse().map(function (ch) { return ch === 'e' ? '5' : ch; }).join('');
+          return left + r.slice(1);
+        });
+      });
+      W = 2 * W - 1; src *= 2;
+      L[0].pairs = [[0, 3, 0, 4], [W - 1, 3, W - 1, 4]];
+      L[0].text = 'Die Farm besteht aus zwei gespiegelten Hälften mit je ' + c + ' Spalten, jede mit eigener Doppelkiste ganz außen. So bleibt jeder Trichterstrang kurz genug. ' + L[0].text.replace('ganz im Osten', 'je Hälfte ganz außen').replace('die nach Osten zeigen', 'die zur Kiste zeigen').replace('nach Süden und Norden in den mittleren, der zeigt nach Osten in die Kiste', 'in den mittleren, der zeigt in die Kiste');
+      L[1].text = L[1].text.replace('Zwischen den Reihen entsteht die Wasserrinne', 'Zwischen den Reihen entsteht je Hälfte eine Wasserrinne').replace('insgesamt ' + (src / 2) + ' Quellen', 'insgesamt ' + src + ' Quellen').replace('An beiden Enden hält', 'In der Mitte und an beiden Enden hält');
+    }
     return {
-      id: 'zuckerrohr', out: 'sugar_cane', title: 'Zuckerrohrfarm', w: W, d: D, yMin: 1, yMax: 5, sliceX: 4, ground: true,
+      id: 'zuckerrohr', out: 'sugar_cane', title: 'Zuckerrohrfarm', w: W, d: D, yMin: 1, yMax: 5, sliceX: Math.min(4, c), ground: true,
+      size: { n: pl, vals: [8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64], min: 8, max: 64, label: 'Pflanzen', tiers: [8, 16, 32, 48, 64] }, outName: 'Zuckerrohr', rate: 'rund ' + rate + ' pro Stunde',
       guides: [],
-      specs: [['Grundfläche', '11 × 7 Blöcke'], ['Höhe', '5 Blöcke'], ['Zuckerrohr', '16 Pflanzen'], ['Ertrag', 'rund 50 pro Stunde']],
-      extras: [['Wasserflaschen', '16', 'zum Herstellen des Schlamms: Flasche auf Erde leeren'],
-               ['Wassereimer', '1', 'für die 4 Quellen immer wieder auffüllen']],
-      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', mud: 'Wasserflasche auf Erde', cane: 'nur 16 zum Pflanzen, den Rest liefert die Farm',
-               piston: 'normale Kolben, keine klebrigen', observer: 'Quarz aus dem Nether nötig', dust: 'eine Linie je Seite', chest: 'ergibt eine Doppelkiste',
+      specs: [['Grundfläche', W + ' × 7 Blöcke'], ['Höhe', '5 Blöcke'], ['Zuckerrohr', pl + ' Pflanzen'], ['Ertrag', 'rund ' + rate + ' pro Stunde']],
+      extras: [['Wasserflaschen', String(pl), 'zum Herstellen des Schlamms: Flasche auf Erde leeren'],
+               ['Wassereimer', '1', 'für die ' + src + ' Quellen immer wieder auffüllen']],
+      hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', mud: 'Wasserflasche auf Erde', cane: 'nur ' + pl + ' zum Pflanzen, den Rest liefert die Farm', chest: dbl ? 'ergibt 2 Doppelkisten' : 'ergibt eine Doppelkiste',
+               piston: 'normale Kolben, keine klebrigen', observer: 'Quarz aus dem Nether nötig', dust: 'eine Linie je Seite',
                glass: 'Sand im Ofen schmelzen', source: 'aus dem Eimer' },
       layers: L
     };
   }
 
-  /* ---------- Kürbis- und Melonenfarm: 13 x 7, Y1 bis Y4, Ernte per Knopf ---------- */
-  function pumpkin() {
-    var W = 13, D = 7, L = [], g;
-
-    g = mk(W, D); rect(g, 1, 1, 10, 1, 'S'); rect(g, 0, 3, 10, 3, 'S'); rect(g, 1, 5, 10, 5, 'S'); g[2][1] = 'S'; g[4][1] = 'S';
-    rect(g, 2, 2, 10, 2, 'e'); rect(g, 2, 4, 10, 4, 'e'); g[2][11] = 's'; g[3][11] = 'e'; g[4][11] = 'n'; g[3][12] = 'K'; g[4][12] = 'K';
-    L.push({ y: [1, 1], name: 'Trichter und Kiste', grid: rows(g), pairs: [[12, 3, 12, 4]],
-      text: 'Stelle die Doppelkiste ganz im Osten auf. Lege zwei Reihen aus je 9 Trichtern, die nach Osten zeigen: Klicke beim Bauen immer schleichend die Seite des vorigen Trichters an. Am Ende führen zwei Trichter nach Süden und Norden in den mittleren, der zeigt nach Osten in die Kiste. Dazwischen und außen liegen feste Blöcke als Boden.' });
-
-    g = mk(W, D); rect(g, 1, 1, 10, 1, 'S'); rect(g, 1, 5, 10, 5, 'S'); g[2][1] = 'S'; g[2][10] = 'S'; g[4][1] = 'S'; g[4][10] = 'S';
-    rect(g, 2, 2, 9, 2, 'm'); rect(g, 2, 4, 9, 4, 'm'); g[3][0] = 'S'; g[3][1] = 'Q'; rect(g, 2, 3, 9, 3, 'a'); g[3][10] = 'Q'; g[3][11] = 'S';
-    L.push({ y: [2, 2], name: 'Schlamm, Ackerboden, Wasser', grid: rows(g),
-      text: 'Lege auf die 8 westlichen Trichter jeder Reihe einen Schlammblock, insgesamt 16. Auf dem Schlamm wachsen später die Früchte, der Trichter darunter zieht die Ernte durch den Schlamm ein. In die Mitte kommt eine Reihe Erde, die du mit der Hacke zu Ackerboden machst. An beiden Enden dieser Reihe liegt eine Wasserquelle, so ist jeder Ackerboden höchstens 4 Felder vom Wasser entfernt. Feste Blöcke halten das Wasser fest.' });
-
-    g = mk(W, D); rect(g, 1, 0, 9, 0, 'S'); rect(g, 1, 6, 9, 6, 'S'); rect(g, 1, 1, 1, 5, 'S'); g[3][0] = 'S';
-    rect(g, 2, 1, 9, 1, 'P'); rect(g, 2, 2, 9, 2, 'v'); rect(g, 2, 3, 9, 3, 'k'); rect(g, 2, 4, 9, 4, 'v'); rect(g, 2, 5, 9, 5, 'p');
-    L.push({ y: [3, 3], name: 'Kolben und Kerne', grid: rows(g),
-      text: 'Setze 16 normale Kolben, keine klebrigen, deren Kopf zum Schlamm zeigt. Ein Kolben zeigt beim Setzen mit dem Kopf zu dir: Stell dich auf den Schlamm und schau waagerecht nach außen. Dahinter kommt je eine Reihe fester Blöcke, im Westen eine Querreihe, die auch die westliche Wasserquelle abdeckt. Pflanze erst jetzt die 8 Kerne auf den Ackerboden und spring nie darauf, sonst wird er wieder zu Erde. Die Felder über dem Schlamm bleiben frei, dort wachsen die Früchte.' });
-
-    g = mk(W, D); rect(g, 1, 0, 9, 0, 'i'); rect(g, 1, 6, 9, 6, 'i'); rect(g, 1, 1, 1, 5, 'i'); g[3][0] = 'W';
-    L.push({ y: [4, 4], name: 'Redstone und Knopf', grid: rows(g),
-      text: 'Streue Redstone-Staub auf die äußeren Blockreihen und die Querreihe im Westen, so entsteht ein U. Setze den Steinknopf ganz im Westen oben auf den einzelnen Block neben dem Staub. Ein Druck auf den Knopf, und alle 16 Kolben fahren einmal aus. Sie zerschlagen jede Frucht, die gerade da ist, und die Trichter bringen alles in die Kiste.' });
-
+  /* ---------- Kürbis- und Melonenfarm, Ernte per Knopf ----------
+     Eine Anlage mit c Stielen (c <= 8, sonst wäre Ackerboden weiter als 4 Felder vom Wasser): Spalte 0 Knopf, 1 Querreihe,
+     2..c+1 Stiele, c+2 Wasser, c+3 Trichter, c+4 Kiste. Ab 10 Stielen zwei gespiegelte Hälften um einen gemeinsamen Knopf,
+     ab 20 Stielen zwei solche Anlagen mit einer Reihe Abstand. */
+  function pumpkin(n) {
+    n = n || 8;
+    var parts = n <= 8 ? 1 : n <= 16 ? 2 : 4, c = n / parts, dbl = parts > 1, quad = parts === 4, btn = quad ? 2 : 1, perBtn = n / btn;
+    function half() {
+      var W = c + 5, D = 7, G = [], g;
+      g = mk(W, D); rect(g, 1, 1, c + 2, 1, 'S'); rect(g, 0, 3, c + 2, 3, 'S'); rect(g, 1, 5, c + 2, 5, 'S'); g[2][1] = 'S'; g[4][1] = 'S';
+      rect(g, 2, 2, c + 2, 2, 'e'); rect(g, 2, 4, c + 2, 4, 'e'); g[2][c + 3] = 's'; g[3][c + 3] = 'e'; g[4][c + 3] = 'n'; g[3][c + 4] = 'K'; g[4][c + 4] = 'K'; G.push(g);
+      g = mk(W, D); rect(g, 1, 1, c + 2, 1, 'S'); rect(g, 1, 5, c + 2, 5, 'S'); g[2][1] = 'S'; g[2][c + 2] = 'S'; g[4][1] = 'S'; g[4][c + 2] = 'S';
+      rect(g, 2, 2, c + 1, 2, 'm'); rect(g, 2, 4, c + 1, 4, 'm'); g[3][0] = 'S'; g[3][1] = 'Q'; rect(g, 2, 3, c + 1, 3, 'a'); g[3][c + 2] = 'Q'; g[3][c + 3] = 'S'; G.push(g);
+      g = mk(W, D); rect(g, 1, 0, c + 1, 0, 'S'); rect(g, 1, 6, c + 1, 6, 'S'); rect(g, 1, 1, 1, 5, 'S'); g[3][0] = 'S';
+      rect(g, 2, 1, c + 1, 1, 'P'); rect(g, 2, 2, c + 1, 2, 'v'); rect(g, 2, 3, c + 1, 3, 'k'); rect(g, 2, 4, c + 1, 4, 'v'); rect(g, 2, 5, c + 1, 5, 'p'); G.push(g);
+      g = mk(W, D); rect(g, 1, 0, c + 1, 0, 'i'); rect(g, 1, 6, c + 1, 6, 'i'); rect(g, 1, 1, 1, 5, 'i'); g[3][0] = 'W'; G.push(g);
+      return G;
+    }
+    // Spiegeln: Spalten umdrehen, Trichter nach Osten werden Trichter nach Westen
+    function mirror(g) { return g.map(function (r) { return r.slice().reverse().map(function (ch) { return ch === 'e' ? '5' : ch; }); }); }
+    var H = half(), G = H.map(function (g) {
+      if (!dbl) return g;
+      var m = mirror(g);
+      var two = m.map(function (r, z) { return r.concat(g[z].slice(1)); });
+      if (!quad) return two;
+      var w = two[0].length, gap = [Array(w).fill('.')];
+      return two.concat(gap, two.map(function (r) { return r.slice(); }));
+    });
+    var W = G[0][0].length, D = G.length ? G[0].length : 7, pairs = [];
+    G[0].forEach(function (r, z) { r.forEach(function (ch, x) { if (ch === 'K' && z + 1 < D && G[0][z + 1][x] === 'K') pairs.push([x, z, x, z + 1]); }); });
+    var orient = !dbl ? 'Der Knopf kommt nach Westen, die Kiste nach Osten. '
+      : (quad ? 'Du baust zwei gleiche Anlagen nebeneinander, mit einer Reihe Abstand. Jede besteht aus zwei gespiegelten Hälften um einen Knopf in der Mitte, jede Hälfte mit eigener Kiste ganz außen. '
+              : 'Die Anlage besteht aus zwei gespiegelten Hälften. In der Mitte sitzt später der Knopf, jede Hälfte hat ihre eigene Kiste ganz außen. ');
+    var L = [
+      { y: [1, 1], name: 'Trichter und Kiste', grid: rows(G[0]), pairs: pairs,
+        text: orient + 'Stelle ' + (dbl ? 'die Doppelkisten' : 'die Doppelkiste') + ' auf. Lege ' + (dbl ? 'je Hälfte ' : '') + 'zwei Reihen aus je ' + (c + 1) + ' Trichtern, die zur Kiste zeigen: Klicke beim Bauen immer schleichend die Seite des vorigen Trichters an. Am Ende führen zwei Trichter in den mittleren, der zeigt in die Kiste. Dazwischen und außen liegen feste Blöcke als Boden.' },
+      { y: [2, 2], name: 'Schlamm, Ackerboden, Wasser', grid: rows(G[1]),
+        text: 'Lege auf die ' + c + ' Trichter jeder Reihe, die auf der Knopfseite beginnen, einen Schlammblock, insgesamt ' + (2 * n) + '. Auf dem Schlamm wachsen später die Früchte, der Trichter darunter zieht die Ernte durch den Schlamm ein. In die Mitte kommt eine Reihe Erde, die du mit der Hacke zu Ackerboden machst. An beiden Enden ' + (dbl ? 'jeder' : 'dieser') + ' Reihe liegt eine Wasserquelle, so ist jeder Ackerboden höchstens 4 Felder vom Wasser entfernt. Feste Blöcke halten das Wasser fest.' },
+      { y: [3, 3], name: 'Kolben und Kerne', grid: rows(G[2]),
+        text: 'Setze ' + (2 * n) + ' normale Kolben, keine klebrigen, deren Kopf zum Schlamm zeigt. Ein Kolben zeigt beim Setzen mit dem Kopf zu dir: Stell dich auf den Schlamm und schau waagerecht nach außen. Dahinter kommt je eine Reihe fester Blöcke, auf der Knopfseite eine Querreihe, die auch die Wasserquelle dort abdeckt. Pflanze erst jetzt die ' + n + ' Kerne auf den Ackerboden und spring nie darauf, sonst wird er wieder zu Erde. Die Felder über dem Schlamm bleiben frei, dort wachsen die Früchte.' },
+      { y: [4, 4], name: 'Redstone und Knopf', grid: rows(G[3]),
+        text: 'Streue Redstone-Staub auf die äußeren Blockreihen und die Querreihe auf der Knopfseite, so entsteht ' + (dbl ? 'je Hälfte ein U' : 'ein U') + '. Setze den Steinknopf ' + (dbl ? 'in der Mitte zwischen den beiden U' : 'ganz im Westen') + ' oben auf den einzelnen Block neben dem Staub' + (quad ? ', bei beiden Anlagen' : '') + '. Ein Druck auf den Knopf, und alle ' + (2 * perBtn) + ' Kolben ' + (quad ? 'seiner Anlage ' : '') + 'fahren einmal aus. Sie zerschlagen jede Frucht, die gerade da ist, und die Trichter bringen alles in die Kiste' + (dbl ? 'n' : '') + '.' }
+    ];
     return {
-      id: 'kuerbis', out: 'pumpkin', title: 'Kürbis- und Melonenfarm', w: W, d: D, yMin: 1, yMax: 4, sliceX: 5, ground: true,
+      id: 'kuerbis', out: 'pumpkin', title: 'Kürbis- und Melonenfarm', w: W, d: D, yMin: 1, yMax: 4, sliceX: dbl ? c + 9 : 5, ground: true,
+      size: { n: n, vals: [4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32], min: 4, max: 32, label: 'Stiele', tiers: [4, 8, 12, 16, 32] },
+      outName: 'Kürbisse und Melonen', rate: 'bis ' + n + ' je Ernte, etwa alle 30 Minuten',
       guides: [],
-      specs: [['Grundfläche', '13 × 7 Blöcke'], ['Höhe', '4 Blöcke'], ['Stiele', '8 Pflanzen'], ['Ertrag', 'bis 8 Früchte je Knopfdruck']],
-      extras: [['Wasserflaschen', '16', 'für den Schlamm: Flasche auf Erde leeren'], ['Wassereimer', '1', 'für die 2 Quellen'],
+      specs: [['Grundfläche', W + ' × ' + D + ' Blöcke'], ['Höhe', '4 Blöcke'], ['Stiele', n + ' Pflanzen'], ['Ertrag', 'bis ' + n + ' Früchte je Ernte' + (quad ? ' (2 Knöpfe)' : '')]],
+      extras: [['Wasserflaschen', String(2 * n), 'für den Schlamm: Flasche auf Erde leeren'], ['Wassereimer', '1', 'für die ' + (2 * parts) + ' Quellen'],
                ['Hacke', '1', 'macht aus Erde Ackerboden']],
       hints: { hopper: '5 Eisenbarren und eine Truhe je Trichter', mud: 'Wasserflasche auf Erde', dirt: 'mit der Hacke zu Ackerboden',
-               seeds: 'Kürbis oder Melone, auch gemischt', piston: 'normale Kolben, keine klebrigen', dust: 'ein U um die Kolben',
-               button: 'aus einem Stein', source: 'aus dem Eimer', chest: 'ergibt eine Doppelkiste' },
+               seeds: 'Kürbis oder Melone, auch gemischt', piston: 'normale Kolben, keine klebrigen', dust: dbl ? 'ein U je Hälfte' : 'ein U um die Kolben',
+               button: 'aus einem Stein', source: 'aus dem Eimer', chest: dbl ? 'ergibt ' + parts + ' Doppelkisten' : 'ergibt eine Doppelkiste' },
       layers: L
     };
   }
 
-  /* ---------- Hühnerfarm mit Kochautomat: 5 x 3, Y1 bis Y6 ---------- */
-  function chicken() {
-    var W = 5, D = 3, L = [], g;
+  /* ---------- Hühnerfarm mit Kochautomat: 5 x 3m, Y1 bis Y6; m Module von Norden nach Süden ---------- */
+  function chicken(m) {
+    m = m || 1;
+    var W = 5, D = 3 * m, L = [], g, pairs = [];
+    function each(fn) { for (var j = 0; j < m; j++) fn(3 * j + 1); }       // Mittelreihe jedes Moduls
+    var pre = m > 1 ? 'In jedem der ' + m + ' Module: ' : '';
 
-    g = mk(W, D); rect(g, 0, 1, 2, 1, 'S'); g[1][3] = 'K'; g[1][4] = 'K';
-    L.push({ y: [1, 1], name: 'Kiste', grid: rows(g), pairs: [[3, 1, 4, 1]],
-      text: 'Stelle die Doppelkiste auf. Daneben im Westen kommen 3 feste Blöcke als Sockel.' });
+    g = mk(W, D); each(function (z) { rect(g, 0, z, 2, z, 'S'); g[z][3] = 'K'; g[z][4] = 'K'; pairs.push([3, z, 4, z]); });
+    L.push({ y: [1, 1], name: 'Kiste', grid: rows(g), pairs: pairs,
+      text: (m > 1 ? 'Du baust ' + m + ' gleiche Module von Norden nach Süden direkt nebeneinander, jedes 3 Felder breit und mit eigener Kiste. ' : '') +
+        'Stelle die Doppelkiste auf. Daneben im Westen kommen 3 feste Blöcke als Sockel.' });
 
-    g = mk(W, D); rect(g, 0, 1, 2, 1, 'S'); g[1][3] = 't';
+    g = mk(W, D); each(function (z) { rect(g, 0, z, 2, z, 'S'); g[z][3] = 't'; });
     L.push({ y: [2, 2], name: 'Trichter', grid: rows(g),
-      text: 'Setze auf die westliche Kistenhälfte einen Trichter. Schleiche dabei und klicke auf die Oberseite der Kiste, dann zeigt er nach unten hinein. Der Sockel wächst eine Lage höher. Auf die östliche Kistenhälfte kommt nichts, sonst lässt sie sich schlecht öffnen.' });
+      text: pre + 'Setze auf die westliche Kistenhälfte einen Trichter. Schleiche dabei und klicke auf die Oberseite der Kiste, dann zeigt er nach unten hinein. Der Sockel wächst eine Lage höher. Auf die östliche Kistenhälfte kommt nichts, sonst lässt sie sich schlecht öffnen.' });
 
-    g = mk(W, D); g[1][0] = 'I'; g[1][1] = 'J'; g[1][2] = 'H'; g[1][3] = 'q'; g[0][3] = 'G'; g[2][3] = 'G'; g[1][4] = 'G';
+    g = mk(W, D); each(function (z) { g[z][0] = 'I'; g[z][1] = 'J'; g[z][2] = 'H'; g[z][3] = 'q'; g[z - 1][3] = 'G'; g[z + 1][3] = 'G'; g[z][4] = 'G'; });
     L.push({ y: [3, 3], name: 'Spender, Beobachter, Kükenplatz', grid: rows(g),
-      text: 'Zuerst die Beobachter. Ein Beobachter schaut beim Setzen in deine Blickrichtung. Für den östlichen stellst du dich auf den Sockelblock, wo gleich der Spender hinkommt, und schaust nach Westen: Sein roter Punkt zeigt dann zum Spender. Den westlichen setzt du von Westen aus mit Blick nach Osten. Die beiden lösen sich ab jetzt ständig gegenseitig aus. Dann der Spender: Er zeigt beim Setzen mit der Öffnung zu dir, also stell dich auf das Feld östlich davon und schau nach Westen. Lege auf den Trichter eine untere Stufe, darauf stehen später die Küken, und umgib sie mit 3 Glasblöcken.' });
+      text: pre + 'Zuerst die Beobachter. Ein Beobachter schaut beim Setzen in deine Blickrichtung. Für den östlichen stellst du dich auf den Sockelblock, wo gleich der Spender hinkommt, und schaust nach Westen: Sein roter Punkt zeigt dann zum Spender. Den westlichen setzt du von Westen aus mit Blick nach Osten. Die beiden lösen sich ab jetzt ständig gegenseitig aus. Dann der Spender: Er zeigt beim Setzen mit der Öffnung zu dir, also stell dich auf das Feld östlich davon und schau nach Westen. Lege auf den Trichter eine untere Stufe, darauf stehen später die Küken, und umgib sie mit 3 Glasblöcken.' });
 
-    g = mk(W, D); g[1][2] = 'l'; g[1][3] = 'V'; g[0][3] = 'G'; g[2][3] = 'G'; g[1][4] = 'G';
+    g = mk(W, D); each(function (z) { g[z][2] = 'l'; g[z][3] = 'V'; g[z - 1][3] = 'G'; g[z + 1][3] = 'G'; g[z][4] = 'G'; });
     L.push({ y: [4, 4], name: 'Trichter und Lava', grid: rows(g),
-      text: 'Setze auf den Spender einen Trichter, schleichend auf die Oberseite geklickt, damit er nach unten in den Spender zeigt. Baue 3 Glasblöcke um das Feld über der Stufe und gieße dort einen Eimer Lava hinein. Die Lava bleibt oben, weil sie nicht in die Stufe fließen kann. Küken sind 0,4 Blöcke hoch und bleiben darunter, ausgewachsene Hühner mit 0,8 Blöcken berühren sie.' });
+      text: pre + 'Setze auf den Spender einen Trichter, schleichend auf die Oberseite geklickt, damit er nach unten in den Spender zeigt. Baue 3 Glasblöcke um das Feld über der Stufe und gieße dort einen Eimer Lava hinein. Die Lava bleibt oben, weil sie nicht in die Stufe fließen kann. Küken sind 0,4 Blöcke hoch und bleiben darunter, ausgewachsene Hühner mit 0,8 Blöcken berühren sie.' });
 
-    g = mk(W, D); g[1][2] = 'x'; g[1][1] = 'G'; g[0][2] = 'G'; g[2][2] = 'G'; g[1][3] = 'G';
+    g = mk(W, D); each(function (z) { g[z][2] = 'x'; g[z][1] = 'G'; g[z - 1][2] = 'G'; g[z + 1][2] = 'G'; g[z][3] = 'G'; });
     L.push({ y: [5, 5], name: 'Pferch', grid: rows(g),
-      text: 'Umgib das Feld über dem oberen Trichter mit 4 Glasblöcken. Das ist der Pferch, er deckt auch die Lava ab. Wirf von oben Eier hinein, bis 4 bis 8 Küken darin sind: Aus jedem achten Ei schlüpft eines. Sie wachsen im Pferch heran und legen später ihre Eier direkt in den Trichter.' });
+      text: pre + 'Umgib das Feld über dem oberen Trichter mit 4 Glasblöcken. Das ist der Pferch, er deckt auch die Lava ab. Wirf von oben Eier hinein, bis 4 bis 8 Küken darin sind: Aus jedem achten Ei schlüpft eines. Sie wachsen im Pferch heran und legen später ihre Eier direkt in den Trichter.' });
 
-    g = mk(W, D); g[1][2] = 'G';
+    g = mk(W, D); each(function (z) { g[z][2] = 'G'; });
     L.push({ y: [6, 6], name: 'Deckel', grid: rows(g),
-      text: 'Schließe den Pferch mit einem Glasblock, sobald genug Hühner darin sind. Ein Huhn ist 0,8 Blöcke hoch und passt unter den Deckel.' });
+      text: pre + 'Schließe den Pferch mit einem Glasblock, sobald genug Hühner darin sind. Ein Huhn ist 0,8 Blöcke hoch und passt unter den Deckel.' });
 
     return {
       id: 'huehner', out: 'cooked_chicken', title: 'Hühnerfarm mit Kochautomat', w: W, d: D, yMin: 1, yMax: 6, sliceZ: 1, ground: true,
+      size: { n: m, min: 1, max: 8, step: 1, label: 'Module', tiers: [1, 2, 4, 6, 8] }, outName: 'Brathähnchen', rate: 'rund ' + (6 * m) + ' pro Stunde (1 je Huhn)',
       guides: [],
-      specs: [['Grundfläche', '5 × 3 Blöcke'], ['Höhe', '6 Blöcke'], ['Hühner', '4 bis 8 im Pferch'], ['Ertrag', 'rund 1 Brathähnchen je Huhn und Stunde']],
-      extras: [['Eier', '32', 'in den Pferch werfen, bis 4 bis 8 Küken geschlüpft sind']],
+      specs: [['Grundfläche', '5 × ' + D + ' Blöcke'], ['Höhe', '6 Blöcke'], ['Hühner', m > 1 ? '4 bis 8 je Pferch, ' + m + ' Pferche' : '4 bis 8 im Pferch'], ['Ertrag', 'rund 1 Brathähnchen je Huhn und Stunde']],
+      extras: [['Eier', String(32 * m), 'in die Pferche werfen, bis je 4 bis 8 Küken geschlüpft sind']],
       hints: { observer: 'Quarz aus dem Nether nötig', dispenser: 'Bogen, Redstone und Bruchstein', hopper: '5 Eisenbarren und eine Truhe je Trichter',
-               slab: 'eine untere Stufe, nicht aus Holz', lava: '1 Eimer', glass: 'Sand im Ofen schmelzen', chest: 'ergibt eine Doppelkiste' },
+               slab: 'eine untere Stufe, nicht aus Holz', lava: m === 1 ? '1 Eimer' : m + ' Eimer', glass: 'Sand im Ofen schmelzen', chest: m === 1 ? 'ergibt eine Doppelkiste' : 'ergibt ' + m + ' Doppelkisten' },
       layers: L
     };
   }
@@ -1598,7 +1666,7 @@ var PLANS = (function () {
 
     return {
       id: 'lava', out: 'lava_bucket', outName: 'Lava', title: 'Lava aus Tropfstein', w: W, d: D, yMin: 1, yMax: 5, sliceX: Math.min(3, n), ground: true,
-      size: { n: n, min: 2, max: 12, step: 1, label: 'Kessel' }, rate: 'etwa ' + (3 * n) + ' Eimer pro Stunde (3 je Kessel)',
+      size: { n: n, min: 2, max: 20, step: 1, label: 'Kessel', tiers: [3, 6, 10, 14, 20] }, rate: 'etwa ' + (3 * n) + ' Eimer pro Stunde (3 je Kessel)',
       guides: [],
       specs: [['Grundfläche', W + ' × 3 Blöcke'], ['Höhe', '5 Blöcke'], ['Kessel', String(n)], ['Ertrag', 'etwa 1 Eimer je Kessel alle 20 Minuten']],
       extras: [['Eimer', '1', 'zum Abschöpfen der Kessel']],
@@ -1652,6 +1720,7 @@ var PLANS = (function () {
 
     return {
       id: 'spawner', out: 'experience_bottle', title: 'Spawner-XP-Farm', w: W, d: D, yMin: 1, yMax: 7, sliceX: 5, ground: false,
+      one: 'Diese Farm gibt es nur in einer Größe: Den Raum gibt der Spawner vor, er lässt Mobs nur bis 4 Felder um sich herum entstehen.',
       guides: [],
       specs: [['Raum', '9 × 9 um den Spawner'], ['Tiefe', '4 Lagen unter dem Spawner'], ['Spawner', 'Zombie oder Skelett'], ['XP', 'je Mob mindestens 5']],
       extras: [['Wassereimer', '1', 'für die 9 Quellen immer wieder auffüllen'], ['Schwert', '1', 'am besten Diamant mit Schärfe'],
@@ -1682,7 +1751,7 @@ var PLANS = (function () {
 
     return {
       id: 'guerteltier', out: 'armadillo_scute', outName: 'Hornschilde', title: 'Gürteltierfarm für Hornschilde', w: W, d: D, yMin: 1, yMax: 3, sliceZ: 1, ground: true,
-      size: { n: n, min: 3, max: 12, step: 1, label: 'Felder' }, rate: 'rund ' + (8 * n) + ' pro Stunde (8 je Gürteltier)',
+      size: { n: n, min: 3, max: 16, step: 1, label: 'Gürteltiere', tiers: [3, 6, 9, 12, 16] }, rate: 'rund ' + (8 * n) + ' pro Stunde (8 je Gürteltier)',
       guides: [],
       specs: [['Grundfläche', W + ' × 3 Blöcke'], ['Höhe', '3 Blöcke'], ['Gürteltiere', n + ', eines je Feld'], ['Ertrag', 'rund 8 Hornschilde je Gürteltier und Stunde']],
       extras: [['Leine', '1', 'um die ersten 2 Gürteltiere herzuholen'], ['Spinnenaugen', String(2 * (n - 2)), 'zum Züchten im Pferch, 2 je Jungtier'],
@@ -1716,7 +1785,7 @@ var PLANS = (function () {
 
     return {
       id: 'ofen', out: 'furnace', outName: 'Geschmolzenes', title: 'Schmelzanlage mit ' + n + ' Öfen', w: W, d: D, yMin: 1, yMax: 4, sliceX: 1, ground: true,
-      size: { n: n, min: 2, max: 8, step: 2, label: 'Öfen' }, rate: (6 * n) + ' Gegenstände pro Minute (6 je Ofen)',
+      size: { n: n, min: 2, max: 16, step: 2, label: 'Öfen', tiers: [2, 4, 8, 12, 16] }, rate: (6 * n) + ' Gegenstände pro Minute (6 je Ofen)',
       guides: [],
       specs: [['Grundfläche', W + ' × 3 Blöcke'], ['Höhe', '4 Blöcke'], ['Öfen', String(n)], ['Tempo', (6 * n) + ' Gegenstände pro Minute']],
       extras: [['Kohle oder Holzkohle', 'nach Bedarf', '1 Stück reicht für 8 Gegenstände']],
@@ -1726,13 +1795,11 @@ var PLANS = (function () {
   }
 
   var list = [farm(), hall(), cactus(), xp(), cane(), pumpkin(), chicken(), lava(), spawner(), armadillo(), smelter()];
-  var RATE = {
-    eisenfarm: ['Eisen', 'hängt von den Golem-Spawns ab'], handelsstation: ['Handel', '10 Dorfbewohner'], kaktusfarm: ['Kakteen', 'rund 100 pro Stunde'],
-    xpfarm: ['Erfahrung', '5 je Enderman'], zuckerrohr: ['Zuckerrohr', 'rund 50 pro Stunde'], kuerbis: ['Kürbisse und Melonen', 'bis 8 je Knopfdruck, etwa alle 30 Minuten'],
-    huehner: ['Brathähnchen', 'rund 1 je Huhn und Stunde'], spawner: ['Erfahrung', 'mindestens 5 je Mob']
-  };
+  var RATE = { eisenfarm: ['Eisen', 'hängt von den Golem-Spawns ab'], xpfarm: ['Erfahrung', '5 je Enderman'], spawner: ['Erfahrung', 'mindestens 5 je Mob'] };
   list.forEach(function (p) { if (RATE[p.id]) { p.outName = RATE[p.id][0]; p.rate = RATE[p.id][1]; } });
-  list.build = { lava: lava, guerteltier: armadillo, ofen: smelter };
+  list.build = { handelsstation: hall, kaktusfarm: cactus, zuckerrohr: cane, kuerbis: pumpkin, huehner: chicken, lava: lava, guerteltier: armadillo, ofen: smelter };
+  // Erlaubte Werte einer Größe: feste Liste oder min bis max in Schritten
+  list.sizeVals = function (z) { if (z.vals) return z.vals.slice(); var a = []; for (var n = z.min; n <= z.max; n += z.step) a.push(n); return a; };
   return list;
 })();
 
@@ -1742,7 +1809,7 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
 <script>
 (function () {
   var st = { plan: 0, layer: PLANS.map(function () { return 0; }), sel: null, done: {} };
-  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_front_off.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/pumpkin_face_off.png","blocks/pumpkin_side.png","blocks/pumpkin_top.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/bucket_lava.png","items/cauldron.png","items/chicken_cooked.png","items/door_wood.png","items/egg.png","items/emerald.png","items/ender_pearl.png","items/experience_bottle.png","items/hopper.png","items/iron_ingot.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",38,38,38],"Z":["c",38,38,38],"U":["c",38,38,38],"L":["c",19,19,19],"X":["f",59],"t":["f",53],"n":["f",53],"e":["f",53],"s":["f",53],"K":["c",6,4,5],"B":["f",44],"b":["f",44],"C":["c",8,7,7],"A":["c",22,21,20],"D":["f",48],"d":["f",48],"F":["f",39],"N":["c",37,37,37],"c":["c",1,0,0],"z":["fe",30,30,30],"g":["fe",30,30,30],"T":["s",38,38,38],"R":["t",40,40,40],"M":["f",55],"m":["c",24,24,24],"r":["f",57],"G":["c",15,15,15],"P":["c",29,28,28],"p":["c",29,28,28],"Y":["c",27,25,26],"y":["c",27,25,26],"i":["f",56],"a":["c",11,9,9],"k":["f",58],"W":["b",38,38,38],"H":["c",14,10,13],"I":["c",27,25,26],"J":["c",27,25,26],"l":["f",53],"q":["s",38,38,38],"x":["f",49],"j":["f",46],"1":["f",31],"3":["c",23,23,23],"2":["f",43],"4":["c",14,12,13],"6":["f",53],"7":["f",53],"Q":["c",42,42,42],"V":["c",18,18,18],"iron_ingot":["f",54],"emerald":["f",50],"cactus":["c",1,0,0],"ender_pearl":["f",51],"sugar_cane":["f",57],"pumpkin":["c",35,33,34],"cooked_chicken":["f",47],"lava_bucket":["f",45],"experience_bottle":["f",52],"armadillo_scute":["f",43],"furnace":["c",14,12,13]},"g":{"S":[38,38],"Z":[38,38],"U":[38,38],"L":[19,19],"t":[17,16],"n":[17,16],"e":[17,16],"s":[17,16],"K":[6,4],"C":[8,7],"F":[39,39],"N":[37,37],"c":[1,0],"z":[30,30],"g":[30,30],"T":[38,38],"R":[40,40],"M":[36,36],"m":[24,24],"r":[57,57],"G":[15,15],"P":[28,28],"p":[28,28],"Y":[27,26],"y":[27,26],"a":[11,9],"W":[38,38],"H":[14,10],"I":[27,26],"J":[27,26],"l":[17,16],"q":[38,38],"j":[3,2],"1":[32,32],"3":[23,23],"4":[14,12],"6":[53,53],"7":[53,53],"Q":[42,42],"f":[41,41],"V":[18,18]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","4":"furnace","6":"hopper","7":"hopper","V":"lava_bucket"}};
+  var BTX = {"p":["blocks/cactus_side.tga","blocks/cactus_top.tga","blocks/cauldron_side.png","blocks/cauldron_top.png","blocks/chest_front.png","blocks/chest_side.png","blocks/chest_top.png","blocks/composter_side.png","blocks/composter_top.png","blocks/dirt.png","blocks/dispenser_front_horizontal.png","blocks/farmland_wet.png","blocks/furnace_front_off.png","blocks/furnace_side.png","blocks/furnace_top.png","blocks/glass.png","blocks/hopper_outside.png","blocks/hopper_top.png","blocks/lava_still.png","blocks/leaves_oak_carried.tga","blocks/lectern_base.png","blocks/lectern_sides.png","blocks/lectern_top.png","blocks/mob_spawner.png","blocks/mud.png","blocks/observer_back.png","blocks/observer_side.png","blocks/observer_top.png","blocks/piston_side.png","blocks/piston_top_normal.png","blocks/planks_oak.png","blocks/pointed_dripstone_down_base.png","blocks/pointed_dripstone_down_tip.png","blocks/pumpkin_face_off.png","blocks/pumpkin_side.png","blocks/pumpkin_top.png","blocks/rail_normal.png","blocks/sand.png","blocks/stone.png","blocks/torch_on.png","blocks/trapdoor.png","blocks/water_flow.png","blocks/water_still.png","items/armadillo_scute.png","items/bed_red.png","items/bucket_lava.png","items/cauldron.png","items/chicken_cooked.png","items/door_wood.png","items/egg.png","items/emerald.png","items/ender_pearl.png","items/experience_bottle.png","items/hopper.png","items/iron_ingot.png","items/minecart_normal.png","items/redstone_dust.png","items/reeds.png","items/seeds_pumpkin.png","items/sign.png"],"m":{"S":["c",38,38,38],"Z":["c",38,38,38],"U":["c",38,38,38],"L":["c",19,19,19],"X":["f",59],"t":["f",53],"n":["f",53],"e":["f",53],"s":["f",53],"K":["c",6,4,5],"B":["f",44],"b":["f",44],"C":["c",8,7,7],"A":["c",22,21,20],"D":["f",48],"d":["f",48],"F":["f",39],"N":["c",37,37,37],"c":["c",1,0,0],"z":["fe",30,30,30],"g":["fe",30,30,30],"T":["s",38,38,38],"R":["t",40,40,40],"M":["f",55],"m":["c",24,24,24],"r":["f",57],"G":["c",15,15,15],"P":["c",29,28,28],"p":["c",29,28,28],"Y":["c",27,25,26],"y":["c",27,25,26],"i":["f",56],"a":["c",11,9,9],"k":["f",58],"W":["b",38,38,38],"H":["c",14,10,13],"I":["c",27,25,26],"J":["c",27,25,26],"l":["f",53],"q":["s",38,38,38],"x":["f",49],"j":["f",46],"1":["f",31],"3":["c",23,23,23],"2":["f",43],"4":["c",14,12,13],"6":["f",53],"7":["f",53],"5":["f",53],"Q":["c",42,42,42],"V":["c",18,18,18],"iron_ingot":["f",54],"emerald":["f",50],"cactus":["c",1,0,0],"ender_pearl":["f",51],"sugar_cane":["f",57],"pumpkin":["c",35,33,34],"cooked_chicken":["f",47],"lava_bucket":["f",45],"experience_bottle":["f",52],"armadillo_scute":["f",43],"furnace":["c",14,12,13]},"g":{"S":[38,38],"Z":[38,38],"U":[38,38],"L":[19,19],"t":[17,16],"n":[17,16],"e":[17,16],"s":[17,16],"K":[6,4],"C":[8,7],"F":[39,39],"N":[37,37],"c":[1,0],"z":[30,30],"g":[30,30],"T":[38,38],"R":[40,40],"M":[36,36],"m":[24,24],"r":[57,57],"G":[15,15],"P":[28,28],"p":[28,28],"Y":[27,26],"y":[27,26],"a":[11,9],"W":[38,38],"H":[14,10],"I":[27,26],"J":[27,26],"l":[17,16],"q":[38,38],"j":[3,2],"1":[32,32],"3":[23,23],"4":[14,12],"6":[53,53],"7":[53,53],"5":[17,16],"Q":[42,42],"f":[41,41],"V":[18,18]},"x":{"S":"stone","Z":"stone","U":"stone","L":"oak_leaves","X":"oak_sign","t":"hopper","n":"hopper","e":"hopper","s":"hopper","K":"chest","B":"red_bed","b":"red_bed","C":"composter","A":"lectern","D":"wooden_door","d":"wooden_door","F":"torch","N":"sand","c":"cactus","z":"oak_fence","g":"oak_fence","T":"normal_stone_slab","R":"trapdoor","M":"minecart","m":"mud","r":"sugar_cane","G":"glass","P":"piston","p":"piston","Y":"observer","y":"observer","i":"redstone","a":"dirt","k":"pumpkin_seeds","W":"stone_button","H":"dispenser","I":"observer","J":"observer","l":"hopper","q":"normal_stone_slab","x":"egg","j":"cauldron","1":"pointed_dripstone","3":"mob_spawner","2":"armadillo_scute","4":"furnace","6":"hopper","7":"hopper","5":"hopper","V":"lava_bucket"}};
   window.BW_TEXP = BTX.p || [];   // für „Alle Bilder vorab laden“ in der App
   if (window.BWTEX && BTX.p) BWTEX.init(BTX.p, BTX.m);
   var texOn = (function () { try { return window.localStorage.getItem('bp.tex') !== '0'; } catch (e) { return true; } })();
@@ -1765,9 +1832,10 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   }
   /* Größe anpassbarer Pläne (gespeichert je Plan) */
   var BUILD = PLANS.build || {};
+  function sizeVals(z) { if (PLANS.sizeVals) return PLANS.sizeVals(z); var a = []; for (var n = z.min; n <= z.max; n += z.step) a.push(n); return a; }
   function applySize(i, n) {
     var q = PLANS[i]; if (!q || !q.size || !BUILD[q.id]) return;
-    var z = q.size; n = Math.round(+n); if (!(n >= z.min && n <= z.max) || (n - z.min) % z.step) return;
+    n = Math.round(+n); if (sizeVals(q.size).indexOf(n) < 0) return;
     PLANS[i] = BUILD[q.id](n);
   }
   PLANS.forEach(function (q, i) { if (q.size) applySize(i, load('bp.size.' + q.id)); });
@@ -2313,8 +2381,20 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
     $('pickbtn').innerHTML = outIcon(p) + '<span class="pn"><small>Bauplan</small><b>' + esc(p.title) + '</b></span><span class="pchev">Wechseln</span>';
     PLANS.forEach(function (q, i) { var ne = $('notes-' + q.id); if (ne) ne.hidden = i !== st.plan; });
     // Größe
-    $('sizer').hidden = !p.size;
-    if (p.size) { $('sz-label').textContent = p.size.label; $('sz-val').textContent = p.size.n; $('sz-minus').disabled = p.size.n <= p.size.min; $('sz-plus').disabled = p.size.n >= p.size.max; $('sz-rate').textContent = p.rate ? 'Ertrag: ' + p.rate : ''; }
+    var z = p.size;
+    $('sizer').hidden = !z;
+    $('sz-one').hidden = !p.one || !!z; $('sz-one').textContent = p.one || '';
+    if (z) {
+      var vals = sizeVals(z), k = vals.indexOf(z.n), tiers = z.tiers || [], ti = tiers.indexOf(z.n);
+      $('sz-label').textContent = z.label; $('sz-val').textContent = z.n;
+      $('sz-minus').disabled = k <= 0; $('sz-plus').disabled = k >= vals.length - 1;
+      $('sz-rate').textContent = p.rate ? 'Ertrag: ' + p.rate : '';
+      $('sz-tiers').hidden = !tiers.length;
+      $('sz-tiers').innerHTML = tiers.map(function (n, i) {
+        return '<button type="button" role="radio" aria-checked="' + (n === z.n) + '" data-n="' + n + '" aria-label="Größe ' + TIERN[i] + ', ' + n + ' ' + esc(z.label) + '"><b>' + TIERN[i] + '</b><small>' + n + '</small></button>';
+      }).join('');
+      $('sz-tier').textContent = tiers.length ? (ti >= 0 ? 'Größe ' + TIERN[ti] : 'Zwischengröße') : '';
+    }
     // Im Spiel getestet
     var tt = load('bp.test.' + p.id) || {}; $('t-ok').checked = !!tt.ok; $('t-note').value = typeof tt.note === 'string' ? tt.note : '';
     $('editbtn').hidden = !p.own;
@@ -2566,16 +2646,26 @@ if (typeof module !== 'undefined') module.exports = { PLANS: PLANS, BLOCKS: BLOC
   $('isoall').addEventListener('click', function () { st.isoAll = !st.isoAll; st.isoinfo = ''; this.setAttribute('aria-pressed', String(st.isoAll)); renderLayer(); });
   $('bmbtn').addEventListener('click', function () { setBuild(true); });
   $('editbtn').addEventListener('click', function () { location.hash = '#editor/' + PLANS[st.plan].id; });
-  function resize(dir) {
-    var i = st.plan, q = PLANS[i]; if (!q.size) return;
-    applySize(i, q.size.n + dir * q.size.step);
+  var TIERN = ['S', 'M', 'L', 'XL', 'XXL'];
+  function setSize(n) {
+    var i = st.plan, q = PLANS[i]; if (!q.size || n === q.size.n) return;
+    applySize(i, n);
+    if (st.layer[i] >= PLANS[i].layers.length) st.layer[i] = PLANS[i].layers.length - 1;
+    var dn = st.done[q.id] || {}; Object.keys(dn).forEach(function (k) { if (+k >= PLANS[i].layers.length) delete dn[k]; });
     save('bp.size.' + q.id, PLANS[i].size.n);
     renderPlanStatic(); renderLayer();
+    [].forEach.call(document.querySelectorAll('.sheet'), function (el) { el.classList.remove('szanim'); void el.offsetWidth; el.classList.add('szanim'); });
     // Kopfzeile der App und Fenstertitel nachziehen (Titel hängt bei der Schmelzanlage von der Größe ab)
     try { window.dispatchEvent(new Event('bwplan')); var hh = host(); if (hh && hh.bwPlanChanged) hh.bwPlanChanged(); } catch (e) {}
   }
+  function resize(dir) {
+    var q = PLANS[st.plan]; if (!q.size) return;
+    var vals = sizeVals(q.size), k = vals.indexOf(q.size.n) + dir;
+    if (k >= 0 && k < vals.length) setSize(vals[k]);
+  }
   $('sz-minus').addEventListener('click', function () { resize(-1); });
   $('sz-plus').addEventListener('click', function () { resize(1); });
+  $('sz-tiers').addEventListener('click', function (e) { var b = e.target.closest('[data-n]'); if (b) setSize(+b.getAttribute('data-n')); });
   function storeTest() {
     var p = PLANS[st.plan], v = { ok: $('t-ok').checked, note: $('t-note').value.trim().slice(0, 140) };
     if (v.ok || v.note) save('bp.test.' + p.id, v); else { try { window.localStorage.removeItem('bp.test.' + p.id); } catch (e) {} }
