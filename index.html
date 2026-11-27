@@ -410,6 +410,13 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 @media (max-width: 1000px) { .zgrid { grid-template-columns: minmax(0, 1fr); } }
 @media (min-width: 721px) and (max-width: 1240px) { .tabsbar .tl { display: none; } .tabsbar .ts { display: inline; } }
 
+.kgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.kgrid .tcard { margin: 0; }
+.kform { display: flex; flex-direction: column; gap: 8px; }
+.kok { color: var(--ok); }
+.kbad { color: var(--mark); }
+@media (max-width: 1000px) { .kgrid { grid-template-columns: minmax(0, 1fr); } }
+
 /* Mittelbreit */
 @media (max-width: 1100px) {
   .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -483,6 +490,10 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   <button type="button" class="navbtn" data-view="bau" title="Baupläne (Strg+2)">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5L12 3.5l8 4-8 4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16.5l8 4 8-4"/></svg>
     <span>Baupläne</span>
+  </button>
+  <button type="button" class="navbtn" data-view="karte" title="Seed-Karte (Strg+4)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5l5.5-2.2 6 2.2 5.5-2.2v13.2l-5.5 2.2-6-2.2-5.5 2.2z"/><path d="M9 4.3v13.2"/><path d="M15 6.5v13.2"/></svg>
+    <span>Karte</span>
   </button>
   <button type="button" class="navbtn" data-view="werkzeuge" title="Werkzeuge (Strg+3)">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5a4 4 0 0 0 4.9 4.9l-8.6 8.6a2 2 0 0 1-2.8-2.8l8.6-8.6"/><path d="M14.5 5.5l2-2 4 4-2 2"/><path d="M4 4l4.5 4.5"/><path d="M3.5 7.5l4-4"/></svg>
@@ -577,6 +588,63 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
       <p class="fine">Inoffizielles Hilfsprogramm, nicht von Mojang oder Microsoft. Minecraft ist eine Marke der Mojang Synergies AB. Die Originalbilder sind nicht in der App enthalten: Sie werden beim Anzeigen aus Mojangs Repository bedrock-samples auf dein Gerät geladen und nur dort gespeichert. NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
     </div>
   </section>
+  <section class="startview off" id="v-karte" aria-label="Seed-Karte" tabindex="-1">
+    <div class="hero thero">
+      <div class="hero-in">
+        <div>
+          <p class="eyebrow">Bedrock-Werkbank</p>
+          <h1>Seed-Karte</h1>
+          <p class="lead">Mit dem Seed deiner Welt siehst du vorher, wo Dörfer, Bauwerke und Biome liegen, von deinem Standort aus.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sv">
+      <div class="kgrid">
+        <div class="tcard">
+          <div class="ptitle">Seed deiner Welt</div>
+          <p class="small" style="margin:0">Welt: <b id="k-world"></b></p>
+          <label class="fl" for="k-seed">Seed</label>
+          <input class="inp" id="k-seed" inputmode="numeric" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="24" placeholder="z. B. -4172144997902289642">
+          <p class="small" id="k-msg" aria-live="polite"></p>
+          <p class="fine" style="margin:0">Den Seed findest du in Minecraft unter Welt bearbeiten → Spiel → Seed. Er wird für die gewählte Welt gespeichert. Eine andere Welt wählst du unter Werkzeuge.</p>
+        </div>
+        <div class="tcard">
+          <div class="ptitle">Von wo aus suchen?</div>
+          <div class="seg three" id="k-dim" role="radiogroup" aria-label="Dimension">
+            <button type="button" role="radio" aria-checked="true" data-dim="ober">Oberwelt</button>
+            <button type="button" role="radio" aria-checked="false" data-dim="nether">Nether</button>
+            <button type="button" role="radio" aria-checked="false" data-dim="end">End</button>
+          </div>
+          <div class="coords two">
+            <label>X <input class="inp" type="number" id="k-x" step="1" placeholder="deine X"></label>
+            <label>Z <input class="inp" type="number" id="k-z" step="1" placeholder="deine Z"></label>
+          </div>
+          <p class="fine" style="margin:0">Derselbe Standort wie im Wegweiser unter Werkzeuge → Koordinaten. Leer heißt: vom Weltursprung 0 / 0 aus.</p>
+        </div>
+        <div class="tcard">
+          <div class="ptitle">Karte öffnen</div>
+          <p style="margin:0">Die Seed-Karte von Chunkbase zeigt rund um deinen Standort alle Bauwerke und Biome mit Koordinaten. Sie läuft im Browser und braucht Internet.</p>
+          <div class="tacts"><button type="button" class="btn primary" id="k-open">Seed-Karte öffnen</button><button type="button" class="btn" id="k-copy">Seed kopieren</button></div>
+          <p class="fine" style="margin:0">Beim ersten Mal oben auf der Seite die Version wählen, die du spielst, etwa „Bedrock 26.60 – 26.65“. Chunkbase merkt sich das. Es ist ein fremdes Angebot mit Werbung.</p>
+        </div>
+        <div class="tcard">
+          <div class="ptitle">Etwas gefunden?</div>
+          <p style="margin:0">Trag es als Ort ein, dann zeigt dir der Wegweiser Entfernung und Richtung dorthin.</p>
+          <form id="k-form" class="kform" autocomplete="off">
+            <div class="qchips" id="k-quick"></div>
+            <label class="fl" for="k-name">Was ist dort?</label>
+            <input class="inp" id="k-name" maxlength="40" placeholder="z. B. Dorf, Ozeanmonument, Kirschhain">
+            <div class="coords two">
+              <label>X <input class="inp" type="number" id="k-px" step="1" required></label>
+              <label>Z <input class="inp" type="number" id="k-pz" step="1" required></label>
+            </div>
+            <div class="tacts"><button type="submit" class="btn primary">Als Ort speichern</button></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="startview off" id="v-tools" aria-label="Werkzeuge" tabindex="-1">
     <div class="hero thero" id="thero">
       <div class="hero-in">
@@ -866,7 +934,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
 
 <dialog id="news" aria-labelledby="news-h">
   <div class="dhead">
-    <div><h2 id="news-h">Neu in Version 2.2</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
+    <div><h2 id="news-h">Neu in Version 2.3</h2><p>Das hat sich seit dem letzten Mal geändert.</p></div>
   </div>
   <div class="dbody">
     <ul class="newslist" id="newslist"></ul>
@@ -880,7 +948,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
     <div>
       <h2 id="info-h">Bedrock-Werkbank</h2>
       <p class="madeby">Made by Konterplatte</p>
-      <p>Version 2.2 · Datenstand Bedrock Edition 26.60</p>
+      <p>Version 2.3 · Datenstand Bedrock Edition 26.60</p>
     </div>
   </div>
   <div class="dbody">
@@ -946,6 +1014,12 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
           <li><b>Portal:</b> Gegenportal im Nether oder in der Oberwelt. <b>Kreise:</b> runde Bauten Ebene für Ebene.</li>
           <li><b>Erfahrung:</b> Punkte bis zum Ziel-Level und was beim Tod bleibt. <b>Zeit:</b> Ticks, Verstärker, Trichter-Uhr und Brennstoff für Öfen.</li></ul>
       </details>
+      <details><summary>Seed-Karte</summary>
+        <ul><li>Unten oder links auf „Karte“ tippen und den Seed eintragen. Du findest ihn in Minecraft unter Welt bearbeiten → Spiel → Seed. Er gilt je Welt.</li>
+          <li>Standort eintragen (derselbe wie im Wegweiser), dann „Seed-Karte öffnen“. Die Karte von Chunkbase zeigt Dörfer, Bauwerke und Biome mit Koordinaten. Dafür brauchst du Internet.</li>
+          <li>Beim ersten Mal auf der Karte oben deine Version wählen, etwa „Bedrock 26.60 – 26.65“.</li>
+          <li>Etwas gefunden? Unter „Etwas gefunden?“ eintragen, dann steht es bei den Koordinaten und der Wegweiser führt dich hin.</li></ul>
+      </details>
       <details><summary>Welten</summary>
         <p>Unter Werkzeuge legst du weitere Welten an. Sammelliste, Orte, dein Standort und der Baufortschritt gelten dann je Welt. Favoriten, eigene Baupläne und Einstellungen gelten überall.</p>
       </details>
@@ -990,7 +1064,7 @@ kbd { font-family: var(--f-body); font-size: .82rem; font-weight: 500; border: 1
   var POPULAR = [["enchanted_book:mending", "Reparatur (Verzaubertes Buch)", "#7B4BC2"], ["enchanted_book:sharpness", "Schärfe (Verzaubertes Buch)", "#7B4BC2"], ["netherite_ingot", "Netheritbarren", "#4A4447"], ["diamond", "Diamant", "#27A9A6"], ["iron_ingot", "Eisenbarren", "#D3D8DF"], ["emerald", "Smaragd", "#2DB56C"], ["filled_map:buried_treasure", "Schatzkarte", "#C9A566"], ["potion:healing", "Trank der Heilung", "#C8433A"], ["green_dye", "Grüner Farbstoff", "#4BA34E"], ["golden_apple", "Goldener Apfel", "#EBC531"], ["tipped_arrow:poison", "Pfeil der Vergiftung", "#8A4FC0"], ["ender_pearl", "Enderperle", "#1F7A72"]];
   var ANVIL = {"aqua_affinity":["Wasseraffinität",1,[]],"bane_of_arthropods":["Nemesis der Gliederfüßer",5,["sharpness","smite","density","breach"]],"binding":["Fluch der Bindung",1,[]],"blast_protection":["Explosionsschutz",4,["protection","fire_protection","projectile_protection"]],"breach":["Bresche",4,["density","smite","bane_of_arthropods"]],"channeling":["Entladung",1,["riptide"]],"density":["Dichte",5,["breach","smite","bane_of_arthropods"]],"depth_strider":["Wasserläufer",3,["frost_walker"]],"efficiency":["Effizienz",5,[]],"feather_falling":["Federfall",4,[]],"fire_aspect":["Verbrennung",2,[]],"fire_protection":["Feuerschutz",4,["protection","blast_protection","projectile_protection"]],"flame":["Flamme",1,[]],"fortune":["Glück",3,["silk_touch"]],"frost_walker":["Eisläufer",2,["depth_strider"]],"impaling":["Harpune",5,[]],"infinity":["Unendlichkeit",1,["mending"]],"knockback":["Rückstoß",2,[]],"looting":["Plünderung",3,[]],"loyalty":["Treue",3,["riptide"]],"luck_of_the_sea":["Glück des Meeres",3,[]],"lunge":["Ausfall",3,[]],"lure":["Köder",3,[]],"mending":["Reparatur",1,["infinity"]],"multishot":["Mehrfachschuss",1,["piercing"]],"piercing":["Durchbohren",4,["multishot"]],"power":["Kraft",5,[]],"projectile_protection":["Schussschutz",4,["protection","fire_protection","blast_protection"]],"protection":["Schutz",4,["fire_protection","blast_protection","projectile_protection"]],"punch":["Schlag",2,[]],"quick_charge":["Schnellladen",3,[]],"respiration":["Atmung",3,[]],"riptide":["Sog",3,["loyalty","channeling"]],"sharpness":["Schärfe",5,["smite","bane_of_arthropods"]],"silk_touch":["Behutsamkeit",1,["fortune"]],"smite":["Bann",5,["sharpness","bane_of_arthropods","density","breach"]],"soul_speed":["Seelenläufer",3,[]],"swift_sneak":["Huschen",3,[]],"thorns":["Dornen",3,[]],"unbreaking":["Haltbarkeit",3,[]],"vanishing":["Fluch des Verschwindens",1,[]],"wind_burst":["Windschuss",3,[]]};
   var BREW = {"e":[["potion:awkward","blaze_powder","potion:strength"],["potion:awkward","breeze_rod","potion:wind_charged"],["potion:awkward","fermented_spider_eye","potion:weakness"],["potion:awkward","ghast_tear","potion:regeneration"],["potion:awkward","golden_carrot","potion:nightvision"],["potion:awkward","magma_cream","potion:fire_resistance"],["potion:awkward","phantom_membrane","potion:slow_falling"],["potion:awkward","pufferfish","potion:water_breathing"],["potion:awkward","rabbit_foot","potion:leaping"],["potion:awkward","slime","potion:oozing"],["potion:awkward","glistering_melon_slice","potion:healing"],["potion:awkward","spider_eye","potion:poison"],["potion:awkward","stone","potion:infested"],["potion:awkward","sugar","potion:swiftness"],["potion:awkward","turtle_helmet","potion:turtle_master"],["potion:awkward","web","potion:weaving"],["potion:fire_resistance","redstone","potion:long_fire_resistance"],["potion:harming","glowstone_dust","potion:strong_harming"],["potion:healing","fermented_spider_eye","potion:harming"],["potion:healing","glowstone_dust","potion:strong_healing"],["potion:invisibility","redstone","potion:long_invisibility"],["potion:leaping","fermented_spider_eye","potion:slowness"],["potion:leaping","glowstone_dust","potion:strong_leaping"],["potion:leaping","redstone","potion:long_leaping"],["potion:long_leaping","fermented_spider_eye","potion:long_slowness"],["potion:long_mundane","fermented_spider_eye","potion:long_weakness"],["potion:long_poison","fermented_spider_eye","potion:harming"],["potion:long_strength","fermented_spider_eye","potion:long_weakness"],["potion:long_nightvision","fermented_spider_eye","potion:long_invisibility"],["potion:long_swiftness","fermented_spider_eye","potion:long_slowness"],["potion:mundane","fermented_spider_eye","potion:weakness"],["potion:nightvision","fermented_spider_eye","potion:invisibility"],["potion:nightvision","redstone","potion:long_nightvision"],["potion:poison","fermented_spider_eye","potion:harming"],["potion:poison","glowstone_dust","potion:strong_poison"],["potion:poison","redstone","potion:long_poison"],["potion:regeneration","glowstone_dust","potion:strong_regeneration"],["potion:regeneration","redstone","potion:long_regeneration"],["potion:slow_falling","redstone","potion:long_slow_falling"],["potion:slowness","glowstone_dust","potion:strong_slowness"],["potion:slowness","redstone","potion:long_slowness"],["potion:strength","fermented_spider_eye","potion:weakness"],["potion:strength","glowstone_dust","potion:strong_strength"],["potion:strength","redstone","potion:long_strength"],["potion:strong_healing","fermented_spider_eye","potion:strong_harming"],["potion:strong_poison","fermented_spider_eye","potion:strong_harming"],["potion:strong_strength","fermented_spider_eye","potion:weakness"],["potion:swiftness","fermented_spider_eye","potion:slowness"],["potion:swiftness","glowstone_dust","potion:strong_swiftness"],["potion:swiftness","redstone","potion:long_swiftness"],["potion:thick","fermented_spider_eye","potion:weakness"],["potion:turtle_master","glowstone_dust","potion:strong_turtle_master"],["potion:turtle_master","redstone","potion:long_turtle_master"],["potion:water","blaze_powder","potion:mundane"],["potion:water_breathing","redstone","potion:long_water_breathing"],["potion:water","breeze_rod","potion:mundane"],["potion:water","fermented_spider_eye","potion:weakness"],["potion:water","ghast_tear","potion:mundane"],["potion:water","glowstone_dust","potion:thick"],["potion:water","magma_cream","potion:mundane"],["potion:water","nether_wart","potion:awkward"],["potion:water","rabbit_foot","potion:mundane"],["potion:water","redstone","potion:mundane"],["potion:water","slime","potion:mundane"],["potion:water","glistering_melon_slice","potion:mundane"],["potion:water","spider_eye","potion:mundane"],["potion:water","stone","potion:mundane"],["potion:water","sugar","potion:mundane"],["potion:water","web","potion:mundane"],["potion:weakness","redstone","potion:long_weakness"],["potion:water","redstone","potion:long_mundane"]],"n":{"potion:awkward":"Seltsamer Trank","blaze_powder":"Lohenstaub","potion:strength":"Trank der Stärke","breeze_rod":"Böenrute","potion:wind_charged":"Trank des Windladens","fermented_spider_eye":"Fermentiertes Spinnenauge","potion:weakness":"Trank der Schwäche","ghast_tear":"Ghast-Träne","potion:regeneration":"Trank der Regeneration","golden_carrot":"Goldene Karotte","potion:nightvision":"Trank der Nachtsicht","magma_cream":"Magmacreme","potion:fire_resistance":"Trank der Feuerresistenz","phantom_membrane":"Phantomhaut","potion:slow_falling":"Trank des sanften Falls","pufferfish":"Kugelfisch","potion:water_breathing":"Trank der Unterwasseratmung","rabbit_foot":"Hasenpfote","potion:leaping":"Trank der Sprungkraft","slime":"Schleimblock","potion:oozing":"Trank des Sickerns","glistering_melon_slice":"Funkelnde Melonenscheibe","potion:healing":"Trank der Heilung","spider_eye":"Spinnenauge","potion:poison":"Trank der Vergiftung","stone":"Stein","potion:infested":"Trank der Verseuchung","sugar":"Zucker","potion:swiftness":"Trank der Schnelligkeit","turtle_helmet":"Schildkrötenpanzer","potion:turtle_master":"Trank des Schildkrötenmeisters","web":"Spinnennetz","potion:weaving":"Trank des Webens","redstone":"Redstone-Staub","potion:long_fire_resistance":"Trank der Feuerresistenz (verlängert)","potion:harming":"Trank des Schadens","glowstone_dust":"Leuchtstein-Staub","potion:strong_harming":"Trank des Schadens (Stufe II)","potion:strong_healing":"Trank der Heilung (Stufe II)","potion:invisibility":"Trank der Unsichtbarkeit","potion:long_invisibility":"Trank der Unsichtbarkeit (verlängert)","potion:slowness":"Trank der Langsamkeit","potion:strong_leaping":"Trank der Sprungkraft (Stufe II)","potion:long_leaping":"Trank der Sprungkraft (verlängert)","potion:long_slowness":"Trank der Langsamkeit (verlängert)","potion:long_mundane":"Gewöhnlicher Trank (verlängert)","potion:long_weakness":"Trank der Schwäche (verlängert)","potion:long_poison":"Trank der Vergiftung (verlängert)","potion:long_strength":"Trank der Stärke (verlängert)","potion:long_nightvision":"Trank der Nachtsicht (verlängert)","potion:long_swiftness":"Trank der Schnelligkeit (verlängert)","potion:mundane":"Gewöhnlicher Trank","potion:strong_poison":"Trank der Vergiftung (Stufe II)","potion:strong_regeneration":"Trank der Regeneration (Stufe II)","potion:long_regeneration":"Trank der Regeneration (verlängert)","potion:long_slow_falling":"Trank des sanften Falls (verlängert)","potion:strong_slowness":"Trank der Langsamkeit (Stufe IV)","potion:strong_strength":"Trank der Stärke (Stufe II)","potion:strong_swiftness":"Trank der Schnelligkeit (Stufe II)","potion:thick":"Dickflüssiger Trank","potion:strong_turtle_master":"Trank des Schildkrötenmeisters (Stufe II)","potion:long_turtle_master":"Trank des Schildkrötenmeisters (verlängert)","potion:water":"Wasserflasche","potion:long_water_breathing":"Trank der Unterwasseratmung (verlängert)","nether_wart":"Netherwarze","glass_bottle":"Glasflasche","gunpowder":"Schwarzpulver","dragon_breath":"Drachenatem","brewing_stand":"Braustand"},"f":{"potion:awkward":["Seltsamer Wurftrank","Seltsamer Verweiltrank"],"potion:strength":["Wurftrank der Stärke","Verweiltrank der Stärke"],"potion:wind_charged":["Wurftrank des Windladens","Verweiltrank des Windladens"],"potion:weakness":["Wurftrank der Schwäche","Verweiltrank der Schwäche"],"potion:regeneration":["Wurftrank der Regeneration","Verweiltrank der Regeneration"],"potion:nightvision":["Wurftrank der Nachtsicht","Verweiltrank der Nachtsicht"],"potion:fire_resistance":["Wurftrank der Feuerresistenz","Verweiltrank der Feuerresistenz"],"potion:slow_falling":["Wurftrank des sanften Falls","Verweiltrank des sanften Falls"],"potion:water_breathing":["Wurftrank der Unterwasseratmung","Verweiltrank der Unterwasseratmung"],"potion:leaping":["Wurftrank der Sprungkraft","Verweiltrank der Sprungkraft"],"potion:oozing":["Wurftrank des Sickerns","Verweiltrank des Sickerns"],"potion:healing":["Wurftrank der Heilung","Verweiltrank der Heilung"],"potion:poison":["Wurftrank der Vergiftung","Verweiltrank der Vergiftung"],"potion:infested":["Wurftrank der Verseuchung","Verweiltrank der Verseuchung"],"potion:swiftness":["Wurftrank der Schnelligkeit","Verweiltrank der Schnelligkeit"],"potion:turtle_master":["Wurftrank des Schildkrötenmeisters","Verweiltrank des Schildkrötenmeisters"],"potion:weaving":["Wurftrank des Webens","Verweiltrank des Webens"],"potion:long_fire_resistance":["Wurftrank der Feuerresistenz (verlängert)","Verweiltrank der Feuerresistenz (verlängert)"],"potion:harming":["Wurftrank des Schadens","Verweiltrank des Schadens"],"potion:strong_harming":["Wurftrank des Schadens (Stufe II)","Verweiltrank des Schadens (Stufe II)"],"potion:strong_healing":["Wurftrank der Heilung (Stufe II)","Verweiltrank der Heilung (Stufe II)"],"potion:invisibility":["Wurftrank der Unsichtbarkeit","Verweiltrank der Unsichtbarkeit"],"potion:long_invisibility":["Wurftrank der Unsichtbarkeit (verlängert)","Verweiltrank der Unsichtbarkeit (verlängert)"],"potion:slowness":["Wurftrank der Langsamkeit","Verweiltrank der Langsamkeit"],"potion:strong_leaping":["Wurftrank der Sprungkraft (Stufe II)","Verweiltrank der Sprungkraft (Stufe II)"],"potion:long_leaping":["Wurftrank der Sprungkraft (verlängert)","Verweiltrank der Sprungkraft (verlängert)"],"potion:long_slowness":["Wurftrank der Langsamkeit (verlängert)","Verweiltrank der Langsamkeit (verlängert)"],"potion:long_mundane":["Gewöhnlicher Wurftrank (verlängert)","Gewöhnlicher Verweiltrank (verlängert)"],"potion:long_weakness":["Wurftrank der Schwäche (verlängert)","Verweiltrank der Schwäche (verlängert)"],"potion:long_poison":["Wurftrank der Vergiftung (verlängert)","Verweiltrank der Vergiftung (verlängert)"],"potion:long_strength":["Wurftrank der Stärke (verlängert)","Verweiltrank der Stärke (verlängert)"],"potion:long_nightvision":["Wurftrank der Nachtsicht (verlängert)","Verweiltrank der Nachtsicht (verlängert)"],"potion:long_swiftness":["Wurftrank der Schnelligkeit (verlängert)","Verweiltrank der Schnelligkeit (verlängert)"],"potion:mundane":["Gewöhnlicher Wurftrank","Gewöhnlicher Verweiltrank"],"potion:strong_poison":["Wurftrank der Vergiftung (Stufe II)","Verweiltrank der Vergiftung (Stufe II)"],"potion:strong_regeneration":["Wurftrank der Regeneration (Stufe II)","Verweiltrank der Regeneration (Stufe II)"],"potion:long_regeneration":["Wurftrank der Regeneration (verlängert)","Verweiltrank der Regeneration (verlängert)"],"potion:long_slow_falling":["Wurftrank des sanften Falls (verlängert)","Verweiltrank des sanften Falls (verlängert)"],"potion:strong_slowness":["Wurftrank der Langsamkeit (Stufe IV)","Verweiltrank der Langsamkeit (Stufe IV)"],"potion:strong_strength":["Wurftrank der Stärke (Stufe II)","Verweiltrank der Stärke (Stufe II)"],"potion:strong_swiftness":["Wurftrank der Schnelligkeit (Stufe II)","Verweiltrank der Schnelligkeit (Stufe II)"],"potion:thick":["Dickflüssiger Wurftrank","Dickflüssiger Verweiltrank"],"potion:strong_turtle_master":["Wurftrank des Schildkrötenmeisters (Stufe II)","Verweiltrank des Schildkrötenmeisters (Stufe II)"],"potion:long_turtle_master":["Wurftrank des Schildkrötenmeisters (verlängert)","Verweiltrank des Schildkrötenmeisters (verlängert)"],"potion:water":["Werfbare Wasserflasche","Verweilende Wasserflasche"],"potion:long_water_breathing":["Wurftrank der Unterwasseratmung (verlängert)","Verweiltrank der Unterwasseratmung (verlängert)"]}};
-  var APPVER = '2.2';
+  var APPVER = '2.3';
   var APP = 'Bedrock-Werkbank';
   var PLATFORM = document.documentElement.getAttribute('data-platform');
   // Originalbilder: im Programm über den eigenen Zwischenspeicher, in der Web-App direkt aus Mojangs Repository
@@ -1129,13 +1203,13 @@ var BWTEX = (function () {
   var VIEWS = [{ id: 'start', frame: null, el: 'v-start', title: 'Start' }, { id: 'lexikon', frame: 'lex', title: 'Ressourcen-Lexikon' }]
     .concat(PLANS.map(function (p) { return { id: p.id, frame: 'bau', title: 'Bauplan ' + p.title, plan: p }; }))
     .concat([{ id: 'vergleich', frame: 'bau', title: 'Baupläne im Vergleich' }, { id: 'editor', frame: 'bau', title: 'Eigener Bauplan' }])
-    .concat([{ id: 'werkzeuge', frame: null, el: 'v-tools', title: 'Werkzeuge' }]);
-  var KEYS = ['start', 'lexikon', 'bau', 'werkzeuge'];
+    .concat([{ id: 'werkzeuge', frame: null, el: 'v-tools', title: 'Werkzeuge' }, { id: 'karte', frame: null, el: 'v-karte', title: 'Seed-Karte' }]);
+  var KEYS = ['start', 'lexikon', 'bau', 'werkzeuge', 'karte'];
   var PATHS = { lex: 'lexikon/', bau: 'bauplaene/' };
   var $ = function (id) { return document.getElementById(id); };
   var frames = { lex: $('f-lex'), bau: $('f-bau') };
   var ready = { lex: false, bau: false };
-  var startEl = $('v-start'), toolsEl = $('v-tools'), inline = [startEl, toolsEl];
+  var startEl = $('v-start'), toolsEl = $('v-tools'), karteEl = $('v-karte'), inline = [startEl, toolsEl, karteEl];
   var buttons = Array.prototype.slice.call(document.querySelectorAll('.navbtn[data-view]'));
   var info = $('info');
   var byId = {}, cur = null, lastPlan = 'eisenfarm';
@@ -1370,7 +1444,7 @@ var BWISO = (function () {
     if (v.plan && v.plan.sizes) v.title = 'Bauplan ' + planNow(v.plan).title;
     if (v.frame) loadFrame(v.frame, v.frame === 'bau' ? '#' + (pendingBau || id) : null);
     cur = v;
-    [startEl, toolsEl, frames.lex, frames.bau].forEach(function (el) {
+    [startEl, toolsEl, karteEl, frames.lex, frames.bau].forEach(function (el) {
       var on = v.frame ? el === frames[v.frame] : el.id === v.el;
       el.classList.toggle('off', !on); el.classList.toggle('on', on);
     });
@@ -1384,6 +1458,7 @@ var BWISO = (function () {
     }
     if (id === 'start') { renderRecent(); renderTiles(); }
     if (id === 'werkzeuge') renderTools();
+    if (id === 'karte') fillKarte();
     setTitle(v.title);
     focusView();
   }
@@ -1481,7 +1556,7 @@ var BWISO = (function () {
   function switchWorld(id) {
     wcur = id; save('world', id);
     list = loadList(); places = loadPlaces(); here = loadJSON(wkey('hier'), null); edit = null; fillHere();
-    renderWorlds(); renderTools(); renderTiles();
+    renderWorlds(); renderTools(); renderTiles(); fillKarte();
   }
   $('w-sel').addEventListener('change', function () { switchWorld(this.value); });
   $('w-new').addEventListener('click', function () { wmode = 'new'; renderWorlds(); $('w-name').value = ''; $('w-ok').textContent = 'Anlegen'; $('w-name').focus(); });
@@ -2016,6 +2091,69 @@ var BWISO = (function () {
   });
   $('z-plan').addEventListener('click', function () { show('ofen'); });
 
+  /* ---------- Seed-Karte ---------- */
+  // Bedrock zeigt den Seed als Zahl (64 Bit). Gespeichert wird er je Welt als Text, damit nichts gerundet wird.
+  var S64 = { min: BigInt('-9223372036854775808'), max: BigInt('18446744073709551615'), wrap: BigInt('18446744073709551616'), top: BigInt('9223372036854775807') };
+  function parseSeed(s) {
+    s = String(s == null ? '' : s).trim().replace(/[\s.]/g, '');
+    if (!/^-?\d{1,20}$/.test(s)) return null;
+    var b = BigInt(s); if (b < S64.min || b > S64.max) return null;
+    if (b > S64.top) b -= S64.wrap;      // als vorzeichenlose Zahl eingegeben: auf die übliche Form bringen
+    return b.toString();
+  }
+  function seedNow() { var s = loadJSON(wkey('seed'), ''); return typeof s === 'string' && parseSeed(s) ? s : ''; }
+  var kdim = 'ober';
+  function kSync() { [].forEach.call($('k-dim').querySelectorAll('[data-dim]'), function (b) { b.setAttribute('aria-checked', String(b.getAttribute('data-dim') === kdim)); }); }
+  function fillKarte() {
+    var w = worlds.filter(function (x) { return x.id === wcur; })[0];
+    $('k-world').textContent = w ? w.name : 'Hauptwelt';
+    $('k-seed').value = seedNow(); kMsg();
+    kdim = here && DIMS[here.dim] ? here.dim : 'ober'; kSync();
+    $('k-x').value = here && isFinite(here.x) ? here.x : ''; $('k-z').value = here && isFinite(here.z) ? here.z : '';
+  }
+  function kMsg() {
+    var raw = $('k-seed').value.trim(), s = parseSeed(raw), m = $('k-msg');
+    m.className = 'small' + (raw && !s ? ' kbad' : s ? ' kok' : '');
+    m.textContent = !raw ? 'Noch kein Seed eingetragen.' : s ? 'Gespeichert für diese Welt.' : 'Bitte nur die Zahl aus den Welteinstellungen eintragen, ohne Buchstaben.';
+    $('k-open').disabled = !s; $('k-copy').disabled = !s;
+  }
+  $('k-seed').addEventListener('input', function () {
+    var s = parseSeed(this.value);
+    if (s) saveJSON(wkey('seed'), s); else if (!this.value.trim()) saveJSON(wkey('seed'), '');
+    kMsg();
+  });
+  $('k-seed').addEventListener('change', function () { var s = parseSeed(this.value); if (s) this.value = s; kMsg(); });
+  function kReadHere() {
+    var x = $('k-x').value, z = $('k-z').value;
+    here = x !== '' && z !== '' && isFinite(+x) && isFinite(+z) ? { dim: kdim, x: Math.trunc(+x), z: Math.trunc(+z) } : null;
+    storeHere(); fillHere(); renderPlaces();
+  }
+  $('k-dim').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (!b) return; kdim = b.getAttribute('data-dim'); kSync(); kReadHere(); });
+  $('k-x').addEventListener('input', kReadHere); $('k-z').addEventListener('input', kReadHere);
+  function chunkbaseUrl() {
+    var s = seedNow(), x = $('k-x').value, z = $('k-z').value;
+    return 'https://www.chunkbase.com/apps/seed-map#seed=' + encodeURIComponent(s) + '&dimension=' + ({ ober: 'overworld', nether: 'nether', end: 'end' })[kdim] +
+      '&x=' + (x !== '' && isFinite(+x) ? Math.trunc(+x) : 0) + '&z=' + (z !== '' && isFinite(+z) ? Math.trunc(+z) : 0) + '&zoom=0.5';
+  }
+  $('k-open').addEventListener('click', function () { if (seedNow()) openExternal(chunkbaseUrl()); });
+  $('k-copy').addEventListener('click', function () {
+    var s = seedNow(); if (!s) return;
+    copyText(s, function (ok) { toast(ok ? 'Seed kopiert' : 'Kopieren nicht möglich'); });
+  });
+  $('k-quick').innerHTML = ['Dorf', 'Plünderer-Außenposten', 'Ozeanmonument', 'Waldanwesen', 'Antike Stätte', 'Prüfungskammer', 'Wüstentempel', 'Dschungeltempel', 'Schiffswrack', 'Portalruine']
+    .map(function (n) { return '<button type="button" class="qchip" data-n="' + n + '"><span>' + n + '</span></button>'; }).join('');
+  $('k-quick').addEventListener('click', function (e) { var b = e.target.closest('[data-n]'); if (!b) return; $('k-name').value = b.getAttribute('data-n'); $('k-px').focus(); });
+  $('k-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var n = $('k-name').value.trim() || 'Fundort', x = $('k-px').value, z = $('k-pz').value;
+    if (x === '' || z === '' || !isFinite(+x) || !isFinite(+z)) return;
+    places.unshift({ id: Date.now().toString(36), name: n.slice(0, 40), dim: kdim, x: Math.trunc(+x), y: null, z: Math.trunc(+z), note: 'aus der Seed-Karte' });
+    storePlaces(); renderPlaces();
+    $('k-name').value = ''; $('k-px').value = ''; $('k-pz').value = '';
+    toast('Gespeichert unter Koordinaten', function () { openTool('orte'); }, 'Ansehen');
+  });
+  fillKarte();
+
   /* Daten übertragen */
   function bauKeys() { return PLANS.map(function (p) { return p.id; }); }
   $('s-export').addEventListener('click', function () {
@@ -2145,7 +2283,8 @@ var BWISO = (function () {
   }
 
   /* Was ist neu */
-  var NEWS = ['3D frei drehbar: mit einem Finger drehen und kippen, mit zwei Fingern zoomen; oben steht, von wo du gerade schaust',
+  var NEWS = ['Neu: Seed-Karte. Seed deiner Welt eintragen, die Karte mit allen Dörfern, Bauwerken und Biomen rund um deinen Standort öffnen und Funde als Ort speichern',
+              '3D frei drehbar: mit einem Finger drehen und kippen, mit zwei Fingern zoomen; oben steht, von wo du gerade schaust',
               'Baupläne „Alle Seiten“: die ganze Farm von vorne, hinten, links, rechts, oben und unten, auf Wunsch als Schnitt durch eine Reihe',
               'Eigene Baupläne: Ebene für Ebene zeichnen, speichern und wie die anderen Pläne nutzen, mit 3D, Bau-Modus und Drucken',
               'Baupläne: alle im Vergleich, „Im Spiel getestet“ mit Notiz, Lavafarm, Gürteltierfarm und Schmelzanlage in der Größe einstellbar',
@@ -2262,7 +2401,7 @@ var BWISO = (function () {
     if (e.key === 'F1') { e.preventDefault(); openInfo(); return; }
     if (info.open) return;
     var mod = (e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey;
-    if (mod && e.key >= '0' && e.key <= '3') { e.preventDefault(); show(KEYS[+e.key]); return; }
+    if (mod && e.key >= '0' && e.key <= '4') { e.preventDefault(); show(KEYS[+e.key]); return; }
     if (mod && (e.key === 'k' || e.key === 'K') && cur && cur.id === 'start') { e.preventDefault(); $('hq').focus(); }
   }
 
@@ -2334,7 +2473,7 @@ var BWISO = (function () {
   });
   startEl.addEventListener('click', function (e) {
     var t = e.target.closest ? e.target.closest('[data-go],[data-item],[data-slug],[data-tool]') : null; if (!t) return;
-    if (t.hasAttribute('data-tool')) openTool(t.getAttribute('data-tool'));
+    if (t.hasAttribute('data-tool')) { if (t.getAttribute('data-tool') === 'karte') show('karte'); else openTool(t.getAttribute('data-tool')); }
     else if (t.hasAttribute('data-go')) show(t.getAttribute('data-go'));
     else if (t.hasAttribute('data-item')) openItem(slug(t.getAttribute('data-item')));
     else openItem(t.getAttribute('data-slug'));
@@ -2349,6 +2488,7 @@ var BWISO = (function () {
   var TOOLWORDS = { liste: ['Sammelliste', 'liste einkauf rohstoffe material sammeln'], orte: ['Koordinaten', 'orte koordinaten wegweiser basis entfernung richtung teilen'],
     amboss: ['Amboss-Planer', 'amboss verzaubern verzauberung reparatur zauberbuch'], brauen: ['Brau-Planer', 'brauen trank tränke braustand lohenstaub'],
     portal: ['Nether-Portal', 'portal nether gegenportal umrechnen'], kreis: ['Kreise und Kuppeln', 'kreis kuppel kugel rund turm scheibe zylinder'],
+    karte: ['Seed-Karte', 'seed karte map dorf finden bauwerk biom suchen wo liegt monument tempel antike statte'],
     xp: ['Erfahrungs-Rechner', 'erfahrung xp level punkte erfahrungsflaschchen reparatur zaubertisch'], zeit: ['Zeit und Redstone', 'zeit ticks tick redstone verstarker uhr trichteruhr ofen schmelzen kohle brennstoff'] };
   var OVERVIEW = [['Fundorte', 'orte', 'fundorte truhen beute loot schatz'], ['Dorfbewohner', 'berufe', 'dorfbewohner berufe handel'], ['Handel', 'handel', 'handel smaragd smaragde verkaufen kaufen'], ['Mobs', 'mobs', 'mobs monster tiere lebenspunkte']];
   function hit(q, hay) { var h = fold(hay), i = h.indexOf(q); return i < 0 ? 99 : i === 0 ? 0 : /[\s\-(]/.test(h.charAt(i - 1)) ? 1 : 2; }
